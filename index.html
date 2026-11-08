@@ -1912,6 +1912,7 @@ if(pfb){var prev=pfb.onclick;pfb.onclick=function(){if(prev)prev.apply(this,argu
  var _u3=update;update=function(dt){_u3(dt);
   if(!G||G.over||!G.al)return;var d=dt*(G.speed||1);
   for(var i=0;i<G.al.length;i++){var a=G.al[i];if(a.k!=='L')continue;if(a.dead||a.hp<=0){a.dead=true;a.rush=0;continue}
+    if(a.wt>0){a.wt-=d;continue}/* 出撃待ち(wt)を減らす。減らさないと描画されず見えなくなる */
    a.x=Math.max(16,Math.min(344,a.x));a.y=Math.max(30,Math.min(420,a.y));
    a.kc=(a.kc===undefined?1:a.kc)-d;a.tryT=(a.tryT||0)-d;
    var its=items(),best=null,bd=1e9;
