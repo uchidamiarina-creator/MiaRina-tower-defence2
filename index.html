@@ -242,12 +242,12 @@ function panel(){const lb=document.getElementById('lbx'),pb=document.getElementB
   pb.innerHTML='';pb.style.display='none';
   if(G.setup&&!G.sel&&(!G.goal||!G.starts.length)){ledSet(lb,!G.goal?'① 利奈のゴールにしたい場所をタップしよう（未亜の近くには置けないよ）　🗺️自動ボタンでおまかせ作成もできるよ':'② 敵が出てくるスタートの場所をタップしよう（未亜の近くには置けないよ）');return}
   if(G.setup&&!G.sel&&(build=='Z'||build=='K')){ledSet(lb,'道づくり：旗から利奈まで道をつなごう（無料）。つながると▶が押せるよ');return}
-  if(G.sel){const t=G.sel,d=T[t.k];ledSet(lb,d.name+' Lv'+t.lv+(t.k=='X'?'　借金 '+(G.debt|0)+'G（'+(G.loans|0)+'/10回）　':t.k=='L'?'　当たり確率 '+Math.round(23.3*(1+.4*(t.lv-1)))+'%　':'　こうげき '+Math.round(t.dmg)+'　射程 '+Math.round(t.rng)+'　')+(TD[t.k]||''));pb.style.display='flex';
+  if(G.sel){const t=G.sel,d=T[t.k];ledSet(lb,d.name+' Lv'+t.lv+(t.k=='X'?'　借金 '+(G.debt|0)+'G（'+(G.loans|0)+'/10回）　':t.k=='L'?'　当たり確率 '+Math.round(23.3*(1+.4*(t.lv-1)))+'%　':'　こうげき '+Math.round(t.dmg)+'　射程 '+Math.round(t.rng)+'　'));pb.style.display='flex';
    pb.innerHTML=(t.k=='W'?'<button id="wsp">かいてん 💰1000</button>':'')+(t.k=='X'?'':t.lv<(t.k=='L'?6:t.k=='W'?3:99)?'<button id="up">強化 💰'+upCost(t)+'</button>':'<button disabled>最大Lv</button>')+'<button id="sell">売る 💰'+Math.round(t.spent*.6)+'</button>';
   const u=document.getElementById('up'),ws=document.getElementById('wsp');if(ws)ws.onclick=()=>window.whipSpin(t);if(u)u.onclick=()=>{if(t.k=='L'&&t.lv>=6)return;if(t.k=='W'&&t.lv>=3)return;const c=upCost(t);if(G.gold>=c){G.gold-=c;sfx('up');t.spent+=c;t.lv++;t.dmg=T[t.k].dmg*(1+.45*D.up*(t.lv-1)*(1+(t.lv-1)/60));if(t.k=='W')t.rng+=15;else if(t.lv<=6)t.rng+=6;hud();panel()}};
   document.getElementById('sell').onclick=()=>{sfx('sell');G.gold+=Math.round(t.spent*.6);G.tw=G.tw.filter(o=>o!==t);G.sel=null;hud();panel()}
    return}
-  ledSet(lb,T[build].name+'：'+TD[build]+'（建てたタワーをタップで強化）')}
+  ledSet(lb,T[build].name)}
 const MT={p:null,gap:350};
 function miaHit(px,py){if(CH.away||CH.nin>0||!CHI.naturalWidth)return false;const w=92*CHI.naturalWidth/CHI.naturalHeight;return px>=8&&px<=8+w&&py>=344&&py<=440}
 function ninja(){CH.nin=3;cheer('忍法透明の術！')}
