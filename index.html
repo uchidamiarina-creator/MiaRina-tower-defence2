@@ -1528,24 +1528,6 @@ stb.addEventListener('click',e=>{let v='',saved=false;try{v=pn.value.trim().slic
  r.append(no,ok);bx.append(t,m,r);ov.appendChild(bx);document.body.appendChild(ov)},true);
 cnb.addEventListener('click',()=>{try{if(localStorage.getItem(NK))return;const sv=JSON.parse(localStorage.getItem('mialina_td_save_v1'));if(sv&&sv.name)localStorage.setItem(NK,String(sv.name).slice(0,8))}catch(e){}},true);
 })();
-(()=>{const $=id=>document.getElementById(id),KP='miarina_td_profile_v1',TY='abcdefghijkl';
-const key=n=>'n:'+String(n||'').normalize('NFKC').trim().toLowerCase();
-const load=()=>{let o={};try{o=JSON.parse(localStorage.getItem(KP)||'{}')||{}}catch(e){}return o};
-const curName=()=>{const v=$('pn').value.trim();if(v)return v;const l=Object.values(load()).filter(e=>e&&e.n).sort((a,b)=>(b.u||0)-(a.u||0));return l[0]?l[0].n:''};
-const icon=(ty,sz)=>{const c=document.createElement('canvas');c.width=c.height=sz*2;c.style.cssText='width:'+sz+'px;height:'+sz+'px;display:block';if(window.__monIcon)window.__monIcon(c.getContext('2d'),ty,sz*2);return c};
-const prev=$('pfb').onclick;
-function build(){const box=$('pfd'),nm=curName();if(!nm||!window.__monIcon)return;const p=load()[key(nm)]||{};box.style.overflowY='auto';
- const wrap=document.createElement('div');wrap.style.cssText='display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px 0 10px';
- const av=document.createElement('div');av.style.cssText='width:88px;height:88px;border-radius:50%;border:3px solid var(--accent);background:var(--bg);display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:30px;color:var(--mute)';
- if(p.i&&TY.includes(p.i)){av.style.cssText='width:88px;height:88px;display:flex;align-items:center;justify-content:center';av.appendChild(icon(p.i,84))}else av.textContent='？';
- const bt=document.createElement('button');bt.textContent='🖼️ 画像をえらぶ';bt.style.cssText='flex:none;padding:6px 16px;font-size:13px';
- const gr=document.createElement('div');gr.style.cssText='display:none;grid-template-columns:repeat(4,1fr);gap:6px;width:100%';
- for(const t of TY){const b=document.createElement('button');b.style.cssText='padding:4px;display:flex;justify-content:center'+(p.i===t?';border-color:var(--accent);background:var(--bg)':'');b.appendChild(icon(t,48));
-  b.onclick=()=>{const o=load(),k=key(nm),q=o[k]||{n:nm};q.i=t;if(!q.n)q.n=nm;o[k]=q;try{localStorage.setItem(KP,JSON.stringify(o))}catch(e){}$('pfb').onclick()};gr.appendChild(b)}
- bt.onclick=()=>{gr.style.display=gr.style.display==='none'?'grid':'none'};
- wrap.append(av,bt,gr);box.insertBefore(wrap,box.firstChild)}
-$('pfb').onclick=()=>{if(prev)prev();build()};
-})();
 </script>
 </body>
 </html>
