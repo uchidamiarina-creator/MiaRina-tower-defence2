@@ -2378,7 +2378,7 @@ function post(dt){const X=S(),g=gp();
   if(th&&L<=15){const ix=G.hv.indexOf(th);if(ix>=0){G.hv.splice(ix,1);G.fx.push({x:tx,y:ty-18,txt:'てんしが やられた〜！',t:1.5,c:'#ff4f93'});P(tx,ty,12,['#ffd1e6','#fff','#ff9ac8'],90,.9);sfx('deny')}}}
  /* 5色そろったら合体 */
  if(G.active&&X.rb!==G.wave){const al=G.en.filter(e=>!e.dead&&e.ty==='DV'),set=new Set(al.map(e=>e.ci));
-  if(set.size>=NC()){const pick=[...set].map(ci=>al.find(e=>e.ci===ci));merge(pick);for(const e of al)if(!e.dead){e.dead=true;e.gone=true}}}
+  if(NC()>=5&&set.size>=5){const pick=[...set].map(ci=>al.find(e=>e.ci===ci));merge(pick);for(const e of al)if(!e.dead){e.dead=true;e.gone=true}}}
  /* 倒された／いなくなった */
  X.trk=X.trk.filter(e=>{if(!e.dead)return true;if(!e.gone){if(e.ty==='DR'){P(e.x,e.y,50,COLS,170,1.3);P(e.x,e.y,14,['#ff5fa0'],90,1.2,'h')}else P(e.x,e.y,14,[DEF[e.ci].c,DEF[e.ci].l,'#fff'],110,.9)}return false});
  if(X.rbE&&X.rbE.dead)X.rbE=null;
@@ -2395,7 +2395,7 @@ function drawDev(e,s){const rb=e.ty==='DR',df=rb?null:DEF[e.ci],sc=rb?1.6:1;
  x.fillStyle='rgba(20,5,40,.16)';x.beginPath();x.ellipse(e.x,e.y+18*sc,11*sc*k,3.2*sc*k,0,0,7);x.fill();
  if(rb){const gl=x.createRadialGradient(e.x,e.y-8,4,e.x,e.y-8,50);gl.addColorStop(0,'rgba(255,255,255,.55)');gl.addColorStop(.5,'rgba(255,170,230,.25)');gl.addColorStop(1,'rgba(255,170,230,0)');x.fillStyle=gl;x.beginPath();x.arc(e.x,e.y-8,50,0,7);x.fill();
   x.font='bold 12px sans-serif';x.textAlign='center';x.textBaseline='middle';for(let i=0;i<5;i++){const a=s*1.6+i*1.257;x.fillStyle=DEF[i].c;x.strokeStyle='#fff';x.lineWidth=2;x.strokeText('✦',e.x+Math.cos(a)*34,e.y-8+Math.sin(a)*24);x.fillText('✦',e.x+Math.cos(a)*34,e.y-8+Math.sin(a)*24)}}
- if(!rb&&G.DV&&G.DV.rb!==G.wave){x.strokeStyle='rgba(255,255,255,.6)';x.lineWidth=1.5;x.beginPath();x.arc(e.x,e.y-8+bob,19,0,7);x.stroke()}
+ if(!rb&&NC()>=5&&G.DV&&G.DV.rb!==G.wave){x.strokeStyle='rgba(255,255,255,.6)';x.lineWidth=1.5;x.beginPath();x.arc(e.x,e.y-8+bob,19,0,7);x.stroke()}
   x.translate(e.x,e.y-8+bob);x.scale(sc*k*(e.dr<0?-1:1),sc*k);x.lineWidth=2/sc;x.strokeStyle=OUT;
  /* 羽 */
  for(const sd of[-1,1]){x.save();x.scale(sd,1);x.translate(7,0);x.rotate(flap*(1));x.translate(-7,0);
@@ -2437,7 +2437,7 @@ const _up=update;update=function(dt){
  if(ok){try{pre(sd)}catch(err){console.error(err)}}
  _up(dt);
  if(ok&&G&&!G.over){try{post(sd)}catch(err){console.error(err)}}};
-const _dh=hit;hit=function(e,dmg,d){if(e&&e.ty==='DV'&&G.DV&&G.DV.rb!==G.wave)return;_dh(e,dmg,d)};
+const _dh=hit;hit=function(e,dmg,d){if(e&&e.ty==='DV'&&NC()>=5&&G.DV&&G.DV.rb!==G.wave)return;_dh(e,dmg,d)};
  const _AIR2=AIR;AIR=function(e){return _AIR2(e)||e.ty==='DV'||e.ty==='DR'};
 window.__DV={spawn:spawnDevil,S};
 })();
