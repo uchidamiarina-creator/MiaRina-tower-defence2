@@ -1282,10 +1282,7 @@ function landPt(g){const gc=cellOf(g),cs=roadCells().filter(c=>{const d=Math.hyp
 
 function onWave(w){const X=S(),g=gp();X.t=0;X.pend=[];X.tor=[];for(const t of G.tw)t.ink=0;
  if(w>=SN_START&&lv>=3){const n=Math.max(1,Math.round((w<20?1:w<35?2:3)*D.cnt));for(let i=0;i<n;i++)X.pend.push({k:'Z',t:2+rnd()*7+i*1.5})}
- if(TG_W.includes(w)){const a=farPt(g),dx=a[0]-g[0],dy=a[1]-g[1],L=Math.hypot(dx,dy)||1,hx=Math.max(34,Math.min(326,g[0]+dx/L*95)),hy=Math.max(64,Math.min(400,g[1]+dy/L*95));
-  mk('H',{boss:true,hp:G.hpb*(w===TG_W[0]?16:22)*D.bh,rw:Math.round(120*D.rw),x:a[0],y:a[1],hx,hy,sp:22*D.sp,ph:0,tc:TG_CD});
-  G.fx.push({x:180,y:190,txt:'大天狗 登場！',t:2,c:'#ff4d6d'});sfx('pop');
-  for(let i=0;i<3;i++)X.pend.push({k:'E',t:.8+i*.9})}}
+ }
 function spawn(k){const g=gp(),w=G.wave;
  if(k==='Z'){const l=landPt(g);mk('Z',{hp:G.hpb*2.2,rw:Math.round((10+w)*D.rw),x:l[0],y:-30,lx:l[0],ly:l[1]+4,ph:0,t:0,cd:SN_CD,d:4500});G.fx.push({x:l[0],y:70,txt:'スナイパー降下！',t:1.4,c:'#ff4d6d'})}
  else{const p=edgePt(g);mk('E',{hp:G.hpb*.5,rw:Math.round((6+w*.5)*D.rw),x:p[0],y:p[1],sp:62*D.sp,w:rnd()*6})}}
