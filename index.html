@@ -165,10 +165,10 @@ button:disabled{filter:grayscale(.45)}
 </style>
 </head>
 <body class="ld"><div id="ld" style="position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:#fff1f5;color:#ff6fa5;font:bold 18px sans-serif">読み込み中…</div>
-<div id="tt"><div class="tin"><div id="thd"><img id="tmia" alt="未亜" width="60" height="60"><h2>みありな<br>タワーディフェンス<br>ウルトラDX</h2><img id="trin" alt="利奈" width="60" height="56"></div><input id="pn" maxlength="8" placeholder="なまえ（8文字まで）" style="font:inherit;font-size:15px;text-align:center;padding:9px;border-radius:14px;border:3px solid var(--line);background:var(--card);color:var(--ink);width:70%;margin:0 0 12px"><div id="df"></div><div id="dsc" style="display:none"></div><button class="go" id="cnb" style="display:none;margin:0 auto 8px;line-height:1.35"></button><button class="go" id="stb">はじめる</button><div style="margin-top:10px"><button id="rkb" hidden style="padding:8px 22px;font-size:14px">🏆 ランキング</button> <button id="pcb" style="padding:8px 22px;font-size:14px">🔑 パスコード</button></div><div style="margin-top:8px"><button id="pfb" style="padding:8px 22px;font-size:14px">👤 プロフィール</button></div><ul style="display:none">強化・売却</li><li id="cli">30フェーズ守りきればクリア</li></ul></div></div>
+<div id="tt"><div class="tin"><div id="thd"><img id="tmia" alt="未亜" width="60" height="60"><h2>みありな<br>タワーディフェンス<br>ウルトラDX</h2><img id="trin" alt="利奈" width="60" height="56"></div><input id="pn" maxlength="8" placeholder="なまえ（8文字まで）" style="font:inherit;font-size:15px;text-align:center;padding:9px;border-radius:14px;border:3px solid var(--line);background:var(--card);color:var(--ink);width:70%;margin:0 0 12px"><div id="df"></div><div id="dsc" style="display:none"></div><button class="go" id="cnb" style="display:none;margin:0 auto 8px;line-height:1.35"></button><button class="go" id="stb">はじめる</button><div style="margin-top:10px"><button id="rkb" hidden style="padding:8px 22px;font-size:14px">🏆 ランキング</button> <button id="pcb" style="padding:8px 22px;font-size:14px">🔑 パスコード</button></div><div style="margin-top:8px"><button id="pfb" style="padding:8px 22px;font-size:14px">👤 プロフィール</button></div><div style="margin-top:12px;font-size:11px;color:var(--mute);letter-spacing:.04em">📱 iPhone / Android 対応</div><ul style="display:none">強化・売却</li><li id="cli">30フェーズ守りきればクリア</li></ul></div></div>
 <h1>みありなタワーディフェンス ウルトラDX</h1>
 <div id="wrap">
-<div id="stats"><span id="sg"></span><span id="sl"></span><span id="sw"></span><span id="stm" style="display:none"></span></div>
+<div id="stats"><span id="sg"></span><span id="sl"></span><span id="sw" style="display:none"></span><span id="stm" style="display:none"></span></div>
 <div id="cw"><canvas id="c" width="360" height="440"></canvas></div>
 <div class="row" id="tb"></div>
 <div id="panel"><div id="lbx"></div><div id="pbt"></div></div>
@@ -229,8 +229,8 @@ const DIFF=[
 let D=DIFF[2],lv=2;function lunOK(){try{return localStorage.getItem('miarina_td_lunatic_v1')==='1'}catch(e){return false}}
 function init(){G={gold:D.gold,lives:D.lives,wave:0,active:false,q:[],qt:0,en:[],tw:[],bl:[],fx:[],sel:null,speed:1,over:false};
  document.getElementById('ov').style.display='none';stm.textContent='⏱ 0:00';road=new Set();R=[];G.starts=[];G.goal=null;G.setup=true;build='g';G.xr=[];G.rv=1;G.rc=[];CH.away={s:'say',t0:performance.now(),intro:1};CH.s=INTRO[Math.random()*INTRO.length|0];CH.t=1.3;CH.nt=0;G.pits=[];G.al=[];G.allyUsed=false;G.hero=null;G.hn=undefined;G.pt=[];G.flash=0;G.hpb=20;G.loans=0;G.debt=0;G.candy=0;G.fever=0;G.own={};G.alv={};G.ml=1;MI.u=undefined;if(mpEl)mpEl.style.display='none';G.sf=1;G.cnt=0;sp.textContent='⏩1';Array.from(tb.children||[]).forEach(b=>{if(b.lastChild)b.lastChild.textContent='💰'+cst(b.dataset.k)});G.th=Math.random()*14|0;window.NZ={t0:performance.now(),n:THN[G.th]};hud();panel()}
-function hud(){updAp();mpUpd();sg.textContent='💰 '+G.gold;sl.textContent='❤️ '+G.lives;sw.textContent='フェーズ '+G.wave+'/'+D.cl;
- am.style.display=G.setup?'':'none';go.disabled=G.over||(!G.active&&(G.wave>=D.cl||!pathOK()));go.textContent=G.active?'⏸':'▶';Array.from(tb.children||[]).forEach(b=>{if(b.dataset.k=='g'||b.dataset.k=='s')b.style.display=G.setup?'':'none';if(b.lastChild&&(b.dataset.k=='Z'||b.dataset.k=='K'||b.dataset.k=='g'||b.dataset.k=='s'))b.lastChild.textContent=G.setup?'無料':'💰'+cst(b.dataset.k)});go.textContent=G.active?'⏸':'▶';go.title=G.active?'ポーズ':'次のフェーズを開始';
+function hud(){updAp();mpUpd();sg.textContent='💰 '+G.gold;sl.textContent='❤️ '+G.lives;
+ am.style.display=G.setup?'':'none';go.disabled=G.over||(!G.active&&(G.wave>=D.cl||!pathOK()));go.innerHTML=(G.active?'⏸':'▶')+'<span style="font-size:11px;font-weight:800;margin-left:1px">'+(G.active?G.wave:Math.min(G.wave+1,D.cl))+'</span>';Array.from(tb.children||[]).forEach(b=>{if(b.dataset.k=='g'||b.dataset.k=='s')b.style.display=G.setup?'':'none';if(b.lastChild&&(b.dataset.k=='Z'||b.dataset.k=='K'||b.dataset.k=='g'||b.dataset.k=='s'))b.lastChild.textContent=G.setup?'無料':'💰'+cst(b.dataset.k)});go.innerHTML=(G.active?'⏸':'▶')+'<span style="font-size:11px;font-weight:800;margin-left:1px">'+(G.active?G.wave:Math.min(G.wave+1,D.cl))+'</span>';go.title=G.active?'ポーズ（フェーズ'+G.wave+'）':'フェーズ'+Math.min(G.wave+1,D.cl)+'を開始';
  document.querySelectorAll('#tb button').forEach(b=>b.classList.toggle('on',b.dataset.k===build&&!G.sel))}
 const tb=document.getElementById('tb');
 for(const k in T){const b=document.createElement('button');b.dataset.k=k;b.innerHTML='<canvas width="40" height="40" style="width:34px;height:34px;border:0;box-shadow:none;border-radius:0"></canvas><span>'+T[k].name+'</span><span>💰'+T[k].cost+'</span>';drawTower(b.firstChild.getContext('2d'),k,20,21,0,0);
@@ -936,7 +936,7 @@ function apHi(){for(const k in apRows){const r=apRows[k].row;if(r)r.style.backgr
 function updAp(){if(!apRows.S||!G||!G.own)return;const gd=document.getElementById('apg');if(gd)gd.textContent='💰'+G.gold;
  for(const k in apRows){const r=apRows[k],o=G.own[k]||0,m=allyMax(k),l=G.alv[k]||1;r.st.textContent='所持 '+o+'/'+m+'　Lv'+l;r.bb.textContent=o>=m?'最大':'購入💰'+allyCost(k);r.bb.disabled=o>=m||G.gold<allyCost(k);r.lb.textContent=l>=30?'最大Lv':'強化💰'+allyLvCost(k);r.lb.disabled=o==0||l>=30||G.gold<allyLvCost(k)}}
 function buildAp(){const ap=document.createElement('div');ap.id='ap';const card=document.createElement('div');
- const hd=document.createElement('div');hd.style.cssText='display:flex;justify-content:space-between;align-items:center;font-weight:bold;margin-bottom:4px';const ht=document.createElement('span');ht.textContent='味方（自動で出撃）';const gd=document.createElement('span');gd.id='apg';hd.append(ht,gd);card.appendChild(hd);const apl=document.createElement('div');apl.style.cssText='height:38px;margin:2px 0 4px';card.appendChild(apl);apLedEl=apl;
+ const hd=document.createElement('div');hd.style.cssText='display:flex;justify-content:space-between;align-items:center;font-weight:bold;margin-bottom:4px';const ht=document.createElement('span');ht.textContent='味方（自動で出撃）';const gd=document.createElement('span');gd.id='apg';hd.append(ht,gd);card.appendChild(hd);const apl=document.createElement('div');apl.style.cssText='height:46px;margin:2px 0 4px';apl.className='aplx';card.appendChild(apl);apLedEl=apl;
 
  for(const k of Object.keys(AL)){const d=AL[k],row=document.createElement('div');row.className='ar';
   const cvn=document.createElement('canvas');cvn.width=40;cvn.height=40;cvn.style.cssText='width:36px;height:36px;border:0;box-shadow:none;border-radius:0;flex:none';
@@ -1802,7 +1802,7 @@ if(pfb){var prev=pfb.onclick;pfb.onclick=function(){if(prev)prev.apply(this,argu
   _up(dt);hudMini()};
  /* HUD */
  var st=document.getElementById('stats'),sc=document.createElement('span');sc.id='scd';st.appendChild(sc);var lastTxt='';
- function hudMini(){if(!G)return;var t='🍬 '+(G.candy|0)+(G.fever>0?'　🍭×2 '+Math.ceil(G.fever)+'s':'');if(t!==lastTxt){sc.textContent=t;sc.style.color=G.fever>0?'#e0107a':'';lastTxt=t}}
+ function hudMini(){if(!G)return;var t='🍬 '+(G.candy|0);if(t!==lastTxt){sc.textContent=t;lastTxt=t}}
  /* 描画 */
  function drawCandy(px,py,now,ph){x.save();x.translate(px,py);x.rotate(Math.sin(now/300+ph)*.15);
   x.fillStyle='#ff8fbf';x.strokeStyle='#d9487f';x.lineWidth=2;x.lineJoin='round';
@@ -2026,7 +2026,7 @@ var cs=null;var _p=panel;panel=function(){
 /* 電光掲示板を見やすく */
 (function(){
 var st=document.createElement('style');
-st.textContent='#lbx{height:46px!important}#lbx .led{background:#0b0610!important;border:2px solid #5a3a66!important;box-shadow:inset 0 0 6px rgba(0,0,0,.9)!important}#lbx .ledt{font-size:22px!important;letter-spacing:.05em!important;color:#fff7c2!important;text-shadow:1px 1px 0 #000,0 0 1px #000!important;font-weight:900!important}';
+st.textContent='#lbx{height:46px!important}#lbx .led,.aplx .led{background:#0b0610!important;border:2px solid #5a3a66!important;box-shadow:inset 0 0 6px rgba(0,0,0,.9)!important}#lbx .ledt,.aplx .ledt{font-size:22px!important;letter-spacing:.05em!important;color:#fff7c2!important;text-shadow:1px 1px 0 #000,0 0 1px #000!important;font-weight:900!important}';
 document.head.appendChild(st);
 var _lf=ledFit;ledFit=function(b){_lf(b);try{var t=b.firstChild,w=parseFloat(t.style.getPropertyValue('--w'))||0;t.style.animationDuration=Math.max(6,w/55)+'s'}catch(e){}};
 try{var h=document.getElementById('lbx');if(h&&h.firstChild)ledFit(h.firstChild)}catch(e){}
@@ -2157,4 +2157,124 @@ drawAmb=function(t){const th=G.th;if(th<6)return _da(t);const s=t/1000;x.textAli
 </script>
 
 </body></html>
+<style id="kiri-css">
+#kiri{position:fixed;bottom:0;right:max(4px,calc(50vw - 210px + 4px));width:96px;height:176px;z-index:25;pointer-events:none;display:none}
+#kiri .kg{position:absolute;inset:0;transform:translateY(104%);transition:transform .7s cubic-bezier(.3,1.45,.5,1)}
+#kiri.up .kg{transform:translateY(0)}
+#kiri.down .kg{transition:transform .55s ease-in;transform:translateY(104%)}
+#kiri svg{width:96px;height:176px;display:block;overflow:visible}
+#kiri .head{transform-origin:62px 150px}
+#kiri.up .head{animation:kbob 1.6s ease-in-out .7s infinite}
+#kiri .lid{transform-origin:58px 72px;animation:kblink 3.2s infinite}
+#kiri .kb{position:absolute;right:82px;bottom:92px;width:max-content;max-width:min(230px,calc(100vw - 118px));box-sizing:border-box;padding:8px 11px 9px;background:var(--card,#fff);color:var(--ink,#333);border:3px solid var(--accent,#ff6fa5);border-radius:14px;box-shadow:0 5px 14px rgba(0,0,0,.22);font-size:13px;line-height:1.5;font-weight:700;opacity:0;transform:scale(.6);transform-origin:100% 70%;transition:opacity .2s,transform .3s cubic-bezier(.3,1.6,.5,1)}
+#kiri.talk .kb{opacity:1;transform:scale(1)}
+#kiri .kb::after{content:"";position:absolute;right:-11px;bottom:16px;width:14px;height:14px;background:var(--card,#fff);border-right:3px solid var(--accent,#ff6fa5);border-top:3px solid var(--accent,#ff6fa5);transform:rotate(45deg)}
+#kiri .kn{display:block;font-size:10px;color:var(--accent,#ff6fa5);margin-bottom:2px;letter-spacing:.04em}
+@keyframes kbob{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes kblink{0%,92%,100%{transform:scaleY(0)}95%{transform:scaleY(1)}}
+@media (prefers-reduced-motion:reduce){#kiri .kg{transition-duration:.01s}#kiri.up .head,#kiri .lid{animation:none}}
+</style>
+<div id="kiri" aria-hidden="false"><div class="kg">
+<svg viewBox="0 0 120 220" role="img" aria-label="キリン">
+<path d="M46 222 L52 100 L78 100 L86 222 Z" fill="#ffd24a"/>
+<g fill="#b9772a"><ellipse cx="62" cy="190" rx="6" ry="5"/><ellipse cx="74" cy="165" rx="5" ry="4.5"/><ellipse cx="59" cy="150" rx="5.5" ry="4.5"/><ellipse cx="72" cy="128" rx="4.5" ry="4"/><ellipse cx="60" cy="112" rx="4" ry="3.5"/><ellipse cx="76" cy="208" rx="5" ry="4"/></g>
+<g fill="#a8641f"><rect x="80" y="104" width="8" height="7" rx="2"/><rect x="82" y="118" width="8" height="7" rx="2"/><rect x="84" y="134" width="8" height="7" rx="2"/><rect x="86" y="150" width="8" height="7" rx="2"/><rect x="88" y="166" width="8" height="7" rx="2"/><rect x="90" y="182" width="8" height="7" rx="2"/></g>
+<g class="head">
+<g stroke="#8a5a2a" stroke-width="3" stroke-linecap="round"><line x1="58" y1="58" x2="55" y2="40"/><line x1="70" y1="58" x2="74" y2="40"/></g>
+<circle cx="55" cy="38" r="4.5" fill="#8a5a2a"/><circle cx="74" cy="38" r="4.5" fill="#8a5a2a"/>
+<ellipse cx="86" cy="66" rx="9" ry="5.5" fill="#ffd24a" stroke="#d9a62a" stroke-width="1.5" transform="rotate(25 86 66)"/>
+<ellipse cx="86" cy="66" rx="5" ry="2.8" fill="#ff9fb8" transform="rotate(25 86 66)"/>
+<ellipse cx="66" cy="78" rx="25" ry="21" fill="#ffd24a" stroke="#d9a62a" stroke-width="1.5"/>
+<ellipse cx="42" cy="88" rx="22" ry="14" fill="#ffe9a8" stroke="#d9a62a" stroke-width="1.5"/>
+<g fill="#b9772a"><ellipse cx="68" cy="62" rx="4" ry="3"/><ellipse cx="78" cy="78" rx="3.5" ry="3"/></g>
+<ellipse cx="26" cy="84" rx="2.4" ry="3" fill="#8a5a2a"/>
+<circle cx="57" cy="72" r="5.2" fill="#fff"/><circle cx="55.5" cy="72.5" r="3" fill="#2b1b12"/><circle cx="54.6" cy="71.4" r="1" fill="#fff"/>
+<ellipse class="lid" cx="57" cy="72" rx="6" ry="5.8" fill="#ffd24a"/>
+<ellipse cx="50" cy="86" rx="5" ry="3" fill="#ff9fb8" opacity=".75"/>
+<path d="M30 95 Q42 102 54 94" fill="none" stroke="#8a5a2a" stroke-width="2.2" stroke-linecap="round"/>
+</g></svg>
+<div class="kb" role="status" aria-live="polite"><span class="kn"></span><span class="kt"></span></div>
+</div></div>
+<script id="kiri-js">
+(function(){
+var TIPS=[
+'準備中は、道づくり・スタート・ゴールが無料！好きなだけ作りなおそう',
+'🗺️ボタンを押すと、道をおまかせで作ってくれるよ（準備中だけ）',
+'ゴールは未亜の近くには置けないよ。少し離れた場所を選ぼう',
+'スタートは1つだけ。もう一度タップすると取り消せるよ',
+'道をぐねぐね長くすると、敵が歩く時間がふえて、タワーがたくさん攻撃できるよ',
+'ピンクアローは50Gでいちばん安いタワー。最初の1本にぴったり！',
+'ピンクアローは連射がはやいよ。数をそろえるとたよりになる！',
+'ドカンほうの爆発は、固まった敵をまとめて倒せるよ',
+'こおりタワーは敵の足を遅くするよ。ほかのタワーが当てやすくなる！',
+'いかずちは3体まで稲妻がつながるよ。ただし、置けるのは1つだけ',
+'どくタワーは3秒間じわじわダメージ。体力の多い敵に効くよ',
+'にじビームは射程が長くて、一直線の敵をつらぬくよ',
+'かざんは射程が短いけど、敵が近づくと大爆発！道のすぐそばに置こう',
+'たつまきほうは空を飛ぶ敵だけをねらうよ。空の敵が出たら置こう',
+'ロケットはなびは、近すぎる敵は攻撃できないよ。遠くの敵をねらう花火タワー',
+'かいてんムチはタップで手動かいてん！敵を5〜10マス押し戻せるよ（1回💰1000・フェーズ中だけ）',
+'ぎんこうで5000G借りられるけど、借金はプレイ後にスコアから引かれるよ',
+'スロットはフェーズのはじめに1回まわるよ。7が3つそろうと5000G！',
+'サイコロマシンは1〜6の目が出て、目の数だけダメージが大きくなるよ',
+'おとしあなは、ボスと空の敵には効かないよ。落ちた敵が倒れると穴は消える',
+'みちづくりで近道を作ったり、道同士をつなげたりできるよ（フェーズの合間だけ）',
+'みちこわしでも、スタートから利奈まで行けなくなる壊し方はできないよ',
+'タワーをタップすると、強化と売却ができるよ',
+'タワーを売ると、使ったお金の6割がもどってくるよ',
+'強化のお値段は、レベルが上がるほど高くなるよ',
+'フェーズ中に出るキャンディ🍬をタップ！1個でタワーを1レベル強化できるよ',
+'ロリポップをタップすると、10秒間だけ武器の攻撃力が2倍になるよ！',
+'キャンディは12秒、ロリポップは9秒で消えちゃう。見つけたらすぐタップ！',
+'宝箱が出たらタップ！当たりなら何かもらえるよ。ハズレもあるけどね',
+'利奈（ゴール）をタップすると、味方キャラのお店が開くよ',
+'味方キャラは、買う前にタップすると電光掲示板でせつめいが読めるよ',
+'味方は強化できるよ。レベルが上がるごとに、体力とこうげきが25%アップ！',
+'侍は体力もこうげきも高い近距離タイプ。でも空の敵やボスとは戦えないよ',
+'ヒーローは空を飛べて、地上の敵も空の敵もこうげきできる万能タイプ',
+'犬はボスにも戦いに行く勇かんな味方。体力は少なめだよ',
+'パトカーはとても硬くて、なかなかやられないよ',
+'猫は安くてたくさん持てるよ。毛の色は4種類！',
+'スズメは空の敵（ボス以外）にだけ襲いかかる、空専用の味方だよ',
+'横綱はボス専用。ふだんはお昼寝で、ボスが出ると上手投げで止めてくれるよ',
+'くちびるは、宝箱やキャンディを取りに行ってくれるよ（1体だけ）',
+'ボスと戦える味方は、犬と横綱だけだよ',
+'空の敵と戦える味方は、ヒーロー・スズメ・くちびる。たつまきほうも頼りになるよ',
+'ボスは5フェーズごとに出るよ。3フェーズ目と7フェーズ目にも来るから気をつけて！',
+'難しい難易度ほど、持てる味方の数が少なくなるよ',
+'⏩ボタンで、ゲームの速さを1〜3倍に変えられるよ',
+'💾セーブすると、そのフェーズのはじめからつづきが遊べるよ',
+'フェーズ中に⏸ボタンを押すと、ポーズ画面が開くよ',
+'▶ボタンの横の数字は、フェーズ番号だよ',
+'「むずかしい」をクリアすると、100フェーズのルナティックが解放されるよ',
+'ライフ❤️がなくなるとゲームオーバー。利奈をしっかり守りきろう！'
+];
+if(TIPS.length!==50)console.warn('kiri tips',TIPS.length);
+var host=document.getElementById('kiri');if(!host)return;
+var bubbleT=host.querySelector('.kt'),bubbleN=host.querySelector('.kn');
+var bag=[],busy=false,nextAt=0,wasPlaying=false,shown=0;
+function pick(){if(!bag.length){bag=TIPS.map(function(_,i){return i});for(var i=bag.length-1;i>0;i--){var j=Math.random()*(i+1)|0,t=bag[i];bag[i]=bag[j];bag[j]=t}}return bag.pop()}
+function vis(id){var e=document.getElementById(id);return !!e&&getComputedStyle(e).display!=='none'}
+function playing(){var tt=document.getElementById('tt');return !!tt&&tt.style.display==='none'&&typeof G!=='undefined'&&G&&!G.over&&typeof D!=='undefined'&&D&&D.n==='超かんたん'}
+function blocked(){return ['ov','pz','ap','mp','pf','pc','rk'].some(vis)||document.hidden}
+function show(){
+  if(busy)return;busy=true;
+  var i=pick();bubbleN.textContent='💡 ヒント '+(i+1)+'/'+TIPS.length;bubbleT.textContent=TIPS[i];
+  host.style.display='block';host.classList.remove('down','talk');
+  void host.offsetWidth;host.classList.add('up');
+  setTimeout(function(){host.classList.add('talk')},550);
+  var hold=Math.max(6000,TIPS[i].length*170);
+  setTimeout(function(){host.classList.remove('talk');host.classList.add('down');host.classList.remove('up');
+    setTimeout(function(){host.style.display='none';host.classList.remove('down');busy=false;nextAt=Date.now()+(45+Math.random()*45)*1000},700)},hold+700);
+}
+setInterval(function(){
+  var p=playing();
+  if(p&&!wasPlaying){nextAt=Date.now()+20000}
+  wasPlaying=p;
+  if(!p||busy||blocked())return;
+  if(Date.now()>=nextAt)show();
+},1000);
+window.__kiriShow=show;
+})();
+</script>
 </body></html>
