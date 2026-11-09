@@ -3047,4 +3047,131 @@ P.measureText=function(t){t=String(t);if(!has(t))return _meas.call(this,t);const
  };
 })();
 </script>
+<script>
+/* 仙人：ときどき雲に乗って現れ、タップで新しい武器を伝授（ずっと保存）。ピンクアロー以外は伝授されるまで使えない */
+(function(){
+ var KEY='miarina_td_sage_v1';
+ var WEAPONS=Object.keys(T).filter(function(k){return k!=='A'&&!T[k].tool&&!T[k].road&&!T[k].brk&&!T[k].pit});
+ var unlocked={};
+ try{var a=JSON.parse(localStorage.getItem(KEY)||'[]');if(Array.isArray(a))a.forEach(function(k){if(WEAPONS.indexOf(k)>=0)unlocked[k]=1})}catch(e){}
+ function saveU(){try{localStorage.setItem(KEY,JSON.stringify(Object.keys(unlocked)))}catch(e){}}
+ function isOpen(k){return WEAPONS.indexOf(k)<0||!!unlocked[k]}
+ function locked(){return WEAPONS.filter(function(k){return !unlocked[k]})}
+ var tb=document.getElementById('tb');
+ function applyLock(){
+  for(var i=0;i<tb.children.length;i++){var b=tb.children[i],k=b.dataset.k;
+   if(WEAPONS.indexOf(k)>=0)b.style.display=unlocked[k]?'':'none'}
+  if(!isOpen(build))build='A'}
+ var _hd=hud;hud=function(){_hd();try{applyLock()}catch(e){}};
+ function orderTb(){
+  var zb=null,i;for(i=0;i<tb.children.length;i++)if(tb.children[i].dataset.k==='Z')zb=tb.children[i];
+  if(!zb)return;
+  Object.keys(unlocked).forEach(function(k){for(var j=0;j<tb.children.length;j++){var b=tb.children[j];if(b.dataset.k===k){tb.insertBefore(b,zb);break}}})}
+ orderTb();applyLock();
+ try{hud()}catch(e){}
+
+ /* ---- 出現管理 ---- */
+ function sg(){return G.sg||(G.sg={last:-99,seen:-1,pend:-1,s:null})}
+ var _us=update;
+ update=function(dt){
+  _us(dt);
+  if(!G||G.over)return;
+  var o=sg();
+  if(G.active&&o.seen!==G.wave){
+   o.seen=G.wave;
+   if(!o.s&&o.pend<0&&G.wave-o.last>=(locked().length?6:20)&&Math.random()<(locked().length?.7:.15))o.pend=2+Math.random()*10}
+  if(o.pend>=0&&G.active){o.pend-=dt;if(o.pend<0&&!o.s){
+   var dir=Math.random()<.5?1:-1;
+   o.s={x:dir>0?-24:384,y:70+Math.random()*230,y0:0,dir:dir,age:0,life:30,leave:0,msg:0,ph:Math.random()*6};
+   o.s.y0=o.s.y;o.last=G.wave;o.pend=-1;
+   try{sfx('up')}catch(e){}}}
+  var s=o.s;if(s){
+   s.age+=dt;s.x+=s.dir*(384/30)*dt*.92;s.y=s.y0+16*Math.sin(s.age*1.3+s.ph)+8*Math.sin(s.age*.5);
+   if(s.msg>0)s.msg-=dt;
+   if(s.leave>0){s.leave-=dt;if(s.leave<=0)o.s=null}
+   else if(s.age>=s.life||s.x<-40||s.x>400)o.s=null}
+ };
+
+ /* ---- 描画 ---- */
+ function drawSage(t){
+  var s=G&&G.sg&&G.sg.s;if(!s)return;
+  var a=1;if(s.age<1)a=s.age;if(s.life-s.age<1.5)a=Math.max(0,(s.life-s.age)/1.5);if(s.leave>0)a=Math.max(0,s.leave/.6);
+  var c=x;c.save();c.globalAlpha=Math.max(0,Math.min(1,a));c.translate(s.x,s.y);
+  /* 雲 */
+  c.fillStyle='rgba(120,90,160,.15)';c.beginPath();c.ellipse(0,19,24,4,0,0,7);c.fill();
+  c.fillStyle='#fff';c.strokeStyle='#cfe3ff';c.lineWidth=1.5;
+  [[-15,12,9],[-5,8,11],[7,9,11],[16,13,8],[0,15,12]].forEach(function(p){c.beginPath();c.arc(p[0],p[1],p[2],0,7);c.fill()});
+  c.fillStyle='#eef5ff';c.beginPath();c.ellipse(0,17,22,5,0,0,7);c.fill();
+  /* 杖＋ひょうたん */
+  c.strokeStyle='#8a5a2b';c.lineWidth=2.2;c.lineCap='round';c.beginPath();c.moveTo(13,-18);c.lineTo(11,13);c.stroke();
+  c.fillStyle='#ff9a1f';c.beginPath();c.arc(13,-16,3,0,7);c.arc(13,-21,2.2,0,7);c.fill();
+  /* ローブ */
+  c.fillStyle='#a592ff';c.strokeStyle='#6d57d6';c.lineWidth=1.4;
+  c.beginPath();c.moveTo(-8,-6);c.lineTo(8,-6);c.lineTo(11,12);c.lineTo(-11,12);c.closePath();c.fill();c.stroke();
+  c.fillStyle='#ffd166';c.fillRect(-8,0,16,2.6);
+  /* ひげ */
+  c.fillStyle='#fff';c.strokeStyle='#d7d2ea';c.lineWidth=1;
+  c.beginPath();c.moveTo(-6,-10);c.quadraticCurveTo(0,14,6,-10);c.closePath();c.fill();c.stroke();
+  /* 顔 */
+  c.fillStyle='#ffe0c8';c.strokeStyle='#d9a98a';c.beginPath();c.arc(0,-14,7.5,0,7);c.fill();c.stroke();
+  c.fillStyle='#fff';c.beginPath();c.moveTo(-7,-15);c.quadraticCurveTo(-8,-23,0,-22.5);c.quadraticCurveTo(8,-23,7,-15);c.quadraticCurveTo(0,-18,-7,-15);c.fill();
+  c.fillStyle='#fff';c.strokeStyle='#cfc9e6';c.beginPath();c.ellipse(-3.2,-15.5,3,1.3,-.2,0,7);c.ellipse(3.2,-15.5,3,1.3,.2,0,7);c.fill();c.stroke();
+  c.fillStyle='#4a2740';c.beginPath();c.arc(-3,-13.2,.9,0,7);c.arc(3,-13.2,.9,0,7);c.fill();
+  c.fillStyle='rgba(255,110,140,.5)';c.beginPath();c.arc(-5,-10.8,1.6,0,7);c.arc(5,-10.8,1.6,0,7);c.fill();
+  /* きらきら＋タップのヒント */
+  var p=Math.sin(s.age*5);c.fillStyle='rgba(255,224,102,'+(.6+.4*p)+')';c.font='bold 11px sans-serif';c.textAlign='center';c.textBaseline='middle';
+  c.fillText('✦',-24,-18+p*2);c.fillText('✦',24,-6-p*2);
+  if(s.leave<=0&&s.age>1.5){c.lineWidth=3;c.strokeStyle='#fff';c.font='bold 10px sans-serif';c.strokeText('タップ！',0,28+p);c.fillStyle='#7a5cff';c.fillText('タップ！',0,28+p)}
+  /* ふきだし */
+  if(s.msg>0&&s.say){var w=c.measureText(s.say).width;c.font='bold 11px sans-serif';w=c.measureText(s.say).width+14;var bx=Math.max(-s.x+6,Math.min(360-s.x-w-6,-w/2));
+   c.globalAlpha=Math.min(1,s.msg)*Math.max(0,Math.min(1,a));c.fillStyle='#fff';c.strokeStyle='#a592ff';c.lineWidth=2;c.beginPath();c.roundRect?c.roundRect(bx,-52,w,20,8):c.rect(bx,-52,w,20);c.fill();c.stroke();
+   c.fillStyle='#4a2740';c.textAlign='left';c.fillText(s.say,bx+7,-41)}
+  c.restore()}
+ var _dh=drawHero;drawHero=function(t){_dh(t);try{drawSage(t)}catch(e){}};
+
+ /* ---- ゲット表示（雲のウィンドウ） ---- */
+ function showGet(k){
+  try{
+   var old=document.getElementById('sgGet');if(old)old.remove();
+   if(!document.getElementById('sgGetCss')){var st=document.createElement('style');st.id='sgGetCss';
+    st.textContent='#sgGet{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;pointer-events:none}#sgGet .cl{position:relative;width:min(88vw,330px);aspect-ratio:320/200;animation:sgPop .45s cubic-bezier(.2,1.5,.4,1) both;filter:drop-shadow(0 8px 14px rgba(120,90,200,.35))}#sgGet svg{position:absolute;inset:0;width:100%;height:100%}#sgGet .tx{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#4a2740;text-align:center;padding-top:6%}#sgGet .t1{font-size:15px;font-weight:bold;color:#7a5cff}#sgGet .t2{font-size:22px;font-weight:bold;color:#e8552d;text-shadow:0 2px 0 #fff}#sgGet .t3{font-size:13px;color:#6b4a5e}#sgGet canvas{width:56px;height:56px;border:0;box-shadow:none;border-radius:0;display:block}#sgGet.out .cl{animation:sgOut .35s ease-in both}@keyframes sgPop{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}@keyframes sgOut{to{transform:scale(.6);opacity:0}}';
+    document.head.appendChild(st)}
+   var ov=document.createElement('div');ov.id='sgGet';
+   var cs=[[70,120,52],[120,80,60],[190,70,58],[250,115,52],[160,130,62],[100,140,40],[220,140,40]],c1='',c2='';
+   cs.forEach(function(p){c1+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(p[2]+4)+'" fill="#cfe3ff"/>';c2+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+p[2]+'" fill="#fff"/>'});
+   ov.innerHTML='<div class="cl"><svg viewBox="0 0 320 200">'+c1+c2+'</svg><div class="tx"><div class="t1">✨ 仙人から伝授！ ✨</div><canvas width="56" height="56"></canvas><div class="t2"></div><div class="t3">ゲットだぜ！</div></div></div>';
+   ov.querySelector('.t2').textContent=T[k].name;
+   var cn=ov.querySelector('canvas'),D2=Math.min(2,Math.max(1,window.devicePixelRatio||1));cn.width=cn.height=Math.round(56*D2);
+   var g=cn.getContext('2d');g.setTransform(D2*1.4,0,0,D2*1.4,0,0);drawTower(g,k,20,21,0,0);
+   document.body.appendChild(ov);
+   setTimeout(function(){ov.classList.add('out')},2400);
+   setTimeout(function(){if(ov.parentNode)ov.remove()},2800);
+  }catch(e){console.error(e)}}
+ /* ---- タップ ---- */
+ var _tm=tapMap;
+ tapMap=function(px,py){
+  try{
+   if(!isOpen(build))build='A';
+   var s=G&&!G.over&&G.sg&&G.sg.s;
+   if(s&&s.leave<=0&&Math.hypot(px-s.x,py-s.y+4)<=30){
+    var L=locked();
+    if(!L.length){
+     s.say='武器はもうないぞい';s.msg=2.4;
+     try{sfx('deny')}catch(e){}
+     G.fx.push({x:180,y:Math.max(24,s.y-48),txt:'武器はもうない',t:1.8,c:'#7a5cff'});
+     return}
+    var k=L[Math.floor(Math.random()*L.length)];
+    unlocked[k]=1;saveU();orderTb();applyLock();
+    try{sfx('clear')}catch(e){}
+    showGet(k);
+    G.fx.push({x:s.x,y:s.y,r:30,t:.45,c:'#ffe066'});
+    try{stars(s.x,s.y-6,'#ffd166',8,1)}catch(e){}
+    s.leave=.6;
+    var b=null;for(var i=0;i<tb.children.length;i++)if(tb.children[i].dataset.k===k)b=tb.children[i];
+    if(b)try{b.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'})}catch(e){}
+    hud();return}
+  }catch(e){console.error(e)}
+  _tm(px,py)};
+})();
+</script>
 </body></html>
