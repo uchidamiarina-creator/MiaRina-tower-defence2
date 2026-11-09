@@ -1214,45 +1214,56 @@ buildAp();buildMp();init();requestAnimationFrame(loop);
 
 /* --- title screen walker --- */
 const TW=(()=>{
- const el=document.createElement('canvas');el.id='twk';
- el.style.cssText='position:absolute;left:0;top:calc(env(safe-area-inset-top,0px) + 6px);width:100%;height:112px;pointer-events:none;z-index:1;border:0;border-radius:0;box-shadow:none';
- tt.appendChild(el);
- const g=el.getContext('2d'),BOX=120,H=112;
- const NORMAL=['P','M','K','C','T','A','F','Y','O','J','Q','G','W'],BOSS=['B','R','L','N','U','I'];
- let st=null,raf=0,W=0,dpr=1,tm=0,lastTy='';
- function fit(){const r=el.getBoundingClientRect();W=Math.max(1,r.width);dpr=Math.min(2,window.devicePixelRatio||1);el.width=Math.round(W*dpr);el.height=Math.round(H*dpr)}
- function pick(){let b,l,ty;do{b=Math.random()<.2;l=b?BOSS:NORMAL;ty=l[Math.random()*l.length|0]}while(ty==lastTy);lastTy=ty;return{ty,boss:b,f:!b&&Math.random()<.25}}
- const VIS=()=>tt.style.display!='none';
- function frame(now){
-  raf=0;if(!st||!VIS()){if(st&&!VIS())st=null;g.clearRect(0,0,el.width,el.height);return}
-  if(!W)fit();
-  const t=(now-st.t0)/1000,dt=Math.min(.05,(now-st.last)/1000);st.last=now;
-  const sp=95,cx=W/2,sx=W+60;
-  // phases: wait .5s, walk in, stop 2.7s, walk out
-  let px,walking=false,look=0,face=-1;
-  const tw=(sx-cx)/sp,t0=.5,t1=t0+tw,t2=t1+2.7;
-  if(t<t0)px=sx;
-  else if(t<t1){px=sx-(t-t0)*sp;walking=true}
-  else if(t<t2){px=cx;const u=(t-t1)/2.7;look=Math.sin(u*Math.PI*3)*Math.min(1,u*8)*Math.min(1,(1-u)*8)}
-  else{px=cx-(t-t2)*sp;walking=true}
-  if(walking)st.d+=sp*dt;
-  if(px<-70){st=null;g.clearRect(0,0,el.width,el.height);tm=setTimeout(start,900);return}
-  const sc=cv.width/360,e={ty:st.ty,f:st.f,boss:st.boss,x:0,y:0,d:st.d,hp:1,mx:1,slow:0,pois:0};
-  x.save();x.setTransform(sc,0,0,sc,0,0);x.clearRect(180-BOX/2-4,220-BOX/2-4,BOX+8,BOX+8);
-  x.translate(180,220+(walking?-Math.abs(Math.sin(now/130))*3:0));
-  const k=st.boss?1.5:1.9;x.scale(k,k);
-  if(look){x.translate(look*7,0);x.rotate(look*.2);x.scale(1-.1*Math.abs(look),1)}
-  const FR=CanvasRenderingContext2D.prototype.fillRect;x.fillRect=function(a,b,w,h){if((h==3||h==4)&&(w==26||w==24||this.fillStyle=='#3ddc84'))return;FR.call(this,a,b,w,h)};
-  try{drawEn2(e,now)}catch(err){}
-  delete x.fillRect;
-  x.restore();
-  g.clearRect(0,0,el.width,el.height);
-  g.drawImage(cv,(180-BOX/2+2)*sc,(220-BOX/2+2)*sc,(BOX-4)*sc,(BOX-4)*sc,(px-BOX/2+2)*dpr,(H-BOX)/2*dpr+6*dpr,(BOX-4)*dpr,(BOX-4)*dpr);
-  raf=requestAnimationFrame(frame)}
- function start(){clearTimeout(tm);if(raf)cancelAnimationFrame(raf);raf=0;if(!VIS())return;fit();const c=pick();st={ty:c.ty,boss:c.boss,f:c.f,d:0,t0:performance.now(),last:performance.now()};raf=requestAnimationFrame(frame)}
- window.addEventListener('resize',()=>{if(st)fit()});
- document.getElementById('tmia').src=CHI.src;document.getElementById('trin').src=GI.src;
- return{start}})();
+  const el=document.createElement('canvas');el.id='twk';
+  el.style.cssText='position:absolute;left:0;top:calc(env(safe-area-inset-top,0px) + 6px);width:100%;height:84px;pointer-events:none;z-index:1;border:0;border-radius:0;box-shadow:none';
+  tt.appendChild(el);
+  const g=el.getContext('2d'),BOX=96,H=84;
+  const NORMAL=['P','M','K','C','T','A','F','Y','O','J','Q','G','W','a','b','c','d','e','f','f','g','h','i','j','k','l','m'],BOSS=['B','R','L','N','U','I'];
+  let ws=[],raf=0,W=0,dpr=1,last=0,nextAt=0;
+  const VIS=()=>tt.style.display!='none';
+  function fit(){const r=el.getBoundingClientRect();W=Math.max(1,r.width);dpr=Math.min(2,window.devicePixelRatio||1);el.width=Math.round(W*dpr);el.height=Math.round(H*dpr)}
+  const nSlots=()=>Math.max(3,Math.min(8,Math.floor(W/78)));
+  const key=c=>c.kind+c.ty+(c.ci||0);
+  function pick(){let c,n=0;do{const r=Math.random();
+    if(r<.24){const ks=Object.keys(AL).filter(k=>k!='L');c={kind:'ally',ty:ks[Math.random()*ks.length|0]}}
+    else if(r<.36)c={kind:'dev',ty:'DV',ci:Math.random()*5|0};
+    else if(r<.4)c={kind:'dev',ty:'DR',ci:0};
+    else{const b=Math.random()<.18,l=b?BOSS:NORMAL;c={kind:'en',ty:l[Math.random()*l.length|0],boss:b,f:!b&&Math.random()<.25}}
+  }while(ws.some(w=>key(w)==key(c))&&++n<20);return c}
+  function spawn(now){const n=nSlots(),used=new Set(ws.map(w=>w.slot)),free=[];for(let i=0;i<n;i++)if(!used.has(i))free.push(i);if(!free.length)return;
+    const slot=free[Math.random()*free.length|0],dir=Math.random()<.5?-1:1,c=pick();
+    ws.push(Object.assign(c,{slot,tx:W*(slot+.5)/n,dir,px:dir<0?W+80:-80,sp:75+Math.random()*35,stay:2.2+Math.random()*2.2,s:'in',ts:0,d:0,w:Math.random()*6}));
+    nextAt=now+500+Math.random()*1200}
+  function draw(w,now,look,walking,sc){
+    
+    const dv=w.kind=='dev',k=dv?(w.ty=='DR'?.85:1.4):w.kind=='ally'?1.35:(w.boss?1.15:1.4),
+      e={ty:w.ty,f:w.f,boss:w.boss,x:0,y:0,d:w.d,hp:1,mx:1,slow:0,pois:0};
+    if(dv)Object.assign(e,{ci:w.ci,age:2,w:w.w,dr:w.dir,stun:0});
+    x.save();x.setTransform(sc,0,0,sc,0,0);x.clearRect(180-BOX/2-4,220-BOX/2-4,BOX+8,BOX+8);
+    x.translate(180,220+(walking?-Math.abs(Math.sin(now/130))*3:0));
+    x.scale(k,k);if(w.kind=='en'&&w.dir>0)x.scale(-1,1);
+    if(look){x.translate(look*7,0);x.rotate(look*.2);x.scale(1-.1*Math.abs(look),1)}
+    const FR=CanvasRenderingContext2D.prototype.fillRect;x.fillRect=function(a,b,ww,hh){if(hh>=3&&hh<=5&&ww>=20&&ww<=40)return;FR.call(this,a,b,ww,hh)};
+    try{if(w.kind=='ally'){const d=AL[w.ty];drawAlly({k:w.ty,cv:0,x:0,y:0,hp:1,mhp:1,r:d.r,fly:d.fly,dr:w.dir,eng:false},now,x)}else drawEn2(e,now)}catch(err){}
+    delete x.fillRect;x.restore();
+    g.drawImage(cv,(180-BOX/2+2)*sc,(220-BOX/2+2)*sc,(BOX-4)*sc,(BOX-4)*sc,(w.px-BOX/2+2)*dpr,(H-BOX)/2*dpr+6*dpr,(BOX-4)*dpr,(BOX-4)*dpr)}
+  function frame(now){
+    raf=0;if(!VIS()){ws=[];g.clearRect(0,0,el.width,el.height);return}
+    if(!W)fit();
+    const dt=Math.min(.05,(now-last)/1000),sc=cv.width/360;last=now;
+    g.clearRect(0,0,el.width,el.height);
+    if(ws.length<nSlots()&&now>=nextAt)spawn(now);
+    for(let i=ws.length-1;i>=0;i--){const w=ws[i];let walking=true,look=0;
+      if(w.s=='in'){w.px+=w.dir*w.sp*dt;if((w.dir<0&&w.px<=w.tx)||(w.dir>0&&w.px>=w.tx)){w.px=w.tx;w.s='stay';w.ts=0}}
+      else if(w.s=='stay'){walking=false;w.ts+=dt;const u=Math.min(1,w.ts/w.stay);look=Math.sin(u*Math.PI*3)*Math.min(1,u*8)*Math.min(1,(1-u)*8);if(w.ts>=w.stay)w.s='out'}
+      else{w.px+=w.dir*w.sp*dt;if(w.px<-90||w.px>W+90){ws.splice(i,1);continue}}
+      if(walking)w.d+=w.sp*dt;
+      draw(w,now,look,walking,sc)}
+    raf=requestAnimationFrame(frame)}
+  function start(){if(raf)cancelAnimationFrame(raf);raf=0;ws=[];if(!VIS())return;fit();last=performance.now();nextAt=last+300;raf=requestAnimationFrame(frame)}
+  window.addEventListener('resize',()=>{if(ws.length)fit()});
+  document.getElementById('tmia').src=CHI.src;document.getElementById('trin').src=GI.src;
+  return{start}})();
 TW.start();
 
 /* --- pause / save / continue --- */
