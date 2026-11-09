@@ -211,6 +211,7 @@ D:{n:'雷',name:'いかずち',cost:120,rng:85,rate:1.2,dmg:14,col:'#e6b800',cha
 E:{n:'毒',name:'どくタワー',cost:90,rng:80,rate:.9,dmg:2,col:'#7cb342',pois:1},
 F:{n:'虹',name:'にじビーム',cost:150,rng:170,rate:1.6,dmg:35,col:'#b388eb',beam:1},
 V:{n:'山',name:'かざん',cost:130,rng:55,rate:3.5,dmg:60,col:'#e8552d',blast:62},
+S:{n:'月',name:'はんげつボール',cost:140,rng:95,rate:1.6,dmg:0,col:'#7a6cff',cust:1},
 H:{n:'竜',name:'たつまきほう',cost:120,rng:110,rate:1.2,dmg:40,col:'#6fd0e8',spl:34,air:1},
  R:{n:'花',name:'ロケットはなび',cost:110,rng:200,minr:85,rate:2.6,dmg:38,col:'#ff4dd2',spl:46,cust:1},
  W:{n:'鞭',name:'かいてんムチ',cost:90,rng:60,rate:3.6,dmg:9,col:'#c0813f',cust:1},
@@ -240,7 +241,7 @@ function upCost(t){if(t.k=='M')return t.lv<2?2000:3000;return Math.round(cst(t.k
 const ledRO=window.ResizeObserver?new ResizeObserver(es=>{for(const e of es)ledFit(e.target)}):null;
 function ledFit(b){const t=b.firstChild;if(!t)return;const sp=t.children,cw=b.clientWidth;if(!cw)return;sp[0].style.minWidth=sp[1].style.minWidth='';sp[0].style.paddingLeft=sp[1].style.paddingLeft=cw+'px';const w=Math.ceil(sp[0].getBoundingClientRect().width);t.style.setProperty('--w',w+'px');t.style.animationDuration=Math.max(4,w/90)+'s'}
 function ledSet(h,txt){if(h._t===txt&&h.firstChild)return;h._t=txt;if(h.firstChild&&ledRO)ledRO.unobserve(h.firstChild);h.textContent='';const b=document.createElement('div');b.className='led';const t=document.createElement('div');t.className='ledt';for(let i=0;i<2;i++){const s=document.createElement('span');s.textContent=txt;if(i)s.setAttribute('aria-hidden','true');t.appendChild(s)}b.appendChild(t);h.appendChild(b);ledFit(b);if(ledRO)ledRO.observe(b);else requestAnimationFrame(()=>ledFit(b))}
-const TD={M:'ゴールから10マス以上はなして1つだけ置ける。Lv1は3分に1回、Lv2（💰2000）は2分に1回、Lv3（💰3000）は1分に1回（フェーズ中だけ）、かわいい天使がハートをゆっくりゴールへ運んで、利奈のライフを1回復する（ライフ最大99）',A:'はやく連射できる基本タワー',B:'爆発でまとめてダメージ',C:'敵のあしを遅くする',D:'3体まで稲妻がつながる（1つだけ置ける）',R:'近くは攻撃できない。遠くの敵のあたりへゆっくり飛び、着地で花火が爆発して複数の敵にダメージ',W:'タップで手動かいてん（1回💰1000・フェーズ中のみ）。巻き込んだ敵を5〜10マス後ろへ押し戻す。Lvは上がらない／1台だけ',X:'タップするとお金を5000G借りられる（最大10回／1つだけ）。借りた合計は、プレイ終了後にスコアから引かれる',L:'当たるかな？',E:'毒で3秒間じわじわダメージ',F:'射程が長い虹のビームが、一直線の敵をつらぬく',V:'敵が近づくと大爆発！近くの敵に大ダメージ',H:'空を飛ぶ敵だけを狙う竜巻の大砲',Z:'道のとなりに道を足して、道同士をつなぐ。近道もできる（フェーズの合間だけ）',K:'道をこわす（フェーズの合間だけ）。スタートから利奈まで行けなくなる壊し方はできない',U:'道の上に落とし穴を作る。落ちたモンスターは倒れて穴は消える。ボスと空の敵には効かない',Q:'サイコロを投げるたびに1〜6の目が出て、目の数だけダメージが大きくなる。運がよければ大ダメージ！強化すると出目の倍率もアップ',g:'利奈のゴールの場所を決める（準備中だけ・選びなおせる）',s:'敵のスタートの場所を決める。もう一度タップで取り消し（1つだけ）'};
+const TD={M:'ゴールから10マス以上はなして1つだけ置ける。Lv1は3分に1回、Lv2（💰2000）は2分に1回、Lv3（💰3000）は1分に1回（フェーズ中だけ）、かわいい天使がハートをゆっくりゴールへ運んで、利奈のライフを1回復する（ライフ最大99）',A:'はやく連射できる基本タワー',B:'爆発でまとめてダメージ',C:'敵のあしを遅くする',D:'3体まで稲妻がつながる（1つだけ置ける）',R:'近くは攻撃できない。遠くの敵のあたりへゆっくり飛び、着地で花火が爆発して複数の敵にダメージ',W:'タップで手動かいてん（1回💰1000・フェーズ中のみ）。巻き込んだ敵を5〜10マス後ろへ押し戻す。Lvは上がらない／1台だけ',X:'タップするとお金を5000G借りられる（最大10回／1つだけ）。借りた合計は、プレイ終了後にスコアから引かれる',L:'当たるかな？',E:'毒で3秒間じわじわダメージ',F:'射程が長い虹のビームが、一直線の敵をつらぬく',V:'敵が近づくと大爆発！近くの敵に大ダメージ',H:'空を飛ぶ敵だけを狙う竜巻の大砲',Z:'道のとなりに道を足して、道同士をつなぐ。近道もできる（フェーズの合間だけ）',K:'道をこわす（フェーズの合間だけ）。スタートから利奈まで行けなくなる壊し方はできない',U:'道の上に落とし穴を作る。落ちたモンスターは倒れて穴は消える。ボスと空の敵には効かない',Q:'サイコロを投げるたびに1〜6の目が出て、目の数だけダメージが大きくなる。6の目が出たら一撃で倒す（ボスも！）。強化すると出目の倍率もアップ',g:'利奈のゴールの場所を決める（準備中だけ・選びなおせる）',s:'敵のスタートの場所を決める。もう一度タップで取り消し（1つだけ）'};
 function wpop(){let e=document.getElementById('wpop');if(!e){e=document.createElement('div');e.id='wpop';e.style.cssText='position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:6;display:none;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;padding:8px 10px;background:var(--card);color:var(--ink);border:3px solid var(--accent);border-radius:14px;box-shadow:0 8px 22px rgba(255,111,165,.45);max-width:80%';const st=document.createElement('style');st.textContent='#wpop button{padding:6px 10px;font-size:13px;border-radius:10px}#wpop #wcl{padding:6px 8px}';document.head.appendChild(st);document.getElementById('wrap').appendChild(e)}return e}
 function panel(){const lb=document.getElementById('lbx'),pb=document.getElementById('pbt'),p=pb;const wp=wpop();wp.style.display='none';
   pb.innerHTML='';pb.style.display='none';
@@ -1922,7 +1923,7 @@ if(pfb){var prev=pfb.onclick;pfb.onclick=function(){if(prev)prev.apply(this,argu
 </script>
 
 <script>
-/* サイコロマシン：発射のたびに1〜6の目が出て、目の数だけダメージが増える */
+/* サイコロマシン：発射のたびに1〜6の目が出て、目の数だけダメージが増える（6は一撃必殺） */
 (function(){
  var _u2=update;update=function(dt){_u2(dt);
   if(!G||G.over)return;
@@ -1931,8 +1932,8 @@ if(pfb){var prev=pfb.onclick;pfb.onclick=function(){if(prev)prev.apply(this,argu
    if(!b)continue;
    var face=1+Math.floor(Math.random()*6);t.ang=face;t.cd=T.Q.rate;
    try{fsfx('A')}catch(er){}
-   G.bl.push({x:t.x,y:t.y,t:b,d:T.Q,dmg:t.dmg*face});
-   G.fx.push({x:t.x,y:t.y-16,txt:'🎲'+face,t:.7,c:face>=5?'#e53935':'#4a2740'})}};
+   G.bl.push({x:t.x,y:t.y,t:b,d:T.Q,dmg:face===6?1e12:t.dmg*face});
+   G.fx.push({x:t.x,y:t.y-16,txt:face===6?'🎲6 一撃！':'🎲'+face,t:face===6?1.1:.7,c:face>=5?'#e53935':'#4a2740'})}};
 })();
 </script>
 
@@ -2550,4 +2551,152 @@ window.__DV={spawn:spawnDevil,S};
 })();
 </script>
 
+
+<script>
+(function(){
+/* ===== 半月ボール：当たった敵のHPを必ず半分にする武器 ===== */
+TD.S='半月ボールを投げて、当たった敵の今のHPを必ず半分にする（ボスにも効く）。強化すると投げるのが速くなって、射程ものびる';
+SFX.smile=function(){bp(880,.06,'square',.05,0,0);bp(1175,.08,'square',.05,0,.05)};
+SFX.smileHit=function(){bp(523,.07,'square',.06,0,0);bp(784,.09,'square',.06,0,.06);bp(1047,.12,'square',.05,0,.12)};
+function face(c,r){c.save();c.lineJoin='round';c.lineCap='round';
+ c.fillStyle='#3b3a7a';c.beginPath();c.arc(0,0,r,0,7);c.fill();
+ c.fillStyle='#ffe98a';c.beginPath();c.arc(0,0,r,-Math.PI/2,Math.PI/2);c.closePath();c.fill();
+ c.fillStyle='#fff7c8';c.beginPath();c.arc(r*.1,0,r*.62,-Math.PI/2,Math.PI/2);c.closePath();c.fill();
+ c.fillStyle='rgba(255,255,255,.6)';c.beginPath();c.ellipse(r*.35,-r*.45,r*.2,r*.12,-.5,0,7);c.fill();
+ c.strokeStyle='rgba(40,25,70,.85)';c.lineWidth=Math.max(1,r*.14);c.beginPath();c.arc(0,0,r,0,7);c.stroke();
+ c.lineWidth=Math.max(1,r*.1);c.beginPath();c.moveTo(0,-r);c.lineTo(0,r);c.stroke();
+ c.restore()}
+const _dT=drawTower;
+drawTower=function(c,k,px,py,a,lv){_dT(c,k,px,py,a,lv);
+ if(k==='S'){c.save();c.translate(px,py);c.fillStyle=T.S.col;c.beginPath();c.arc(0,0,12,0,7);c.fill();
+  c.fillStyle='#fff';c.beginPath();c.arc(0,0,10.5,0,7);c.fill();c.rotate(-.5);face(c,9);c.restore()}};
+/* ツールバーのアイコンを描き直す */
+try{for(const b of tb.children){if(b.dataset.k!=='S')continue;const cn=b.firstChild,sc=(cn.width/40)||1,g=cn.getContext('2d');g.setTransform(sc,0,0,sc,0,0);g.clearRect(0,0,40,40);drawTower(g,'S',20,21,0,0)}}catch(e){console.error(e)}
+
+const rate=t=>T.S.rate/(1+.25*((t.lv||1)-1));
+const _up=update;update=function(dt){_up(dt);
+ try{if(!G||G.over||!G.tw)return;const sd=dt*(G.speed||1);if(!G.sm)G.sm=[];if(!G.smp)G.smp=[];
+  for(const t of G.tw){if(t.k!=='S')continue;if(t.stun>0)continue;t.sa=(t.sa||0)+sd*2;t.cd2=(t.cd2||0)-sd;if(t.cd2>0||!G.active)continue;
+   let b=null;for(const e of G.en){if(e.dead||e.x==null)continue;if(Math.hypot(e.x-t.x,e.y-t.y)<=t.rng&&(!b||e.d>b.d))b=e}
+   if(!b)continue;t.cd2=rate(t);fsfx('smile');
+   G.sm.push({x0:t.x,y0:t.y,x:t.x,y:t.y,tg:b,t:0,rot:0})}
+  for(const m of G.sm){m.t+=sd;m.rot+=sd*14;
+   if(m.tg&&m.tg.dead){let n=null,nd=90;for(const e of G.en){if(e.dead||e.x==null)continue;const q=Math.hypot(e.x-m.x,e.y-m.y);if(q<nd){nd=q;n=e}}m.tg=n;if(!n){m.rm=1;continue}}
+   const tx=m.tg.x,ty=m.tg.y,dx=tx-m.x,dy=ty-m.y,L=Math.hypot(dx,dy),st=280*sd;
+   if(L<=st+8){m.rm=1;const e=m.tg;if(!e.dead){e.hp=e.hp/2;
+     G.fx.push({x:e.x,y:e.y-22,txt:'½',t:1,c:'#ff9a00'});G.fx.push({x:e.x,y:e.y,r:20,t:.3,c:'#ffe98a'});fsfx('smileHit');
+     for(let i=0;i<7;i++){const a=i/7*6.283;G.smp.push({x:e.x,y:e.y,vx:Math.cos(a)*70,vy:Math.sin(a)*70-20,t:0,T:.5})}}}
+   else{m.x+=dx/L*st;m.y+=dy/L*st}}
+  G.sm=G.sm.filter(m=>!m.rm);
+  for(const q of G.smp){q.t+=sd;q.x+=q.vx*sd;q.y+=q.vy*sd;q.vy+=120*sd}G.smp=G.smp.filter(q=>q.t<q.T);
+ }catch(err){console.error(err)}};
+const _dr=draw2;draw2=function(){_dr();
+ try{if(!G||!G.sm)return;x.save();
+  for(const m of G.sm){x.save();x.translate(m.x,m.y);x.fillStyle='rgba(60,20,50,.2)';x.beginPath();x.ellipse(0,7,5,2,0,0,7);x.fill();x.rotate(m.rot);face(x,7);x.restore()}
+  for(const q of G.smp){x.globalAlpha=Math.max(0,1-q.t/q.T);x.fillStyle='#ffe98a';x.beginPath();x.arc(q.x,q.y,2.2,0,7);x.fill()}
+  x.restore()}catch(err){}};
+})();
+</script>
+<script>
+/* ===== 絵文字 → イラスト置き換え（DOM と Canvas の両方） ===== */
+(function(){
+if(window.__emojiArt)return;window.__emojiArt=1;
+const O='#4a2740',W=1.8;
+const sv=b=>'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" stroke="'+O+'" stroke-width="'+W+'" stroke-linejoin="round" stroke-linecap="round">'+b+'</svg>';
+const heart=(f,x,y,s)=>'<path transform="translate('+x+' '+y+') scale('+s+')" fill="'+f+'" d="M16 28 C3 19 3 8 10 6.5 C13.5 5.8 15.2 8 16 10 C16.8 8 18.5 5.8 22 6.5 C29 8 29 19 16 28Z"/>';
+const star=(cx,cy,R,r,f)=>{let p='';for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,q=i%2?r:R;p+=(i?'L':'M')+(cx+Math.cos(a)*q).toFixed(1)+' '+(cy+Math.sin(a)*q).toFixed(1)}return '<path fill="'+f+'" d="'+p+'Z"/>'};
+const spark=(cx,cy,s,f)=>'<path fill="'+f+'" stroke-width="1.2" d="M'+cx+' '+(cy-s)+' Q'+cx+' '+cy+' '+(cx+s)+' '+cy+' Q'+cx+' '+cy+' '+cx+' '+(cy+s)+' Q'+cx+' '+cy+' '+(cx-s)+' '+cy+' Q'+cx+' '+cy+' '+cx+' '+(cy-s)+'Z"/>';
+const medal=(c,d,n)=>'<path fill="#ff5fa0" d="M9 3 L16 14 L12 17 L5 6Z"/><path fill="#7a5cff" d="M23 3 L16 14 L20 17 L27 6Z"/><circle cx="16" cy="21" r="8.5" fill="'+c+'"/><circle cx="16" cy="21" r="5.6" fill="'+d+'" stroke-width="1.2"/><text x="16" y="24.6" font-family="sans-serif" font-weight="bold" font-size="9.5" text-anchor="middle" fill="#fff" stroke="none">'+n+'</text>';
+const I={
+'💰':sv('<path fill="#ffcf4a" d="M11 5 L21 5 L19 11 C27 15 28 29 16 29 C4 29 5 15 13 11Z"/><path fill="#ff5fa0" d="M11.5 10 Q16 13 20.5 10 L19.5 7.5 Q16 9.5 12.5 7.5Z"/><circle cx="16" cy="21" r="5" fill="#ffe58a"/><path d="M16 18 V24 M14 20 H18 M14 22.5 H18" stroke-width="1.3"/>'),
+'▶':sv('<path fill="#ff5fa0" d="M9 5.5 L26.5 16 L9 26.5Z"/><path d="M12.5 11 L19 16" stroke="#fff" stroke-width="1.6" fill="none"/>'),
+'⏸':sv('<rect x="6" y="5.5" width="7.5" height="21" rx="2.4" fill="#7a5cff"/><rect x="18.5" y="5.5" width="7.5" height="21" rx="2.4" fill="#7a5cff"/>'),
+'⏩':sv('<path fill="#ffb703" d="M3.5 6.5 L15 16 L3.5 25.5Z"/><path fill="#ff8a3c" d="M16.5 6.5 L28.5 16 L16.5 25.5Z"/>'),
+'💾':sv('<path fill="#5c7cff" d="M5 4.5 H23.5 L27.5 8.5 V26 Q27.5 27.5 26 27.5 H6 Q4.5 27.5 4.5 26 V6 Q4.5 4.5 5 4.5Z"/><rect x="9" y="4.5" width="12" height="8" rx="1" fill="#fff"/><rect x="17" y="6" width="2.6" height="5" fill="#9aa8ff" stroke="none"/><rect x="8.5" y="17" width="15" height="10.5" rx="1.5" fill="#dfe6ff"/><path d="M12 20.5 H20 M12 23.5 H18" stroke-width="1.2"/>'),
+'🍬':sv('<path fill="#ff9ac8" d="M2.5 9 L10 14 L10 18 L2.5 23 Q4.5 16 2.5 9Z"/><path fill="#ff9ac8" d="M29.5 9 L22 14 L22 18 L29.5 23 Q27.5 16 29.5 9Z"/><circle cx="16" cy="16" r="8.5" fill="#ff5fa0"/><path d="M10.5 10.5 Q16 14 12 21 M16.5 7.8 Q19 15 15.5 24 M22 11 Q19 16 22 21.5" fill="none" stroke="#fff" stroke-width="2.2"/>'),
+'🏆':sv('<path fill="none" d="M9 8 H4.5 Q4.5 16 11 17 M23 8 H27.5 Q27.5 16 21 17"/><path fill="#ffcf4a" d="M8.5 4.5 H23.5 V11 Q23.5 19 16 19.5 Q8.5 19 8.5 11Z"/><rect x="14.2" y="19" width="3.6" height="5" fill="#ffb703"/><rect x="9.5" y="24" width="13" height="4.5" rx="1.5" fill="#ff9a3c"/><path d="M12.5 8 V12" stroke="#fff" stroke-width="2"/>'),
+'❤':sv(heart('#ff4f6d',0,0,1)+'<path d="M9 11 Q9.5 9 12 9" stroke="#fff" stroke-width="2" fill="none"/>'),
+'💗':sv(heart('#ff8fc0',-1,1,.88)+spark(26,7,4,'#ffe14d')+spark(5,24,2.8,'#ffe14d')),
+'💔':sv('<path fill="#ff4f6d" d="M16 28 C3 19 3 8 10 6.5 C13.5 5.8 15.2 8 16 10 L14 14 L18 17 L15 21 Z"/><path fill="#ff4f6d" transform="translate(2.2 1.5)" d="M17 12 L20 18 L16.5 22 L16 28 C29 19 29 8 22 6.5 C19 6 17.7 7.5 17 9Z"/>'),
+'🎀':sv('<path fill="#ff7ab8" d="M16 16 L4 7 Q1.5 16 4 25Z"/><path fill="#ff7ab8" d="M16 16 L28 7 Q30.5 16 28 25Z"/><path fill="#ff5fa0" d="M16 16 L9 26 L13 27 L16 20 L19 27 L23 26Z"/><rect x="12.5" y="11.5" width="7" height="9" rx="3" fill="#ff4f93"/>'),
+'✅':sv('<rect x="4" y="4" width="24" height="24" rx="6" fill="#4cd07d"/><path d="M9.5 16.5 L14 21 L23 11" fill="none" stroke="#fff" stroke-width="3.4"/>'),
+'🗺':sv('<path fill="#ffe9b8" d="M3 7 L11 4.5 L21 7.5 L29 5 V25 L21 27.5 L11 24.5 L3 27Z"/><path d="M11 4.5 V24.5 M21 7.5 V27.5" fill="none"/><path d="M6 20 Q11 12 15 17 T26 11" fill="none" stroke="#ff4f6d" stroke-dasharray="2.6 2.6" stroke-width="1.8"/><circle cx="24" cy="10" r="3.2" fill="#ff4f6d"/>'),
+'🎵':sv('<path fill="#7a5cff" d="M12 22.5 V6 L25 3.5 V19.5" /><path fill="none" d="M12 11 L25 8.5"/><ellipse cx="8.8" cy="23" rx="5" ry="3.8" fill="#7a5cff"/><ellipse cx="21.8" cy="20" rx="5" ry="3.8" fill="#7a5cff"/><path d="M12 22.5 V6 L25 3.5 V19.5" fill="none"/>'),
+'🔇':sv('<path fill="#b8b0d0" d="M4 12 H9 L16 6 V26 L9 20 H4Z"/><path d="M21 12 L28 20 M28 12 L21 20" fill="none" stroke="#ff4d6d" stroke-width="3"/>'),
+'🎉':sv('<path fill="#ffcf4a" d="M4 28 L10 10 L22 22Z"/><path fill="#ff7ab8" d="M7.2 19 L12 14 L17 19 L11.5 24Z" stroke-width="1.2"/><path d="M15 5 Q17 9 14 11 M22 8 L26 5 M24 15 Q28 14 29 17" fill="none" stroke="#7a5cff" stroke-width="2"/><circle cx="21" cy="5" r="1.6" fill="#4cc9f0"/><circle cx="27.5" cy="10.5" r="1.6" fill="#ff5fa0"/><circle cx="11" cy="4.5" r="1.6" fill="#7bd88f"/><path d="M17 12.5 L19 9.5" stroke="#ff9a3c"/>'),
+'✨':sv(spark(13,19,9,'#ffd23f')+spark(25,8,5,'#fff2a0')+spark(6,6,3.6,'#fff2a0')),
+'⭐':sv(star(16,17,13,5.6,'#ffd23f')+'<path d="M12.5 12 L14 9" stroke="#fff" stroke-width="1.8" fill="none"/>'),
+'🔑':sv('<circle cx="9.5" cy="10.5" r="6.5" fill="#ffcf4a"/><circle cx="8" cy="9" r="2" fill="#fff"/><path fill="#ffcf4a" d="M13.5 15 L27 28.5 L29 26.5 L26.5 24 L28.5 22 L25.5 19 L23.5 21 L18.5 14Z"/>'),
+'👤':sv('<circle cx="16" cy="10.5" r="6.2" fill="#ffd9b8"/><path fill="#8aa0ff" d="M4.5 28 Q4.5 17.5 16 17.5 Q27.5 17.5 27.5 28Z"/>'),
+'📥':sv('<path fill="#dfe6ff" d="M3.5 18 H10 Q11 22 16 22 Q21 22 22 18 H28.5 V26 Q28.5 27.5 27 27.5 H5 Q3.5 27.5 3.5 26Z"/><path fill="#4cc9f0" d="M12.5 3.5 H19.5 V12 H24 L16 20 L8 12 H12.5Z"/>'),
+'⏱':sv('<rect x="13" y="2.5" width="6" height="3.5" rx="1" fill="#b8b0d0"/><circle cx="16" cy="18" r="11" fill="#fff"/><circle cx="16" cy="18" r="11" fill="none" stroke="#ff5fa0" stroke-width="2.6"/><path d="M16 18 V11 M16 18 L21 21" fill="none" stroke-width="2.2"/><path d="M25.5 7 L27.5 9" stroke-width="2.4"/>'),
+'🔒':sv('<path fill="none" stroke-width="3.2" d="M10.5 14 V10 Q10.5 4.5 16 4.5 Q21.5 4.5 21.5 10 V14"/><rect x="6" y="13.5" width="20" height="15" rx="3.5" fill="#ffcf4a"/><circle cx="16" cy="20" r="2.4" fill="'+O+'"/><path d="M16 21 V24.5" stroke-width="2"/>'),
+'📖':sv('<path fill="#fff" d="M16 8 Q10 4.5 3 6 V25 Q10 23.5 16 27 Q22 23.5 29 25 V6 Q22 4.5 16 8Z"/><path d="M16 8 V27" fill="none"/><path d="M7 11 Q10.5 10.5 13 12 M7 15.5 Q10.5 15 13 16.5 M19 12 Q21.5 10.5 25 11 M19 16.5 Q21.5 15 25 15.5" fill="none" stroke="#ff8fc0" stroke-width="1.4"/>'),
+'🎲':sv('<rect x="4" y="4" width="24" height="24" rx="6" fill="#fff"/><g fill="#e53935" stroke="none"><circle cx="11" cy="11" r="2.4"/><circle cx="21" cy="11" r="2.4"/><circle cx="11" cy="16" r="2.4"/><circle cx="21" cy="16" r="2.4"/><circle cx="11" cy="21" r="2.4"/><circle cx="21" cy="21" r="2.4"/></g>'),
+'🗑':sv('<rect x="4.5" y="6.5" width="23" height="4" rx="2" fill="#9aa0b8"/><rect x="12" y="3" width="8" height="4" rx="1.5" fill="#b8bdd0"/><path fill="#b8bdd0" d="M7 11 H25 L23.5 27 Q23.3 28.5 22 28.5 H10 Q8.7 28.5 8.5 27Z"/><path d="M12.5 15 V24 M16 15 V24 M19.5 15 V24" fill="none" stroke-width="1.5"/>'),
+'📱':sv('<rect x="8" y="2.5" width="16" height="27" rx="3.5" fill="#5d6a8e"/><rect x="10.5" y="6.5" width="11" height="17" rx="1.2" fill="#bfe9ff" stroke-width="1.2"/><circle cx="16" cy="26.5" r="1.3" fill="#fff" stroke="none"/>'),
+'🏁':sv('<path d="M7 29 V4" stroke-width="2.4" fill="none"/><path fill="#fff" d="M7 5 Q14 2 18 5.5 T28 5 V17 Q23 20 18 16.5 T7 17Z"/><g fill="'+O+'" stroke="none"><rect x="12" y="4.6" width="4.2" height="4.6"/><rect x="20.4" y="4.6" width="4.2" height="4.6"/><rect x="7.6" y="9.4" width="4.4" height="4.4"/><rect x="16.2" y="9.4" width="4.2" height="4.4"/><rect x="24.6" y="9.4" width="3" height="4.4"/><rect x="12" y="13.8" width="4.2" height="3.2"/><rect x="20.4" y="13.8" width="4.2" height="3.2"/></g>'),
+'🌸':sv('<g fill="#ffb3d1"><ellipse cx="16" cy="8" rx="5" ry="6"/><ellipse cx="24" cy="14" rx="5" ry="6" transform="rotate(72 24 14)"/><ellipse cx="21" cy="23.5" rx="5" ry="6" transform="rotate(144 21 23.5)"/><ellipse cx="11" cy="23.5" rx="5" ry="6" transform="rotate(216 11 23.5)"/><ellipse cx="8" cy="14" rx="5" ry="6" transform="rotate(288 8 14)"/></g><circle cx="16" cy="16.5" r="3.6" fill="#ffd23f"/>'),
+'🏦':sv('<path fill="#ffcf4a" d="M16 3 L29 11 H3Z"/><rect x="3.5" y="11" width="25" height="3" fill="#fff"/><rect x="6" y="14.5" width="3.6" height="10" fill="#fff"/><rect x="11.5" y="14.5" width="3.6" height="10" fill="#fff"/><rect x="16.9" y="14.5" width="3.6" height="10" fill="#fff"/><rect x="22.4" y="14.5" width="3.6" height="10" fill="#fff"/><rect x="3.5" y="24.5" width="25" height="4" rx="1" fill="#bfe9c8"/><circle cx="16" cy="8.5" r="1.8" fill="#fff" stroke-width="1.2"/>'),
+'🌙':sv('<path fill="#ffe14d" d="M22 3.5 Q9 5 9 17 Q9 28 21 28.5 Q27 28.5 28.5 25.5 Q16 26 16 15 Q16 7.5 22 3.5Z"/><path d="M25 8 L26 5.5 M26.5 12 L29 11.5" stroke="#ffb703" stroke-width="1.6"/>'),
+'🏠':sv('<path fill="#ff7a8a" d="M16 3 L30 15 H2Z"/><path fill="#fff4d6" d="M6 14.5 H26 V28.5 H6Z"/><rect x="13" y="19" width="6.4" height="9.5" rx="1.5" fill="#c98a54"/><rect x="7.8" y="17" width="4" height="4" fill="#bfe9ff" stroke-width="1.2"/><rect x="21" y="17" width="3.6" height="4" fill="#bfe9ff" stroke-width="1.2"/><rect x="21" y="5.2" width="3.4" height="6" fill="#c98a54"/>'),
+'🥇':sv(medal('#ffcf4a','#ffb703','1')),
+'🥈':sv(medal('#d8dde8','#aeb6c8','2')),
+'🥉':sv(medal('#e0a070','#c07a45','3')),
+'🍒':sv('<path d="M12 21 Q13 10 21 4 M22 22 Q22 12 21 4" fill="none"/><path fill="#5ed17a" d="M21 4 Q27 2.5 29.5 7 Q24 9 21 4Z"/><circle cx="10.5" cy="23" r="6" fill="#ff3d5f"/><circle cx="22.5" cy="23.5" r="6" fill="#ff3d5f"/><path d="M8 21 Q8.5 19.5 10 19.2 M20 21.5 Q20.5 20 22 19.7" stroke="#fff" stroke-width="1.6" fill="none"/>'),
+'🐤':sv('<path fill="#ff9a3c" d="M26.5 14.5 L30.5 16 L26.5 17.8Z"/><circle cx="15" cy="16.5" r="11.5" fill="#ffe14d"/><path fill="#ffd23f" d="M11 27 Q15 24.5 19 27 L18 29 L12 29Z" stroke-width="1.4"/><circle cx="19.5" cy="13" r="1.9" fill="'+O+'" stroke="none"/><path d="M5 17 Q9 20 12 15.5" fill="none" stroke="#ffb703"/><path d="M13 4.5 Q14.5 1.5 16.5 5" fill="none"/><ellipse cx="22.5" cy="18" rx="2" ry="1.3" fill="#ff9ab0" stroke="none"/>'),
+'💎':sv('<path fill="#5fd4f4" d="M9 4.5 H23 L29.5 12 L16 28.5 L2.5 12Z"/><path fill="#a8ecff" d="M9 4.5 L12.5 12 L2.5 12Z M23 4.5 L19.5 12 L29.5 12Z M12.5 12 H19.5 L16 28.5Z" stroke-width="1.2"/><path d="M12.5 12 L9 4.5 M19.5 12 L23 4.5 M12.5 12 L16 28.5 L19.5 12" fill="none" stroke-width="1.2"/>'),
+'👼':sv('<path fill="#fff" d="M13 19 Q1 19 2.5 8 Q10 9 13 15Z"/><path fill="#fff" d="M19 19 Q31 19 29.5 8 Q22 9 19 15Z"/><path fill="#ffe0f0" d="M10 29 Q10 20.5 16 20.5 Q22 20.5 22 29Z"/><circle cx="16" cy="14" r="6.3" fill="#ffd9b8"/><ellipse cx="16" cy="5" rx="5.6" ry="2.1" fill="none" stroke="#ffcf4a" stroke-width="2"/><circle cx="14" cy="14" r=".9" fill="'+O+'" stroke="none"/><circle cx="18" cy="14" r=".9" fill="'+O+'" stroke="none"/><path d="M14.4 16.4 Q16 17.8 17.6 16.4" fill="none" stroke-width="1.2"/>'),
+'💥':sv('<path fill="#ff9a3c" d="M16 1.5 L19.5 9 L27 5 L24 13 L31 15.5 L24 19.5 L28 27 L19.5 24.5 L16 31 L12.5 24.5 L4 27 L8 19.5 L1 15.5 L8 13 L5 5 L12.5 9Z"/><path fill="#ffe14d" d="M16 8 L18 13.5 L23 13 L19.5 17 L22 22 L16.5 19.5 L12 23 L13 17.5 L9 14 L14 13.5Z" stroke-width="1.2"/>'),
+'🍭':sv('<path d="M20 20 L8 30" stroke="#fff" stroke-width="5" fill="none"/><path d="M20 20 L8 30" stroke-width="1.6" fill="none"/><circle cx="19" cy="12.5" r="10" fill="#ff7ab8"/><path d="M19 12.5 m-1 0 a1 1 0 1 1 2 0 a3 3 0 1 1 -3 -3 a5 5 0 1 1 -2 5 M24.5 6 Q28 10 24 17" fill="none" stroke="#fff" stroke-width="1.8"/>'),
+'💋':sv('<path fill="#ff3d71" d="M2.5 15 Q8 7.5 13 11 Q16 9.5 19 11 Q24 7.5 29.5 15 Q24 27 16 27 Q8 27 2.5 15Z"/><path d="M3.5 15.5 Q16 19 28.5 15.5" fill="none" stroke="#a8123d" stroke-width="1.4"/><path d="M10 12 Q11.5 11 13 12" stroke="#ff9ab0" stroke-width="1.6" fill="none"/>'),
+'👑':sv('<path fill="#ffcf4a" d="M3.5 9 L10 16 L16 6 L22 16 L28.5 9 L26 25 H6Z"/><rect x="5.5" y="24" width="21" height="4" rx="1.5" fill="#ffb703"/><circle cx="3.5" cy="8.5" r="2.2" fill="#ff5fa0"/><circle cx="16" cy="5" r="2.2" fill="#4cc9f0"/><circle cx="28.5" cy="8.5" r="2.2" fill="#ff5fa0"/><circle cx="16" cy="19" r="2.2" fill="#ff4f6d" stroke-width="1.2"/>'),
+'🔄':sv('<path d="M25 11 A9.5 9.5 0 0 0 7.5 12.5" fill="none" stroke="#4cc9f0" stroke-width="3.4"/><path fill="#4cc9f0" d="M29 5.5 V14 H20.5Z"/><path d="M7 21 A9.5 9.5 0 0 0 24.5 19.5" fill="none" stroke="#7a5cff" stroke-width="3.4"/><path fill="#7a5cff" d="M3 26.5 V18 H11.5Z"/>'),
+'⭕':sv('<circle cx="16" cy="16" r="10.5" fill="none" stroke="#ff4d6d" stroke-width="5.2"/>'),
+'💡':sv('<path fill="#ffe14d" d="M16 2.5 Q7 2.5 7 11.5 Q7 16 11.5 19.5 V22 H20.5 V19.5 Q25 16 25 11.5 Q25 2.5 16 2.5Z"/><rect x="11.5" y="22" width="9" height="3.4" rx="1" fill="#b8b0d0"/><rect x="12.5" y="25.4" width="7" height="3.6" rx="1.6" fill="#9a92b8"/><path d="M11.5 10 Q12 6.5 15 5.5" stroke="#fff" stroke-width="2" fill="none"/>'),
+};
+const KEYS=Object.keys(I).sort((a,b)=>b.length-a.length);
+const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+const SRC='('+KEYS.map(esc).join('|')+')[\\uFE0F\\uFE0E]?';
+const URL={},IMG={};
+for(const k of KEYS){URL[k]='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(I[k]);const im=new Image();im.src=URL[k];IMG[k]=im}
+window.__emojiIcons=I;
+const RT=new RegExp(SRC,'u'),has=s=>RT.test(s);
+
+/* ---- DOM ---- */
+const SKIP=new Set(['SCRIPT','STYLE','TEXTAREA','TITLE','NOSCRIPT','CANVAS','INPUT','OPTION']);
+const st=document.createElement('style');st.textContent='img.ei{height:1.18em;width:1.18em;vertical-align:-.22em;display:inline-block;margin:0 .04em;pointer-events:none;-webkit-user-drag:none;user-select:none;border:0!important;box-shadow:none!important;border-radius:0!important;background:none!important;padding:0!important;max-width:none}';
+(document.head||document.documentElement).appendChild(st);
+function conv(n){
+ const t=n.nodeValue;if(!t||!has(t))return;const p=n.parentNode;if(!p||SKIP.has(p.nodeName))return;
+ const re=new RegExp(SRC,'gu'),f=document.createDocumentFragment();let last=0,m;
+ while((m=re.exec(t))){if(m.index>last)f.appendChild(document.createTextNode(t.slice(last,m.index)));
+  const im=document.createElement('img');im.className='ei';im.alt='';im.draggable=false;im.src=URL[m[1]];im.setAttribute('data-e',m[1]);f.appendChild(im);last=m.index+m[0].length}
+ if(last<t.length)f.appendChild(document.createTextNode(t.slice(last)));
+ p.replaceChild(f,n)}
+function walk(r){if(!r)return;if(r.nodeType===3){conv(r);return}if(r.nodeType!==1||SKIP.has(r.nodeName))return;
+ const w=document.createTreeWalker(r,4,null),a=[];let n;while((n=w.nextNode()))a.push(n);for(const x of a)conv(x)}
+function startDom(){walk(document.body);
+ new MutationObserver(ms=>{for(const m of ms){if(m.type==='characterData')conv(m.target);else for(const n of m.addedNodes)walk(n)}}).observe(document.body,{childList:true,subtree:true,characterData:true})}
+if(document.body)startDom();else document.addEventListener('DOMContentLoaded',startDom);
+
+/* ---- Canvas ---- */
+const P=CanvasRenderingContext2D.prototype,_fill=P.fillText,_stroke=P.strokeText,_meas=P.measureText;
+const fs=c=>{const m=/(\d+(?:\.\d+)?)px/.exec(c.font);return m?+m[1]:12};
+function segs(t){const re=new RegExp(SRC,'gu'),o=[];let last=0,m;while((m=re.exec(t))){if(m.index>last)o.push({s:t.slice(last,m.index)});o.push({e:m[1]});last=m.index+m[0].length}if(last<t.length)o.push({s:t.slice(last)});return o}
+function lay(c,t){const sz=fs(c),ss=segs(t);let w=0;for(const g of ss){g.w=g.e?sz*1.12:_meas.call(c,g.s).width;w+=g.w}return{ss,w,sz}}
+function run(c,t,x,y,mw,isFill){
+ const{ss,w,sz}=lay(c,t),al=c.textAlign;let sx=x;
+ if(al==='center')sx=x-w/2;else if(al==='right'||al==='end')sx=x-w;
+ const bl=c.textBaseline,top=bl==='middle'?y-sz*.56:bl==='top'||bl==='hanging'?y:bl==='bottom'?y-sz*1.1:y-sz*.88;
+ c.save();c.textAlign='left';let cx=sx;
+ for(const g of ss){if(g.e){if(isFill){const im=IMG[g.e];if(im&&im.complete&&im.naturalWidth)try{c.drawImage(im,cx,top,sz*1.12,sz*1.12)}catch(e){}}}
+  else(isFill?_fill:_stroke).call(c,g.s,cx,y);cx+=g.w}
+ c.restore()}
+P.fillText=function(t,x,y,mw){t=String(t);if(!has(t))return _fill.call(this,t,x,y,mw);run(this,t,x,y,mw,true)};
+P.strokeText=function(t,x,y,mw){t=String(t);if(!has(t))return _stroke.call(this,t,x,y,mw);run(this,t,x,y,mw,false)};
+P.measureText=function(t){t=String(t);if(!has(t))return _meas.call(this,t);const{w}=lay(this,t);return{width:w,actualBoundingBoxLeft:0,actualBoundingBoxRight:w,actualBoundingBoxAscent:fs(this)*.88,actualBoundingBoxDescent:fs(this)*.2,fontBoundingBoxAscent:fs(this)*.9,fontBoundingBoxDescent:fs(this)*.25}};
+})();
+
+</script>
 </body></html>
