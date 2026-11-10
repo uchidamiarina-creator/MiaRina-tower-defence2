@@ -166,7 +166,7 @@ button:disabled{filter:grayscale(.45)}
 </style>
 
 <script>(function(){function f(){document.body.classList.add("ld")}if(document.body)f();else document.addEventListener("DOMContentLoaded",f)})()</script><div id="ld" style="position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:#fff1f5;color:#ff6fa5;font:bold 18px sans-serif">読み込み中…</div>
-<div id="tt"><div id="tcr" style="position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 6px);text-align:center;font-size:10px;line-height:1.3;color:#ff8a00;letter-spacing:.02em;pointer-events:none;z-index:2">©2026 MiaRina, Karaage Records, All rights reserved.</div><div class="tin"><div id="thd"><img id="tmia" alt="未亜" width="60" height="60"><h2>みありな<br>タワーディフェンス<br>ウルトラDX</h2><img id="trin" alt="利奈" width="60" height="56"></div><input id="pn" maxlength="8" placeholder="なまえ（8文字まで）" style="font:inherit;font-size:15px;text-align:center;padding:9px;border-radius:14px;border:3px solid var(--line);background:var(--card);color:var(--ink);width:70%;margin:0 0 12px"><div id="df"></div><div id="dsc" style="display:none"></div><button class="go" id="cnb" style="display:none;margin:0 auto 8px;line-height:1.35"></button><button class="go" id="stb">はじめる</button><div style="margin-top:10px"><button id="rkb" hidden style="padding:8px 22px;font-size:14px">🏆 ランキング</button> <button id="pcb" style="padding:8px 22px;font-size:14px">🔑 パスコード</button></div><div style="margin-top:8px"><button id="pfb" style="padding:8px 22px;font-size:14px">👤 プロフィール</button></div><div style="margin-top:12px;font-size:11px;color:var(--mute);letter-spacing:.04em">📱 iPhone / Android 対応</div><ul style="display:none">強化・売却</li><li id="cli">30フェーズ守りきればクリア</li></ul></div></div>
+<div id="tt"><div id="tcr" style="position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 6px);text-align:center;font-size:10px;line-height:1.3;color:#ff8a00;letter-spacing:.02em;pointer-events:none;z-index:2">©2026 MiaRina, Karaage Records, All rights reserved.</div><div class="tin"><div id="thd"><img id="tmia" alt="未亜" width="60" height="60"><h2>みありな<br>タワーディフェンス<br>ウルトラDX</h2><img id="trin" alt="利奈" width="60" height="56"></div><div style="font-size:10px;color:var(--mute);text-align:center;margin:-2px 0 8px;letter-spacing:.04em">- 完全最終ちょっとバグってるファイナル Version -</div><input id="pn" maxlength="8" placeholder="なまえ（8文字まで）" style="font:inherit;font-size:15px;text-align:center;padding:9px;border-radius:14px;border:3px solid var(--line);background:var(--card);color:var(--ink);width:70%;margin:0 0 12px"><div id="df"></div><div id="dsc" style="display:none"></div><button class="go" id="cnb" style="display:none;margin:0 auto 8px;line-height:1.35"></button><button class="go" id="stb">はじめる</button><div style="margin-top:10px"><button id="rkb" hidden style="padding:8px 22px;font-size:14px">🏆 ランキング</button> <button id="pcb" style="padding:8px 22px;font-size:14px">🔑 パスコード</button></div><div style="margin-top:8px"><button id="pfb" style="padding:8px 22px;font-size:14px">👤 プロフィール</button></div><div style="margin-top:12px;font-size:11px;color:var(--mute);letter-spacing:.04em">📱 iPhone / Android 対応</div><ul style="display:none">強化・売却</li><li id="cli">30フェーズ守りきればクリア</li></ul></div></div>
 <h1>みありなタワーディフェンス ウルトラDX</h1>
 <div id="wrap">
 <div id="stats"><span id="sg"></span><span id="sl"></span><span id="sw" style="display:none"></span><span id="stm" style="display:none"></span></div>
@@ -1019,7 +1019,7 @@ function pfRank(box,nm){
  const page=(title,fill)=>{box.textContent='';const h=document.createElement('div');h.style.cssText='margin:4px 0 6px;font-size:16px;font-weight:bold;color:var(--accent);text-align:center';h.textContent=title;box.appendChild(h);window._pfSub=true;const list=document.createElement('div');box.appendChild(list);fill(list);box.scrollTop=0};
  const none=l=>{const e=document.createElement('div');e.style.cssText='padding:14px 6px;text-align:center;font-size:13px;color:var(--mute)';e.textContent='まだデータがないよ';l.appendChild(e)};
  const showW=()=>page('🏹 いちばん置いた武器 ベスト20',list=>{const r=get(),gw={},nmk={};for(const q in r.w||{}){if(!T[q]||['g','s','Z','K','U'].indexOf(q)>=0)continue;const nm=T[q].name,kk=nmk[nm]||(nmk[nm]=q);gw[kk]=(gw[kk]||0)+(r.w[q]||0)}const ws=top(gw);if(!ws.length){none(list);return}ws.forEach((k,i)=>{const cn=document.createElement('canvas');cn.width=cn.height=80;cn.style.cssText='width:40px;height:40px;flex:none';const g=cn.getContext('2d');g.scale(2,2);try{drawTower(g,k,20,20,0,1)}catch(e){}const c=row(list,i,cn,gw[k]+'回');const s=document.createElement('span');s.textContent=T[k].name;s.style.cssText='overflow:hidden;text-overflow:ellipsis;white-space:nowrap';c.append(s)})});
- const showE=()=>page('👾 いちばん倒した敵 ベスト20',list=>{const r=get(),es=top(Object.fromEntries(Object.entries(r.e||{}).filter(([q])=>(q.slice(-1)=='*'?q.slice(0,-1):q)!='B')));if(!es.length){none(list);return}es.forEach((k,i)=>{const boss=k.slice(-1)=='*',ty=boss?k.slice(0,-1):k;const cn=document.createElement('canvas');cn.width=cn.height=96;cn.style.cssText='width:48px;height:48px;flex:none';try{pfEnDraw(cn,ty,boss)}catch(er){}const c=row(list,i,cn,r.e[k].toLocaleString()+'体');const t=document.createElement('span');t.textContent=ENAME[ty]||'名前ない敵';t.style.cssText='overflow:hidden;text-overflow:ellipsis;white-space:nowrap';c.append(t)})});
+ const showE=()=>page('👾 いちばん倒した敵 ベスト20',list=>{const r=get(),cc=Object.assign({},Object.fromEntries(Object.entries(r.e||{}).filter(([q])=>(q.slice(-1)=='*'?q.slice(0,-1):q)!='B')),r.m||{}),es=top(cc);if(!es.length){none(list);return}es.forEach((k,i)=>{const boss=k.slice(-1)=='*',ty=boss?k.slice(0,-1):k;const cn=document.createElement('canvas');cn.width=cn.height=96;cn.style.cssText='width:48px;height:48px;flex:none';const isM=k.slice(0,2)=='M|';try{if(isM)window.rinMonThumb(cn,k);else pfEnDraw(cn,ty,boss)}catch(er){}const c=row(list,i,cn,cc[k].toLocaleString()+'体');const t=document.createElement('span');t.textContent=isM?window.rinMonLabel(k):(ENAME[ty]||'名前ない敵');t.style.cssText='overflow:hidden;text-overflow:ellipsis;white-space:nowrap';c.append(t)})});
  const h=document.createElement('div');h.style.cssText='margin:12px 0 0;font-size:14px;font-weight:bold;color:var(--accent)';h.textContent='🏅 ランキング（ベスト20まで見られるよ）';box.appendChild(h);
  box.appendChild(btn('🏹 いちばん置いた武器',showW));box.appendChild(btn('👾 いちばん倒した敵',showE));
 }
@@ -4066,27 +4066,52 @@ document.addEventListener('pointerdown',function(e){
 <script>
 (function(){
 /* ===== オリジナルモンスターガチャ：タイトルのサイコロ→500Gでカプセル→名前をつけて登録（最大50匹）→敵として登場 ===== */
-var GK='miarina_td_gold_v1',MK='miarina_td_mons_v1',COST=500,MAX=999,RN=['','高','中','低'],RW=[0,5,2,1];
+var GK='miarina_td_gold_v1',MK='miarina_td_mons_v1',COST=500,MAX=999,RN=['','高','中','低','超激レア'],RW=[0,5,2,1,.04],CAPS=[['赤','#ff6fa5'],['青','#3b82f6'],['水色','#5cd6ff'],['黄色','#ffd93b'],['オレンジ','#ff9a2e'],['灰色','#9aa0a6'],['紫','#9b5cff'],['ピンク','#ffb8dc']],GOLDP=.05;
 function gold(){try{var n=parseInt(localStorage.getItem(GK)||'0',10);return n>0?n:0}catch(e){return 0}}
 function setGold(n){try{localStorage.setItem(GK,String(Math.max(0,Math.floor(n))))}catch(e){}}
-function mons(){try{var a=JSON.parse(localStorage.getItem(MK)||'[]');if(!Array.isArray(a))return[];for(var i=0;i<a.length;i++){if(!(a[i].r>=1&&a[i].r<=3))a[i].r=2;if(!(a[i].g>=1&&a[i].g<=100))a[i].g=1+Math.floor(99*Math.pow(((a[i].p&&a[i].p[4]||0)%100)/100,3))}return a}catch(e){return[]}}
+function mons(){try{var a=JSON.parse(localStorage.getItem(MK)||'[]');if(!Array.isArray(a))return[];for(var i=0;i<a.length;i++){if(!(a[i].r>=1&&a[i].r<=4))a[i].r=2;if(!(a[i].g>=1&&a[i].g<=100))a[i].g=1+Math.floor(99*Math.pow(((a[i].p&&a[i].p[4]||0)%100)/100,3))}return a}catch(e){return[]}}
 function gmul(g){return .6+(g-1)/99*2.4}
-function rinfo(m){return '出現率：'+RN[m.r]}
+var TN=['めちゃ弱い','弱い','ふつう','やや強い','強い','とても強い','めちゃ強い'],TH=[14,28,43,57,71,86,100],TW=[40,25,15,10,6,3,1],RLN={N:'N（ノーマル）',R:'R（レア）',UR:'UR（ウルトラレア）'};
+function isGd(m){return !!(m&&m.p&&m.p[7]===1)}
+function tier(g){for(var i=0;i<7;i++)if(g<=TH[i])return i;return 6}
+function rar(m){return isGd(m)?'UR':tier(m.g)>=3?'R':'N'}
+function wOf(m){return isGd(m)?.3:TW[tier(m.g)]}
+function rollG(){var r=Math.random()*100,t=0,i;for(i=0;i<7;i++){r-=TW[i];if(r<0){t=i;break}}var lo=t?TH[t-1]+1:1;return lo+Math.floor(Math.random()*(TH[t]-lo+1))}
+function rinfo(m){return 'レア度：'+RLN[rar(m)]+'\n強さ：'+TN[tier(m.g)]}
 function saveMons(a){try{localStorage.setItem(MK,JSON.stringify(a))}catch(e){}}
-function rp(){var p=[];for(var i=0;i<7;i++)p.push(Math.random()*1000|0);return p}
+/* 個性：s=速さ(6段階) fl=飛ぶ ho=穴から出る mv=動き方(0ふつう 1ダッシュ 2てくてく止まる 3ぴょんぴょん 4ふらふら) */
+var SPD=[.6,.8,1,1.25,1.6,2];
+function rollT(rn){rn=rn||Math.random;var r=rn()*100,s=2,W=[10,20,35,20,10,5],i;for(i=0;i<6;i++){r-=W[i];if(r<0){s=i;break}}var fl=rn()<.2?1:0,ho=(!fl&&rn()<.2)?1:0,q=rn()*100,mv=q<40?0:q<55?1:q<70?2:q<85?3:4;return{s:s,fl:fl,ho:ho,mv:mv}}
+function traitsOf(m){if(m&&m.t&&typeof m.t.s==='number')return m.t;var sd=7,i,p=(m&&m.p)||[];for(i=0;i<p.length;i++)sd=(sd*31+(p[i]|0))>>>0;var rn=function(){sd=(sd+0x6D2B79F5)>>>0;var t=sd;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};return rollT(rn)}
+function pt(p,i,m){return p[i]===undefined?-1:(p[i]|0)%m}
+function legL(p){var ll=4+(p[2]/4|0)%4*1.6,lt=pt(p,11,6);if(lt==2)ll+=3;else if(lt==3)ll=Math.max(2.5,ll-2.5);return ll}
+function rp(gd){var p=[],i;for(i=0;i<7;i++)p.push(Math.random()*1000|0);p.push(gd?1:0);for(i=0;i<4;i++)p.push(Math.random()*1000|0);return p}
 /* p = [顔,胴体,足,手,色,目,口] 各0〜999 */
 function drawMon(c,p,t,sz){
  var fa=p[0],bo=p[1],lg=p[2],ar=p[3],co=p[4],ey=p[5],mo=p[6],i,sd;
- var h=co*.36,sat=55+co%4*10,li=52+co%3*5,c1='hsl('+h+','+sat+'%,'+li+'%)',c2='hsl('+((h+30)%360)+','+sat+'%,'+(li-18)+'%)',c3='hsl('+((h+180)%360)+','+sat+'%,'+(li+14)+'%)',ink='#3a2a40';
+ var h=co*.36,sat=55+co%4*10,li=52+co%3*5,c1='hsl('+h+','+sat+'%,'+li+'%)',c2='hsl('+((h+30)%360)+','+sat+'%,'+(li-18)+'%)',c3='hsl('+((h+180)%360)+','+sat+'%,'+(li+14)+'%)',ink='#3a2a40',GD=p[7]===1,h2=(h+30)%360;
+ /* 茶色になりやすい色（オレンジ〜こげ茶ゾーン）は、あざやかなオレンジ・赤に寄せて茶色を出さない */
+ if(h>=8&&h<=52)c1='hsl('+h+',90%,60%)';
+ if(h2<=55)c2='hsl('+h2+',90%,54%)';
+ if(GD){c1='hsl(46,100%,56%)';c2='hsl(40,95%,50%)';c3='hsl(54,100%,84%)'}
  var bt=bo%10,bw=8+(bo/10|0)%5*1.6,bh=8+(bo/50|0)%5*1.4,dk=(bo/250|0)%4;
  c.save();c.scale(sz,sz);c.translate(0,Math.sin(t/200));c.lineJoin='round';c.lineCap='round';
  /* 足：いつも2本 */
- var ll=4+(lg/4|0)%4*1.6,fw2=2.6+lg%4*.8;
- for(sd=-1;sd<=1;sd+=2){var lx=sd*bw*.45;c.fillStyle=c2;c.strokeStyle=ink;c.lineWidth=1;c.fillRect(lx-1.6,bh-2,3.2,ll+2);c.beginPath();c.ellipse(lx+sd*.8,bh+ll,fw2,1.7,0,0,7);c.fill();c.stroke()}
+ var ll=legL(p),fw2=2.6+lg%4*.8,lt=pt(p,11,6);
+ for(sd=-1;sd<=1;sd+=2){var lx=sd*bw*.45;c.fillStyle=c2;c.strokeStyle=ink;c.lineWidth=1;
+  if(lt==1){c.strokeStyle=c2;c.lineWidth=1.7;c.beginPath();c.moveTo(lx,bh-2);for(var lk=1;lk<=5;lk++)c.lineTo(lx+(lk%2?2.3:-2.3),bh-2+(ll+2)*lk/5);c.lineTo(lx,bh+ll);c.stroke();c.strokeStyle=ink;c.lineWidth=1;c.beginPath();c.ellipse(lx,bh+ll+.8,fw2,1.4,0,0,7);c.fill();c.stroke()}
+  else if(lt==2){c.fillRect(lx-.9,bh-2,1.8,ll+2);c.beginPath();c.ellipse(lx+sd*.6,bh+ll,fw2*.7,1.4,0,0,7);c.fill();c.stroke()}
+  else if(lt==3){c.fillRect(lx-2.6,bh-2,5.2,ll+2);c.beginPath();c.ellipse(lx+sd*.8,bh+ll,fw2*1.2,1.9,0,0,7);c.fill();c.stroke()}
+  else if(lt==4){c.fillRect(lx-1.6,bh-2,3.2,ll+1);c.fillStyle=c3;c.beginPath();c.arc(lx+sd*1.2,bh+ll+.8,3.3,0,7);c.fill();c.stroke()}
+  else if(lt==5){c.fillRect(lx-1.6,bh-2,3.2,ll+1);c.beginPath();c.ellipse(lx+sd*2.4,bh+ll+.6,fw2*1.9,1.4,sd*.15,0,7);c.fill();c.stroke()}
+  else{c.fillRect(lx-1.6,bh-2,3.2,ll+2);c.beginPath();c.ellipse(lx+sd*.8,bh+ll,fw2,1.7,0,0,7);c.fill();c.stroke()}}
  /* 手：いつも2本 */
- var as=ar%4,al=3+(ar/4|0)%3*2.2;
+ var anp=pt(p,10,8),as=anp<0?ar%4:anp,al=3+(ar/4|0)%3*2.2;
  for(sd=-1;sd<=1;sd+=2){c.strokeStyle=c2;c.lineWidth=2.6;c.beginPath();c.moveTo(sd*bw*.92,-1);
-  c.lineTo(sd*(bw+al*.8),as==0?bh*.55:as==1?1.5:as==2?-bh-3:(sd>0?-bh-2+Math.sin(t/120)*3:bh*.55));c.stroke()}
+  var ax=sd*(bw+al*.8),ay=as==0?bh*.55:as==1?1.5:as==2?-bh-3:as==3?(sd>0?-bh-2+Math.sin(t/120)*3:bh*.55):0;
+  if(as==4){ax=sd*bw*.35;ay=bh*.5}else if(as==5){ax=sd*(bw+al*1.1);ay=-bh-5}else if(as==6){ax=sd*(bw+al*1.4);ay=-1}else if(as==7){ay=sd*Math.sin(t/180)*bh*.8}
+  c.lineTo(ax,ay);c.stroke();
+  if(anp>=0){c.fillStyle=c2;c.beginPath();c.arc(ax,ay,1.8,0,7);c.fill()}}
  /* 胴体：10種類のかたち */
  c.fillStyle=c1;c.strokeStyle=ink;c.lineWidth=1.3;c.beginPath();
  if(bt==0)c.ellipse(0,0,bw,bh,0,0,7);
@@ -4115,19 +4140,31 @@ function drawMon(c,p,t,sz){
  c.fillStyle=c1;c.beginPath();if(fs==1)c.roundRect(-fw,fy-fw*.85,fw*2,fw*1.7,fw*.4);else c.ellipse(0,fy,fw*(fs==2?1.2:1),fw*.9,0,0,7);c.fill();c.stroke();
  /* 目：基本は2つ（まれに1つ／3つ） */
  var ne=ey%12==0?1:ey%12==11?3:2,er=1.4+(ey/12|0)%3*.6;
- for(i=0;i<ne;i++){var ex=ne==1?0:-fw*.5+i*(fw/(ne-1)),eyy=fy-fw*.15;c.fillStyle='#fff';c.beginPath();c.arc(ex,eyy,er+.9,0,7);c.fill();c.lineWidth=.8;c.stroke();c.fillStyle=ink;c.beginPath();c.arc(ex+Math.sin(t/400),eyy,er*.6,0,7);c.fill()}
- var mm=mo%5,my=fy+fw*.5;c.strokeStyle=ink;c.fillStyle=ink;c.lineWidth=1.1;c.beginPath();
+ var es=pt(p,8,4);if(es<0)es=0;
+ for(i=0;i<ne;i++){var ex=ne==1?0:-fw*.5+i*(fw/(ne-1)),eyy=fy-fw*.15;
+  if(es==1){c.strokeStyle=ink;c.lineWidth=1.3;c.beginPath();c.arc(ex,eyy+er*.5,er+.7,Math.PI*1.12,Math.PI*1.88);c.stroke()}
+  else{c.fillStyle='#fff';c.beginPath();c.arc(ex,eyy,er+.9,0,7);c.fill();c.lineWidth=.8;c.stroke();c.fillStyle=ink;c.beginPath();c.arc(ex+Math.sin(t/400),eyy,er*(es==2?.85:.6),0,7);c.fill();
+   if(es==2){c.fillStyle='#fff';c.beginPath();c.arc(ex+Math.sin(t/400)+er*.3,eyy-er*.3,Math.max(.6,er*.28),0,7);c.fill()}
+   if(es==3){c.fillStyle=c1;c.fillRect(ex-er-1.2,eyy-er-1.2,(er+1.2)*2,er+1.2);c.strokeStyle=ink;c.lineWidth=.9;c.beginPath();c.moveTo(ex-er-.9,eyy);c.lineTo(ex+er+.9,eyy);c.stroke()}}}
+ var mmx=pt(p,9,10),mm=mmx<0?mo%5:mmx,my=fy+fw*.5;c.strokeStyle=ink;c.fillStyle=ink;c.lineWidth=1.1;c.beginPath();
  if(mm==0)c.arc(0,my-1,2.6,.2,2.9);else if(mm==1){c.arc(0,my,1.8,0,7);c.fill()}else if(mm==2){c.moveTo(-2.6,my);c.lineTo(2.6,my)}
  else if(mm==3){c.moveTo(-3,my-1);c.lineTo(3,my-1);c.stroke();c.fillStyle='#fff';c.beginPath();c.moveTo(-2.4,my-1);c.lineTo(-1.4,my+2);c.lineTo(-.4,my-1);c.moveTo(.4,my-1);c.lineTo(1.4,my+2);c.lineTo(2.4,my-1);c.fill();c.stroke();c.beginPath()}
- else{c.arc(0,my-1,2.6,.2,2.9);c.stroke();c.fillStyle='#ff7aa8';c.beginPath();c.ellipse(0,my+1.6,1.3,1.8,0,0,7);c.fill()}
- c.stroke();c.restore()}
+ else if(mm==4){c.arc(0,my-1,2.6,.2,2.9);c.stroke();c.fillStyle='#ff7aa8';c.beginPath();c.ellipse(0,my+1.6,1.3,1.8,0,0,7);c.fill()}
+ else if(mm==5){c.moveTo(-3,my-.5);c.quadraticCurveTo(0,my+5,3,my-.5);c.closePath();c.fill();c.fillStyle='#ff7aa8';c.beginPath();c.ellipse(0,my+2.1,1.5,.9,0,0,7);c.fill();c.beginPath()}
+ else if(mm==6){c.arc(-1.3,my-.5,1.3,0,Math.PI);c.moveTo(2.6,my-.5);c.arc(1.3,my-.5,1.3,0,Math.PI)}
+ else if(mm==7){c.moveTo(-3,my);c.lineTo(-2,my+1.4);c.lineTo(-1,my);c.lineTo(0,my+1.4);c.lineTo(1,my);c.lineTo(2,my+1.4);c.lineTo(3,my)}
+ else if(mm==8){c.arc(0,my+.5,1.2,0,7);c.fill();c.stroke();c.fillStyle='rgba(255,122,168,.55)';c.beginPath();c.arc(-fw*.7,my-1,1.7,0,7);c.arc(fw*.7,my-1,1.7,0,7);c.fill();c.beginPath()}
+ else{c.moveTo(-2.8,my-.3);c.quadraticCurveTo(0,my+2.5,3.2,my-1.6)}
+ c.stroke();
+ if(GD){var q,ang,rad,al,sr;c.lineWidth=0;for(q=0;q<9;q++){ang=q*.7+Math.sin(t/900+q)*.15;rad=11+(q%3)*3.5;al=Math.sin(t/170+q*2.1);if(al<=0)continue;sr=(1.2+(q%3)*.6)*(.5+al*.6);var sx=Math.cos(ang)*rad*1.05,sy=-2+Math.sin(ang)*rad*1.15;c.globalAlpha=al;c.fillStyle=q%2?'#fff':'#fff3a0';c.beginPath();c.moveTo(sx,sy-sr*2);c.quadraticCurveTo(sx,sy,sx+sr*2,sy);c.quadraticCurveTo(sx,sy,sx,sy+sr*2);c.quadraticCurveTo(sx,sy,sx-sr*2,sy);c.quadraticCurveTo(sx,sy,sx,sy-sr*2);c.fill()}c.globalAlpha=1}
+ c.restore()}
 function monCY(p){
- var fa=p[0],bo=p[1],lg=p[2],bh=8+(bo/50|0)%5*1.4,fw=7+fa%4*1.8,et=(fa/4|0)%4,ll=4+(lg/4|0)%4*1.6;
+ var fa=p[0],bo=p[1],lg=p[2],bh=8+(bo/50|0)%5*1.4,fw=7+fa%4*1.8,et=(fa/4|0)%4,ll=legL(p);
  var top=-bh-fw*.55-fw*(et==2?1.5:et==3?1.7:et==1?1.05:.9),bot=bh+ll+1.7;
  return (top+bot)/2}
 window.drawOrigMon=drawMon;
-var ov=null,cur=null,raf=0;
-function stop(){cancelAnimationFrame(raf);if(ov){ov.remove();ov=null}}
+var ov=null,cur=null,raf=0,busy=false,rid=0;
+function stop(){cancelAnimationFrame(raf);busy=false;rid++;if(ov){ov.remove();ov=null}}
 function ui(){
  if(!ov)return;var g=ov.querySelector('.gg'),n=ov.querySelector('.gn');
  g.textContent='💰'+gold()+'　登録 '+mons().length+'/'+MAX;}
@@ -4136,25 +4173,43 @@ function open(){
  stop();cur=null;
  ov=document.createElement('div');
  ov.style.cssText='position:fixed;inset:0;z-index:99990;background:rgba(36,20,38,.7);display:flex;align-items:center;justify-content:center;font-family:inherit';
- ov.innerHTML='<div style="background:var(--card,#fff);color:var(--ink,#333);border:3px solid var(--accent,#ff6fa5);border-radius:16px;padding:12px;width:min(92%,330px);text-align:center"><div style="font-weight:bold">🎲 オリジナルモンスターガチャ</div><div class="gg" style="font-size:13px;margin:4px 0"></div><div class="stage" style="height:170px;display:flex;align-items:center;justify-content:center;font-size:12px;opacity:.85">500Gでカプセルをまわそう！<br>顔・胴体・足・手・色・目・口がランダムで合体するよ</div><div class="nm" style="display:none;margin:4px 0"><input maxlength="8" placeholder="なまえ（8文字まで）" style="font:inherit;font-size:15px;text-align:center;padding:8px;border-radius:12px;border:3px solid var(--line,#ddd);background:var(--card,#fff);color:var(--ink,#333);width:80%"></div><div class="ms" style="font-size:12px;min-height:16px;margin:2px 0;white-space:pre-line"></div><div><button class="roll" style="padding:9px 14px;margin:3px"></button><button class="reg" style="padding:9px 14px;margin:3px;display:none">決定</button></div><button class="cl" style="padding:7px 18px;margin-top:4px">とじる</button></div>';
+ ov.innerHTML='<div style="background:var(--card,#fff);color:var(--ink,#333);border:3px solid var(--accent,#ff6fa5);border-radius:16px;padding:12px;width:min(92%,330px);text-align:center"><div style="font-weight:bold">🎲 オリジナルモンスターガチャ</div><div class="gg" style="font-size:13px;margin:4px 0"></div><div class="stage" style="height:170px;display:flex;align-items:center;justify-content:center;font-size:12px;opacity:.85">500Gでカプセルをまわそう！<br>顔・胴体・足・手・色・目・口がランダムで合体するよ</div><div class="nm" style="display:none;margin:4px 0"><input maxlength="8" placeholder="なまえ（8文字まで）" style="font:inherit;font-size:15px;text-align:center;padding:8px;border-radius:12px;border:3px solid var(--line,#ddd);background:var(--card,#fff);color:var(--ink,#333);width:80%"><br><button class="au" style="padding:6px 12px;margin-top:6px;font-size:13px">🎀 なまえおまかせ</button></div><div class="ms" style="font-size:12px;min-height:16px;margin:2px 0;white-space:pre-line"></div><div><button class="roll" style="padding:9px 14px;margin:3px"></button><button class="reg" style="padding:9px 14px;margin:3px;display:none">決定</button></div><button class="cl" style="padding:7px 18px;margin-top:4px">とじる</button></div>';
  document.body.appendChild(ov);
  ov.querySelector('.cl').onclick=stop;
  ov.querySelector('.roll').onclick=roll;
  ov.querySelector('.reg').onclick=reg;
+ ov.querySelector('.au').onclick=function(){try{sfx('tap')}catch(e){}ov.querySelector('.nm input').value=cuteName()};
  ov.querySelector('.roll').textContent='🎰 ガチャを回す（'+COST+'G）';
  ui()}
+function cuteName(){
+ var PRE=['ふわふわ','ぷるぷる','きらきら','もこもこ','ぽよぽよ','ころころ','ぴかぴか','ほわほわ','ちびっこ','ぽんぽん','すやすや','にこにこ','ふかふか','むにむに','ぱたぱた','ゆらゆら'],
+ BASE=['もち','ぷりん','まる','わたあめ','こむぎ','ぽぽ','みるく','たまご','ぷに','ぽん','ことり','ぷち','くりーむ','まめ','りぼん','おだんご','ぽてと','しずく','こあめ','ぱふぇ'],
+ SUF=['ちゃん','くん','たん','りん','ぴょん','まる'],
+ used={},a=mons(),i,n;for(i=0;i<a.length;i++)used[a[i].n]=1;
+ function pk(l){return l[Math.random()*l.length|0]}
+ for(i=0;i<30;i++){
+  var r=Math.random();
+  if(r<.4)n=pk(PRE)+pk(BASE);
+  else if(r<.7)n=pk(BASE)+pk(SUF);
+  else if(r<.85){var b=pk(BASE);n=b+b}
+  else n=pk(PRE).slice(0,2)+pk(BASE)+pk(SUF);
+  n=n.slice(0,8);
+  if(!used[n])break}
+ return n}
 function msg(t){var m=ov&&ov.querySelector('.ms');if(m)m.textContent=t}
 window.rinMonMax=MAX;
 function roll(){
- if(!ov)return;
+ if(!ov||busy)return;
  if(gold()<COST){msg('ゴールドがたりないよ（'+COST+'G必要）。クリアして持ち越そう！');return}
- setGold(gold()-COST);ui();cancelAnimationFrame(raf);cur=null;
+ setGold(gold()-COST);ui();cancelAnimationFrame(raf);cur=null;busy=true;var myId=++rid,rb=ov.querySelector('.roll');rb.disabled=true;rb.style.opacity='.5';
  ov.querySelector('.reg').style.display='none';ov.querySelector('.nm').style.display='none';msg('');
- var st=ov.querySelector('.stage');
- st.innerHTML='<style>@keyframes cpw{0%,100%{transform:rotate(0)}20%{transform:rotate(-18deg)}40%{transform:rotate(16deg)}60%{transform:rotate(-12deg)}80%{transform:rotate(8deg)}}</style><div style="width:70px;height:70px;border-radius:50%;background:linear-gradient(#ff6fa5 50%,#fff 50%);border:3px solid #3a2a40;animation:cpw .5s ease-in-out 3"></div>';
+ var st=ov.querySelector('.stage'),isG=Math.random()<GOLDP,cp=CAPS[Math.random()*CAPS.length|0];
+ st.innerHTML='<style>@keyframes cpw{0%,100%{transform:rotate(0)}20%{transform:rotate(-18deg)}40%{transform:rotate(16deg)}60%{transform:rotate(-12deg)}80%{transform:rotate(8deg)}}@keyframes cpg{0%,100%{box-shadow:0 0 10px 2px #ffd700}50%{box-shadow:0 0 26px 8px #fff3a0}}@keyframes cpt{0%,100%{opacity:0;transform:scale(.3)}50%{opacity:1;transform:scale(1.2)}}</style>'+(isG?'<div style=\"position:relative;width:70px;height:70px\"><div style=\"width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#fff7b0 0%,#ffd700 35%,#d99a00 55%,#ffe766 75%,#fff7b0 100%);border:3px solid #7a5a00;animation:cpw .5s ease-in-out 3,cpg .8s ease-in-out infinite\"></div><span style=\"position:absolute;left:-14px;top:-6px;font-size:18px;animation:cpt .9s infinite\">✨</span><span style=\"position:absolute;right:-14px;top:8px;font-size:15px;animation:cpt .9s .3s infinite\">✨</span><span style=\"position:absolute;left:4px;bottom:-12px;font-size:16px;animation:cpt .9s .6s infinite\">✨</span><span style=\"position:absolute;right:2px;top:-14px;font-size:13px;animation:cpt .9s .15s infinite\">⭐</span></div>':'<div style=\"width:70px;height:70px;border-radius:50%;background:linear-gradient('+cp[1]+' 50%,#fff 50%);border:3px solid #3a2a40;animation:cpw .5s ease-in-out 3\"></div>');
+ msg(isG?'✨ きらきらの金色カプセルだ！！':cp[0]+'のカプセル！');
  setTimeout(function(){
-  if(!ov)return;
-  cur={p:rp(),r:1+Math.floor(Math.random()*3),g:1+Math.floor(99*Math.pow(Math.random(),3))};
+  if(!ov||myId!==rid)return;
+  busy=false;rb.disabled=false;rb.style.opacity='';
+  cur=isG?{p:rp(1),r:4,g:87+Math.floor(Math.random()*14),t:rollT()}:{p:rp(),r:2,g:rollG(),t:rollT()};
   st.innerHTML='<canvas width="170" height="170" style="display:block;margin:0 auto;width:170px;height:170px;border:0;box-shadow:none;border-radius:0;background:transparent;outline:0"></canvas>';
   var cv=st.firstChild,c=cv.getContext('2d'),t0=performance.now();
   (function f(n){if(!ov)return;c.clearRect(0,0,170,170);c.save();c.translate(85,85-monCY(cur.p)*2.2);drawMon(c,cur.p,n,2.2);c.restore();raf=requestAnimationFrame(f)})(t0);
@@ -4167,9 +4222,13 @@ function reg(){
  if(!cur||!ov)return;
  var nm=ov.querySelector('.nm input').value.trim().slice(0,8);
  if(!nm){msg('なまえを入れてね');return}
- var a=mons();a.push({n:nm,p:cur.p,r:cur.r,g:cur.g});while(a.length>MAX)a.shift();saveMons(a);
+ var a=mons();a.push({n:nm,p:cur.p,r:cur.r,g:cur.g,t:cur.t});while(a.length>MAX)a.shift();saveMons(a);
  cur=null;stop();toast('「'+nm+'」を登録したよ！（'+a.length+'/'+MAX+'）')}
 function toast(t){var d=document.createElement('div');d.textContent=t;d.style.cssText='position:fixed;left:50%;top:18%;transform:translateX(-50%);z-index:99995;padding:9px 16px;background:var(--card,#fff);color:var(--ink,#333);border:3px solid var(--accent,#ff6fa5);border-radius:14px;font-weight:bold;font-size:14px;pointer-events:none';document.body.appendChild(d);setTimeout(function(){d.remove()},2200)}
+var ROWS=[['あ','あいうえお'],['か','かきくけこ'],['さ','さしすせそ'],['た','たちつてと'],['な','なにぬねの'],['は','はひふへほ'],['ま','まみむめも'],['や','やゆよ'],['ら','らりるれろ'],['わ','わをん']],SMK={'ぁ':'あ','ぃ':'い','ぅ':'う','ぇ':'え','ぉ':'お','っ':'つ','ゃ':'や','ゅ':'ゆ','ょ':'よ','ゎ':'わ'};
+function yomi(s){return String(s).normalize('NFD').replace(/[\u3099\u309a]/g,'').replace(/[\u30a1-\u30f6]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-96)}).replace(/[ぁぃぅぇぉっゃゅょゎ]/g,function(c){return SMK[c]})}
+function rowOf(m){var c=yomi(m.n).charAt(0);if(c)for(var i=0;i<ROWS.length;i++)if(ROWS[i][1].indexOf(c)>=0)return i;return 10}
+var sel=-1;
 function openList(){
  stop();var a=mons();
  ov=document.createElement('div');
@@ -4181,16 +4240,28 @@ function openList(){
   cancelAnimationFrame(raf);box.innerHTML='';
   var h=document.createElement('div');h.textContent='👾 オリジナルモンスター図鑑（'+a.length+'/'+MAX+'）';h.style.cssText='font-weight:bold;margin-bottom:6px';box.appendChild(h);
   if(!a.length){var em=document.createElement('div');em.textContent='まだ登録していないよ。🎲ガチャでつくろう！';em.style.cssText='font-size:12px;opacity:.8;padding:14px 0';box.appendChild(em)}
-  for(var i=a.length-1;i>=0;i--){(function(m){
-   var row=document.createElement('button');row.textContent=m.n;row.style.cssText='display:block;width:100%;margin:3px 0;padding:8px 10px;text-align:left;font-size:14px;font-weight:bold';
-   row.onclick=function(){try{sfx('tap')}catch(e){}detail(m)};box.appendChild(row)})(a[i])}
+  var gs=[[],[],[],[],[],[],[],[],[],[],[]];a.forEach(function(m){gs[rowOf(m)].push(m)});
+  gs.forEach(function(g){g.sort(function(p,q){return yomi(p.n).localeCompare(yomi(q.n),'ja')})});
+  if(sel<0||sel>10||(!gs[sel].length&&a.length)){sel=0;for(var k=0;k<11;k++)if(gs[k].length){sel=k;break}}
+  if(a.length){
+   var tb=document.createElement('div');tb.style.cssText='display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:2px 0 8px';
+   for(var t=0;t<11;t++){(function(t){
+    var bt=document.createElement('button'),on=t===sel,has=gs[t].length>0;
+    bt.textContent=(t<10?ROWS[t][0]:'ほか')+(has?'':'');bt.style.cssText='min-width:'+(t<10?'38px':'48px')+';padding:6px 4px;font-size:14px;font-weight:bold;'+(on?'background:var(--accent,#ff6fa5);color:#fff;':'')+(has||on?'':'opacity:.35;');
+    bt.onclick=function(){try{sfx('tap')}catch(e){}sel=t;listView()};tb.appendChild(bt)})(t)}
+   box.appendChild(tb);
+   var gh=document.createElement('div');gh.textContent=(sel<10?ROWS[sel][0]+'行':'ほか（かな以外）')+'　'+gs[sel].length+'匹';gh.style.cssText='font-size:12px;opacity:.75;margin-bottom:2px';box.appendChild(gh);
+   if(!gs[sel].length){var e2=document.createElement('div');e2.textContent='この行はまだいないよ';e2.style.cssText='font-size:12px;opacity:.8;padding:10px 0';box.appendChild(e2)}
+   gs[sel].forEach(function(m){
+    var row=document.createElement('button');row.textContent='['+rar(m)+'] '+(isGd(m)?'✨ ':'')+m.n;row.style.cssText='display:block;width:100%;margin:3px 0;padding:8px 10px;text-align:left;font-size:14px;font-weight:bold';
+    row.onclick=function(){try{sfx('tap')}catch(e){}detail(m)};box.appendChild(row)})}
   var cl=document.createElement('button');cl.textContent='とじる';cl.style.cssText='padding:7px 18px;margin-top:8px';cl.onclick=stop;box.appendChild(cl)}
  function detail(m){
   box.innerHTML='';
   var h=document.createElement('div');h.textContent=m.n;h.style.cssText='font-weight:bold;font-size:17px;margin-bottom:4px';box.appendChild(h);
   var cv=document.createElement('canvas');cv.width=170;cv.height=170;cv.style.cssText='display:block;margin:0 auto;width:170px;height:170px;border:0;box-shadow:none;border-radius:0;background:transparent;outline:0';box.appendChild(cv);
   var inf=document.createElement('div');inf.style.cssText='font-size:13px;line-height:1.7;margin:4px 0;white-space:pre-line';
-  inf.textContent='出現率：'+RN[m.r];
+  inf.textContent=rinfo(m);
   box.appendChild(inf);
   var bk=document.createElement('button');bk.textContent='もどる';bk.style.cssText='padding:7px 18px;margin-top:4px';bk.onclick=listView;box.appendChild(bk);
   var c=cv.getContext('2d');cancelAnimationFrame(raf);
@@ -4203,17 +4274,85 @@ if(tt){
  var b=document.createElement('button');b.id='dcb';b.title='モンスターガチャ';var df=0,PIP=[[4],[0,8],[0,4,8],[0,2,6,8],[0,2,4,6,8],[0,2,3,5,6,8]];function face(){b.innerHTML='';for(var q=0;q<9;q++){var d=document.createElement('span');d.style.cssText='width:'+(df==0?8:df==5?3.2:4.2)+'px;height:'+(df==0?8:df==5?3.2:4.2)+'px;border-radius:50%;background:'+(PIP[df].indexOf(q)>=0?(df==0?'#e0102a':'#000'):'transparent');b.appendChild(d)}}face();setInterval(function(){df=(df+1)%6;face()},1100);b.onclick=function(){try{sfx('tap')}catch(e){}open()};
  tt.appendChild(b);
  var lb=document.createElement('button');lb.id='dlb';lb.title='モンスターリスト';lb.textContent='👾';lb.onclick=function(){try{sfx('tap')}catch(e){}openList()};tt.appendChild(lb)}
-/* 登録モンスターを敵の見た目として登場させる（ふつうの敵の約35%） */
+/* 登録モンスターを敵として登場させる：もとの敵はそのまま、出現待ちの敵の約30%ぶん登録モンスターが追加で出てくる */
 if(typeof drawEn2==='function'){
- var _dm=drawEn2;
- drawEn2=function(e,t){
-  _dm(e,t);
+ var _um0=update;
+ update=function(dt){
   try{
-   if(!e||e.x==null)return;
-   if(e.cm===undefined){if(!(typeof G!=='undefined'&&G&&G.en&&G.en.indexOf(e)>=0))return;e.cm=0;if(!e.boss&&!e.xt&&!e._i&&e.ty!=='p'&&Math.random()<.35){var a=mons();if(a.length){var tw=0,q;for(q=0;q<a.length;q++)tw+=RW[a[q].r];var rr=Math.random()*tw;e.cm=a[a.length-1];for(q=0;q<a.length;q++){rr-=RW[a[q].r];if(rr<0){e.cm=a[q];break}}if(typeof e.rw==='number')e.rw=Math.max(1,Math.round(e.rw*gmul(e.cm.g)))}}}
-   if(e.cm&&!e.dead){x.save();x.translate(e.x,e.y-5);drawMon(x,e.cm.p,t,.55);x.restore()}
+   if(G&&!G.over&&G.q&&G.q.length){
+    var a=null,i,q,m,tw,rr,f,c,w;
+    for(i=0;i<G.q.length;i++){
+     q=G.q[i];if(q._m)continue;q._m=1;
+     if(q.cmq||q.boss||q.f||q.q||q.nw||!(q.hp>0)||Math.random()>=.3)continue;
+     if(!a)a=mons();if(!a.length)break;
+     tw=0;for(w=0;w<a.length;w++)tw+=wOf(a[w]);
+     rr=Math.random()*tw;m=a[a.length-1];
+     for(w=0;w<a.length;w++){rr-=wOf(a[w]);if(rr<0){m=a[w];break}}
+     f=isGd(m)?4:HM[tier(m.g)];
+     c=Object.assign({},q);c._m=1;c.cmq=m;c.hp=q.hp*f;if(traitsOf(m).fl)c.f=true;
+     if(typeof q.rw==='number')c.rw=Math.max(1,Math.round(q.rw*gmul(m.g)));
+     G.q.splice(i+1,0,c);i++}
+   }
   }catch(er){}
+  _um0(dt);
+  try{
+   if(G&&G.en){
+    var sd=dt*(G.speed||1),j,e,t,mv,ph,k;
+    for(j=0;j<G.en.length;j++){
+     e=G.en[j];if(!e.cmq||e.dead)continue;
+     t=traitsOf(e.cmq);
+     if(!e._mi){
+      e._mi=1;e.cm=e.cmq;e._b=e.sp*SPD[t.s];e._mt=Math.random()*3;
+      if(t.ho&&!e.f&&!e.fly&&e.ro&&typeof pos==='function'){
+       e.d=Math.max(30,e.ro.tot*(.2+Math.random()*.45));var pp=pos(e.d,e.ro);e.x=pp[0];e.y=pp[1];e._em=.6;
+       if(G.fx)G.fx.push({x:e.x,y:e.y,r:18,t:.4,c:'#b08a5e'})}
+     }
+     e._mt+=sd;if(e._em>0)e._em-=sd;
+     ph=e._mt;mv=t.mv;k=1;
+     if(mv==1)k=(ph%3)<2.2?1:2.4;else if(mv==2)k=(ph%2.8)<2?1:0;else if(mv==3)k=.3+1.4*Math.abs(Math.sin(ph*3.5));else if(mv==4)k=1+Math.sin(ph*2.2)*.5;
+     e.sp=e._b*k}
+   }
+  }catch(er){}
+ };
+ var _dm=drawEn2,HM=[.6,.8,1,1.3,1.7,2.2,3];
+ drawEn2=function(e,t){
+  var ok=false;
+  try{
+   if(e&&e.x!=null){
+    if(e.cm===undefined){
+     if(!(typeof G!=='undefined'&&G&&G.en&&G.en.indexOf(e)>=0)){_dm(e,t);return}
+     e.cm=e.cmq||0;
+    }
+    ok=!!(e.cm&&!e.dead);
+   }
+  }catch(er){}
+  if(!ok){_dm(e,t);return}
+  x.save();try{x.beginPath();x.rect(0,0,0,0);x.clip();_dm(e,t)}catch(er){}x.restore();
+  try{
+   var m2=e.cm,px=e.x,py=e.y,gd=isGd(m2);
+   x.save();
+   x.fillStyle='rgba(120,70,110,.2)';x.beginPath();x.ellipse(px,py+14,11,3,0,0,7);x.fill();
+   if(e.slow>0||e.pois>0){x.fillStyle=e.slow>0?'rgba(159,220,255,.5)':'rgba(165,214,107,.5)';x.beginPath();x.arc(px,py,16,0,7);x.fill()}
+   var tr=traitsOf(m2),dx=0,dy=0,mt=e._mt||0;
+   if(tr.mv==3)dy=-Math.abs(Math.sin(mt*3.5))*7;else if(tr.mv==4)dx=Math.sin(mt*2.2)*3;
+   if(e.f||e.fly)dy-=5+Math.sin(mt*3)*2;
+   if(e._em>0){dy+=e._em/.6*16;x.fillStyle='#5b3d57';x.beginPath();x.ellipse(px,py+13,13,4.5,0,0,7);x.fill()}
+   x.save();x.translate(px+dx,py+dy-monCY(m2.p)*.8);drawMon(x,m2.p,t,.8);x.restore();
+   var w=28,mxh=e.mx>0?e.mx:1;x.fillStyle='#ddd';x.fillRect(px-w/2,py-27,w,4);x.fillStyle='#3ddc84';x.fillRect(px-w/2,py-27,w*Math.max(0,Math.min(1,e.hp/mxh)),4);
+   x.restore();
+  }catch(er){try{x.restore()}catch(e3){}}
  }}
+/* 倒したランキング用：登録モンスターを倒した数を記録（r.m）・ランキング表示用の絵と名前 */
+var _se=stE,_mt=0;
+stE=function(e){
+ try{
+  var m=e&&(e.cm||e.cmq);
+  if(m&&m.p){var r=stRec();if(r){if(!r.m)r.m={};var k='M|'+encodeURIComponent(m.n)+'|'+m.p.join(',')+'|'+m.g;r.m[k]=(r.m[k]||0)+1;clearTimeout(_mt);_mt=setTimeout(stSave,2000)}return}
+ }catch(er){}
+ _se(e)};
+function parseMK(k){var a=k.split('|');return{n:decodeURIComponent(a[1]),p:a[2].split(',').map(Number),g:+a[3]}}
+window.rinMonThumb=function(cn,k){var m=parseMK(k),c=cn.getContext('2d');c.clearRect(0,0,cn.width,cn.height);c.save();c.translate(cn.width/2,cn.height/2-monCY(m.p)*2);drawMon(c,m.p,performance.now(),2);c.restore()};
+window.rinMonLabel=function(k){var m=parseMK(k);return (isGd(m)?'✨ ':'')+m.n};
 })();
 </script>
 </body></html>
