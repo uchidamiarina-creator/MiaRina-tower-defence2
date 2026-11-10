@@ -4263,7 +4263,12 @@ function openList(){
   var inf=document.createElement('div');inf.style.cssText='font-size:13px;line-height:1.7;margin:4px 0;white-space:pre-line';
   inf.textContent=rinfo(m);
   box.appendChild(inf);
+   function dcDesc(m){var s=0,k=String(m.n)+'|'+(m.p||[]).join(',')+'|'+m.g;for(var i=0;i<k.length;i++)s=(Math.imul(s,31)+k.charCodeAt(i))>>>0;function R(){s=(s+0x6D2B79F5)>>>0;var t=s;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}
+    var P=[['{n}はおやつの匂いがすると、ぴょんぴょん集まってくるよ。','ほっぺがふにふに。さわるとちょっとあったかい。','ねるときは丸くなって、しっぽを抱っこするのがくせ。','みんなに「かわいい」と言われると、なぜか三歩さがる。','好きな食べものはいちごのショートケーキ。','こわい顔をしているつもりだけど、ぜんぜんこわくない。','雨の日はたのしそうに水たまりをはねる。','まいごの子を見つけると、そっとついていく。'],['{n}は群れの先頭に立ち、地形を読んで進路を決める慎重な個体。','縄張り意識が強く、侵入者には容赦しない。','動きに無駄がなく、一度狙った獲物は逃がさないといわれる。','長い年月をかけて鍛えた体は、並の攻撃ではびくともしない。','普段は温厚だが、仲間が傷つくと豹変する。','観察された記録は少なく、生態にはまだ謎が多い。','夜明け前に行動を始め、日の出とともに姿を消す。','弱点は存在するが、それを知る者はほとんどいない。'],['{n}は毎週火曜日だけ、少し左にずれて歩く。','なぜかカレーの匂いがするが、本人は食べたことがない。','三回まばたきすると、二回ぶん忘れる。','月に一度、自分の名前を言い間違える。','背後に立つと「ふむ」と言う。意味は不明。','靴下の片方だけを集めている。理由は聞かないでほしい。','たまに「おはよう」を夜に言う。','存在しないはずの階段をのぼる習性がある。']];
+    var t0=Math.floor(R()*3),c=1+Math.floor(R()*3),out=[],used={};while(out.length<c){var tn=R()<.3?Math.floor(R()*3):t0,j=Math.floor(R()*P[tn].length),id=tn+'_'+j;if(used[id])continue;used[id]=1;out.push(P[tn][j].split('{n}').join(m.n))}return out.join('\n')}
+   var ds=document.createElement('div');ds.textContent=dcDesc(m);ds.style.cssText='font-size:13px;line-height:1.7;margin:6px 0;padding:6px 10px;border-radius:10px;background:rgba(255,111,165,.12);white-space:pre-line;text-align:left';box.appendChild(ds);
   var bk=document.createElement('button');bk.textContent='もどる';bk.style.cssText='padding:7px 18px;margin-top:4px';bk.onclick=listView;box.appendChild(bk);
+   var dl=document.createElement('button'),dlA=0;dl.textContent='🗑️ 削除して'+COST+'G戻す';dl.style.cssText='padding:7px 18px;margin:4px 0 0 6px';dl.onclick=function(){try{sfx('tap')}catch(e){}if(!dlA){dlA=1;dl.textContent='ほんとに削除する？ もう一回タップ';setTimeout(function(){if(dl.isConnected){dlA=0;dl.textContent='🗑️ 削除して'+COST+'G戻す'}},3000);return}var ix=a.indexOf(m);if(ix>=0){a.splice(ix,1);saveMons(a);setGold(gold()+COST)}listView()};box.appendChild(dl);
   var c=cv.getContext('2d');cancelAnimationFrame(raf);
   (function f(n){if(!ov)return;c.clearRect(0,0,170,170);c.save();c.translate(85,85-monCY(m.p)*2.2);drawMon(c,m.p,n,2.2);c.restore();raf=requestAnimationFrame(f)})(performance.now())}
  listView()}
@@ -4271,7 +4276,41 @@ var tt=document.getElementById('tt');
 if(tt){
  var st=document.createElement('style');st.textContent='@keyframes dcr{to{transform:rotate(360deg)}}#dcb,#dlb{position:fixed;left:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 30px);width:38px;height:38px;padding:0;font-size:22px;line-height:1;border-radius:10px;z-index:3}#dcb{width:26px;height:26px;border-radius:6px;background:#fff!important;background-image:none!important;border:0!important;box-shadow:none!important;color:#000;display:grid;grid-template:repeat(3,minmax(0,1fr))/repeat(3,minmax(0,1fr));place-items:center;padding:5px;box-sizing:border-box;animation:dcr 9s linear infinite}#dlb{display:flex;align-items:center;justify-content:center}#dlb{bottom:calc(env(safe-area-inset-bottom,0px) + 74px)}';
  document.head.appendChild(st);
- var b=document.createElement('button');b.id='dcb';b.title='モンスターガチャ';var df=0,PIP=[[4],[0,8],[0,4,8],[0,2,6,8],[0,2,4,6,8],[0,2,3,5,6,8]];function face(){b.innerHTML='';for(var q=0;q<9;q++){var d=document.createElement('span');d.style.cssText='width:'+(df==0?8:df==5?3.2:4.2)+'px;height:'+(df==0?8:df==5?3.2:4.2)+'px;border-radius:50%;background:'+(PIP[df].indexOf(q)>=0?(df==0?'#e0102a':'#000'):'transparent');b.appendChild(d)}}face();setInterval(function(){df=(df+1)%6;face()},1100);b.onclick=function(){try{sfx('tap')}catch(e){}open()};
+ var b=document.createElement('button');b.id='dcb';b.title='モンスターガチャ';var df=0,PIP=[[4],[0,8],[0,4,8],[0,2,6,8],[0,2,4,6,8],[0,2,3,5,6,8]];function face(){b.innerHTML='';for(var q=0;q<9;q++){var d=document.createElement('span');d.style.cssText='width:'+(df==0?8:df==5?3.2:4.2)+'px;height:'+(df==0?8:df==5?3.2:4.2)+'px;border-radius:50%;background:'+(PIP[df].indexOf(q)>=0?(df==0?'#e0102a':'#000'):'transparent');b.appendChild(d)}}face();var dcRolling=0,dcX=0;setInterval(function(){if(dcRolling)return;df=(df+1)%6;face()},1100);
+var dcSt=document.createElement('style');dcSt.textContent='@keyframes dcr2{from{transform:rotate(var(--r0,0deg))}to{transform:rotate(calc(var(--r0,0deg) + 360deg))}}';document.head.appendChild(dcSt);
+/* サイコロをタップ：縁を支点に90度ずつ「コロン」と倒れながら反対側の端まで転がり、着地したらガチャが開く */
+function dcRoll(){
+ if(dcRolling)return;
+ var rm=false;try{rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
+ 
+ var s=b.offsetWidth||26,M=10,W=tt.clientWidth||window.innerWidth,maxX=Math.max(s,W-M*2-s),cx=Math.min(maxX,Math.max(0,dcX)),dir=cx<maxX/2?1:-1,room=dir>0?maxX-cx:cx,full=Math.max(1,Math.round(room/s)),pw=.3+Math.random()*.7,n=Math.min(full,Math.max(2,Math.round(full*pw))),adv=n===full?room/n:s,dist=adv*n,T=Math.round(200-70*pw),a0=0,m=getComputedStyle(b).transform;
+ if(m&&m!=='none'){var v=/matrix\(([^)]+)\)/.exec(m);if(v){var q=v[1].split(',');a0=Math.atan2(parseFloat(q[1]),parseFloat(q[0]))*180/Math.PI}}
+ var a1=Math.round(a0/90)*90,W0=Math.abs(a1-a0)>1?110:0,t0=performance.now(),last=0;
+ dcRolling=1;b.style.animation='none';b.style.transition='none';try{sfx('tap')}catch(e){}open();
+ function fin(){
+  dcRolling=0;dcX=cx+dir*dist;
+  var rr=a1+dir*90*n;rr=((rr%360)+360)%360;
+  b.style.transform='';
+  b.style.left=(M+dcX)+'px';
+  b.style.setProperty('--r0',rr+'deg');b.style.animation='dcr2 9s linear infinite';
+  try{sfx('tap')}catch(e){}
+  }
+ function fr(now){
+  var t=now-t0,x=0,y=0,ang;
+  if(t<W0){var e=t/W0;ang=a0+(a1-a0)*e*e*(3-2*e)}
+  else{
+   var tr=t-W0,k=Math.floor(tr/T);
+   if(k>=n){b.style.transform='translate('+(dir*dist)+'px,0) rotate('+(a1+dir*90*n)+'deg)';fin();return}
+   var u=(tr-k*T)/T,p=u*u*(3-2*u),ph=p*Math.PI/2;
+   x=dir*adv*(k+(1-Math.cos(ph)+Math.sin(ph))/2);
+   y=s/2*(Math.sin(ph)+Math.cos(ph)-1);
+   ang=a1+dir*90*(k+p);
+   if(k>last){last=k;try{sfx('tap')}catch(e2){}}
+  }
+  b.style.transform='translate('+x+'px,'+(-y)+'px) rotate('+ang+'deg)';
+  requestAnimationFrame(fr)}
+ requestAnimationFrame(fr)}
+b.onclick=dcRoll;
  tt.appendChild(b);
  var lb=document.createElement('button');lb.id='dlb';lb.title='モンスターリスト';lb.textContent='👾';lb.onclick=function(){try{sfx('tap')}catch(e){}openList()};tt.appendChild(lb)}
 /* 登録モンスターを敵として登場させる：もとの敵はそのまま、出現待ちの敵の約30%ぶん登録モンスターが追加で出てくる */
