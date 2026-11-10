@@ -3764,11 +3764,50 @@ function open(nm){const box=$('pfd'),nk=rkKey(nm),dv=ld(DK),mine=Object.values(d
   c.appendChild(xb);list.appendChild(c)});
  box.scrollTop=0;
  let ch=false;for(const k in (dv[nk]||{}))if(dv[nk][k].nw){dv[nk][k].nw=0;ch=true}if(ch)sv(DK,dv)}
+/* カレンダー形式のMy日記 */
+function openCal(nm){
+ const box=$('pfd'),nk=rkKey(nm),dv=ld(DK),map=dv[nk]||{},pad=n=>String(n).padStart(2,'0'),WD=['日','月','火','水','木','金','土'];
+ box.textContent='';window._pfSub=true;
+ const mkd=(css,txt)=>{const d=document.createElement('div');if(css)d.style.cssText=css;if(txt!=null)d.textContent=txt;return d};
+ const h=mkd('margin:4px 0 6px;font-size:16px;font-weight:bold;color:var(--accent);text-align:center','📔 My日記');
+ const keys=Object.keys(map).sort();let sel=keys.length?keys[keys.length-1]:'';
+ const today=dayKey(Date.now());let ym=(sel||today).slice(0,7);
+ const cal=mkd(''),det=mkd('');box.append(h,cal,det);
+ function card(en){const c=mkd('border:2px solid var(--line);border-radius:14px;padding:10px;margin:8px 0;background:var(--card);text-align:left');
+  const hd=mkd('display:flex;align-items:center;gap:8px;margin-bottom:6px');
+  const cn=document.createElement('canvas');cn.width=cn.height=96;cn.style.cssText='width:36px;height:36px;flex:none';try{pfEnDraw(cn,en.au,!!en.boss)}catch(_){}
+  const tt=mkd('flex:1;min-width:0;font-size:14px;font-weight:bold;line-height:1.35;word-break:break-all',en.title);
+  hd.append(cn,tt);c.appendChild(hd);
+  (en.l||[]).forEach(s=>c.appendChild(mkd('font-size:13px;line-height:1.65',s)));
+  const tc=mkd('margin-top:8px;padding:6px 8px;background:rgba(255,138,0,.13);border-left:4px solid #ff8a00;border-radius:4px;font-size:13px;line-height:1.5');
+  const lb=document.createElement('span');lb.textContent='👩‍🏫 先生より　';lb.style.color='var(--mute)';const pb=document.createElement('b');pb.textContent=en.pr;tc.append(lb,pb);c.appendChild(tc);
+  const xb=document.createElement('button');xb.textContent='𝕏 に投稿する';xb.style.cssText='display:block;width:100%;margin:8px 0 0;padding:8px 4px;font-size:13px;flex:none';
+  xb.onclick=function(){try{sfx('tap')}catch(_){}const a=document.createElement('a');a.href='https://twitter.com/intent/tweet?text='+encodeURIComponent(tweetText(en));a.target='_blank';a.rel='noopener noreferrer';document.body.appendChild(a);a.click();a.remove()};
+  c.appendChild(xb);return c}
+ function showDet(){det.textContent='';const en=map[sel];
+  if(!en){det.appendChild(mkd('padding:14px 6px;text-align:center;font-size:13px;color:var(--mute);line-height:1.7',keys.length?'📔のある日をタップしてね':'まだ日記がないよ。あそんだ日の夜9時に、敵キャラがこっそり日記を書いてくれるよ'));return}
+  det.appendChild(mkd('font-size:12px;color:var(--mute);text-align:center;margin-top:6px',sel.replace('-','年').replace('-','月')+'日'));
+  det.appendChild(card(en));
+  if(en.nw){en.nw=0;sv(DK,dv);render()}}
+ function render(){cal.textContent='';const p=ym.split('-'),Y=+p[0],M=+p[1];
+  const nav=mkd('display:flex;align-items:center;justify-content:space-between;gap:6px;margin:4px 0');
+  const mb=(t,dm)=>{const b=document.createElement('button');b.textContent=t;b.style.cssText='flex:none;padding:6px 14px;font-size:15px';b.onclick=()=>{try{sfx('tap')}catch(_){}const d=new Date(Y,M-1+dm,1);ym=d.getFullYear()+'-'+pad(d.getMonth()+1);render()};return b};
+  nav.append(mb('◀',-1),mkd('font-size:15px;font-weight:bold',Y+'年'+M+'月'),mb('▶',1));cal.appendChild(nav);
+  const g=mkd('display:grid;grid-template-columns:repeat(7,1fr);gap:3px');
+  WD.forEach((w,i)=>g.appendChild(mkd('text-align:center;font-size:11px;font-weight:bold;color:'+(i==0?'#e0103a':i==6?'#2f6fdc':'var(--mute)'),w)));
+  const first=new Date(Y,M-1,1).getDay(),dim=new Date(Y,M,0).getDate();
+  for(let i=0;i<first;i++)g.appendChild(mkd(''));
+  for(let d=1;d<=dim;d++){const key=Y+'-'+pad(M)+'-'+pad(d),en=map[key],on=key===sel;
+   const b=document.createElement('button');b.style.cssText='aspect-ratio:1;padding:0;font-size:13px;line-height:1.15;border-radius:10px;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid '+(on?'var(--accent)':key===today?'#ff8a00':'var(--line)')+';background:'+(on?'var(--accent)':en?'#ffe7a8':'var(--card)')+';color:'+(on?'#fff':'var(--ink)');
+   b.appendChild(mkd('',String(d)));if(en)b.appendChild(mkd('font-size:11px',en.nw?'✨':'📔'));
+   b.onclick=()=>{try{sfx('tap')}catch(_){}sel=key;render();showDet()};g.appendChild(b)}
+  cal.appendChild(g);cal.appendChild(mkd('font-size:11px;color:var(--mute);text-align:center;margin-top:6px','📔 = 日記あり　✨ = 未読　全'+keys.length+'件'))}
+ render();showDet();box.scrollTop=0}
 const pfb=$('pfb');
 if(pfb){const prev=pfb.onclick;pfb.onclick=function(){if(prev)prev.apply(this,arguments);
  try{const box=$('pfd'),nm=profName();if(!nm)return;const dv=ld(DK)[rkKey(nm)]||{},list=Object.values(dv),nw=list.filter(e=>e.nw).length;
   const b=document.createElement('button');b.textContent='📔 My日記　'+list.length+'件'+(nw?'　✨NEW '+nw:'');b.style.cssText='width:100%;margin:10px 0 2px;flex:none;padding:10px 4px;font-size:14px';
-  b.onclick=function(){try{sfx('tap')}catch(_){}open(nm)};box.appendChild(b)}catch(e){}}}
+  b.onclick=function(){try{sfx('tap')}catch(_){}openCal(nm)};box.appendChild(b)}catch(e){}}}
 window.__diary={make,check,open,LG:()=>LG,PRAISE,dayKey,flush};
 })();
 </script>
