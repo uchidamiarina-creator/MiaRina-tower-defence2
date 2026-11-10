@@ -1044,7 +1044,7 @@ addEventListener('keydown',e=>{if(e.key=='Escape')rkClose()});
 pn.oninput=()=>{stb.disabled=!pn.value.trim()};stb.disabled=true;
 stb.onclick=()=>{PN=pn.value.trim().slice(0,8);if(!PN)return;D=DIFF[lv];ac();tbgm(false);TBH.style.display='none';init();tt.style.display='none';cheer('ファイト〜！');sfx('wave');bgm(true);setTimeout(()=>loadB(1),3000)};
 ch.onclick=()=>{if(document.getElementById('chq'))return;const q=document.createElement('div');q.id='chq';q.style.cssText='position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(36,20,38,.6);padding:16px';const bx=document.createElement('div');bx.style.cssText='background:var(--card);color:var(--ink);border:3px solid var(--accent);border-radius:18px;padding:18px 20px;text-align:center;width:min(88%,300px)';const m=document.createElement('p');m.textContent='タイトルに戻りますか？';m.style.cssText='margin:0 0 14px;font-size:16px';const r=document.createElement('div');r.className='row';const no=document.createElement('button');no.textContent='やめる';const ok=document.createElement('button');ok.textContent='戻る';ok.className='go';no.onclick=()=>q.remove();ok.onclick=()=>{q.remove();document.getElementById('ov').style.display='none';dfUI();tt.style.display='flex';bgm(false);tbgm(true);TW.start();refreshCont()};r.append(no,ok);bx.append(m,r);q.append(bx);document.body.append(q)};
-function fit(){const r=cw.getBoundingClientRect(),s=Math.min(r.width/360,r.height/440);if(s>0){cv.style.width=360*s+'px';cv.style.height=440*s+'px'}}
+function fit(){const r={width:cw.clientWidth,height:cw.clientHeight},s=Math.min(r.width/360,r.height/440);if(s>0){cv.style.width=360*s+'px';cv.style.height=440*s+'px'}}
 new ResizeObserver(fit).observe(cw);addEventListener('resize',fit);fit();
 addEventListener('orientationchange',fit);document.addEventListener('gesturestart',e=>e.preventDefault());
 function ready(){if(!document.body.classList.contains('ld'))return;fit();document.body.classList.remove('ld');ld.remove()}
@@ -2181,7 +2181,7 @@ var cs=null;var _p=panel;panel=function(){
  try{
   if(!G||cs!==G.sel)cs=null;var wp=document.getElementById('wpop');if(!wp||wp.style.display==='none'||!G||!G.sel)return;
   var t=G.sel,wrap=document.getElementById('wrap'),cr=cv.getBoundingClientRect(),wr=wrap.getBoundingClientRect();
-  var tx=cr.left-wr.left+t.x/360*cr.width,ty=cr.top-wr.top+t.y/440*cr.height;
+  var _ps=window.__ps||1,tx=(cr.left-wr.left+t.x/360*cr.width)/_ps,ty=(cr.top-wr.top+t.y/440*cr.height)/_ps;
   var head=wp.querySelector('b'),up=document.getElementById('up'),cup=document.getElementById('cup'),sell=document.getElementById('sell'),wsp=document.getElementById('wsp'),wcl=document.getElementById('wcl');
   var mx=null;wp.querySelectorAll('button').forEach(function(b){if(!b.id&&b.disabled)mx=b});
   if(t.k=='W'){[up,cup,mx].forEach(function(b){if(b)b.remove()});up=cup=mx=null}
@@ -2202,7 +2202,7 @@ var cs=null;var _p=panel;panel=function(){
   if(sell&&sell.parentNode===wp){var rs='display:flex;align-items:center;justify-content:center;gap:5px;',r1=document.createElement('div'),r2=document.createElement('div');r1.style.cssText=rs;r2.style.cssText=rs;Array.prototype.slice.call(wp.children).forEach(function(c){if(c!==sell&&c!==wcl)r1.appendChild(c)});r2.appendChild(sell);if(wcl)r2.appendChild(wcl);wp.appendChild(r1);wp.appendChild(r2)}
   wp.querySelectorAll('i.wtail').forEach(function(e){e.remove()});
   wp.style.cssText='position:absolute;left:0;top:0;transform:none;z-index:6;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;padding:6px 8px;background:var(--card);color:var(--ink);border:3px solid var(--accent);border-radius:16px;box-shadow:0 6px 16px rgba(255,111,165,.45);max-width:none;white-space:nowrap';
-  var bw=wp.offsetWidth,bh=wp.offsetHeight,L=Math.max(4,Math.min(wr.width-bw-4,tx-bw/2)),down=ty-bh-30>=4,T=down?ty-bh-24:ty+24;
+  var bw=wp.offsetWidth,bh=wp.offsetHeight,L=Math.max(4,Math.min(wrap.clientWidth-bw-4,tx-bw/2)),down=ty-bh-30>=4,T=down?ty-bh-24:ty+24;
   wp.style.left=L+'px';wp.style.top=T+'px';
   var tl=document.createElement('i');tl.className='wtail';var tlx=Math.max(14,Math.min(bw-14,tx-L))-9;
   tl.style.cssText='position:absolute;left:'+tlx+'px;width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;'+(down?'bottom:-14px;border-top:12px solid var(--accent)':'top:-14px;border-bottom:12px solid var(--accent)');
@@ -4145,10 +4145,10 @@ panel=function(){
   document.getElementById('bkx').onclick=function(){G.sel=null;hud();panel()};
    wp.style.cssText='position:absolute;left:0;top:0;transform:none;z-index:6;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:5px;padding:6px 8px;background:var(--card);color:var(--ink);border:3px solid var(--accent);border-radius:16px;box-shadow:0 6px 16px rgba(255,111,165,.45);width:max-content;max-width:calc(100% - 8px)';
    var wrp=document.getElementById('wrap'),cr2=cv.getBoundingClientRect(),wr2=wrp.getBoundingClientRect();
-   var bx2=cr2.left-wr2.left+t.x/360*cr2.width,by2=cr2.top-wr2.top+t.y/440*cr2.height;
+   var _ps2=window.__ps||1,bx2=(cr2.left-wr2.left+t.x/360*cr2.width)/_ps2,by2=(cr2.top-wr2.top+t.y/440*cr2.height)/_ps2;
    var bw2=wp.offsetWidth,bh2=wp.offsetHeight;
-   var L2=Math.max(4,Math.min(wr2.width-bw2-4,bx2-bw2/2)),T2=by2-bh2-24>=4?by2-bh2-24:by2+24;
-   T2=Math.max(4,Math.min(wr2.height-bh2-4,T2));
+   var L2=Math.max(4,Math.min(wrp.clientWidth-bw2-4,bx2-bw2/2)),T2=by2-bh2-24>=4?by2-bh2-24:by2+24;
+   T2=Math.max(4,Math.min(wrp.clientHeight-bh2-4,T2));
    wp.style.left=L2+'px';wp.style.top=T2+'px';
  }catch(e){console.error(e)}
 };
@@ -4739,6 +4739,35 @@ update=function(dt){sync();window.__rdt=dt;
  if(frozen!==null){try{CH.idle=0}catch(e){}return _top(0)}
  return _top(dt)};
 var _rt=rnTalk;rnTalk=function(dt){if(frozen!==null)return;return _rt(dt)};
+})();
+</script>
+<script>
+/* 指2本のピンチで画面全体を縮小（今のサイズより大きくはならない） */
+(function(){
+var wrap=document.getElementById('wrap'),MIN=.4,s=1,d0=0,s0=1,on=false;
+function dist(t){return Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY)}
+function set(v){s=Math.max(MIN,Math.min(1,v));window.__ps=s;
+ var tin=document.querySelector('#tt .tin');[wrap,tin].forEach(function(el){if(!el)return;el.style.transformOrigin='50% 50%';el.style.transform=s<.999?'scale('+s+')':''});
+ try{window.dispatchEvent(new Event('resize'))}catch(e){}}
+document.addEventListener('touchstart',function(e){
+ if(e.touches.length===2){on=true;d0=dist(e.touches)||1;s0=s;e.preventDefault()}},{passive:false,capture:true});
+document.addEventListener('touchmove',function(e){
+ if(on&&e.touches.length>=2){e.preventDefault();set(s0*dist(e.touches)/d0)}},{passive:false,capture:true});
+function end(e){if(e.touches.length<2)on=false}
+document.addEventListener('touchend',end,true);document.addEventListener('touchcancel',end,true);
+/* ピンチの1本目の指をタップ扱いにしないため、タッチの押下を一瞬だけ保留する */
+var pend=null,redo=false;
+function flush(){if(!pend)return;var q=pend;pend=null;clearTimeout(q.tm);
+ redo=true;try{q.tg.dispatchEvent(new PointerEvent('pointerdown',{clientX:q.x,clientY:q.y,pointerId:q.id,pointerType:'touch',isPrimary:true,button:0,buttons:1,bubbles:true,cancelable:true}))}catch(e){}redo=false}
+document.addEventListener('pointerdown',function(e){
+ if(redo||e.pointerType!=='touch')return;
+ if(on){e.stopImmediatePropagation();return}
+ if(!wrap.contains(e.target))return;
+ e.stopImmediatePropagation();
+ pend={tg:e.target,x:e.clientX,y:e.clientY,id:e.pointerId,tm:setTimeout(flush,110)}},true);
+document.addEventListener('pointerup',function(e){if(pend&&e.pointerType==='touch')flush()},true);
+document.addEventListener('pointermove',function(e){if(pend&&e.pointerType==='touch'&&Math.hypot(e.clientX-pend.x,e.clientY-pend.y)>6)flush()},true);
+document.addEventListener('touchstart',function(e){if(e.touches.length>=2&&pend){clearTimeout(pend.tm);pend=null}},true);
 })();
 </script>
 </body></html>
