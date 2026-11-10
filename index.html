@@ -251,7 +251,7 @@ function panel(){const lb=document.getElementById('lbx'),pb=document.getElementB
   if(G.setup&&!G.sel&&(!G.goal||!G.starts.length)){ledSet(lb,!G.goal?'① 利奈のゴールにしたい場所をタップしよう（未亜の近くには置けないよ）　🗺️ボタンでおまかせ作成もできるよ':'② 敵が出てくるスタートの場所をタップしよう（未亜の近くには置けないよ）');return}
   if(G.setup&&!G.sel&&(build=='Z'||build=='K')){ledSet(lb,'道づくり：旗から利奈まで道をつなごう（無料）。つながると▶が押せるよ');return}
   if(G.sel){const t=G.sel,d=T[t.k];ledSet(lb,d.name+' Lv'+t.lv+(t.k=='M'?'　':t.k=='X'?'　借金 '+(G.debt|0)+'G（'+(G.loans|0)+'/10回）　':t.k=='I'?'　タップで今のフェーズをスキップ 💰1000　':t.k=='Q'?'　出目×'+Math.round(t.dmg*10)/10+'（1〜6の目）　射程 '+Math.round(t.rng)+'　':t.k=='L'?'　当たり確率 '+Math.round(23.3*(1+.4*(t.lv-1)))+'%　':'　こうげき '+Math.round(t.dmg)+'　射程 '+Math.round(t.rng)+'　')+(TD[t.k]||''));wp.style.display='flex';
-   wp.innerHTML='<b style="width:100%;text-align:center;font-size:13px">'+d.name+' Lv'+t.lv+'</b>'+(t.k=='W'?'<button id="wsp">かいてん 💰1000</button>':'')+((t.k=='X'||t.k=='I')?'':t.lv<(t.k=='L'?6:t.k=='W'?3:t.k=='M'?3:99)?'<button id="up">強化 💰'+upCost(t)+'</button>':'<button disabled>最大Lv</button>')+'<button id="sell">売る 💰'+Math.round(t.spent*.6*(t.gold?10:1))+'</button><button id="wcl">✕</button>';
+   wp.innerHTML='<b style="width:100%;text-align:center;font-size:13px">'+d.name+' Lv'+t.lv+'</b>'+(t.k=='W'?'<button id="wsp">かいてん 💰1000</button>':'')+((t.k=='X'||t.k=='I')?'':t.lv<(t.k=='L'?6:t.k=='W'?3:t.k=='M'?3:t.k=='ZO'?(T.ZO.mx||5):99)?'<button id="up">強化 💰'+upCost(t)+'</button>':'<button disabled>最大Lv</button>')+'<button id="sell">売る 💰'+Math.round(t.spent*.6*(t.gold?10:1))+'</button><button id="wcl">✕</button>';
   const u=document.getElementById('up'),ws=document.getElementById('wsp');if(ws)ws.onclick=()=>window.whipSpin(t);if(u)u.onclick=()=>{if(t.k=='L'&&t.lv>=6)return;if(t.k=='W'&&t.lv>=3)return;if(t.k=='M'&&t.lv>=3)return;const c=upCost(t);if(G.gold>=c){G.gold-=c;sfx('up');t.spent+=c;t.lv++;t.dmg=T[t.k].dmg*(1+.45*D.up*(t.lv-1)*(1+(t.lv-1)/60));if(t.k=='W')t.rng+=15;else if(t.lv<=6&&t.k!='M')t.rng+=6;hud();panel()}};
   document.getElementById('wcl').onclick=()=>{G.sel=null;hud();panel()};document.getElementById('sell').onclick=()=>{sfx('sell');G.gold+=Math.round(t.spent*.6*(t.gold?10:1));G.tw=G.tw.filter(o=>o!==t);G.sel=null;hud();panel()}
    return}
@@ -2017,7 +2017,7 @@ if(pfb){var prev=pfb.onclick;pfb.onclick=function(){if(prev)prev.apply(this,argu
  /* キャンディ強化（1個で1レベル） */
  var _pn=panel;panel=function(){_pn();
   if(!G||!G.sel||G.sel.k=='X'||G.sel.k=='I')return;var t=G.sel,pb=document.getElementById('wpop');if(!pb||pb.style.display==='none')return;
-  var cap=t.k=='L'?6:t.k=='W'?3:t.k=='M'?1:99;var b=document.createElement('button');b.id='cup';
+  var cap=t.k=='L'?6:t.k=='W'?3:t.k=='M'?1:t.k=='ZO'?(T.ZO.mx||5):99;var b=document.createElement('button');b.id='cup';
   if(t.lv>=cap){return}
   b.textContent='🍬強化 ('+(G.candy|0)+')';b.disabled=(G.candy|0)<1;
   b.onclick=function(){if((G.candy|0)<1||t.lv>=cap)return;G.candy--;t.lv++;t.dmg=T[t.k].dmg*(1+.45*D.up*(t.lv-1)*(1+(t.lv-1)/60));if(t.k=='W')t.rng+=15;else if(t.lv<=6)t.rng+=6;
@@ -2175,7 +2175,7 @@ var _d=draw2;draw2=function(){_d();try{if(cnt>=0&&waiting())ring()}catch(e){cons
 (function(){
 function num(b){var m=b&&b.textContent.match(/\d+/);return m?m[0]:''}
 function sty(b,bg,fs){if(!b)return;b.style.cssText='background:'+bg+';font-size:'+(fs||16)+'px;padding:5px 7px;min-width:0;border-radius:11px;line-height:1.1;white-space:nowrap;flex:0 0 auto'}
-var _ls=ledSet;ledSet=function(h,txt){try{if(h&&h.id==='lbx'&&G&&G.sel&&G.sel.k!=='X'&&G.sel.k!=='I'){var s=G.sel,cap=s.k=='L'?6:s.k=='W'?3:s.k=='M'?3:99;var pre='';if(s.lv<cap&&s.k!=='W')pre+='強化 💰'+upCost(s)+'　';pre+='売る 💰'+Math.round(s.spent*.6*(s.gold?10:1))+'　';txt=pre+txt}}catch(e){}return _ls(h,txt)};
+var _ls=ledSet;ledSet=function(h,txt){try{if(h&&h.id==='lbx'&&G&&G.sel&&G.sel.k!=='X'&&G.sel.k!=='I'){var s=G.sel,cap=s.k=='L'?6:s.k=='W'?3:s.k=='M'?3:s.k=='ZO'?(T.ZO.mx||5):99;var pre='';if(s.lv<cap&&s.k!=='W')pre+='強化 💰'+upCost(s)+'　';pre+='売る 💰'+Math.round(s.spent*.6*(s.gold?10:1))+'　';txt=pre+txt}}catch(e){}return _ls(h,txt)};
 var cs=null;var _p=panel;panel=function(){
  _p();
  try{
@@ -2529,7 +2529,7 @@ var TIPS=[
 '最初から使える武器はピンクアローだけ。ほかの武器は仙人に教えてもらおう',
 '一度出てきた仙人は、5フェーズのあいだは来ないよ',
 '教わった武器は、みちづくりボタンのすぐ左にならぶよ',
-'全部の武器を教わったら、仙人は「武器はもうない」と言うよ',
+'全部の武器を教わったら、仙人がオリジナル武器を伝授してくれるよ。仙人をタップするたびに、何度でも作りかえられる',
 'こたつレーザーはタップで電源OFF。5〜60秒のランダムな間隔で勝手にレベルアップするよ（フェーズ中だけ）',
 'こたつレーザーは電源OFFのあいだは攻撃しないよ。強くなったらもう一度タップでON！',
 'こたつレーザーのレーザーは、線の上にならんだ敵をまとめてつらぬくよ',
@@ -2927,7 +2927,7 @@ window.__xn={conv,KS,XS,DR};
 <script>
 (function(){
 /* ===== おおさかマップ：たこ焼きが武器に落ちてきて、レベルを1つ上げてくれる ===== */
-const TH=14,CAP=t=>t.k==='L'?6:t.k==='W'?3:t.k==='M'?3:99;
+const TH=14,CAP=t=>t.k==='L'?6:t.k==='W'?3:t.k==='M'?3:t.k==='ZO'?(T.ZO.mx||5):99;
 const ok=t=>t&&t.k!=='X'&&t.lv<CAP(t)&&!t.broken;
 function lvUp(t){t.lv++;t.dmg=T[t.k].dmg*(1+.45*D.up*(t.lv-1)*(1+(t.lv-1)/60));if(t.k==='W')t.rng+=15;else if(t.lv<=6&&t.k!=='M')t.rng+=6}
 function st(){return G.tk||(G.tk={t:14+Math.random()*10,l:[],p:[]})}
@@ -3210,7 +3210,7 @@ P.measureText=function(t){t=String(t);if(!has(t))return _meas.call(this,t);const
   var o=sg();
   if(G.active&&o.seen!==G.wave){
    o.seen=G.wave;
-   if(!o.s&&o.pend<0&&G.wave-o.last>=(locked().length?6:20)&&Math.random()<(locked().length?.7:.15))o.pend=2+Math.random()*10}
+   if(!o.s&&o.pend<0&&G.wave-o.last>=(locked().length?6:8)&&Math.random()<(locked().length?.7:.5))o.pend=2+Math.random()*10}
   if(o.pend>=0&&G.active){o.pend-=dt;if(o.pend<0&&!o.s){
    var dir=Math.random()<.5?1:-1;
    o.s={x:dir>0?-24:384,y:70+Math.random()*230,y0:0,dir:dir,age:0,life:30,leave:0,msg:0,ph:Math.random()*6};
@@ -3272,6 +3272,7 @@ P.measureText=function(t){t=String(t);if(!has(t))return _meas.call(this,t);const
    cs.forEach(function(p){c1+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(p[2]+4)+'" fill="#cfe3ff"/>';c2+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+p[2]+'" fill="#fff"/>'});
    ov.innerHTML='<div class="cl"><svg viewBox="0 0 320 200">'+c1+c2+'</svg><div class="tx"><div class="t1">✨ 仙人から伝授！ ✨</div><canvas width="56" height="56"></canvas><div class="t2"></div><div class="t3">ゲットだぜ！</div></div></div>';
    ov.querySelector('.t2').textContent=T[k].name;
+   if(k==='ZO'){ov.querySelector('.t1').textContent='✨ オリジナル武器を伝授！ ✨';ov.querySelector('.t3').textContent=(window.zoInfo?window.zoInfo():'')+'（仙人をタップで作りかえ）'}
    var cn=ov.querySelector('canvas'),D2=Math.min(2,Math.max(1,window.devicePixelRatio||1));cn.width=cn.height=Math.round(56*D2);
    var g=cn.getContext('2d');g.setTransform(D2*1.4,0,0,D2*1.4,0,0);drawTower(g,k,20,21,0,0);
    document.body.appendChild(ov);
@@ -3287,6 +3288,16 @@ P.measureText=function(t){t=String(t);if(!has(t))return _meas.call(this,t);const
    if(s&&s.leave<=0&&Math.hypot(px-s.x,py-s.y+4)<=30){
     var L=locked();
     if(!L.length){
+     if(window.zoRoll){
+      if(s.zt&&performance.now()-s.zt<700)return;s.zt=performance.now();
+      if(window.zoRoll()){
+       try{sfx('clear')}catch(e){}
+       showGet('ZO');
+       s.say='新しい武器じゃ！';s.msg=1.8;
+       G.fx.push({x:s.x,y:s.y,r:30,t:.45,c:'#ffe066'});
+       try{stars(s.x,s.y-6,'#ffd166',8,1)}catch(e){}
+       try{var zb=null;for(var zi=0;zi<tb.children.length;zi++)if(tb.children[zi].dataset.k==='ZO')zb=tb.children[zi];if(zb)zb.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'})}catch(e){}
+       hud();return}}
      s.say='武器はもうないぞい';s.msg=2.4;
      try{sfx('deny')}catch(e){}
      G.fx.push({x:180,y:Math.max(24,s.y-48),txt:'武器はもうない',t:1.8,c:'#7a5cff'});
@@ -3927,7 +3938,7 @@ const ITEMS=[
  {id:'s',name:'シャボン玉',icon:'🫧',bub:1,ds:'5フェーズの間、マップに泡がただよう。敵に当たると泡に閉じ込められて、画面の上へ消えていく（ボスは対象外）'},
  {id:'c',name:'猛毒コブラ',icon:'🐍',cobra:1,ds:'マップ上の全てのどくタワーを「どくどくタワー」に進化！強さが2倍になる'},
  {id:'l',name:'ライオンバス',icon:'🦁',lbus:1,ds:'ゴールからスタートへゆっくり走り、道の敵を全部のせて消す（ボスは乗れない）。のせたあとはゴール手前でフェーズ終了まで停車'}];
-const cap=t=>t.k==='L'?6:t.k==='W'?3:t.k==='M'?3:99;
+const cap=t=>t.k==='L'?6:t.k==='W'?3:t.k==='M'?3:t.k==='ZO'?(T.ZO.mx||5):99;
 const ok=t=>t&&t.k!=='X'&&!t.broken&&typeof t.lv==='number'&&T[t.k]&&typeof T[t.k].dmg==='number';
 const IK='miarina_td_rin_items_v1',MAXN=999;let INV=null;
 function loadInv(){let o=null;try{const s=localStorage.getItem(IK);if(s)o=JSON.parse(s)}catch(e){}
@@ -4841,6 +4852,106 @@ document.addEventListener('pointerdown',function(e){
 document.addEventListener('pointerup',function(e){if(pend&&e.pointerType==='touch')flush()},true);
 document.addEventListener('pointermove',function(e){if(pend&&e.pointerType==='touch'&&Math.hypot(e.clientX-pend.x,e.clientY-pend.y)>6)flush()},true);
 document.addEventListener('touchstart',function(e){if(e.touches.length>=2&&pend){clearTimeout(pend.tm);pend=null}},true);
+})();
+</script>
+<script>
+/* オリジナル武器：全部の武器を教わったあと、仙人が名前・見た目・能力・強さ・射程・最高レベルがぜんぶランダムな武器を伝授。仙人をタップするたびに作りかえ */
+(function(){
+ var KEY='miarina_td_original_v1',DPR=Math.min(2,Math.max(1,window.devicePixelRatio||1));
+ var ADJ=['ぷるぷる','きらきら','ごろごろ','ふわふわ','ぴかぴか','もこもこ','ちょうつよい','なぞの','でんせつの','まっかな','あおい','ひみつの','おばけ','うちゅうの','ちびっこ','ぐるぐる','どんどん','ふしぎ','ミラクル','ウルトラ','ハイパー','ひとくち','じごくの','てんごくの','まんまる','とげとげ','しわしわ','ぱちぱち','ほかほか','ひえひえ','ぷにぷに','ぐにゃぐにゃ','きょだいな','むてきの','せんにんの','ゆうやけ','おほしさま','たいようの','つきのひかり','ひらひら'];
+ var NOUN=['キャノン','ビーム','ミサイル','ブーメラン','ハンマー','スプレー','バズーカ','ランチャー','ソード','パンチ','ライト','ボール','ロッド','ステッキ','マシン','クロスボウ','ドリル','ネット','ポンプ','ほうき','かさ','フォーク','スプーン','リボン','マイク','ギター','たいこ','ラッパ','おたま','バット','ハリセン','パチンコ','ゆみ','トランポリン','けしごむ','でんち','ふうせん','おにぎり','ロケット','ムチ'];
+ var SHAPES=['circle','square','tri','star','hex','diamond'],ORN=['none','dot','crown','antenna','ring','leaf'];
+ var MAIN=[['plain','ふつうのたま攻撃',{}],['spl','はれつ！まわりもまきこむ',{spl:1}],['chain','いなずまが次々つながる',{chain:1}],['beam','まっすぐつらぬくビーム',{beam:1}],['blast','自分のまわりをどかん',{blast:1}]];
+ var EXTRA=[['','',{}],['','',{}],['slow','こおらせて足止め',{slow:1}],['pois','どくでじわじわ',{pois:1}],['air','空の敵だけねらう',{air:1}]];
+ function rr(a,b){return a+Math.random()*(b-a)}
+ function ri(a,b){return Math.floor(rr(a,b+1))}
+ function pk(a){return a[Math.random()*a.length|0]}
+ function hsl(h,s,l){s/=100;l/=100;var k=function(n){return(n+h/30)%12},a=s*Math.min(l,1-l),f=function(n){var v=l-a*Math.max(-1,Math.min(k(n)-3,9-k(n),1));return Math.round(255*v).toString(16).padStart(2,'0')};return'#'+f(0)+f(8)+f(4)}
+ function gen(){
+  var m=pk(MAIN),x=pk(EXTRA),h=Math.random()*360,noun=pk(NOUN),name=pk(ADJ)+noun;
+  var rng=ri(50,210),rate=Math.round(rr(.4,3.6)*10)/10,dps=rr(9,42),mult=1;
+  if(m[0]==='spl')mult*=.75;if(m[0]==='chain')mult*=.7;if(m[0]==='beam')mult*=.8;if(m[0]==='blast'){mult*=.75;rng=ri(45,100)}
+  if(x[0]==='slow'||x[0]==='pois')mult*=.7;
+  var dmg=Math.max(2,Math.round(dps*rate*mult*10)/10);
+  var cost=Math.max(40,Math.min(320,Math.round((dps*3.2+rng*.6)/10)*10));
+  var o={name:name,n:noun[0],col:hsl(h,70,52),c2:hsl((h+rr(40,200))%360,75,62),shape:pk(SHAPES),orn:pk(ORN),bar:ri(1,3),
+   main:m[0],extra:x[0],rng:rng,rate:rate,dmg:dmg,cost:cost,mx:ri(3,15),
+   txt:[m[1],x[1]].filter(Boolean).join('＋')};
+  return o}
+ function apply(o){
+  var d={n:o.n,name:o.name,cost:o.cost,rng:o.rng,rate:o.rate,dmg:o.dmg,col:o.col};
+  var mm=MAIN.filter(function(q){return q[0]===o.main})[0],xx=EXTRA.filter(function(q){return q[0]&&q[0]===o.extra})[0];
+  if(mm){var f=mm[2];for(var k in f)d[k]=f[k]}
+  if(xx){var g=xx[2];for(var k2 in g)d[k2]=g[k2]}
+  if(d.spl)d.spl=Math.round(30+o.rng*.12);if(d.chain)d.chain=ri(2,4);if(d.blast)d.blast=Math.round(o.rng*1.1);
+  d.mx=o.mx;d.zo=1;T.ZO=d;
+  try{TD.ZO='仙人がくれたオリジナル武器。'+(o.txt||'')+'｜射程'+o.rng+'・Lv上限'+o.mx+'｜仙人をタップするたびに作りかえ'}catch(e){}
+  return d}
+ function info(){var o=T.ZO&&T.ZO.o;return o?'射程'+o.rng+'・Lv上限'+o.mx+'・'+(o.txt||'ふつう'):''}
+ window.zoInfo=info;
+ function save(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+ function load(){try{var o=JSON.parse(localStorage.getItem(KEY)||'null');if(o&&typeof o==='object'&&o.name&&o.rng>0&&o.mx>=3)return o}catch(e){}return null}
+ /* ---- 見た目 ---- */
+ function poly(c,n,r,rot){c.beginPath();for(var i=0;i<n;i++){var a=rot+i*Math.PI*2/n;i?c.lineTo(Math.cos(a)*r,Math.sin(a)*r):c.moveTo(Math.cos(a)*r,Math.sin(a)*r)}c.closePath()}
+ function art(c,o,a){
+  c.save();
+  c.fillStyle='#fff';c.beginPath();c.arc(0,0,14.5,0,7);c.fill();
+  /* 砲身 */
+  c.strokeStyle=o.c2;c.lineWidth=3;c.lineCap='round';
+  for(var i=0;i<o.bar;i++){var aa=a+(i-(o.bar-1)/2)*.45;c.beginPath();c.moveTo(Math.cos(aa)*3,Math.sin(aa)*3);c.lineTo(Math.cos(aa)*13,Math.sin(aa)*13);c.stroke()}
+  /* 本体 */
+  c.fillStyle=o.col;c.strokeStyle='rgba(60,30,60,.55)';c.lineWidth=1.4;
+  switch(o.shape){
+   case'circle':c.beginPath();c.arc(0,0,8.5,0,7);break;
+   case'square':c.beginPath();c.rect(-7.5,-7.5,15,15);break;
+   case'tri':poly(c,3,10,-Math.PI/2);break;
+   case'star':c.beginPath();for(var j=0;j<10;j++){var r=j%2?4.2:10,t=-Math.PI/2+j*Math.PI/5;j?c.lineTo(Math.cos(t)*r,Math.sin(t)*r):c.moveTo(Math.cos(t)*r,Math.sin(t)*r)}c.closePath();break;
+   case'hex':poly(c,6,9.5,0);break;
+   default:poly(c,4,10.5,-Math.PI/2)}
+  c.fill();c.stroke();
+  /* かざり */
+  c.fillStyle=o.c2;c.strokeStyle=o.c2;c.lineWidth=1.4;
+  if(o.orn==='dot'){c.beginPath();c.arc(0,-11,2.4,0,7);c.fill()}
+  else if(o.orn==='crown'){c.beginPath();c.moveTo(-5,-9);c.lineTo(-5,-13);c.lineTo(-2.5,-10.5);c.lineTo(0,-14);c.lineTo(2.5,-10.5);c.lineTo(5,-13);c.lineTo(5,-9);c.closePath();c.fill()}
+  else if(o.orn==='antenna'){c.beginPath();c.moveTo(0,-9);c.lineTo(0,-13);c.stroke();c.beginPath();c.arc(0,-13.5,1.8,0,7);c.fill()}
+  else if(o.orn==='ring'){c.beginPath();c.arc(0,0,11.5,0,7);c.stroke()}
+  else if(o.orn==='leaf'){c.beginPath();c.ellipse(-4,-11,3.6,1.8,-.6,0,7);c.ellipse(4,-11,3.6,1.8,.6,0,7);c.fill()}
+  /* かお */
+  c.fillStyle='#4a2740';c.beginPath();c.arc(-2.8,-.5,1.1,0,7);c.arc(2.8,-.5,1.1,0,7);c.fill();
+  c.fillStyle='rgba(255,90,140,.5)';c.beginPath();c.arc(-4.8,2.2,1.4,0,7);c.arc(4.8,2.2,1.4,0,7);c.fill();
+  c.restore()}
+ var _d=drawTower;
+ drawTower=function(c,k,px,py,a,lv){
+  _d(c,k,px,py,a,lv);
+  if(k!=='ZO'||!T.ZO||!T.ZO.o)return;
+  c.save();c.translate(px,py);art(c,T.ZO.o,a||-Math.PI/2);c.restore()};
+ /* ---- ツールバー ---- */
+ var tb=document.getElementById('tb'),btn=null;
+ function paint(){
+  if(!btn)return;
+  btn.children[1].textContent=T.ZO.name;btn.children[2].textContent='💰'+cst('ZO');
+  var cn=btn.firstChild;cn.width=cn.height=Math.round(40*DPR);var g=cn.getContext('2d');g.setTransform(DPR,0,0,DPR,0,0);drawTower(g,'ZO',20,21,0,0)}
+ function ensureBtn(){
+  if(btn)return;
+  var slot=null;for(var i=0;i<tb.children.length;i++){if(tb.children[i].dataset.k==='L'){slot=tb.children[i];break}}
+  btn=document.createElement('button');btn.dataset.k='ZO';
+  btn.innerHTML='<canvas width="40" height="40" style="width:34px;height:34px;border:0;box-shadow:none;border-radius:0"></canvas><span></span><span></span>';
+  btn.onclick=function(){build='ZO';G.sel=null;G.brk=false;sfx('tap');hud();panel()};
+  if(slot)tb.insertBefore(btn,slot);else tb.appendChild(btn)}
+ function install(o){var d=apply(o);d.o=o;ensureBtn();paint();return d}
+ /* ---- 仙人から呼ばれる：新しいオリジナル武器を作る ---- */
+ window.zoRoll=function(){
+  try{
+   var o=gen();save(o);install(o);
+   /* いまマップにある旧オリジナル武器も新しい能力に作りかえ */
+   if(G&&G.tw)G.tw.forEach(function(t){if(t.k!=='ZO')return;
+    if(t.lv>o.mx)t.lv=o.mx;
+    t.dmg=T.ZO.dmg*(1+.45*D.up*(t.lv-1)*(1+(t.lv-1)/60));t.rng=T.ZO.rng+6*Math.min(t.lv-1,6)});
+   if(G&&G.sel&&G.sel.k==='ZO')G.sel=null;
+   try{hud();panel()}catch(e){}
+   return true}catch(e){console.error(e);return false}};
+ var o0=load();if(o0)install(o0);
+ try{hud()}catch(e){}
 })();
 </script>
 </body></html>
