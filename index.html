@@ -4063,4 +4063,157 @@ document.addEventListener('pointerdown',function(e){
 },true);
 })();
 </script>
+<script>
+(function(){
+/* ===== オリジナルモンスターガチャ：タイトルのサイコロ→500Gでカプセル→名前をつけて登録（最大50匹）→敵として登場 ===== */
+var GK='miarina_td_gold_v1',MK='miarina_td_mons_v1',COST=500,MAX=999,RN=['','高','中','低'],RW=[0,5,2,1];
+function gold(){try{var n=parseInt(localStorage.getItem(GK)||'0',10);return n>0?n:0}catch(e){return 0}}
+function setGold(n){try{localStorage.setItem(GK,String(Math.max(0,Math.floor(n))))}catch(e){}}
+function mons(){try{var a=JSON.parse(localStorage.getItem(MK)||'[]');if(!Array.isArray(a))return[];for(var i=0;i<a.length;i++){if(!(a[i].r>=1&&a[i].r<=3))a[i].r=2;if(!(a[i].g>=1&&a[i].g<=100))a[i].g=1+Math.floor(99*Math.pow(((a[i].p&&a[i].p[4]||0)%100)/100,3))}return a}catch(e){return[]}}
+function gmul(g){return .6+(g-1)/99*2.4}
+function rinfo(m){return '出現率：'+RN[m.r]}
+function saveMons(a){try{localStorage.setItem(MK,JSON.stringify(a))}catch(e){}}
+function rp(){var p=[];for(var i=0;i<7;i++)p.push(Math.random()*1000|0);return p}
+/* p = [顔,胴体,足,手,色,目,口] 各0〜999 */
+function drawMon(c,p,t,sz){
+ var fa=p[0],bo=p[1],lg=p[2],ar=p[3],co=p[4],ey=p[5],mo=p[6],i,sd;
+ var h=co*.36,sat=55+co%4*10,li=52+co%3*5,c1='hsl('+h+','+sat+'%,'+li+'%)',c2='hsl('+((h+30)%360)+','+sat+'%,'+(li-18)+'%)',c3='hsl('+((h+180)%360)+','+sat+'%,'+(li+14)+'%)',ink='#3a2a40';
+ var bt=bo%10,bw=8+(bo/10|0)%5*1.6,bh=8+(bo/50|0)%5*1.4,dk=(bo/250|0)%4;
+ c.save();c.scale(sz,sz);c.translate(0,Math.sin(t/200));c.lineJoin='round';c.lineCap='round';
+ /* 足：いつも2本 */
+ var ll=4+(lg/4|0)%4*1.6,fw2=2.6+lg%4*.8;
+ for(sd=-1;sd<=1;sd+=2){var lx=sd*bw*.45;c.fillStyle=c2;c.strokeStyle=ink;c.lineWidth=1;c.fillRect(lx-1.6,bh-2,3.2,ll+2);c.beginPath();c.ellipse(lx+sd*.8,bh+ll,fw2,1.7,0,0,7);c.fill();c.stroke()}
+ /* 手：いつも2本 */
+ var as=ar%4,al=3+(ar/4|0)%3*2.2;
+ for(sd=-1;sd<=1;sd+=2){c.strokeStyle=c2;c.lineWidth=2.6;c.beginPath();c.moveTo(sd*bw*.92,-1);
+  c.lineTo(sd*(bw+al*.8),as==0?bh*.55:as==1?1.5:as==2?-bh-3:(sd>0?-bh-2+Math.sin(t/120)*3:bh*.55));c.stroke()}
+ /* 胴体：10種類のかたち */
+ c.fillStyle=c1;c.strokeStyle=ink;c.lineWidth=1.3;c.beginPath();
+ if(bt==0)c.ellipse(0,0,bw,bh,0,0,7);
+ else if(bt==1)c.roundRect(-bw,-bh,bw*2,bh*2,3);
+ else if(bt==2){c.moveTo(0,-bh-2);c.lineTo(bw,bh);c.lineTo(-bw,bh);c.closePath()}
+ else if(bt==3){c.moveTo(0,-bh-1);c.lineTo(bw,0);c.lineTo(0,bh+1);c.lineTo(-bw,0);c.closePath()}
+ else if(bt==4){c.moveTo(-bw*.5,-bh);c.lineTo(bw*.5,-bh);c.lineTo(bw,0);c.lineTo(bw*.5,bh);c.lineTo(-bw*.5,bh);c.lineTo(-bw,0);c.closePath()}
+ else if(bt==5){c.moveTo(0,-bh);c.bezierCurveTo(bw*.5,-bh,bw*.6,-bh*.2,bw*1.05,bh*.4);c.bezierCurveTo(bw*1.1,bh*1.1,-bw*1.1,bh*1.1,-bw*1.05,bh*.4);c.bezierCurveTo(-bw*.6,-bh*.2,-bw*.5,-bh,0,-bh)}
+ else if(bt==6){for(i=0;i<8;i++){var an=i/8*6.2832,rr=1+(i%2?.18:0);c.lineTo(Math.cos(an)*bw*rr,Math.sin(an)*bh*rr)}c.closePath()}
+ else if(bt==7){c.arc(0,0,bw,Math.PI,0);c.lineTo(bw,bh);c.lineTo(-bw,bh);c.closePath()}
+ else if(bt==8)c.roundRect(-bw*.75,-bh*1.1,bw*1.5,bh*2.2,bw*.75);
+ else{c.moveTo(-bw,bh);c.lineTo(-bw,-bh*.3);c.arc(0,-bh*.3,bw,Math.PI,0);c.lineTo(bw,bh);for(i=0;i<3;i++)c.quadraticCurveTo(bw-(i*2+1)*bw/3,bh-3,bw-(i+1)*bw*2/3,bh);c.closePath()}
+ c.fill();c.stroke();
+ /* もよう */
+ c.save();c.fillStyle=c3;c.strokeStyle=c3;
+ if(dk==1){c.beginPath();c.ellipse(0,bh*.25,bw*.5,bh*.45,0,0,7);c.globalAlpha=.7;c.fill()}
+ else if(dk==2){c.lineWidth=1.8;c.globalAlpha=.7;for(i=-1;i<=1;i++){c.beginPath();c.moveTo(-bw*.5,i*bh*.45);c.lineTo(bw*.5,i*bh*.45);c.stroke()}}
+ else if(dk==3){c.globalAlpha=.75;for(i=0;i<3;i++){c.beginPath();c.arc((i-1)*bw*.5,(i%2?-1:1)*bh*.3,1.6,0,7);c.fill()}}
+ c.restore();
+ /* 顔 */
+ var fw=7+fa%4*1.8,fy=-bh-fw*.55,et=(fa/4|0)%4,fs=(fa/16|0)%3;
+ c.fillStyle=c2;c.strokeStyle=ink;c.lineWidth=1.3;
+ if(et==1){for(sd=-1;sd<=1;sd+=2){c.beginPath();c.arc(sd*fw*.8,fy-fw*.7,fw*.35,0,7);c.fill();c.stroke()}}
+ else if(et==2){for(sd=-1;sd<=1;sd+=2){c.beginPath();c.moveTo(sd*fw*.4,fy-fw*.6);c.lineTo(sd*fw*.9,fy-fw*1.5);c.lineTo(sd*fw*1.05,fy-fw*.3);c.closePath();c.fill();c.stroke()}}
+ else if(et==3){c.fillStyle='#fff3c4';for(sd=-1;sd<=1;sd+=2){c.beginPath();c.moveTo(sd*fw*.3,fy-fw*.7);c.quadraticCurveTo(sd*fw*.9,fy-fw*1.2,sd*fw*.6,fy-fw*1.7);c.lineTo(sd*fw*.7,fy-fw*.5);c.closePath();c.fill();c.stroke()}}
+ c.fillStyle=c1;c.beginPath();if(fs==1)c.roundRect(-fw,fy-fw*.85,fw*2,fw*1.7,fw*.4);else c.ellipse(0,fy,fw*(fs==2?1.2:1),fw*.9,0,0,7);c.fill();c.stroke();
+ /* 目：基本は2つ（まれに1つ／3つ） */
+ var ne=ey%12==0?1:ey%12==11?3:2,er=1.4+(ey/12|0)%3*.6;
+ for(i=0;i<ne;i++){var ex=ne==1?0:-fw*.5+i*(fw/(ne-1)),eyy=fy-fw*.15;c.fillStyle='#fff';c.beginPath();c.arc(ex,eyy,er+.9,0,7);c.fill();c.lineWidth=.8;c.stroke();c.fillStyle=ink;c.beginPath();c.arc(ex+Math.sin(t/400),eyy,er*.6,0,7);c.fill()}
+ var mm=mo%5,my=fy+fw*.5;c.strokeStyle=ink;c.fillStyle=ink;c.lineWidth=1.1;c.beginPath();
+ if(mm==0)c.arc(0,my-1,2.6,.2,2.9);else if(mm==1){c.arc(0,my,1.8,0,7);c.fill()}else if(mm==2){c.moveTo(-2.6,my);c.lineTo(2.6,my)}
+ else if(mm==3){c.moveTo(-3,my-1);c.lineTo(3,my-1);c.stroke();c.fillStyle='#fff';c.beginPath();c.moveTo(-2.4,my-1);c.lineTo(-1.4,my+2);c.lineTo(-.4,my-1);c.moveTo(.4,my-1);c.lineTo(1.4,my+2);c.lineTo(2.4,my-1);c.fill();c.stroke();c.beginPath()}
+ else{c.arc(0,my-1,2.6,.2,2.9);c.stroke();c.fillStyle='#ff7aa8';c.beginPath();c.ellipse(0,my+1.6,1.3,1.8,0,0,7);c.fill()}
+ c.stroke();c.restore()}
+function monCY(p){
+ var fa=p[0],bo=p[1],lg=p[2],bh=8+(bo/50|0)%5*1.4,fw=7+fa%4*1.8,et=(fa/4|0)%4,ll=4+(lg/4|0)%4*1.6;
+ var top=-bh-fw*.55-fw*(et==2?1.5:et==3?1.7:et==1?1.05:.9),bot=bh+ll+1.7;
+ return (top+bot)/2}
+window.drawOrigMon=drawMon;
+var ov=null,cur=null,raf=0;
+function stop(){cancelAnimationFrame(raf);if(ov){ov.remove();ov=null}}
+function ui(){
+ if(!ov)return;var g=ov.querySelector('.gg'),n=ov.querySelector('.gn');
+ g.textContent='💰'+gold()+'　登録 '+mons().length+'/'+MAX;}
+window.rinMonList=openList;
+function open(){
+ stop();cur=null;
+ ov=document.createElement('div');
+ ov.style.cssText='position:fixed;inset:0;z-index:99990;background:rgba(36,20,38,.7);display:flex;align-items:center;justify-content:center;font-family:inherit';
+ ov.innerHTML='<div style="background:var(--card,#fff);color:var(--ink,#333);border:3px solid var(--accent,#ff6fa5);border-radius:16px;padding:12px;width:min(92%,330px);text-align:center"><div style="font-weight:bold">🎲 オリジナルモンスターガチャ</div><div class="gg" style="font-size:13px;margin:4px 0"></div><div class="stage" style="height:170px;display:flex;align-items:center;justify-content:center;font-size:12px;opacity:.85">500Gでカプセルをまわそう！<br>顔・胴体・足・手・色・目・口がランダムで合体するよ</div><div class="nm" style="display:none;margin:4px 0"><input maxlength="8" placeholder="なまえ（8文字まで）" style="font:inherit;font-size:15px;text-align:center;padding:8px;border-radius:12px;border:3px solid var(--line,#ddd);background:var(--card,#fff);color:var(--ink,#333);width:80%"></div><div class="ms" style="font-size:12px;min-height:16px;margin:2px 0;white-space:pre-line"></div><div><button class="roll" style="padding:9px 14px;margin:3px"></button><button class="reg" style="padding:9px 14px;margin:3px;display:none">決定</button></div><button class="cl" style="padding:7px 18px;margin-top:4px">とじる</button></div>';
+ document.body.appendChild(ov);
+ ov.querySelector('.cl').onclick=stop;
+ ov.querySelector('.roll').onclick=roll;
+ ov.querySelector('.reg').onclick=reg;
+ ov.querySelector('.roll').textContent='🎰 ガチャを回す（'+COST+'G）';
+ ui()}
+function msg(t){var m=ov&&ov.querySelector('.ms');if(m)m.textContent=t}
+window.rinMonMax=MAX;
+function roll(){
+ if(!ov)return;
+ if(gold()<COST){msg('ゴールドがたりないよ（'+COST+'G必要）。クリアして持ち越そう！');return}
+ setGold(gold()-COST);ui();cancelAnimationFrame(raf);cur=null;
+ ov.querySelector('.reg').style.display='none';ov.querySelector('.nm').style.display='none';msg('');
+ var st=ov.querySelector('.stage');
+ st.innerHTML='<style>@keyframes cpw{0%,100%{transform:rotate(0)}20%{transform:rotate(-18deg)}40%{transform:rotate(16deg)}60%{transform:rotate(-12deg)}80%{transform:rotate(8deg)}}</style><div style="width:70px;height:70px;border-radius:50%;background:linear-gradient(#ff6fa5 50%,#fff 50%);border:3px solid #3a2a40;animation:cpw .5s ease-in-out 3"></div>';
+ setTimeout(function(){
+  if(!ov)return;
+  cur={p:rp(),r:1+Math.floor(Math.random()*3),g:1+Math.floor(99*Math.pow(Math.random(),3))};
+  st.innerHTML='<canvas width="170" height="170" style="display:block;margin:0 auto;width:170px;height:170px;border:0;box-shadow:none;border-radius:0;background:transparent;outline:0"></canvas>';
+  var cv=st.firstChild,c=cv.getContext('2d'),t0=performance.now();
+  (function f(n){if(!ov)return;c.clearRect(0,0,170,170);c.save();c.translate(85,85-monCY(cur.p)*2.2);drawMon(c,cur.p,n,2.2);c.restore();raf=requestAnimationFrame(f)})(t0);
+  ov.querySelector('.nm').style.display='';ov.querySelector('.reg').style.display='';
+  ov.querySelector('.nm input').value='';
+  ov.querySelector('.roll').textContent='🎰 もう一回（'+COST+'G）';
+  msg(rinfo(cur)+'\nなまえを決めて「決定」を押すと自動で登録されるよ（登録前にもう一回まわすとこの子はいなくなるよ）');
+ },1600)}
+function reg(){
+ if(!cur||!ov)return;
+ var nm=ov.querySelector('.nm input').value.trim().slice(0,8);
+ if(!nm){msg('なまえを入れてね');return}
+ var a=mons();a.push({n:nm,p:cur.p,r:cur.r,g:cur.g});while(a.length>MAX)a.shift();saveMons(a);
+ cur=null;stop();toast('「'+nm+'」を登録したよ！（'+a.length+'/'+MAX+'）')}
+function toast(t){var d=document.createElement('div');d.textContent=t;d.style.cssText='position:fixed;left:50%;top:18%;transform:translateX(-50%);z-index:99995;padding:9px 16px;background:var(--card,#fff);color:var(--ink,#333);border:3px solid var(--accent,#ff6fa5);border-radius:14px;font-weight:bold;font-size:14px;pointer-events:none';document.body.appendChild(d);setTimeout(function(){d.remove()},2200)}
+function openList(){
+ stop();var a=mons();
+ ov=document.createElement('div');
+ ov.style.cssText='position:fixed;inset:0;z-index:99990;background:rgba(36,20,38,.7);display:flex;align-items:center;justify-content:center;font-family:inherit';
+ var box=document.createElement('div');
+ box.style.cssText='background:var(--card,#fff);color:var(--ink,#333);border:3px solid var(--accent,#ff6fa5);border-radius:16px;padding:12px;width:min(92%,340px);max-height:88%;overflow:auto;text-align:center';
+ ov.appendChild(box);document.body.appendChild(ov);
+ function listView(){
+  cancelAnimationFrame(raf);box.innerHTML='';
+  var h=document.createElement('div');h.textContent='👾 オリジナルモンスター図鑑（'+a.length+'/'+MAX+'）';h.style.cssText='font-weight:bold;margin-bottom:6px';box.appendChild(h);
+  if(!a.length){var em=document.createElement('div');em.textContent='まだ登録していないよ。🎲ガチャでつくろう！';em.style.cssText='font-size:12px;opacity:.8;padding:14px 0';box.appendChild(em)}
+  for(var i=a.length-1;i>=0;i--){(function(m){
+   var row=document.createElement('button');row.textContent=m.n;row.style.cssText='display:block;width:100%;margin:3px 0;padding:8px 10px;text-align:left;font-size:14px;font-weight:bold';
+   row.onclick=function(){try{sfx('tap')}catch(e){}detail(m)};box.appendChild(row)})(a[i])}
+  var cl=document.createElement('button');cl.textContent='とじる';cl.style.cssText='padding:7px 18px;margin-top:8px';cl.onclick=stop;box.appendChild(cl)}
+ function detail(m){
+  box.innerHTML='';
+  var h=document.createElement('div');h.textContent=m.n;h.style.cssText='font-weight:bold;font-size:17px;margin-bottom:4px';box.appendChild(h);
+  var cv=document.createElement('canvas');cv.width=170;cv.height=170;cv.style.cssText='display:block;margin:0 auto;width:170px;height:170px;border:0;box-shadow:none;border-radius:0;background:transparent;outline:0';box.appendChild(cv);
+  var inf=document.createElement('div');inf.style.cssText='font-size:13px;line-height:1.7;margin:4px 0;white-space:pre-line';
+  inf.textContent='出現率：'+RN[m.r];
+  box.appendChild(inf);
+  var bk=document.createElement('button');bk.textContent='もどる';bk.style.cssText='padding:7px 18px;margin-top:4px';bk.onclick=listView;box.appendChild(bk);
+  var c=cv.getContext('2d');cancelAnimationFrame(raf);
+  (function f(n){if(!ov)return;c.clearRect(0,0,170,170);c.save();c.translate(85,85-monCY(m.p)*2.2);drawMon(c,m.p,n,2.2);c.restore();raf=requestAnimationFrame(f)})(performance.now())}
+ listView()}
+var tt=document.getElementById('tt');
+if(tt){
+ var st=document.createElement('style');st.textContent='@keyframes dcr{to{transform:rotate(360deg)}}#dcb,#dlb{position:fixed;left:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 30px);width:38px;height:38px;padding:0;font-size:22px;line-height:1;border-radius:10px;z-index:3}#dcb{width:26px;height:26px;border-radius:6px;background:#fff!important;background-image:none!important;border:0!important;box-shadow:none!important;color:#000;display:grid;grid-template:repeat(3,minmax(0,1fr))/repeat(3,minmax(0,1fr));place-items:center;padding:5px;box-sizing:border-box;animation:dcr 9s linear infinite}#dlb{display:flex;align-items:center;justify-content:center}#dlb{bottom:calc(env(safe-area-inset-bottom,0px) + 74px)}';
+ document.head.appendChild(st);
+ var b=document.createElement('button');b.id='dcb';b.title='モンスターガチャ';var df=0,PIP=[[4],[0,8],[0,4,8],[0,2,6,8],[0,2,4,6,8],[0,2,3,5,6,8]];function face(){b.innerHTML='';for(var q=0;q<9;q++){var d=document.createElement('span');d.style.cssText='width:'+(df==0?8:df==5?3.2:4.2)+'px;height:'+(df==0?8:df==5?3.2:4.2)+'px;border-radius:50%;background:'+(PIP[df].indexOf(q)>=0?(df==0?'#e0102a':'#000'):'transparent');b.appendChild(d)}}face();setInterval(function(){df=(df+1)%6;face()},1100);b.onclick=function(){try{sfx('tap')}catch(e){}open()};
+ tt.appendChild(b);
+ var lb=document.createElement('button');lb.id='dlb';lb.title='モンスターリスト';lb.textContent='👾';lb.onclick=function(){try{sfx('tap')}catch(e){}openList()};tt.appendChild(lb)}
+/* 登録モンスターを敵の見た目として登場させる（ふつうの敵の約35%） */
+if(typeof drawEn2==='function'){
+ var _dm=drawEn2;
+ drawEn2=function(e,t){
+  _dm(e,t);
+  try{
+   if(!e||e.x==null)return;
+   if(e.cm===undefined){if(!(typeof G!=='undefined'&&G&&G.en&&G.en.indexOf(e)>=0))return;e.cm=0;if(!e.boss&&!e.xt&&!e._i&&e.ty!=='p'&&Math.random()<.35){var a=mons();if(a.length){var tw=0,q;for(q=0;q<a.length;q++)tw+=RW[a[q].r];var rr=Math.random()*tw;e.cm=a[a.length-1];for(q=0;q<a.length;q++){rr-=RW[a[q].r];if(rr<0){e.cm=a[q];break}}if(typeof e.rw==='number')e.rw=Math.max(1,Math.round(e.rw*gmul(e.cm.g)))}}}
+   if(e.cm&&!e.dead){x.save();x.translate(e.x,e.y-5);drawMon(x,e.cm.p,t,.55);x.restore()}
+  }catch(er){}
+ }}
+})();
+</script>
 </body></html>
