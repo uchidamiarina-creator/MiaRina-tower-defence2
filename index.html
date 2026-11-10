@@ -3790,7 +3790,7 @@ function useItem(it){
  const g=R&&R[0]?R[0].P[R[0].P.length-1]:[180,220];
  G.fx.push({x:g[0],y:g[1]-50,txt:it.lbus?it.name+'！ しゅっぱつ！':it.cobra?it.name+'！ どくタワー'+n+'台が進化・強さ×2':it.hole?it.name+'！ 10フェーズ穴があかないよ':it.bub?it.name+'！ 5フェーズ泡がただよう':it.fix?it.name+'！ スロット'+n+'台を修理':it.whip?it.name+'！ ムチ'+n+'台パワーアップ':it.gold?it.name+'！ '+n+'台が金色・売値10倍':it.name+'！ 全武器 +'+it.lv+'Lv',t:1.8,c:'#e0107a'});
  try{hud();panel()}catch(e){}
- if(typeof apEl!=='undefined'&&apEl){apOpen=false;apEl.style.display='none'}
+ try{rinClose()}catch(e){}
 }
 window.rinInv=function(){return ITEMS.map(function(o){return{icon:o.icon,name:o.name,ds:o.ds,n:inv()[o.id]|0}})};
 window.rinDrop=function(c){
@@ -3799,27 +3799,44 @@ window.rinDrop=function(c){
  const cur=inv()[it.id]|0,full=cur>=MAXN;if(!full){inv()[it.id]=cur+1;saveInv()}
  G.fx.push({x:c.x,y:c.y-18,txt:full?'🎒 '+it.name+' は'+MAXN+'個でいっぱい！':'🎒 '+it.name+' ゲット！',t:2,c:'#e0107a'});
  G.fx.push({x:c.x,y:c.y,r:30,t:.5,c:'#ffd0e6'});
- G.fx.push({x:180,y:130,txt:'利奈をタップすると使えるよ',t:2.2,c:'#7a5cff'});
+ G.fx.push({x:180,y:130,txt:'利奈をタップ→「ひみつ道具」ボタンで使えるよ',t:2.2,c:'#7a5cff'});
  try{sfx('clear')}catch(e){}
  return true};
+function rinClose(){const ov=document.getElementById('rinItemsOv');if(ov)ov.style.display='none';if(typeof apEl!=='undefined'&&apEl){apOpen=false;apEl.style.display='none'}}
+function rinFill(){
+ const ov=document.getElementById('rinItemsOv');if(!ov)return;
+ const h=inv();let any=false;
+ for(const b of ov.querySelectorAll('button[data-id]')){const it=ITEMS.find(o=>o.id===b.dataset.id),n=h[b.dataset.id]|0;b.textContent='つかう ×'+n;b.disabled=!canUse(it);b.parentNode.style.display=n>0?'flex':'none';if(n>0)any=true}
+ const em=ov.querySelector('.rinEmpty');if(em)em.style.display=any?'none':''}
 function section(){
  if(typeof apEl==='undefined'||!apEl)return;
  const card=apEl.firstChild;if(!card)return;
- let sec=document.getElementById('rinItems');
- if(!sec){
-  sec=document.createElement('div');sec.id='rinItems';sec.style.cssText='margin:8px 0 2px;padding:8px 6px 4px;border-top:2px dashed var(--line)';
-  const h=document.createElement('div');h.textContent='🎒 利奈のひみつ道具';h.style.cssText='font-weight:bold;margin-bottom:4px';sec.appendChild(h);
+ const h=inv();let tot=0;for(const it of ITEMS)tot+=h[it.id]|0;
+ let ov=document.getElementById('rinItemsOv');
+ if(!ov){
+  ov=document.createElement('div');ov.id='rinItemsOv';
+  ov.style.cssText='position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(36,20,38,.6);border-radius:14px;z-index:8';
+  const bx=document.createElement('div');
+  bx.style.cssText='background:var(--card);border:3px solid var(--accent);border-radius:16px;padding:10px;width:min(96%,370px);max-height:96%;overflow:auto';
+  const hd=document.createElement('div');hd.textContent='🎒 利奈のひみつ道具';hd.style.cssText='font-weight:bold;margin-bottom:6px';bx.appendChild(hd);
+  const em=document.createElement('div');em.className='rinEmpty';em.textContent='ひみつ道具はまだ持っていないよ。宝箱からたまに出るよ！';em.style.cssText='font-size:12px;opacity:.8;padding:6px 0';bx.appendChild(em);
   for(const it of ITEMS){
    const row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:8px;padding:4px 0';
    const tx=document.createElement('div');tx.style.cssText='flex:1;min-width:0;line-height:1.3';
    const nm=document.createElement('b');nm.textContent=it.icon+' '+it.name;const ds=document.createElement('div');ds.textContent=it.ds;ds.style.cssText='font-size:11px;opacity:.8';
    tx.append(nm,ds);
    const b=document.createElement('button');b.dataset.id=it.id;b.style.cssText='flex:none;padding:8px 12px;font-size:14px';b.onclick=()=>{try{sfx('tap')}catch(e){}useItem(it)};
-   row.append(tx,b);sec.appendChild(row)}
-  card.insertBefore(sec,card.lastChild)}
- const h=inv();let any=false;
- for(const b of sec.querySelectorAll('button')){const it=ITEMS.find(o=>o.id===b.dataset.id),n=h[b.dataset.id]|0;b.textContent='つかう ×'+n;b.disabled=!canUse(it);b.parentNode.style.display=n>0?'flex':'none';if(n>0)any=true}
- sec.style.display=any?'':'none'}
+   row.append(tx,b);bx.appendChild(row)}
+  const bk=document.createElement('button');bk.textContent='もどる';bk.style.cssText='width:100%;margin-top:6px';
+  bk.onclick=()=>{ov.style.display='none';try{openAp()}catch(e){}};
+  bx.appendChild(bk);ov.appendChild(bx);document.getElementById('wrap').appendChild(ov)}
+ let btn=document.getElementById('rinItemBtn');
+ if(!btn){
+  btn=document.createElement('button');btn.id='rinItemBtn';btn.style.cssText='width:100%;margin-top:6px';
+  btn.onclick=()=>{try{sfx('tap')}catch(e){}apOpen=false;apEl.style.display='none';rinFill();ov.style.display='flex'};
+  card.insertBefore(btn,card.lastChild)}
+ btn.textContent='🎒 利奈のひみつ道具'+(tot>0?'（'+tot+'個）':'');
+ if(ov.style.display!=='none'){if(!G||G.over)ov.style.display='none';else rinFill()}}
 const goldC=document.createElement('canvas');
 window.drawGoldTower=function(o){
  const s=cv.width/360,S=100,w=Math.max(1,Math.round(S*s));
