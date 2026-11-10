@@ -3835,7 +3835,7 @@ function section(){
   btn=document.createElement('button');btn.id='rinItemBtn';btn.style.cssText='width:100%;margin-top:6px';
   btn.onclick=()=>{try{sfx('tap')}catch(e){}apOpen=false;apEl.style.display='none';rinFill();ov.style.display='flex'};
   card.insertBefore(btn,card.lastChild)}
- btn.textContent='🎒 利奈のひみつ道具'+(tot>0?'（'+tot+'個）':'');
+ btn.textContent='🎒 利奈のひみつ道具';
  if(ov.style.display!=='none'){if(!G||G.over)ov.style.display='none';else rinFill()}}
 const goldC=document.createElement('canvas');
 window.drawGoldTower=function(o){
