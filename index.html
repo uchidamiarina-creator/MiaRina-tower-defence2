@@ -2467,7 +2467,7 @@ var TIPS=[
 '一度出てきた仙人は、5フェーズのあいだは来ないよ',
 '教わった武器は、みちづくりボタンのすぐ左にならぶよ',
 '全部の武器を教わったら、仙人は「武器はもうない」と言うよ',
-'こたつレーザーはタップで電源OFF。10秒ごとに勝手にレベルアップするよ（フェーズ中だけ）',
+'こたつレーザーはタップで電源OFF。5〜60秒のランダムな間隔で勝手にレベルアップするよ（フェーズ中だけ）',
 'こたつレーザーは電源OFFのあいだは攻撃しないよ。強くなったらもう一度タップでON！',
 'こたつレーザーのレーザーは、線の上にならんだ敵をまとめてつらぬくよ',
 'こたつレーザーには強化や売却のウィンドウが出ないよ。レベルは本体の下の数字で見よう',
@@ -3026,10 +3026,10 @@ P.measureText=function(t){t=String(t);if(!has(t))return _meas.call(this,t);const
 })();
 </script>
 <script>
-/* こたつレーザー：ふだんはレーザーで攻撃。タップで電源OFF→10秒ごとに自動でレベルアップ。もう一度タップでON */
+/* こたつレーザー：ふだんはレーザーで攻撃。タップで電源OFF→5〜60秒のランダムな間隔で自動でレベルアップ。もう一度タップでON */
 (function(){
  T.KO={n:'こ',name:'こたつレーザー',cost:100,rng:95,rate:1.0,dmg:10,col:'#e8552d',cust:1};
- try{TD.KO='ふだんは敵にレーザー（線上の敵をまとめて攻撃）。置いたこたつをタップで電源OFF→攻撃しない代わりに10秒ごとに勝手にレベルアップ（フェーズ中だけ）。もう一度タップで電源ON。強化・売るウィンドウは出ません'}catch(e){}
+ try{TD.KO='ふだんは敵にレーザー（線上の敵をまとめて攻撃）。置いたこたつをタップで電源OFF→攻撃しない代わりに5〜60秒のランダムな間隔で勝手にレベルアップ（フェーズ中だけ）。もう一度タップで電源ON。強化・売るウィンドウは出ません'}catch(e){}
  var DPR=Math.min(2,Math.max(1,window.devicePixelRatio||1));
  function kotatsu(c,on,lv){
   c.save();
@@ -3079,9 +3079,9 @@ P.measureText=function(t){t=String(t);if(!has(t))return _meas.call(this,t);const
     var cx=Math.floor(px/C),cy=Math.floor(py/C);
     var t=G.tw.find(function(o){return o.cx==cx&&o.cy==cy});
     if(t&&t.k==='KO'&&!t.broken){
-     G.brk=false;t.off=!t.off;t.oc=0;
+     G.brk=false;t.off=!t.off;t.oc=0;t.on=0;
      try{sfx('tap')}catch(e){}
-     G.fx.push({x:t.x,y:t.y-24,txt:t.off?'電源OFF 💤 10秒ごとにLvUP':'電源ON 🔥 攻撃再開',t:1.3,c:t.off?'#6b7088':'#e8552d'});
+     G.fx.push({x:t.x,y:t.y-24,txt:t.off?'電源OFF 💤 5〜60秒ランダムでLvUP':'電源ON 🔥 攻撃再開',t:1.3,c:t.off?'#6b7088':'#e8552d'});
      hud();panel();return}}
   }catch(e){console.error(e)}
   _tm(px,py)};
@@ -3098,7 +3098,7 @@ P.measureText=function(t){t=String(t);if(!has(t))return _meas.call(this,t);const
   var sd=dt*(G.speed||1);
   for(var i=0;i<G.tw.length;i++){
    var t=G.tw[i];if(t.k!=='KO'||t.broken)continue;
-   if(t.off){if(G.active){t.oc=(t.oc||0)+sd;while(t.oc>=10){t.oc-=10;lvUpKO(t)}}continue}
+   if(t.off){if(G.active){t.oc=(t.oc||0)+sd;var th=t.on||(t.on=5+Math.random()*55);while(t.oc>=th){t.oc-=th;lvUpKO(t);th=t.on=5+Math.random()*55}}continue}
    if(t.stun>0||t.cd>0)continue;
    var bt=null;
    for(var j=0;j<G.en.length;j++){var e=G.en[j];if(e.dead)continue;if(Math.hypot(e.x-t.x,e.y-t.y)<=t.rng&&(!bt||e.d>bt.d))bt=e}
