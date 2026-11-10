@@ -1100,7 +1100,7 @@ Object.assign(window,{richSpot,richBG,richFx,richRoadShadow,richRoadSheen});
 
 /* --- towers: aura + gloss --- */
 const _dT=drawTower;
-drawTower=function(c,k,px,py,a,lv){const col=(T[k]&&T[k].col)||'#ffffff',pl=.34+.1*Math.sin(Date.now()/420);
+drawTower=function(c,k,px,py,a,lv){const col=(T[k]&&T[k].col)||'#ffffff',pl=.34+.1*Math.sin(performance.now()/420);
  c.save();c.translate(px,py);
  c.fillStyle='rgba(80,30,70,.22)';c.beginPath();c.ellipse(1,16,17,6,0,0,7);c.fill();
  const ga=c.createRadialGradient(0,0,6,0,0,30);ga.addColorStop(0,rgba(col,pl));ga.addColorStop(1,rgba(col,0));c.fillStyle=ga;c.beginPath();c.arc(0,0,30,0,7);c.fill();
@@ -2111,6 +2111,7 @@ function titleOn(){try{return getComputedStyle(document.getElementById('tt')).di
 function waiting(){if(!G||G.over||titleOn())return false;if(PZ)return !!G.active||(G.wave>=1&&G.wave<D.cl);return !G.active&&G.wave>=1&&G.wave<D.cl}
 var _u=update;update=function(dt){
  _u(dt);
+ dt=(typeof window.__rdt==='number')?window.__rdt:dt;
  try{
   if(G!==lastG){lastG=G;idle=0;cnt=-1}
   if(!waiting()){idle=0;cnt=-1;return}
@@ -2144,7 +2145,7 @@ function person(c,cx,by,dir,o){
  c.restore()}
 function ease(u){u=Math.max(0,Math.min(1,u));return 1-Math.pow(1-u,3)}
 function ring(){
- var c=x,now=performance.now(),intro=ease((tick+.8)/.8),sh=cnt<=3&&tick>=0?Math.sin(now/40)*2:0;
+ var c=x,now=(performance.realNow||performance.now.bind(performance))(),intro=ease((tick+.8)/.8),sh=cnt<=3&&tick>=0?Math.sin(now/40)*2:0;
  c.save();c.fillStyle='rgba(25,10,45,.6)';c.fillRect(0,0,360,440);
  c.translate(sh,0);
  c.fillStyle='#fff6e8';c.strokeStyle='#e0a6bd';c.lineWidth=3;c.beginPath();c.moveTo(70,205);c.lineTo(290,205);c.lineTo(338,322);c.lineTo(22,322);c.closePath();c.fill();c.stroke();
@@ -2579,7 +2580,7 @@ var bubbleT=host.querySelector('.kt'),bubbleN=host.querySelector('.kn');
 var tok=0,bag=[],busy=false,nextAt=0,wasPlaying=false,shown=0;
 function pick(){if(!bag.length){bag=TIPS.map(function(_,i){return i});for(var i=bag.length-1;i>0;i--){var j=Math.random()*(i+1)|0,t=bag[i];bag[i]=bag[j];bag[j]=t}}return bag.pop()}
 function vis(id){var e=document.getElementById(id);return !!e&&getComputedStyle(e).display!=='none'}
-function playing(){var tt=document.getElementById('tt');return !!tt&&tt.style.display==='none'&&typeof G!=='undefined'&&G&&!G.over&&typeof D!=='undefined'&&D&&D.n!=='ルナティック'}
+function playing(){var tt=document.getElementById('tt');return !!tt&&tt.style.display==='none'&&typeof G!=='undefined'&&G&&!G.over&&typeof D!=='undefined'&&D&&D.n!=='ルナティック'&&!PZ}
 function blocked(){return ['ov','pz','ap','mp','pf','pc','rk'].some(vis)||document.hidden}
 function show(){
   if(busy)return;busy=true;var my=++tok;
@@ -4722,6 +4723,22 @@ function clampPop(){try{
 }catch(e){}}
 var _pc=panel;panel=function(){var r=_pc.apply(this,arguments);clampPop();return r};
 window.addEventListener('resize',clampPop);
+})();
+</script>
+<script>
+/* ポーズ中はマップ内の時間をすべて止める */
+(function(){
+var _pn=performance.now.bind(performance),shift=0,frozen=null;
+performance.realNow=_pn;
+performance.now=function(){return (frozen!==null?frozen:_pn())-shift};
+function sync(){var p=false;try{p=!!PZ}catch(e){}
+ if(p&&frozen===null)frozen=_pn();
+ else if(!p&&frozen!==null){shift+=_pn()-frozen;frozen=null}}
+var _top=update;
+update=function(dt){sync();window.__rdt=dt;
+ if(frozen!==null){try{CH.idle=0}catch(e){}return _top(0)}
+ return _top(dt)};
+var _rt=rnTalk;rnTalk=function(dt){if(frozen!==null)return;return _rt(dt)};
 })();
 </script>
 </body></html>
