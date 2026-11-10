@@ -2108,15 +2108,15 @@ if(pfb){var prev=pfb.onclick;pfb.onclick=function(){if(prev)prev.apply(this,argu
 (function(){
 var IDLE=60,CNT=10,idle=0,cnt=-1,tick=0,lastG=null,t0=0;
 function titleOn(){try{return getComputedStyle(document.getElementById('tt')).display!=='none'}catch(e){return false}}
-function waiting(){return !!G&&!G.over&&!G.active&&G.wave>=1&&G.wave<D.cl&&!PZ&&!titleOn()}
+function waiting(){if(!G||G.over||titleOn())return false;if(PZ)return !!G.active||(G.wave>=1&&G.wave<D.cl);return !G.active&&G.wave>=1&&G.wave<D.cl}
 var _u=update;update=function(dt){
  _u(dt);
  try{
   if(G!==lastG){lastG=G;idle=0;cnt=-1}
   if(!waiting()){idle=0;cnt=-1;return}
   idle+=dt;
-  if(cnt<0&&idle>=IDLE){cnt=CNT;tick=-.8;t0=performance.now();try{sfx('deny')}catch(e){}}
-  if(cnt>=0){tick+=dt;if(tick>=1){tick-=1;cnt--;if(cnt>0){try{sfx('tap')}catch(e){}}else{cnt=0;G.lives=0;hud();end(false);try{om.textContent='レフェリーの10カウントでノックアウト… スコア '+G.sc+'点'}catch(e){}}}}
+  if(cnt<0&&idle>=IDLE){cnt=CNT;tick=-.8;t0=performance.now();try{var _pzo=document.getElementById('pz');if(_pzo)_pzo.style.display='none'}catch(e){}try{sfx('deny')}catch(e){}}
+  if(cnt>=0){tick+=dt;if(tick>=1){tick-=1;cnt--;if(cnt>0){try{sfx('tap')}catch(e){}}else{cnt=0;G.lives=0;PZ=false;try{var _pzq=document.getElementById('pz');if(_pzq)_pzq.style.display='none';var _gq=document.getElementById('gxq');if(_gq)_gq.remove()}catch(e){}hud();end(false);try{om.textContent='レフェリーの10カウントでノックアウト… スコア '+G.sc+'点'}catch(e){}}}}
  }catch(e){console.error(e)}
 };
 function person(c,cx,by,dir,o){
@@ -2164,7 +2164,7 @@ function ring(){
  c.strokeText('レフェリーが10カウントをはじめたよ！',180,30);c.fillText('レフェリーが10カウントをはじめたよ！',180,30);
  if(tick>=0){var big=cnt,pop=1+Math.max(0,.5-tick)*.5;c.font="bold "+Math.round(86*pop)+"px 'Mochiy Pop One',sans-serif";c.lineWidth=8;c.strokeStyle='#fff';c.fillStyle=cnt<=3?'#ff2d55':'#ff8a00';c.strokeText(String(big),180+sh,84);c.fillText(String(big),180+sh,84)}
  var bl=.75+.25*Math.sin(now/200);c.globalAlpha=bl;c.font="bold 15px 'Mochiy Pop One',sans-serif";c.lineWidth=4;c.strokeStyle='#5b2a6b';c.fillStyle='#ffe66d';
- c.strokeText('▶ボタンを押してフェーズをはじめよう！',180,392);c.fillText('▶ボタンを押してフェーズをはじめよう！',180,392);
+ var rfm=PZ?'▶ボタンを押してさいかいしよう！':'▶ボタンを押してフェーズをはじめよう！';c.strokeText(rfm,180,392);c.fillText(rfm,180,392);
  c.restore()}
 var _d=draw2;draw2=function(){_d();try{if(cnt>=0&&waiting())ring()}catch(e){console.error(e)}};
 })();
