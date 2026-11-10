@@ -1330,7 +1330,7 @@ function snapshot(){
  const skip={cd:1,ang:1,spin:1,stun:1,sw:1,sl:1};
  const tw=G.tw.map(t=>{const o={};for(const k in t){const v=t[k];if(k[0]=='_'||skip[k])continue;if(typeof v=='number'||typeof v=='string'||typeof v=='boolean')o[k]=v}return o});
  return JSON.parse(JSON.stringify({v:1,name:PN,lv,wave:Math.max(0,G.wave-1),gold:G.gold,lives:G.lives,speed:G.speed,road:[...road],R:R.map(o=>({P:o.P,cs:[...o.cs]})),starts:G.starts,goal:G.goal,xr:G.xr,pits:G.pits.map(q=>({cx:q.cx,cy:q.cy})),loans:G.loans|0,debt:G.debt|0,hi:G.hi||{},own:G.own,alv:G.alv,ml:G.ml,sf:G.sf,cnt:G.cnt|0,tc:G.tc|0,fc:G.fc|0,th:G.th|0,tw,ts:Date.now()}))}
-function readSave(){try{const sv=JSON.parse(localStorage.getItem(SAVE_KEY));return sv&&sv.v===1&&Array.isArray(sv.R)&&Array.isArray(sv.tw)?sv:null}catch(e){return null}}
+function readSave(){try{const sv=JSON.parse(localStorage.getItem(SAVE_KEY));let ga=0;try{ga=parseInt(localStorage.getItem('miarina_td_giveup_v1')||'0',10)||0}catch(e){}return sv&&sv.v===1&&Array.isArray(sv.R)&&Array.isArray(sv.tw)&&!(sv.ts&&sv.ts<=ga)?sv:null}catch(e){return null}}
 function refreshCont(){const b=document.getElementById('cnb'),sv=readSave();if(!sv){b.style.display='none';return}if(sv.cleared){b.style.display='block';b.textContent='';b.disabled=true;b.style.opacity='.65';const c1=document.createElement('div'),c2=document.createElement('div');c1.textContent='✅ クリア済み';c2.style.cssText='font-size:12px;opacity:.9;margin-top:2px';c2.textContent=(sv.name?sv.name+'さん・':'')+(DIFF[sv.lv|0]?DIFF[sv.lv|0].n:'');b.append(c1,c2);if(typeof sv.gold==='number'){const c3=document.createElement('div');c3.style.cssText='font-size:13px;font-weight:800;margin-top:2px';c3.textContent='💰 '+Math.floor(sv.gold);b.append(c3)}return}b.disabled=false;b.style.opacity='';
  b.style.display='block';b.textContent='';const l1=document.createElement('div'),l2=document.createElement('div');l1.textContent='▶ つづきから';l2.style.cssText='font-size:12px;opacity:.9;margin-top:2px';l2.textContent=(sv.name?sv.name+'さん・':'')+'フェーズ'+(sv.wave+1)+'から';b.append(l1,l2);if(typeof sv.gold==='number'){const l3=document.createElement('div');l3.style.cssText='font-size:13px;font-weight:800;margin-top:2px';l3.textContent='💰 '+Math.floor(sv.gold);b.append(l3)}}
 function loadGame(){
@@ -1392,7 +1392,7 @@ gub.onclick=()=>{if(!G||G.over||tt.style.display!=='none'||document.getElementBy
  const rw=document.createElement('div');rw.style.cssText='display:flex;gap:10px';
  const yes=document.createElement('button'),no=document.createElement('button');yes.textContent='💣 はい';no.textContent='いいえ';
  yes.style.cssText='flex:1;padding:10px 4px;font-size:17px;font-weight:900;background:#ff5a1f;border-color:#c93a00;color:#fff';no.style.cssText='flex:1;padding:10px 4px;font-size:17px;font-weight:900';
- yes.onclick=()=>{q.remove();try{pz.style.display='none'}catch(e){}G.active=false;G.q=[];G.en=[];try{localStorage.removeItem(SAVE_KEY)}catch(e){}G.snapSaved=null;toTitle();boom()};
+ yes.onclick=()=>{q.remove();try{pz.style.display='none'}catch(e){}G.active=false;G.q=[];G.en=[];try{localStorage.setItem('miarina_td_giveup_v1',String(Date.now()))}catch(e){}try{localStorage.removeItem(SAVE_KEY)}catch(e){}G.snap=null;G.snapSaved=null;toTitle();boom()};
  no.onclick=()=>{q.remove();PZ=wasP;try{sfx('tap')}catch(e){}};
  rw.append(yes,no);bx.append(ic,tx,rw);q.append(bx);document.body.append(q)};
 (function(){const VK='miarina_td_vault_v1',GK='miarina_td_gold_v1',FREE=10,FEE=200;
