@@ -4943,10 +4943,10 @@ document.addEventListener('touchstart',function(e){if(e.touches.length>=2&&pend)
  window.zoRoll=function(){
   try{
    var o=gen();save(o);install(o);
-   /* いまマップにある旧オリジナル武器も新しい能力に作りかえ */
-   if(G&&G.tw)G.tw.forEach(function(t){if(t.k!=='ZO')return;
-    if(t.lv>o.mx)t.lv=o.mx;
-    t.dmg=T.ZO.dmg*(1+.45*D.up*(t.lv-1)*(1+(t.lv-1)/60));t.rng=T.ZO.rng+6*Math.min(t.lv-1,6)});
+   /* 前のオリジナル武器は使えなくなる（マップに置いてあったものも消える） */
+   if(G&&G.tw){var gone=G.tw.filter(function(t){return t.k==='ZO'});
+    if(gone.length){G.tw=G.tw.filter(function(t){return t.k!=='ZO'});
+     gone.forEach(function(t){G.fx.push({x:t.x,y:t.y,r:20,t:.4,c:'#cfc9e6'});G.fx.push({x:t.x,y:t.y-18,txt:'前の武器は消えたよ',t:1.4,c:'#7a5cff'})})}}
    if(G&&G.sel&&G.sel.k==='ZO')G.sel=null;
    try{hud();panel()}catch(e){}
    return true}catch(e){console.error(e);return false}};
