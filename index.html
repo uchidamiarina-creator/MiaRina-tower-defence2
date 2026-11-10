@@ -3690,4 +3690,19 @@ if(pfb){const prev=pfb.onclick;pfb.onclick=function(){if(prev)prev.apply(this,ar
 window.__diary={make,check,open,LG:()=>LG,PRAISE,dayKey,flush};
 })();
 </script>
+<script>
+(function(){
+/* ===== 倒した敵ランキング：同じ見た目のキャラ（例：ボス版とふつう版）を1つにまとめる ===== */
+const sigC={};
+function sig(k){if(k in sigC)return sigC[k];let u='';try{const boss=k.slice(-1)=='*',ty=boss?k.slice(0,-1):k,cn=document.createElement('canvas');cn.width=cn.height=96;
+ const pn=performance.now;performance.now=function(){return 1000};try{pfEnDraw(cn,ty,boss)}finally{performance.now=pn}u=cn.toDataURL()}catch(e){u=''}return sigC[k]=u}
+const _ld=stLoad;
+stLoad=function(){const o=_ld.apply(this,arguments);
+ try{const pf=document.getElementById('pf');if(!pf||pf.style.display==='none')return o;
+  for(const nk in o){const e=o[nk]&&o[nk].e;if(!e)continue;const g={};
+   for(const k of Object.keys(e)){const ty=k.slice(-1)=='*'?k.slice(0,-1):k,nm=ENAME[ty],s=nm?'n:'+nm:sig(k);if(!s)continue;(g[s]=g[s]||[]).push(k)}
+   for(const s in g){const a=g[s];if(a.length<2)continue;const bs=k=>'BRLNUI'.indexOf(k.replace('*',''))>=0&&k.length<=2;a.sort((x,y)=>bs(x)?((y.slice(-1)=='*')-(x.slice(-1)=='*')||(x<y?-1:1)):((x.slice(-1)=='*')-(y.slice(-1)=='*')||(x<y?-1:1)));const c=a[0];for(let i=1;i<a.length;i++){e[c]=(e[c]||0)+e[a[i]];delete e[a[i]]}}}
+ }catch(err){console.error(err)}return o};
+})();
+</script>
 </body></html>
