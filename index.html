@@ -4054,6 +4054,13 @@ panel=function(){
   document.getElementById('bk1').onclick=function(){repay(t,false)};
   document.getElementById('bka').onclick=function(){repay(t,true)};
   document.getElementById('bkx').onclick=function(){G.sel=null;hud();panel()};
+   wp.style.cssText='position:absolute;left:0;top:0;transform:none;z-index:6;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:5px;padding:6px 8px;background:var(--card);color:var(--ink);border:3px solid var(--accent);border-radius:16px;box-shadow:0 6px 16px rgba(255,111,165,.45);width:max-content;max-width:calc(100% - 8px)';
+   var wrp=document.getElementById('wrap'),cr2=cv.getBoundingClientRect(),wr2=wrp.getBoundingClientRect();
+   var bx2=cr2.left-wr2.left+t.x/360*cr2.width,by2=cr2.top-wr2.top+t.y/440*cr2.height;
+   var bw2=wp.offsetWidth,bh2=wp.offsetHeight;
+   var L2=Math.max(4,Math.min(wr2.width-bw2-4,bx2-bw2/2)),T2=by2-bh2-24>=4?by2-bh2-24:by2+24;
+   T2=Math.max(4,Math.min(wr2.height-bh2-4,T2));
+   wp.style.left=L2+'px';wp.style.top=T2+'px';
  }catch(e){console.error(e)}
 };
 if(typeof loadGame==='function'){var _lg=loadGame;loadGame=function(){var r=_lg.apply(this,arguments);try{if(r)saveD()}catch(e){}return r}}
