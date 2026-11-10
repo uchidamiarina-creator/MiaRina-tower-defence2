@@ -4203,7 +4203,7 @@ function roll(){
  if(gold()<COST){msg('ゴールドがたりないよ（'+COST+'G必要）。クリアして持ち越そう！');return}
  setGold(gold()-COST);ui();cancelAnimationFrame(raf);cur=null;busy=true;var myId=++rid,rb=ov.querySelector('.roll');rb.disabled=true;rb.style.opacity='.5';
  ov.querySelector('.reg').style.display='none';ov.querySelector('.nm').style.display='none';msg('');
- var st=ov.querySelector('.stage'),isG=Math.random()<GOLDP,cp=CAPS[Math.random()*CAPS.length|0];
+ var st=ov.querySelector('.stage'),isG=Math.random()<goldP(),cp=CAPS[Math.random()*CAPS.length|0];
  st.innerHTML='<style>@keyframes cpw{0%,100%{transform:rotate(0)}20%{transform:rotate(-18deg)}40%{transform:rotate(16deg)}60%{transform:rotate(-12deg)}80%{transform:rotate(8deg)}}@keyframes cpg{0%,100%{box-shadow:0 0 10px 2px #ffd700}50%{box-shadow:0 0 26px 8px #fff3a0}}@keyframes cpt{0%,100%{opacity:0;transform:scale(.3)}50%{opacity:1;transform:scale(1.2)}}</style>'+(isG?'<div style=\"position:relative;width:70px;height:70px\"><div style=\"width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#fff7b0 0%,#ffd700 35%,#d99a00 55%,#ffe766 75%,#fff7b0 100%);border:3px solid #7a5a00;animation:cpw .5s ease-in-out 3,cpg .8s ease-in-out infinite\"></div><span style=\"position:absolute;left:-14px;top:-6px;font-size:18px;animation:cpt .9s infinite\">✨</span><span style=\"position:absolute;right:-14px;top:8px;font-size:15px;animation:cpt .9s .3s infinite\">✨</span><span style=\"position:absolute;left:4px;bottom:-12px;font-size:16px;animation:cpt .9s .6s infinite\">✨</span><span style=\"position:absolute;right:2px;top:-14px;font-size:13px;animation:cpt .9s .15s infinite\">⭐</span></div>':'<div style=\"width:70px;height:70px;border-radius:50%;background:linear-gradient('+cp[1]+' 50%,#fff 50%);border:3px solid #3a2a40;animation:cpw .5s ease-in-out 3\"></div>');
  msg(isG?'✨ きらきらの金色カプセルだ！！':cp[0]+'のカプセル！');
  setTimeout(function(){
@@ -4395,6 +4395,10 @@ function dcAssign(m,all){
  m.d=d;return d}
 function dcDesc(m,all){var P=dcPool();return dcAssign(m,all).map(function(x){return P[x].split('{n}').join(m.n)}).join('\n')}
 
+/* 初プレイから24時間は金色カプセルが1/10 */
+function goldP(){try{var k='miarina_td_firstplay_v1',t=parseInt(localStorage.getItem(k)||'0',10);if(!(t>0)){t=Date.now();localStorage.setItem(k,String(t))}if(Date.now()-t<86400000)return .1}catch(e){}return GOLDP}
+window.rinGoldP=goldP;(function(){try{goldP()}catch(e){}})();
+function SELLP(m){var r=rar(m);return r==='UR'?100000:r==='R'?500:250}
 function openList(){
  stop();var a=mons();
  ov=document.createElement('div');
@@ -4431,7 +4435,7 @@ function openList(){
   box.appendChild(inf);
    var ds=document.createElement('div');var d0=JSON.stringify(m.d||null);ds.textContent=dcDesc(m,a);if(JSON.stringify(m.d)!==d0)saveMons(a);ds.style.cssText='font-size:13px;line-height:1.7;margin:6px 0;padding:6px 10px;border-radius:10px;background:rgba(255,111,165,.12);white-space:pre-line;text-align:left';box.appendChild(ds);
   var bk=document.createElement('button');bk.textContent='もどる';bk.style.cssText='padding:7px 18px;margin-top:4px';bk.onclick=listView;box.appendChild(bk);
-   var dl=document.createElement('button'),dlA=0;dl.textContent='🗑️ 削除して'+COST+'G戻す';dl.style.cssText='padding:7px 18px;margin:4px 0 0 6px';dl.onclick=function(){try{sfx('tap')}catch(e){}if(!dlA){dlA=1;dl.textContent='ほんとに削除する？ もう一回タップ';setTimeout(function(){if(dl.isConnected){dlA=0;dl.textContent='🗑️ 削除して'+COST+'G戻す'}},3000);return}var ix=a.indexOf(m);if(ix>=0){a.splice(ix,1);saveMons(a);setGold(gold()+COST)}listView()};box.appendChild(dl);
+   var dl=document.createElement('button'),dlA=0;dl.textContent='💰 売る（'+SELLP(m)+'G）';dl.style.cssText='padding:7px 18px;margin:4px 0 0 6px';dl.onclick=function(){try{sfx('tap')}catch(e){}if(!dlA){dlA=1;dl.textContent='ほんとに売る？ もう一回タップ';setTimeout(function(){if(dl.isConnected){dlA=0;dl.textContent='💰 売る（'+SELLP(m)+'G）'}},3000);return}var ix=a.indexOf(m);if(ix>=0){a.splice(ix,1);saveMons(a);setGold(gold()+SELLP(m))}listView()};box.appendChild(dl);
   var c=cv.getContext('2d');cancelAnimationFrame(raf);
   (function f(n){if(!ov)return;c.clearRect(0,0,170,170);c.save();c.translate(85,85-monCY(m.p)*2.2);drawMon(c,m.p,n,2.2);c.restore();raf=requestAnimationFrame(f)})(performance.now())}
  listView()}
@@ -4592,7 +4596,7 @@ window.rinMonLabel=function(k){var m=parseMK(k);return (isGd(m)?'✨ ':'')+m.n};
  bind();
  ['pointerdown','touchstart','keydown','wheel','mousemove'].forEach(function(ev){window.addEventListener(ev,function(){if(!cr)last=Date.now()},{capture:true,passive:true})});
  setInterval(function(){var on=titleOn();if(on&&!wasOn)last=Date.now();wasOn=on;if(!on){if(cr)stop();return}
-  if(!cr&&!document.hidden&&Date.now()-last>=20000&&pname())show()},1000);
+  if(!cr&&!document.hidden&&Date.now()-last>=60000&&pname())show()},1000);
 })();
 </script>
 </body></html>
