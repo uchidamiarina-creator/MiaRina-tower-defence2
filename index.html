@@ -3400,10 +3400,10 @@ P.measureText=function(t){t=String(t);if(!has(t))return _meas.call(this,t);const
 (function(){
  var st=document.createElement('style');
  st.textContent='#bossErm{position:fixed;z-index:35;pointer-events:none;width:0;height:0;display:none}'
- +'#bossErm .clip{position:absolute;left:-55px;bottom:0;width:110px;height:222px;overflow:hidden}'
- +'#bossErm img{position:absolute;left:0;top:0;width:110px;height:auto;transform:translateY(230px);transition:transform .35s ease-out;-webkit-user-drag:none}'
+ +'#bossErm .clip{position:absolute;left:-27px;bottom:0;width:55px;height:111px;overflow:hidden}'
+ +'#bossErm img{position:absolute;left:0;top:0;width:55px;height:auto;transform:translateY(115px);transition:transform .35s ease-out;-webkit-user-drag:none}'
  +'#bossErm.on img{transform:translateY(0)}'
- +'#bossErm .bub{position:absolute;left:34px;bottom:196px;white-space:nowrap;background:#fff;color:#4a2740;border:3px solid #7a5cff;border-radius:16px;padding:6px 12px;font:bold 16px "Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif;opacity:0;transform:scale(.85);transform-origin:left bottom;transition:opacity .2s .25s,transform .2s .25s}'
+ +'#bossErm .bub{position:absolute;left:17px;bottom:98px;white-space:nowrap;background:#fff;color:#4a2740;border:3px solid #7a5cff;border-radius:14px;padding:4px 9px;font:bold 13px "Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif;opacity:0;transform:scale(.85);transform-origin:left bottom;transition:opacity .2s .25s,transform .2s .25s}'
  +'#bossErm .bub:after{content:"";position:absolute;left:10px;bottom:-11px;border-left:8px solid transparent;border-right:8px solid transparent;border-top:10px solid #7a5cff}'
  +'#bossErm .bub:before{content:"";position:absolute;left:12px;bottom:-6px;border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid #fff;z-index:1}'
  +'#bossErm.on .bub{opacity:1;transform:scale(1)}';
