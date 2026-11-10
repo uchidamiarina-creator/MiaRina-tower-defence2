@@ -1392,7 +1392,7 @@ gub.onclick=()=>{if(!G||G.over||tt.style.display!=='none'||document.getElementBy
  const rw=document.createElement('div');rw.style.cssText='display:flex;gap:10px';
  const yes=document.createElement('button'),no=document.createElement('button');yes.textContent='💣 はい';no.textContent='いいえ';
  yes.style.cssText='flex:1;padding:10px 4px;font-size:17px;font-weight:900;background:#ff5a1f;border-color:#c93a00;color:#fff';no.style.cssText='flex:1;padding:10px 4px;font-size:17px;font-weight:900';
- yes.onclick=()=>{q.remove();try{pz.style.display='none'}catch(e){}G.active=false;G.q=[];G.en=[];toTitle();boom()};
+ yes.onclick=()=>{q.remove();try{pz.style.display='none'}catch(e){}G.active=false;G.q=[];G.en=[];try{localStorage.removeItem(SAVE_KEY)}catch(e){}G.snapSaved=null;toTitle();boom()};
  no.onclick=()=>{q.remove();PZ=wasP;try{sfx('tap')}catch(e){}};
  rw.append(yes,no);bx.append(ic,tx,rw);q.append(bx);document.body.append(q)};
 (function(){const VK='miarina_td_vault_v1',GK='miarina_td_gold_v1',FREE=10,FEE=200;
