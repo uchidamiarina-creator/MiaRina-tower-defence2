@@ -3661,6 +3661,9 @@ function check(){try{flush();const now=dayKey(Date.now());let made=0;const dv=ld
 setInterval(check,15000);setTimeout(check,1500);
 /* ===== プロフィールの「My日記」 ===== */
 function profName(){const v=$('pn')?$('pn').value.trim():'';if(v)return v;const o=ld('miarina_td_profile_v1');const l=Object.values(o).filter(f=>f&&typeof f==='object'&&f.n).sort((a,b)=>(b.u||0)-(a.u||0));return l[0]?l[0].n:''}
+const wlen=t=>{let n=0;for(const ch of t)n+=ch.charCodeAt(0)>255?2:1;return n};
+function tweetText(en){const tag='\n#みありなタワーディフェンス',pr='\n👩‍🏫'+en.pr,head='📔'+en.title+'\n';let ls=en.l.slice();
+ const mk=()=>head+ls.join('\n')+pr+tag;while(wlen(mk())>270&&ls.length>1)ls.pop();let t=mk();if(wlen(t)>270){let l=ls[0];while(wlen(head+l+'…'+pr+tag)>270&&l.length>1)l=l.slice(0,-1);t=head+l+'…'+pr+tag}return t}
 function open(nm){const box=$('pfd'),nk=rkKey(nm),dv=ld(DK),mine=Object.values(dv[nk]||{}).sort((a,b)=>b.k<a.k?-1:b.k>a.k?1:0);
  box.textContent='';const h=document.createElement('div');h.style.cssText='margin:4px 0 6px;font-size:16px;font-weight:bold;color:var(--accent);text-align:center';h.textContent='📔 My日記';box.appendChild(h);window._pfSub=true;
  const list=document.createElement('div');box.appendChild(list);
@@ -3673,7 +3676,10 @@ function open(nm){const box=$('pfd'),nk=rkKey(nm),dv=ld(DK),mine=Object.values(d
   hd.append(cn,tt);c.appendChild(hd);
   en.l.forEach(s=>{const d=document.createElement('div');d.style.cssText='font-size:13px;line-height:1.65';d.textContent=s;c.appendChild(d)});
   const tc=document.createElement('div');tc.style.cssText='margin-top:8px;padding:6px 8px;background:rgba(255,138,0,.13);border-left:4px solid #ff8a00;border-radius:4px;font-size:13px;line-height:1.5';
-  const lb=document.createElement('span');lb.textContent='👩‍🏫 先生より　';lb.style.color='var(--mute)';const pb=document.createElement('b');pb.textContent=en.pr;tc.append(lb,pb);c.appendChild(tc);list.appendChild(c)});
+  const lb=document.createElement('span');lb.textContent='👩‍🏫 先生より　';lb.style.color='var(--mute)';const pb=document.createElement('b');pb.textContent=en.pr;tc.append(lb,pb);c.appendChild(tc);
+  const xb=document.createElement('button');xb.textContent='𝕏 に投稿する';xb.style.cssText='display:block;width:100%;margin:8px 0 0;padding:8px 4px;font-size:13px;flex:none';
+  xb.onclick=function(){try{sfx('tap')}catch(_){}const a=document.createElement('a');a.href='https://twitter.com/intent/tweet?text='+encodeURIComponent(tweetText(en));a.target='_blank';a.rel='noopener noreferrer';document.body.appendChild(a);a.click();a.remove()};
+  c.appendChild(xb);list.appendChild(c)});
  box.scrollTop=0;
  let ch=false;for(const k in (dv[nk]||{}))if(dv[nk][k].nw){dv[nk][k].nw=0;ch=true}if(ch)sv(DK,dv)}
 const pfb=$('pfb');
