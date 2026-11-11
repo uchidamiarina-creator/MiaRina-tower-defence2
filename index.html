@@ -1136,7 +1136,7 @@ drawEn2=function(e,t){const ok=e&&e.x!=null,s=t/1000;
   if(e.boss){const pu=1+.08*Math.sin(s*4);glow(e.x,by-4,38*pu,e.mid?'#ff9a3c':'#a47bff',.4);x.strokeStyle='rgba(255,210,90,'+(.45+.25*Math.sin(s*5))+')';x.lineWidth=2;x.beginPath();x.arc(e.x,by-4,25*pu,0,7);x.stroke()}
   if(e.slow>0)glow(e.x,by,24,'#7bd8ff',.5);
   if(e.pois>0)glow(e.x,by,22,'#9ccc65',.45)}
- const zp=ok&&e._zap&&e.stun>0;if(ok&&e._zap&&!(e.stun>0))e._zap=0;if(zp){x.save();x.translate((rnd()-.5)*3.5,(rnd()-.5)*2);glow(e.x,e.y-2,22,'#ffe066',.55)}
+ const zp=ok&&e._zap&&e.stun>0&&!(()=>{try{return PZ}catch(_){return false}})();if(ok&&e._zap&&!(e.stun>0))e._zap=0;if(zp){x.save();x.translate((rnd()-.5)*3.5,(rnd()-.5)*2);glow(e.x,e.y-2,22,'#ffe066',.55)}
  _dE(e,t);
  if(zp){x.restore();x.save();for(let i=0;i<3;i++){const a=rnd()*6.283,r1=7+rnd()*5,r2=r1+7+rnd()*6;strokeBolt(jag(e.x+Math.cos(a)*r1,e.y-4+Math.sin(a)*r1,e.x+Math.cos(a+.5)*r2,e.y-4+Math.sin(a+.5)*r2,3),1,1.4)}x.restore()}
  if(ok){if(e.slow>0){x.fillStyle='rgba(235,250,255,.95)';x.font='bold 9px sans-serif';x.textAlign='center';x.textBaseline='middle';for(let i=0;i<3;i++){const a=s*2+i*2.094;x.fillText('\u2744',e.x+Math.cos(a)*15,e.y-4+Math.sin(a)*9)}}
@@ -1186,7 +1186,7 @@ const _d2=draw2;
 draw2=function(){const t=performance.now(),dt=Math.min(.05,Math.max(0,(t-LT)/1000));LT=t;
  const W=Math.round(360*S);if(cv.width!==W){cv.width=W;cv.height=Math.round(440*S)}
  x.setTransform(S,0,0,S,0,0);x.imageSmoothingQuality='high';
- x.save();if(SK>.3)x.translate((rnd()-.5)*SK,(rnd()-.5)*SK);SK*=Math.pow(.02,dt);
+ x.save();if(SK>.3&&!(()=>{try{return PZ}catch(_){return false}})())x.translate((rnd()-.5)*SK,(rnd()-.5)*SK);SK*=Math.pow(.02,dt);
  _d2();overlay(t,dt);x.restore()};
 
 /* --- new towers: rocket fireworks / spinning whip / slot --- */
@@ -2234,7 +2234,7 @@ var cs=null;var _p=panel;panel=function(){
 var st=document.createElement('style');
 st.textContent='#lbx{height:46px!important}#lbx .led,.aplx .led{background:#0b0610!important;border:2px solid #5a3a66!important;box-shadow:inset 0 0 6px rgba(0,0,0,.9)!important}#lbx .ledt,.aplx .ledt{font-size:22px!important;letter-spacing:.05em!important;color:#fff7c2!important;text-shadow:1px 1px 0 #000,0 0 1px #000!important;font-weight:900!important}';
 document.head.appendChild(st);
-var _lf=ledFit;ledFit=function(b){_lf(b);try{var t=b.firstChild,w=parseFloat(t.style.getPropertyValue('--w'))||0;t.style.animationDuration=Math.max(6,w/55)+'s'}catch(e){}};
+var _lf=ledFit;ledFit=function(b){_lf(b);try{var t=b.firstChild,w=parseFloat(t.style.getPropertyValue('--w'))||0;t.style.animationDuration=Math.max(3,w/110)+'s'}catch(e){}};
 try{var h=document.getElementById('lbx');if(h&&h.firstChild)ledFit(h.firstChild)}catch(e){}
 })();
 </script>
@@ -5082,12 +5082,12 @@ function rwOf(i){var ids=window.rinIds?window.rinIds():['z'],id=ids[(i*7+3+Math.
 function toast(t){tq.push(t);if(!tbusy)nextT()}
 function nextT(){var t=tq.shift();if(!t){tbusy=false;return}tbusy=true;
  var d=document.createElement('div');d.style.cssText='position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 14px);transform:translateX(-50%);z-index:99999;background:#fff8d6;color:#4a2740;border:3px solid #ffb703;border-radius:16px;padding:9px 16px;font-size:14px;font-weight:bold;box-shadow:0 6px 18px rgba(0,0,0,.28);max-width:88vw;text-align:center;line-height:1.4;white-space:pre-line;pointer-events:none';
- d.textContent=t;document.body.appendChild(d);try{sfx('clear')}catch(e){}
- setTimeout(function(){d.remove();nextT()},2600)}
+ var cp=t&&typeof t==='object';if(cp){t=t.t;d.style.cssText='position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 8px);transform:translateX(-50%);z-index:2147483000;background:#fff8d6;color:#4a2740;border:2px solid #ffb703;border-radius:12px;padding:4px 12px;font-size:12px;font-weight:bold;box-shadow:0 3px 10px rgba(0,0,0,.25);max-width:92vw;text-align:center;line-height:1.35;white-space:pre-line;pointer-events:none'}d.textContent=t;document.body.appendChild(d);try{sfx('clear')}catch(e){}
+ setTimeout(function(){d.remove();nextT()},cp?2200:2600)}
 function val(k){return S.p[k]|0}
 function check(){
  Q.forEach(function(q,i){if(S.d[i])return;if(val(q.k)>=q.n){
-  S.d[i]=1;save(S);toast('🎯 クエスト達成！\n'+q.f(q.n)+'\nプロフィール→クエストで、色がかわったマスをタップするともらえるよ');
+  S.d[i]=1;save(S);toast({t:'🎯 クエスト達成！ No.'+(i+1)});
   try{if(G&&G.fx)G.fx.push({x:180,y:210,txt:'🎯 クエスト達成！',t:1.8,c:'#ff8a00'})}catch(e){}}})}
 function add(k,n){S.p[k]=val(k)+(n||1);save(S);check()}
 function max(k,v){if(v>val(k)){S.p[k]=v;save(S);check()}}
@@ -5144,6 +5144,33 @@ if(pfb){var prev=pfb.onclick;pfb.onclick=function(){if(prev)prev.apply(this,argu
   var b=document.createElement('button');b.textContent='🎯 クエスト　'+n+' / 100'+(nc?'　🎁 '+nc:'');b.style.cssText='width:100%;margin:10px 0 2px;flex:none;padding:10px 4px;font-size:14px';
   b.onclick=function(){try{sfx('tap')}catch(e){}render(box)};box.appendChild(b)}catch(e){}}}
 window.__quest={Q:Q,add:add,max:max,state:function(){return S},rw:rwOf,claim:claim};
+})();
+</script>
+<script>
+/* 電光掲示板を2回タップ → 天気予報（Open-Meteo・各地方の代表都市） */
+(function(){
+var el=document.getElementById('lbx');if(!el||typeof ledSet!=='function')return;
+var CITY=[['北海道',43.06,141.35],['東北',38.27,140.87],['関東',35.69,139.69],['中部',35.18,136.91],['関西',34.69,135.50],['中国',34.40,132.46],['四国',34.34,134.04],['九州',33.59,130.40],['沖縄',26.21,127.68]];
+var W={on:false,txt:'',t:0,busy:false,cache:null,at:0},_ls=ledSet;
+ledSet=function(h,txt){if(h===el&&W.on&&txt!==W.txt)return;return _ls.apply(this,arguments)};
+function ic(c){if(c===0)return'☀️';if(c<=2)return'🌤️';if(c===3)return'☁️';if(c===45||c===48)return'🌫️';if(c>=51&&c<=67)return'🌧️';if(c>=71&&c<=77||c===85||c===86)return'❄️';if(c>=80&&c<=82)return'🌦️';if(c>=95)return'⛈️';return'☁️'}
+function stop(){W.on=false;clearTimeout(W.t);try{panel()}catch(e){}}
+function show(txt,ms){W.on=true;W.txt=txt;clearTimeout(W.t);_ls(el,txt);W.t=setTimeout(stop,ms)}
+function build(d){return'天気予報（今日の最高気温）　'+CITY.map(function(c,i){var x=d[i].daily;return c[0]+' '+ic(x.weather_code[0])+Math.round(x.temperature_2m_max[0])+'°'}).join('　')+'　'}
+function load(){
+ if(W.cache&&Date.now()-W.at<10800000){show(build(W.cache),40000);return}
+ if(W.busy)return;W.busy=true;show('天気予報を取得中…　',15000);
+ var ac=window.AbortController?new AbortController():null,to=setTimeout(function(){if(ac)ac.abort()},8000);
+ var u='https://api.open-meteo.com/v1/forecast?latitude='+CITY.map(function(c){return c[1]}).join(',')+'&longitude='+CITY.map(function(c){return c[2]}).join(',')+'&daily=weather_code,temperature_2m_max&timezone=Asia%2FTokyo&forecast_days=1';
+ fetch(u,ac?{signal:ac.signal}:{}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
+  if(!Array.isArray(d)||d.length<CITY.length)throw 0;W.cache=d;W.at=Date.now();W.busy=false;clearTimeout(to);show(build(d),40000)
+ }).catch(function(){W.busy=false;clearTimeout(to);show('天気を取得できなかったよ（ネット接続を確認してね）　',6000)})}
+var lt=0,lx=0,ly=0;
+el.style.touchAction='manipulation';
+el.addEventListener('click',function(e){var n=Date.now();
+ if(n-lt<450&&Math.abs(e.clientX-lx)<30&&Math.abs(e.clientY-ly)<30){lt=0;try{sfx('tap')}catch(er){}if(W.on&&!W.busy){stop()}else load()}
+ else{lt=n;lx=e.clientX;ly=e.clientY}});
+window.__wx={load:load,stop:stop};
 })();
 </script>
 </body></html>
