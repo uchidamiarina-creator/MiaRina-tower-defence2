@@ -1,7 +1,7 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head>
-<meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"></head><body>
 
 
 
@@ -23,7 +23,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:"Mochiy Pop One"
 h1{font-size:20px;margin:10px 0 6px;color:var(--accent);letter-spacing:.04em}
 #wrap{width:100%;max-width:420px;padding:0 8px 16px;position:relative}
 #stats{display:flex;justify-content:space-between;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:6px 12px;font-size:15px;margin-bottom:6px}
-canvas{width:100%;display:block;border-radius:14px;border:2px solid var(--line);touch-action:manipulation}
+canvas{width:100%;display:block;border-radius:14px;border:2px solid var(--line);touch-action:pan-x pan-y}
 .row{display:flex;gap:6px;margin-top:6px}
 button{font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:12px;padding:8px 4px;flex:1;font-size:13px;line-height:1.3;cursor:pointer}
 button.on{border-color:var(--accent);background:var(--accent);color:#fff}
@@ -80,7 +80,7 @@ button.go{font-size:14px}
 .ctl{justify-content:flex-start}
 .ctl button{flex:0 0 auto;padding:2px 10px;font-size:14px;line-height:1.3;border-radius:10px;min-width:40px}
 .ctl button.go{font-size:15px}
-html,body{touch-action:manipulation;overscroll-behavior:none;-webkit-text-size-adjust:100%;text-size-adjust:100%;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+html,body{touch-action:pan-x pan-y;overscroll-behavior:none;-webkit-text-size-adjust:100%;text-size-adjust:100%;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 input{-webkit-user-select:text;user-select:text}
 body{height:calc(100svh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
 body.ld #wrap,body.ld #tt{visibility:hidden}
@@ -165,6 +165,14 @@ button:disabled{filter:grayscale(.45)}
 #pz button{display:block;width:100%;margin:0 0 8px;padding:11px 8px;font-size:15px}
 #pz #pzm{min-height:1.5em;color:var(--accent2);font-size:13px;margin:0 0 8px}
 @media (prefers-reduced-motion:reduce){#pz>div{animation:none}}
+/* ---- 画面ぴったりフィット（どのスマホでも） ---- */
+html{width:100%;height:100%;overflow:hidden;position:fixed;inset:0;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{width:100%;margin:0;overflow:hidden;
+ height:calc(100vh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));
+ height:calc(100svh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));
+ height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
+#wrap{width:100%;max-width:none;padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}
+#cw{width:100%;overflow:hidden}
 </style>
 
 <script>(function(){function f(){document.body.classList.add("ld")}if(document.body)f();else document.addEventListener("DOMContentLoaded",f)})()</script><div id="ld" style="position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:#fff1f5;color:#ff6fa5;font:bold 18px sans-serif">読み込み中…</div>
@@ -1688,6 +1696,7 @@ $('pf').addEventListener('pointerdown',e=>{if(e.target.id==='pf')$('pf').style.d
 })();
 (()=>{const o={passive:false};
 for(const n of['gesturestart','gesturechange','gestureend'])document.addEventListener(n,e=>e.preventDefault(),o);
+document.addEventListener('wheel',e=>{if(e.ctrlKey)e.preventDefault()},o);
 document.addEventListener('touchmove',e=>{if(e.touches&&e.touches.length>1){e.preventDefault();return}const t=e.target;if(!t||!t.closest)return;if(t.closest('#tt')&&!t.closest('input,textarea'))e.preventDefault()},o);
 })();
 (()=>{const NK='miarina_td_name_v1',pn=document.getElementById('pn'),stb=document.getElementById('stb'),cnb=document.getElementById('cnb');
@@ -4900,35 +4909,6 @@ update=function(dt){sync();window.__rdt=dt;
  if(frozen!==null){try{CH.idle=0}catch(e){}return _top(0)}
  return _top(dt)};
 var _rt=rnTalk;rnTalk=function(dt){if(frozen!==null)return;return _rt(dt)};
-})();
-</script>
-<script>
-/* 指2本のピンチで画面全体を縮小（今のサイズより大きくはならない） */
-(function(){
-var wrap=document.getElementById('wrap'),MIN=.4,s=1,d0=0,s0=1,on=false;
-function dist(t){return Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY)}
-function set(v){s=Math.max(MIN,Math.min(1,v));window.__ps=s;
- var tin=document.querySelector('#tt .tin');[wrap,tin].forEach(function(el){if(!el)return;el.style.transformOrigin='50% 50%';el.style.transform=s<.999?'scale('+s+')':''});
- try{window.dispatchEvent(new Event('resize'))}catch(e){}}
-document.addEventListener('touchstart',function(e){
- if(e.touches.length===2){on=true;d0=dist(e.touches)||1;s0=s;e.preventDefault()}},{passive:false,capture:true});
-document.addEventListener('touchmove',function(e){
- if(on&&e.touches.length>=2){e.preventDefault();set(s0*dist(e.touches)/d0)}},{passive:false,capture:true});
-function end(e){if(e.touches.length<2)on=false}
-document.addEventListener('touchend',end,true);document.addEventListener('touchcancel',end,true);
-/* ピンチの1本目の指をタップ扱いにしないため、タッチの押下を一瞬だけ保留する */
-var pend=null,redo=false;
-function flush(){if(!pend)return;var q=pend;pend=null;clearTimeout(q.tm);
- redo=true;try{q.tg.dispatchEvent(new PointerEvent('pointerdown',{clientX:q.x,clientY:q.y,pointerId:q.id,pointerType:'touch',isPrimary:true,button:0,buttons:1,bubbles:true,cancelable:true}))}catch(e){}redo=false}
-document.addEventListener('pointerdown',function(e){
- if(redo||e.pointerType!=='touch')return;
- if(on){e.stopImmediatePropagation();return}
- if(!wrap.contains(e.target))return;
- e.stopImmediatePropagation();
- pend={tg:e.target,x:e.clientX,y:e.clientY,id:e.pointerId,tm:setTimeout(flush,110)}},true);
-document.addEventListener('pointerup',function(e){if(pend&&e.pointerType==='touch')flush()},true);
-document.addEventListener('pointermove',function(e){if(pend&&e.pointerType==='touch'&&Math.hypot(e.clientX-pend.x,e.clientY-pend.y)>6)flush()},true);
-document.addEventListener('touchstart',function(e){if(e.touches.length>=2&&pend){clearTimeout(pend.tm);pend=null}},true);
 })();
 </script>
 <script>
