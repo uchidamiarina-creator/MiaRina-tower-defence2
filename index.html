@@ -1973,14 +1973,17 @@ var zList=[],zMode=0;
 function zItems(){
  var a=[];try{a=window.rinInv?window.rinInv():[]}catch(e){}
  var fr=document.createDocumentFragment();
- for(var i=0;i<a.length;i++){var it=a[i],row=document.createElement('div');
-  row.style.cssText='display:flex;gap:8px;align-items:center;padding:7px 4px;border-bottom:1px dashed var(--line);font-size:14px'+(it.n>0?'':';opacity:.45');
+ var any=false;
+ for(var i=0;i<a.length;i++){var it=a[i];if(!(it.n>0))continue;any=true;var row=document.createElement('div');
+  row.style.cssText='display:flex;gap:8px;align-items:center;padding:7px 4px;border-bottom:1px dashed var(--line);font-size:14px';
   var tx=document.createElement('div');tx.style.cssText='flex:1;min-width:0;line-height:1.35';
   var nm=document.createElement('b');nm.textContent=(it.icon?it.icon+' ':'')+it.name;
   var ds=document.createElement('div');ds.textContent=it.ds;ds.style.cssText='font-size:11px;color:var(--mute)';
   tx.append(nm,ds);
   var c=document.createElement('span');c.textContent='×'+it.n;c.style.cssText='flex:none;font-weight:bold;font-variant-numeric:tabular-nums';
+  if(it.art){var ai=document.createElement('img');ai.src=it.art;ai.alt='';ai.style.cssText='width:32px;height:32px;flex:none;border:0;box-shadow:none;background:none;padding:0;border-radius:0';row.append(ai)}
   row.append(tx,c);fr.appendChild(row)}
+ if(!any){var em=document.createElement('div');em.style.cssText='padding:22px 8px;text-align:center;font-size:13px;color:var(--mute)';em.textContent='ひみつ道具はまだ持っていないよ。';fr.appendChild(em)}
  zl.appendChild(fr)}
 function zRender(){
  zl.textContent='';zs1.className=zMode==0?'on':'';zs2.className=zMode==1?'on':'';
@@ -4422,12 +4425,80 @@ const ITEMS=[
  {id:'p',name:'穴埋めパズル',icon:'🧩',hole:1,ds:'使うと10フェーズの間、マップに敵の穴があかなくなる'},
  {id:'s',name:'シャボン玉',icon:'🫧',bub:1,ds:'5フェーズの間、マップに泡がただよう。敵に当たると泡に閉じ込められて、画面の上へ消えていく（ボスは対象外）'},
  {id:'c',name:'猛毒コブラ',icon:'🐍',cobra:1,ds:'マップ上の全てのどくタワーを「どくどくタワー」に進化！強さが2倍になる'},
- {id:'ap',name:'全自動Pカード',icon:'',fn:function(){return 0},can:function(){return false},ds:'「全自動バトル」ボタンを押すたびに1枚つかうよ（ここからは使えないよ）'},
+ {id:'ap',name:'全自動Pカード',art:'card',icon:'',fn:function(){return 0},can:function(){return false},ds:'「全自動バトル」ボタンを押すたびに1枚つかうよ（ここからは使えないよ）'},
  {id:'l',name:'ライオンバス',icon:'🦁',lbus:1,ds:'ゴールからスタートへゆっくり走り、道の敵を全部のせて消す（ボスは乗れない）。のせたあとはゴール手前でフェーズ終了まで停車'}];
 if(window.__xItems)window.__xItems.forEach(o=>ITEMS.push(o));
-ITEMS.forEach(o=>{o.icon=''});
+ITEMS.forEach(o=>{if(!o.art)o.art=o.icon;o.icon=''});
 const cap=t=>t.k==='L'?6:t.k==='W'?3:t.k==='M'?3:t.k==='ZO'?(T.ZO.mx||5):99;
 const ok=t=>t&&t.k!=='X'&&!t.broken&&typeof t.lv==='number'&&T[t.k]&&typeof T[t.k].dmg==='number';
+/* ひみつ道具のイラスト（アイコンの代わりに表示） */
+const ART=(function(){
+ const O='#4a2740',sv=b=>'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" stroke="'+O+'" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">'+b+'</svg>';
+ const heart=(f,x,y,s)=>'<path transform="translate('+x+' '+y+') scale('+s+')" fill="'+f+'" d="M16 28 C3 19 3 8 10 6.5 C13.5 5.8 15.2 8 16 10 C16.8 8 18.5 5.8 22 6.5 C29 8 29 19 16 28Z"/>';
+ const star=(cx,cy,R,r,f)=>{let p='';for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,q=i%2?r:R;p+=(i?'L':'M')+(cx+Math.cos(a)*q).toFixed(1)+' '+(cy+Math.sin(a)*q).toFixed(1)}return '<path fill="'+f+'" d="'+p+'Z"/>'};
+ const coin=(x,y,r)=>'<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#ffd23f"/><path d="M'+x+' '+(y-r*.5)+' V'+(y+r*.5)+'" stroke-width="1.2"/>';
+ const sack=(f,ex)=>sv('<path fill="'+f+'" d="M12 5 L20 5 L18.5 10 C27 14 28 29 16 29 C4 29 5 14 13.5 10Z"/><path fill="#ff5fa0" d="M12.5 9.5 Q16 12.5 19.5 9.5 L19 6.5 Q16 8.5 13 6.5Z"/>'+(ex||''));
+ const A={};
+ A['🔼']=sv('<path fill="#7be08a" d="M16 4 L28 17 H20 V28 H12 V17 H4Z"/><path d="M12 15 L16 10" stroke="#fff" stroke-width="2"/>');
+ A['⏫']=sv('<path fill="#ffb703" d="M16 2.5 L27 13 H5Z"/><path fill="#ff7eb6" d="M16 14.5 L27 25 H5Z"/>');
+ A['🔧']=sv('<path fill="#9fb4cf" d="M20 4 C15 4 12 9 14.5 13.5 L5 23 Q3.5 25 5.5 27 Q7.5 29 9.5 27 L19 17.5 C24 20 29 16 28 11 L24 14.5 L19.5 12.5 L17.5 8 L22 4.5Z"/><circle cx="7.6" cy="25" r="1.4" fill="#fff"/>');
+ A['🪢']=sv('<path fill="none" stroke="#c0813f" stroke-width="4.5" d="M5 21 C10 7 22 7 18 18 C16 24 8 22 12 14 C15 8 27 10 27 22"/><path fill="none" stroke="#f2c58b" stroke-width="1.4" d="M5 21 C10 7 22 7 18 18 C16 24 8 22 12 14 C15 8 27 10 27 22"/>');
+ A['🟡']=sv('<rect x="10" y="12" width="12" height="17" rx="3" fill="#ffd23f"/><rect x="12.5" y="8" width="7" height="5" rx="1.5" fill="#ff7eb6"/><rect x="14" y="4" width="4" height="4" rx="1" fill="#ffb703"/><path d="M13 18 H19 M13 22 H19" stroke="#fff" stroke-width="1.6"/><circle cx="24.5" cy="5" r="1.2" fill="#ffd23f"/><circle cx="27" cy="9" r="1" fill="#ffd23f"/><circle cx="22" cy="2.5" r="1" fill="#ffd23f"/>');
+ A['🧩']=sv('<path fill="#7a5cff" d="M6 10 H13 C11 6 16 3 18 7 C19 9 18 10 17 10 H24 V16 C28 14 30 20 26 21.5 C25 22 24 21.5 24 21.5 V27 H6Z"/><circle cx="12" cy="18" r="1.4" fill="#fff" stroke="none"/>');
+ A['🫧']=sv('<circle cx="12" cy="20" r="8.5" fill="#bfe9ff" fill-opacity=".7"/><circle cx="24" cy="10" r="5" fill="#bfe9ff" fill-opacity=".7"/><circle cx="25" cy="25" r="3" fill="#bfe9ff" fill-opacity=".7"/><path d="M8 17 Q9 14 12 13.5" fill="none" stroke="#fff" stroke-width="2"/>');
+ A['🐍']=sv('<path fill="#7cc060" d="M8 28 C2 28 2 21 9 21 H20 C25 21 25 14 20 14 H15 C11 14 11 7 16 6 C20 5 23 8 22 12 L25 9 L23.5 13 L26 15 C28 21 24 27 18 27 Z"/><circle cx="16.5" cy="9" r="1.1" fill="#fff" stroke="none"/><path d="M13 13 Q16 16 19 13" fill="none"/>');
+ A['🦁']=sv('<circle cx="16" cy="16" r="13" fill="#ff9a3c"/><circle cx="16" cy="17" r="8.5" fill="#ffd9a0"/><circle cx="12.5" cy="15" r="1.3" fill="'+O+'"/><circle cx="19.5" cy="15" r="1.3" fill="'+O+'"/><path d="M14.5 19 Q16 21 17.5 19 M16 18 V19.5" fill="none"/>');
+ A['card']=sv('<rect x="5" y="3.5" width="22" height="25" rx="3" fill="#fff4fa" transform="rotate(-6 16 16)"/><rect x="7.5" y="6" width="17" height="20" rx="2" fill="#ffc2de" transform="rotate(-6 16 16)"/><text x="16" y="21.5" font-family="sans-serif" font-weight="bold" font-size="14" text-anchor="middle" fill="#ff4f93" stroke="#fff" stroke-width="2.4" paint-order="stroke" transform="rotate(-6 16 16)">P</text>');
+ A['🥤']=sv('<path fill="#ff8fc4" d="M8 10 H24 L22 28 H10Z"/><rect x="7" y="8" width="18" height="3.5" rx="1.5" fill="#fff"/><path d="M17 8 L20 2 H24" fill="none" stroke="#7a5cff" stroke-width="2.4"/><path d="M11 16 H21" stroke="#fff" stroke-width="1.6"/>');
+ A['🔔']=sv('<path fill="#ffd23f" d="M16 4 C10 4 8 9 8 14 C8 19 6 21 5 23 H27 C26 21 24 19 24 14 C24 9 22 4 16 4Z"/><circle cx="16" cy="26" r="2.6" fill="#ff8a3c"/><path d="M12 11 Q11 14 11.5 17" fill="none" stroke="#fff" stroke-width="1.6"/>');
+ A['🪄']=sv('<path d="M6 26 L22 10" stroke="#4a2740" stroke-width="5.5"/><path d="M6 26 L22 10" stroke="#ff7eb6" stroke-width="3"/>'+star(24,8,5.5,2.4,'#ffd23f'));
+ A['🔴']=sv('<ellipse cx="16" cy="24" rx="12" ry="5" fill="#9aa0b8"/><path fill="#ff4d4d" d="M6 19 C6 10 26 10 26 19 C26 25 6 25 6 19Z"/><path d="M10 15 Q13 12 17 12" fill="none" stroke="#fff" stroke-width="1.8"/>');
+ A['🎰']=sv('<circle cx="16" cy="12" r="9" fill="#ffd1e8"/><path fill="#ff7eb6" d="M7 14 H25 C25 22 21 28 16 28 C11 28 7 22 7 14Z"/><path d="M8 13.5 H24" /><circle cx="12.5" cy="9" r="1.8" fill="#fff" stroke="none"/><text x="16" y="23" font-family="sans-serif" font-weight="bold" font-size="9" text-anchor="middle" fill="#fff" stroke="none">?</text>');
+ A['💴']=sv('<path fill="#ffb38a" d="M9 12 Q16 8 23 12 L21 28 H11Z"/><path d="M11 10 Q16 14 21 10" fill="none" stroke="#ff5fa0" stroke-width="2"/>'+coin(16,20,4));
+ A['👛']=sv('<rect x="4" y="11" width="24" height="16" rx="6" fill="#ff9ac8"/><path d="M8 11 Q16 2 24 11" fill="none" stroke="#ff5fa0" stroke-width="2.4"/><circle cx="16" cy="19" r="2.2" fill="#ffd23f"/>');
+ A['👝']=sv('<path fill="#8fd6a0" d="M5 14 Q16 8 27 14 L25 27 H7Z"/><rect x="4" y="11" width="24" height="5" rx="2.5" fill="#ffd23f"/><circle cx="16" cy="21" r="2" fill="#fff" stroke="none"/>');
+ A['💰']=sack('#ffd23f',coin(16,20,5));
+ A['🛢️']=sv('<path fill="#c0813f" d="M7 6 Q16 2 25 6 V26 Q16 31 7 26Z"/><path d="M7 11 Q16 15 25 11 M7 21 Q16 25 25 21" fill="none" stroke="#7b4a1e" stroke-width="2.2"/>'+coin(16,6,3));
+ A['🧰']=sv('<rect x="4" y="12" width="24" height="16" rx="2" fill="#c0813f"/><path fill="#a8681e" d="M4 12 Q4 5 16 5 Q28 5 28 12Z"/><rect x="13" y="14" width="6" height="7" rx="1.5" fill="#ffd23f"/>'+coin(9,9,2.4)+coin(22,8,2.6));
+ A['⛰️']=sv('<path fill="#9aa0b8" d="M2 27 L12 8 L17 17 L21 11 L30 27Z"/><path fill="#ffd23f" d="M10 12 L12 8 L14 11 L13 14Z"/>'+coin(24,23,2.4)+coin(14,24,2.4));
+ A['💗']=sv(heart('#ff9ac8',2,2,.88));
+ A['💖']=sv(heart('#ff5fa0',2,3,.84)+star(25,6,4,1.7,'#ffd23f')+star(6,8,3,1.3,'#ffd23f'));
+ A['🌷']=sv('<path d="M16 17 V29" stroke="#5fae60" stroke-width="2.6"/><path fill="#7cc060" d="M16 25 Q23 22 24 17 Q18 18 16 25Z"/><path fill="#ff5fa0" d="M9 8 Q9 17 16 18 Q23 17 23 8 L19 11 L16 6 L13 11Z"/>');
+ A['🌸']=sv('<g fill="#ffc2de">'+[0,72,144,216,288].map(a=>'<ellipse cx="16" cy="9" rx="4.6" ry="6" transform="rotate('+a+' 16 16)"/>').join('')+'</g><circle cx="16" cy="16" r="3.2" fill="#ffd23f"/>');
+ A['🌳']=sv('<rect x="14" y="19" width="4" height="9" rx="1.5" fill="#a8681e"/><circle cx="16" cy="12" r="9" fill="#7cc060"/>'+heart('#ff5fa0',9.5,3.5,.3)+heart('#ff5fa0',15,6.5,.28)+heart('#ff5fa0',11,10.5,.26));
+ A['🐝']=sv('<ellipse cx="9" cy="9" rx="6" ry="3.6" fill="#dff3ff" transform="rotate(-25 9 9)"/><ellipse cx="18" cy="7" rx="6" ry="3.6" fill="#dff3ff" transform="rotate(20 18 7)"/><ellipse cx="15" cy="19" rx="9" ry="7" fill="#ffd23f"/><path d="M12 12.5 V25.5 M18 12.5 V25.5" stroke="'+O+'" stroke-width="3"/><path d="M24 19 L30 19" stroke-width="1.8"/>');
+ A['🔨']=sv('<path d="M10 28 L21 14" stroke="#a8681e" stroke-width="4.5"/><rect x="14" y="3.5" width="15" height="9" rx="2" fill="#ff7eb6" transform="rotate(40 21 8)"/>');
+ A['🪭']=sv('<path fill="#ffd1e8" d="M16 28 L3 11 Q16 -1 29 11Z"/><path d="M16 28 L7 8 M16 28 L16 5 M16 28 L25 8" fill="none" stroke="#ff5fa0" stroke-width="1.3"/>');
+ A['⚡']=sv('<path fill="#ffd23f" d="M18 2 L7 18 H14 L11 30 L25 12 H17.5Z"/>');
+ A['☄️']=sv('<path fill="#ff8a3c" d="M4 4 L22 14 L14 22Z"/><circle cx="21" cy="21" r="8" fill="#9aa0b8"/><circle cx="19" cy="19" r="1.8" fill="#6b7088" stroke="none"/><circle cx="24" cy="23" r="1.4" fill="#6b7088" stroke="none"/>');
+ A['🍃']=sv('<path fill="#7cc060" d="M4 26 C4 10 14 4 28 4 C28 18 20 28 4 26Z"/><path d="M5 26 L22 10" fill="none" stroke="#fff" stroke-width="1.5"/>');
+ A['🌀']=sv('<path fill="none" stroke="#4cc9f0" stroke-width="3.2" d="M16 16 C16 13 20 13 20 16 C20 21 12 21 12 15 C12 8 22 8 24 15 C26 24 12 28 7 20"/>');
+ A['🪁']=sv('<path fill="#ff7eb6" d="M16 2 L27 13 L16 24 L5 13Z"/><path d="M16 2 V24 M5 13 H27" fill="none" stroke="#fff" stroke-width="1.4"/><path d="M16 24 Q12 27 16 30 Q20 28 17 31" fill="none"/>');
+ A['🌪️']=sv('<path fill="#cfd8e8" d="M4 5 H28 L22 11 H26 L19 17 H22 L16 28 L13 17 H15 L9 11 H12Z"/>');
+ A['🍬']=sv('<path fill="#ff9ac8" d="M2.5 9 L10 14 V18 L2.5 23 Q4.5 16 2.5 9Z"/><path fill="#ff9ac8" d="M29.5 9 L22 14 V18 L29.5 23 Q27.5 16 29.5 9Z"/><circle cx="16" cy="16" r="8" fill="#ff5fa0"/><path d="M11 11 Q16 14 12.5 20" fill="none" stroke="#fff" stroke-width="2"/>');
+ A['🧊']=sv('<path fill="#bfe9ff" d="M6 10 L16 5 L26 10 V22 L16 27 L6 22Z"/><path d="M6 10 L16 15 L26 10 M16 15 V27" fill="none"/><path d="M9 12 L12 13.5" stroke="#fff" stroke-width="1.8"/>');
+ A['⏳']=sv('<path fill="#dff3ff" d="M8 4 H24 C24 11 18 14 16 16 C18 18 24 21 24 28 H8 C8 21 14 18 16 16 C14 14 8 11 8 4Z"/><path fill="#ffd23f" d="M11 25.5 C12 22 14.5 20 16 19.5 C17.5 20 20 22 21 25.5Z"/>');
+ A['📯']=sv('<path fill="#ffd23f" d="M5 13 L24 4 V26 L5 19Z"/><rect x="2.5" y="12.5" width="5" height="7" rx="2" fill="#ff8a3c"/><path d="M27 10 Q30 15 27 20" fill="none" stroke-width="1.8"/>');
+ A['🍯']=sv('<path fill="#ffb703" d="M8 11 H24 C27 15 27 26 22 28 H10 C5 26 5 15 8 11Z"/><rect x="9" y="7" width="14" height="5" rx="2" fill="#a8681e"/><path d="M10 17 Q16 20 22 17" fill="none" stroke="#ffe58a" stroke-width="2"/>');
+ A['🫠']=sv('<path fill="#8fd6a0" d="M6 24 C4 14 12 6 16 6 C20 6 28 14 26 24 Q29 28 23 28 H9 Q3 28 6 24Z"/><circle cx="12.5" cy="17" r="1.4" fill="'+O+'" stroke="none"/><circle cx="19.5" cy="17" r="1.4" fill="'+O+'" stroke="none"/><path d="M13 22 Q16 24 19 22" fill="none"/>');
+ A['👾']=sv('<path fill="#b388eb" d="M8 6 L11 10 H21 L24 6 V12 H27 V22 H24 V26 H20 V22 H12 V26 H8 V22 H5 V12 H8Z"/><rect x="11" y="14" width="3" height="3.5" fill="#fff" stroke="none"/><rect x="18" y="14" width="3" height="3.5" fill="#fff" stroke="none"/>');
+ A['🐊']=sv('<path fill="#7cc060" d="M2 20 L2 14 H14 C16 8 22 8 24 14 H30 V21 C30 25 4 25 2 20Z"/><path d="M4 20 L7 17.5 L10 20 L13 17.5 L16 20" fill="#fff"/><circle cx="21" cy="12.5" r="1.4" fill="#fff"/>');
+ A['🧹']=sv('<path d="M7 5 L22 20" stroke="#a8681e" stroke-width="3"/><path fill="#ffd23f" d="M19 18 L28 21 L25 30 L14 26Z"/><path d="M17 24 L22 28 M21 21 L25 26" stroke-width="1.2"/>');
+ A['🔥']=sv('<path fill="#ff8a3c" d="M16 2 C18 9 25 12 25 20 C25 26 21 30 16 30 C11 30 7 26 7 20 C7 16 9 14 10 11 C12 14 13 14 13 11 C13 8 15 6 16 2Z"/><path fill="#ffd23f" d="M16 15 C18 18 20 19 20 23 C20 26 18 28 16 28 C14 28 12 26 12 23 C12 19 15 18 16 15Z"/>');
+ A['🔭']=sv('<path fill="#7a5cff" d="M3 17 L20 7 L24 14 L7 24Z"/><path fill="#ff7eb6" d="M20 7 L25 5 L29 12 L24 14Z"/><path d="M10 22 L7 29 M13 20 L18 29" fill="none" stroke-width="2.2"/>');
+ A['👓']=sv('<circle cx="9" cy="18" r="6.5" fill="#dff3ff"/><circle cx="23" cy="18" r="6.5" fill="#dff3ff"/><path d="M15.5 17 Q16 15 16.5 17 M2.5 17 L4 10 M29.5 17 L28 10" fill="none"/>');
+ A['🌱']=sv('<path d="M16 28 V16" stroke="#5fae60" stroke-width="2.6"/><path fill="#7cc060" d="M16 17 Q8 17 6 9 Q15 8 16 17Z"/><path fill="#9be28a" d="M16 20 Q24 20 26 12 Q17 11 16 20Z"/>');
+ A['🌿']=sv('<path d="M16 29 V5" stroke="#5fae60" stroke-width="2.4"/>'+[[7,'-1'],[13,'1'],[19,'-1']].map(a=>'<path fill="#7cc060" d="M16 '+(a[0]+6)+' Q'+(a[1]>0?25:7)+' '+(a[0]+5)+' '+(a[1]>0?27:5)+' '+a[0]+' Q'+(a[1]>0?17:15)+' '+a[0]+' 16 '+(a[0]+6)+'Z"/>').join(''));
+ A['🌲']=sv('<rect x="14" y="23" width="4" height="6" rx="1" fill="#a8681e"/><path fill="#5fae60" d="M16 2 L24 12 H20 L27 21 H5 L12 12 H8Z"/>');
+ A['🍡']=sv('<path d="M7 28 L26 5" stroke="#c0813f" stroke-width="2.2"/><circle cx="21" cy="10" r="4.6" fill="#ff9ac8"/><circle cx="15.5" cy="16.5" r="4.6" fill="#fff"/><circle cx="10" cy="23" r="4.6" fill="#8fd6a0"/>');
+ A['🍱']=sv('<rect x="3" y="7" width="26" height="20" rx="4" fill="#ffd9a0"/><path d="M16 7 V27 M3 17 H29" fill="none"/><circle cx="9.5" cy="12" r="3" fill="#ff7eb6"/><circle cx="22.5" cy="12" r="3" fill="#7cc060"/><rect x="6" y="20" width="7" height="4" rx="1.5" fill="#fff"/><circle cx="22.5" cy="22" r="3" fill="#ffd23f"/>');
+ A['✨']=sv(star(12,18,9,3.4,'#ffd23f')+star(24,7,5,2,'#fff2a8'));
+ A['🌟']=sv(star(16,16,13,5.6,'#ffd23f')+'<circle cx="16" cy="16" r="2.4" fill="#fff" stroke="none"/>');
+ A['💫']=sv('<path fill="none" stroke="#7a5cff" stroke-width="3" d="M24 6 C12 3 4 12 8 21 C12 28 22 26 24 19"/>'+star(24,18,5,2.2,'#ffd23f'));
+ return {get:function(o){var k=(o&&o.art||'').replace(/️/g,'');var s=A[k]||A[o&&o.art];return s?'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s):''}}
+})();
+function artImg(it){const u=ART.get(it);if(!u)return null;const im=document.createElement('img');im.src=u;im.alt='';im.style.cssText='width:34px;height:34px;flex:none;vertical-align:middle;margin-right:6px;border:0;box-shadow:none;background:none;padding:0;border-radius:0';return im}
+
 const IK='miarina_td_rin_items_v1',MAXN=999;let INV=null;
 function loadInv(){let o=null;try{const s=localStorage.getItem(IK);if(s)o=JSON.parse(s)}catch(e){}
  if(!o||typeof o!=='object')o=(typeof G!=='undefined'&&G&&G.hi)||{};
@@ -4469,7 +4540,7 @@ window.rinGrant=function(id,n){if(!ITEMS.some(function(o){return o.id===id}))ret
 window.rinCount=function(id){return inv()[id]|0};
 window.rinUse=function(id){var h=inv();if(!((h[id]|0)>0))return false;h[id]--;saveInv();return true};
 window.rinIds=function(){return ITEMS.map(function(o){return o.id})};
-window.rinInv=function(){return ITEMS.map(function(o){return{icon:o.icon,name:o.name,ds:o.ds,n:inv()[o.id]|0}})};
+window.rinInv=function(){return ITEMS.map(function(o){return{icon:o.icon,art:ART.get(o),name:o.name,ds:o.ds,n:inv()[o.id]|0}})};
 window.rinDrop=function(c){
  if(!G||Math.random()>=RATE)return false;
  let r=Math.random(),it=ITEMS[0];for(const o of ITEMS){const s=SHARE[o.id];if(!s)continue;if(r<s){it=o;break}r-=s}
@@ -4483,7 +4554,7 @@ function rinClose(){const ov=document.getElementById('rinItemsOv');if(ov)ov.styl
 function rinFill(){
  const ov=document.getElementById('rinItemsOv');if(!ov)return;
  const h=inv();let any=false;
- for(const b of ov.querySelectorAll('button[data-id]')){const it=ITEMS.find(o=>o.id===b.dataset.id),n=h[b.dataset.id]|0;b.textContent='つかう ×'+n;b.disabled=!canUse(it);b.parentNode.style.display=n>0?'flex':'none';if(n>0)any=true}
+ for(const b of ov.querySelectorAll('button[data-id]')){const it=ITEMS.find(o=>o.id===b.dataset.id),n=h[b.dataset.id]|0;b.textContent=(it.id==='ap'?'所持 ×':'つかう ×')+n;b.disabled=it.id==='ap'||!canUse(it);b.parentNode.style.display=n>0?'flex':'none';if(n>0)any=true}
  const em=ov.querySelector('.rinEmpty');if(em)em.style.display=any?'none':''}
 function section(){
  if(typeof apEl==='undefined'||!apEl)return;
@@ -4503,7 +4574,7 @@ function section(){
    const nm=document.createElement('b');nm.textContent=(it.icon?it.icon+' ':'')+it.name;const ds=document.createElement('div');ds.textContent=it.ds;ds.style.cssText='font-size:11px;opacity:.8';
    tx.append(nm,ds);
    const b=document.createElement('button');b.dataset.id=it.id;b.style.cssText='flex:none;padding:8px 12px;font-size:14px';b.onclick=()=>{try{sfx('tap')}catch(e){}useItem(it)};
-   row.append(tx,b);bx.appendChild(row)}
+   const ai=artImg(it);if(ai)row.append(ai);row.append(tx,b);bx.appendChild(row)}
   const bk=document.createElement('button');bk.textContent='もどる';bk.style.cssText='width:100%;margin-top:6px';
   bk.onclick=()=>{ov.style.display='none';try{openAp()}catch(e){}};
   bx.appendChild(bk);ov.appendChild(bx);document.getElementById('wrap').appendChild(ov)}
@@ -6540,12 +6611,12 @@ if(FINE){
 (function(){
 function $(i){return document.getElementById(i)}
 function shown(i){var e=$(i);return !!e&&getComputedStyle(e).display!=='none'}
-function idle(){btn.innerHTML='<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="#ff7eb6" stroke="#fff" stroke-width="2"/><path d="M12 9.5v13l11-6.5z" fill="#fff"/><path d="M26 3l1.2 2.8L30 7l-2.8 1.2L26 11l-1.2-2.8L22 7l2.8-1.2z" fill="#ffd84a"/><circle cx="7" cy="25" r="2" fill="#ffd84a"/></svg><span>'+(cardN()>0?'全自動バトル開始（Pカード×'+cardN()+'）':'全自動Pカードが必要')+'</span>';btn.disabled=cardN()<1;btn.style.opacity=cardN()<1?'.55':''}
+function idle(){btn.innerHTML='<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="#ff7eb6" stroke="#fff" stroke-width="2"/><path d="M12 9.5v13l11-6.5z" fill="#fff"/><path d="M26 3l1.2 2.8L30 7l-2.8 1.2L26 11l-1.2-2.8L22 7l2.8-1.2z" fill="#ffd84a"/><circle cx="7" cy="25" r="2" fill="#ffd84a"/></svg><span>全自動バトル</span>';btn.disabled=false;btn.style.opacity=(cardN()<1&&!(typeof G!=='undefined'&&G&&G._ap))?'.55':''}
 function cardN(){try{return window.rinCount?window.rinCount('ap'):0}catch(e){return 0}}
 var cw=$('cw'),row=document.createElement('div'),btn=document.createElement('button'),cap=document.createElement('div'),ks=document.createElement('div');
 row.className='row';row.id='autoRow';btn.id='autoBtn';cap.id='autoCap';ks.id='ksc';
 idle();
-row.appendChild(btn);cw.parentNode.insertBefore(row,cw.nextSibling);cw.appendChild(ks);
+row.appendChild(btn);row.appendChild(cap);cw.parentNode.insertBefore(row,cw.nextSibling);cw.appendChild(ks);
 var OKT=['A','B','C','E','F','H','V','D'],ORD=['A','B','C','A','F','H','B','E','V','D'];
 var TTL=['つぎの おきゃくさま','ざわつく そうげん','きらめく まもり','おいかけっこ','ふしぎな あしおと','ひとやすみ…のはず','ゆれる ひかり','ざわざわの みち'];
 var OPN=['未亜は そっと 道を見つめた。遠くから 足音が ちかづいてくる。','利奈「だいじょうぶ、未亜が いるもん」ふたりは うなずきあった。','タワーが きらりと ひかる。まもりは ばんぜん！','空が すこし くもってきた。つぎの 敵が やってくる…！','未亜「ここは とおさないよ！」','利奈の ゴールを まもるため、みんなが 力を あわせる。','ピンクの 矢が とびかう。いざ、つぎの たたかいへ！','風が かわった。ふしぎな 気配が する…。'];
@@ -6651,8 +6722,8 @@ function tick(){
 function stop(m){AU.on=0;clearInterval(AU.iv);var _s=$('sp');if(_s){_s.disabled=false;_s.style.opacity=''}btn.classList.remove('on');idle();ks.innerHTML='';say(m||'ていし')}
 function start(){
  if(typeof G==='undefined'||!G||G.over||shown('tt'))return;
- if(cardN()<1||!window.rinUse('ap')){idle();return}
- AU.on=1;G._auto=1;G.speed=1;var _s=$('sp');if(_s){_s.textContent='⏩1';_s.disabled=true;_s.style.opacity='.5'}AU.g=G;AU.st='';AU.wa=!!G.active;AU.until=0;btn.classList.add('on');btn.textContent='⏹ 全自動 ストップ';say('全自動バトル かいし！');
+ if(!G._ap&&(cardN()<1||!window.rinUse('ap'))){cap.textContent='※全自動バトルPカードが必要です';clearTimeout(cap._t);cap._t=setTimeout(function(){cap.textContent=''},4000);idle();return}
+ G._ap=1;AU.on=1;G._auto=1;G.speed=1;var _s=$('sp');if(_s){_s.textContent='⏩1';_s.disabled=true;_s.style.opacity='.5'}AU.g=G;AU.st='';AU.wa=!!G.active;AU.until=0;btn.classList.add('on');btn.textContent='全自動バトル ストップ';cap.textContent='';say('全自動バトル かいし！');
  AU.iv=setInterval(tick,300);tick();requestAnimationFrame(mzf)}
 setInterval(function(){if(!AU.on&&btn.dataset.n!==String(cardN())){btn.dataset.n=cardN();idle()}},1000);
 btn.onclick=function(){AU.on?stop('ていし。ここからは じぶんで あそべるよ'):start()};
