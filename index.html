@@ -6238,6 +6238,19 @@ var TTL=['つぎの おきゃくさま','ざわつく そうげん','きらめ�
 var OPN=['未亜は そっと 道を見つめた。遠くから 足音が ちかづいてくる。','利奈「だいじょうぶ、未亜が いるもん」ふたりは うなずきあった。','タワーが きらりと ひかる。まもりは ばんぜん！','空が すこし くもってきた。つぎの 敵が やってくる…！','未亜「ここは とおさないよ！」','利奈の ゴールを まもるため、みんなが 力を あわせる。','ピンクの 矢が とびかう。いざ、つぎの たたかいへ！','風が かわった。ふしぎな 気配が する…。'];
 var CLR=['てきを たおした！ ほっと ひといき。','みんなで しょうり！ つづきは つぎの おはなしで…','ふぅ…なんとか まもりきった！','タワーも みんな がんばった！'];
 var BSS=['大きな かげが、ゆっくり ちかづいてくる…！','ボスの とうじょう！ みんな、きをつけて！','じめんが ゆれる…！ つよい てきが くるよ！'];
+/* mosaic overlay while auto battle runs */
+var mz=document.createElement('canvas'),mx=mz.getContext('2d'),mo=document.createElement('canvas'),mox=mo.getContext('2d'),MB=8;
+mz.id='mzc';mz.style.cssText='position:absolute;display:none;pointer-events:none;z-index:3;image-rendering:pixelated';cw.appendChild(mz);
+function mzf(){
+ if(!AU.on){mz.style.display='none';return}
+ var c=$('c');if(c&&c.width){
+  var w=Math.max(1,Math.round(c.width/MB)),h=Math.max(1,Math.round(c.height/MB));
+  if(mo.width!==w||mo.height!==h){mo.width=w;mo.height=h}
+  if(mz.width!==c.width||mz.height!==c.height){mz.width=c.width;mz.height=c.height}
+  mox.imageSmoothingEnabled=true;mox.drawImage(c,0,0,w,h);
+  mx.imageSmoothingEnabled=false;mx.drawImage(mo,0,0,w,h,0,0,mz.width,mz.height);
+  var st=mz.style;st.left=c.offsetLeft+'px';st.top=c.offsetTop+'px';st.width=c.offsetWidth+'px';st.height=c.offsetHeight+'px';st.display='block'}
+ requestAnimationFrame(mzf)}
 var AU={on:0,g:null,st:'',until:0,wa:false,t:'',iv:0};
 function say(t){}
 var _u0=update;update=function(dt){if(!AU.on)return _u0.apply(this,arguments);var t0=performance.now(),r;for(var i=0;i<10;i++){r=_u0.call(this,dt);if(!G||G.over||performance.now()-t0>11)break}return r};
@@ -6245,7 +6258,7 @@ function card(h,t,x,hold,cls){
  var d=document.createElement('div'),a=document.createElement('small'),b=document.createElement('b'),p=document.createElement('p');
  d.className='ksd'+(cls?' '+cls:'');a.textContent=h;b.textContent=t;p.textContent=x;d.appendChild(a);d.appendChild(b);d.appendChild(p);
  ks.innerHTML='';ks.appendChild(d);try{sfx('tap')}catch(e){}
- setTimeout(function(){d.classList.add('out')},hold);setTimeout(function(){if(d.parentNode)d.parentNode.removeChild(d)},hold+450)}
+ AU.cu=performance.now()+hold+450;setTimeout(function(){d.classList.add('out')},hold);setTimeout(function(){if(d.parentNode)d.parentNode.removeChild(d)},hold+450)}
 var KN=['','一','二','三','四','五','六','七','八','九'];
 function kan(n){n=n|0;if(n<=0)return String(n);if(n>=100)return '百'+(n>100?kan(n-100):'');var t=Math.floor(n/10),o=n%10;return (t>1?KN[t]:'')+(t?'十':'')+KN[o]}
 var ANN=['空','風','草原','約束','魔法','旅立ち','星','夢','影','光','涙','勇気','絆','翼','嵐','月','宝物','記憶','奇跡','歌','花','海','扉','鍵','伝説','希望','友情','思い出','ひみつ','足音','朝焼け','夕焼け','流れ星','タワー','守り人','侵入者','迷子','弓矢','ゴール','道','草笛','春風','雨音','おやつ','秘密基地','冒険','決意','誓い','出会い','別れ','再会','真実','迷路','森','城','鐘','橋','祭り','小さな英雄','夜明け'];
@@ -6269,8 +6282,8 @@ function intro(w){
  else if(w===D.cl){t=animeTitle('last');x='ついに さいごの たたかい。ぜんぶの 力を、ここに！'}
  else if(boss){t=animeTitle('boss');x=BSS[w%BSS.length]}
  else{t=animeTitle();x=OPN[w%OPN.length]}
- card(hd(w),t,x,2300,boss||w===D.cl?'boss':'');AU.t=t;say('第'+w+'幕「'+t+'」じゅんび中…')}
-function clr(w){card(hd(w),'おしまい',CLR[w%CLR.length],1250,'');say('第'+w+'幕 おしまい。つづく…')}
+ card(hd(w),t,x,4600,boss||w===D.cl?'boss':'');AU.t=t;say('第'+w+'幕「'+t+'」じゅんび中…')}
+function clr(w){card(hd(w),'おしまい',CLR[w%CLR.length],2500,'');say('第'+w+'幕 おしまい。つづく…')}
 function bestCell(k){
  var rg=T[k].rng,pts=[],occ={},best=null,bs=0.9,cx,cy,i,s,dx,dy;
  road.forEach(function(q){var a=q.split(',');pts.push([a[0]*C+20,a[1]*C+20])});
@@ -6316,20 +6329,17 @@ function tick(){
  if(typeof PZ!=='undefined'&&PZ)return;
  if(['rk','ap','mp','chq','zk','pf','gxq','pz'].some(shown))return;
  if(G.setup&&!pathOK()){autoMap();return}
- if(G.active)AU.wa=true;else if(AU.wa){AU.wa=false;AU.st='clr';AU.until=now+1700;clr(G.wave)}
+ if(G.active)AU.wa=true;else if(AU.wa){AU.wa=false;AU.st='clr';if(!AU.pi)clr(G.wave)}
+ if(AU.pi&&now>=(AU.cu||0)){var _pw=AU.pi;AU.pi=0;intro(_pw)}
  try{spend()}catch(e){console.error(e)}
  if(G.active){say('第'+G.wave+'幕「'+(AU.t||'たたかい')+'」 ❤️'+G.lives);AU.st='fight';return}
  if(G.wave>=D.cl)return;
- if(AU.st==='clr'){if(now<AU.until)return;AU.st=''}
- if(AU.st==='go'&&now<AU.until)return;
- if(AU.st!=='intro'){AU.st='intro';intro(G.wave+1);AU.until=now+2800;return}
- if(now<AU.until)return;
- AU.st='go';AU.until=now+1500;$('go').click()}
+ AU.st='go';AU.pi=G.wave+1;$('go').click()}
 function stop(m){AU.on=0;clearInterval(AU.iv);var _s=$('sp');if(_s){_s.disabled=false;_s.style.opacity=''}btn.classList.remove('on');idle();ks.innerHTML='';say(m||'ていし')}
 function start(){
  if(typeof G==='undefined'||!G||G.over||shown('tt'))return;
  AU.on=1;G._auto=1;G.speed=1;var _s=$('sp');if(_s){_s.textContent='⏩1';_s.disabled=true;_s.style.opacity='.5'}AU.g=G;AU.st='';AU.wa=!!G.active;AU.until=0;btn.classList.add('on');btn.textContent='⏹ 全自動 ストップ';say('全自動バトル かいし！');
- AU.iv=setInterval(tick,300);tick()}
+ AU.iv=setInterval(tick,300);tick();requestAnimationFrame(mzf)}
 btn.onclick=function(){AU.on?stop('ていし。ここからは じぶんで あそべるよ'):start()};
 
 /* auto-clear roulette: win 5000G / lose 1000G, added to carried-over gold */
