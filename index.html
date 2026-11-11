@@ -4848,7 +4848,7 @@ window.rinMonLabel=function(k){var m=parseMK(k);return (isGd(m)?'✨ ':'')+m.n};
 /* ===== タイトル放置30秒でクレジット（プレイヤー名決定後のみ） ===== */
 (function(){
  var IDLE=30000,SPEED=60,last=Date.now(),wasOn=false,cr=null,raf=0;
- var LINES=[['Executive producer','Mia Uchida'],['Assistant manager','Rina Uchida'],['Character designer','Lil Kaname'],['Sound creator','Yero'],['Associate coordinator','Emu Ai'],['Special thanks',null],['Developed by','Karaage Records']];
+ var LINES=[['Executive producer','Mia Uchida'],['Assistant manager','Rina Uchida'],['Character designer','Lil Kaname'],['Sound creator','Yero'],['Associate coordinator','Emu Ai'],['Special appearance','Afuo Tanaka'],['Special thanks',null],['Developed by','Karaage Records']];
  function pname(){try{return(localStorage.getItem('miarina_td_name_v1')||'').trim()}catch(e){return''}}
  var MF='miarina_td_monreg_v1';
  function monSeen(){try{if(localStorage.getItem(MF)==='1')return true;var m=JSON.parse(localStorage.getItem('miarina_td_mons_v1')||'[]');if(Array.isArray(m)&&m.length>0){localStorage.setItem(MF,'1');return true}}catch(e){}return false}
