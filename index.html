@@ -6283,7 +6283,7 @@ function spend(){
   if(!did)break}}
 function tick(){
  if(!AU.on)return;
- var now=performance.now();
+ var now=performance.now();try{var _s=$('sp');if(G&&G.speed!==1){G.speed=1}if(_s){_s.textContent='⏩1';_s.disabled=true;_s.style.opacity='.5'}}catch(e){}
  if(typeof G==='undefined'||!G||G!==AU.g||shown('tt')){stop('ていし。ここからは じぶんで あそべるよ');return}
  if(G.over||shown('ov')){stop('おしまい！ けっかを みてね');return}
  if(typeof PZ!=='undefined'&&PZ)return;
@@ -6298,10 +6298,10 @@ function tick(){
  if(AU.st!=='intro'){AU.st='intro';intro(G.wave+1);AU.until=now+2800;return}
  if(now<AU.until)return;
  AU.st='go';AU.until=now+1500;$('go').click()}
-function stop(m){AU.on=0;clearInterval(AU.iv);btn.classList.remove('on');idle();ks.innerHTML='';say(m||'ていし')}
+function stop(m){AU.on=0;clearInterval(AU.iv);var _s=$('sp');if(_s){_s.disabled=false;_s.style.opacity=''}btn.classList.remove('on');idle();ks.innerHTML='';say(m||'ていし')}
 function start(){
  if(typeof G==='undefined'||!G||G.over||shown('tt'))return;
- AU.on=1;AU.g=G;AU.st='';AU.wa=!!G.active;AU.until=0;btn.classList.add('on');btn.textContent='⏹ 全自動 ストップ';say('全自動バトル かいし！');
+ AU.on=1;G.speed=1;var _s=$('sp');if(_s){_s.textContent='⏩1';_s.disabled=true;_s.style.opacity='.5'}AU.g=G;AU.st='';AU.wa=!!G.active;AU.until=0;btn.classList.add('on');btn.textContent='⏹ 全自動 ストップ';say('全自動バトル かいし！');
  AU.iv=setInterval(tick,300);tick()}
 btn.onclick=function(){AU.on?stop('ていし。ここからは じぶんで あそべるよ'):start()};
 window.miarinaAuto={tick:tick,start:start,stop:stop};
