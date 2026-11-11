@@ -6133,15 +6133,15 @@ function $(i){return document.getElementById(i)}
 function shown(i){var e=$(i);return !!e&&getComputedStyle(e).display!=='none'}
 var cw=$('cw'),row=document.createElement('div'),btn=document.createElement('button'),cap=document.createElement('div'),ks=document.createElement('div');
 row.className='row';row.id='autoRow';btn.id='autoBtn';cap.id='autoCap';ks.id='ksc';
-btn.textContent='🎴 全自動バトル';cap.textContent='おまかせで さいごまで すすむよ（SOS・銀行は つかわない）';
-row.appendChild(btn);row.appendChild(cap);cw.parentNode.insertBefore(row,cw.nextSibling);cw.appendChild(ks);
+btn.textContent='🎴 全自動バトル';
+row.appendChild(btn);cw.parentNode.insertBefore(row,cw.nextSibling);cw.appendChild(ks);
 var OKT=['A','B','C','E','F','H','V','D'],ORD=['A','B','C','A','F','H','B','E','V','D'];
 var TTL=['つぎの おきゃくさま','ざわつく そうげん','きらめく まもり','おいかけっこ','ふしぎな あしおと','ひとやすみ…のはず','ゆれる ひかり','ざわざわの みち'];
 var OPN=['未亜は そっと 道を見つめた。遠くから 足音が ちかづいてくる。','利奈「だいじょうぶ、未亜が いるもん」ふたりは うなずきあった。','タワーが きらりと ひかる。まもりは ばんぜん！','空が すこし くもってきた。つぎの 敵が やってくる…！','未亜「ここは とおさないよ！」','利奈の ゴールを まもるため、みんなが 力を あわせる。','ピンクの 矢が とびかう。いざ、つぎの たたかいへ！','風が かわった。ふしぎな 気配が する…。'];
 var CLR=['てきを たおした！ ほっと ひといき。','みんなで しょうり！ つづきは つぎの 幕で…','ふぅ…なんとか まもりきった！','タワーも みんな がんばった！'];
 var BSS=['⚠ 大きな かげが、ゆっくり ちかづいてくる…！','⚠ ボスの とうじょう！ みんな、きをつけて！','⚠ じめんが ゆれる…！ つよい てきが くるよ！'];
 var AU={on:0,g:null,st:'',until:0,wa:false,t:'',iv:0};
-function say(t){if(cap._s!==t){cap._s=t;cap.textContent=t}}
+function say(t){}
 function card(h,t,x,hold,cls){
  var d=document.createElement('div'),a=document.createElement('small'),b=document.createElement('b'),p=document.createElement('p');
  d.className='ksd'+(cls?' '+cls:'');a.textContent=h;b.textContent=t;p.textContent=x;d.appendChild(a);d.appendChild(b);d.appendChild(p);
@@ -6168,17 +6168,30 @@ function bestCell(k){
  return best}
 function place(k,c){var n=G.tw.length,ob=build;G.sel=null;build=k;try{tapMap(c[0]*C+20,c[1]*C+20)}finally{build=ob}return G.tw.length>n}
 function upgrade(t){var g=G.gold;G.sel=t;panel();var u=$('up');if(u&&!u.disabled)u.click();G.sel=null;hud();panel();return G.gold<g}
+var AK=['B','C','H','S','D','P','X','L'];
+function buyA(){
+ var c=AK.filter(function(k){return AL[k]&&(G.own[k]||0)<allyMax(k)}).sort(function(a,b){return (G.own[a]||0)/allyMax(a)-(G.own[b]||0)/allyMax(b)});
+ for(var i=0;i<c.length;i++){var k=c[i],n=G.own[k]||0;if(G.gold>=allyCost(k)){buyAlly(k);if((G.own[k]||0)>n)return true}}
+ return false}
+function upA(){
+ var c=AK.filter(function(k){return AL[k]&&(G.own[k]||0)>0&&(G.alv[k]||1)<30}).sort(function(a,b){return (G.alv[a]||1)-(G.alv[b]||1)});
+ for(var i=0;i<c.length;i++){var k=c[i],l=G.alv[k]||1;if(G.gold>=allyLvCost(k)){lvAlly(k);if((G.alv[k]||1)>l)return true}}
+ return false}
 function spend(){
- for(var guard=0;guard<6;guard++){
+ for(var guard=0;guard<10;guard++){
   var ts=G.tw.filter(function(o){return OKT.indexOf(o.k)>=0&&!o.broken}),n=ts.length,did=false;
   var target=Math.min(24,4+Math.floor(G.wave*.6));
-  if(n<target){
+  AU.f=(AU.f||0)+1;
+  var tf=function(){
+   if(n>=target)return false;
    var k=ORD[n%ORD.length];if(k==='D'&&ts.some(function(o){return o.k==='D'}))k='A';
-   if(G.gold<cst(k))break;
-   var c=bestCell(k);if(c)did=place(k,c)}
-  if(!did){
+   if(G.gold<cst(k))return false;
+   var c=bestCell(k);return c?place(k,c):false};
+  var uf=function(){
    var low=null;ts.forEach(function(o){if(o.lv<99&&(!low||o.lv<low.lv))low=o});
-   if(low&&G.gold>=upCost(low))did=upgrade(low)}
+   return low&&G.gold>=upCost(low)?upgrade(low):false};
+  var fs=AU.f%2?[tf,buyA,uf,upA]:[buyA,tf,upA,uf];
+  for(var q=0;q<fs.length&&!did;q++)did=fs[q]();
   if(!did)break}}
 function tick(){
  if(!AU.on)return;
