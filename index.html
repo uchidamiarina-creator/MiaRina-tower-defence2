@@ -3887,7 +3887,7 @@ function openCal(nm){
  const mkd=(css,txt)=>{const d=document.createElement('div');if(css)d.style.cssText=css;if(txt!=null)d.textContent=txt;return d};
  const h=mkd('margin:4px 0 6px;font-size:16px;font-weight:bold;color:var(--accent);text-align:center','📔 My日記');
  const keys=Object.keys(map).sort();let sel='';
- const today=dayKey(Date.now());let ym=(keys.length?keys[keys.length-1]:today).slice(0,7);
+ const nd=new Date(),today=nd.getFullYear()+'-'+pad(nd.getMonth()+1)+'-'+pad(nd.getDate());let ym=(keys.length?keys[keys.length-1]:today).slice(0,7);
  const cal=mkd(''),det=mkd('');box.append(h,cal,det);
  function card(en){const c=mkd('border:2px solid var(--line);border-radius:14px;padding:10px;margin:8px 0;background:var(--card);text-align:left');
   const hd=mkd('display:flex;align-items:center;gap:8px;margin-bottom:6px');
