@@ -6039,7 +6039,7 @@ window.__wx={load:load,stop:stop};
  drawEn2=function(e,t){if(e&&e.suika&&e.x!=null){try{drawSuika(e,t)}catch(err){console.error(err)}return}if(e&&e.rafu&&e.x!=null){try{drawRafu(e,t)}catch(err){console.error(err)}return}if(e&&e.neko&&e.x!=null){try{drawNeko(e,t)}catch(err){console.error(err)}return}if(e&&e.dadan&&e.x!=null){try{drawDadan(e,t)}catch(err){console.error(err)}return}if(e&&e.tanaka&&e.x!=null){try{drawTanaka(e,t)}catch(err){console.error(err)}return}_de(e,t)};
 })();
 </script>
-<style id="pcx">
+<style id="pc-ui-css">
 #pch{border:2px solid #ff6fa5;background:rgba(255,111,165,.28);border-radius:4px}
 #pch i{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border:2px dashed rgba(255,111,165,.85);border-radius:50%;box-sizing:border-box;display:none}
 @media (hover:hover) and (pointer:fine){
@@ -6049,7 +6049,7 @@ window.__wx={load:load,stop:stop};
 #tb button.on[data-hk]::before{color:#fff}
 }
 @media (hover:hover) and (pointer:fine) and (min-width:720px){
-#wrap{max-width:min(96vw,max(460px,calc((100svh - 205px)*.818 + 16px)))!important}
+#wrap{max-width:min(96vw,max(460px,calc((100svh - 245px)*.818 + 16px)))!important}
 }
 </style>
 <script>
@@ -6102,6 +6102,105 @@ if(FINE){
  var ul=document.querySelector('.tin ul');
  if(ul){var li=document.createElement('li');li.textContent='\uD83D\uDCBB PC：Space=▶ ／ 1〜0・←→=タワー選択 ／ U=強化 ／ Delete=売る ／ F=速度 ／ A=マップ自動 ／ M=BGM ／ 右クリック=閉じる';ul.appendChild(li)}
 }
+})();
+</script>
+<style id="auto-css">
+#cw{position:relative}
+#ksc{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:4;overflow:hidden}
+.ksd{width:min(86%,320px);background:#fff8e6;color:#4a2740;border:6px solid #b8793a;border-radius:10px;box-shadow:0 6px 0 #8a5a2a,0 12px 24px rgba(0,0,0,.35);padding:10px 12px 12px;text-align:center;animation:ksIn .45s cubic-bezier(.2,.9,.3,1.1) both}
+.ksd.out{animation:ksOut .4s ease-in both}
+.ksd.boss{background:#fff0ee;border-color:#c0392b;box-shadow:0 6px 0 #8e2a20,0 12px 24px rgba(0,0,0,.4)}
+.ksd small{display:block;font-size:11px;color:#b8793a;letter-spacing:.08em}
+.ksd b{display:block;font-size:19px;margin:4px 0;color:#d6336c}
+.ksd.boss b{color:#c0392b}
+.ksd p{margin:0;font-size:13px;line-height:1.55}
+@keyframes ksIn{from{transform:translateX(120%) rotate(6deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes ksOut{to{transform:translateX(-120%) rotate(-6deg);opacity:0}}
+#autoRow{align-items:center;flex:none;gap:6px;margin-top:4px}
+#autoBtn{flex:0 0 auto;padding:5px 10px;font-size:13px;white-space:nowrap}
+#autoCap{flex:1;min-width:0;font-size:11px;line-height:1.3;color:var(--mute);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ctl{display:flex!important;flex-wrap:wrap;justify-content:stretch!important;gap:4px!important;width:100%}
+.ctl>button,.ctl>button.go{flex:1 1 38px!important;min-width:38px!important;padding:3px 0!important;font-size:clamp(13px,4.4vw,19px);white-space:nowrap;overflow:hidden}
+.ctl>button.go{flex-grow:1.7!important}
+</style>
+<script>
+/* auto battle (kamishibai) + bottom button fit */
+(function(){
+function $(i){return document.getElementById(i)}
+function shown(i){var e=$(i);return !!e&&getComputedStyle(e).display!=='none'}
+var cw=$('cw'),row=document.createElement('div'),btn=document.createElement('button'),cap=document.createElement('div'),ks=document.createElement('div');
+row.className='row';row.id='autoRow';btn.id='autoBtn';cap.id='autoCap';ks.id='ksc';
+btn.textContent='🎴 全自動バトル';cap.textContent='おまかせで さいごまで すすむよ（SOS・銀行は つかわない）';
+row.appendChild(btn);row.appendChild(cap);cw.parentNode.insertBefore(row,cw.nextSibling);cw.appendChild(ks);
+var OKT=['A','B','C','E','F','H','V','D'],ORD=['A','B','C','A','F','H','B','E','V','D'];
+var TTL=['つぎの おきゃくさま','ざわつく そうげん','きらめく まもり','おいかけっこ','ふしぎな あしおと','ひとやすみ…のはず','ゆれる ひかり','ざわざわの みち'];
+var OPN=['未亜は そっと 道を見つめた。遠くから 足音が ちかづいてくる。','利奈「だいじょうぶ、未亜が いるもん」ふたりは うなずきあった。','タワーが きらりと ひかる。まもりは ばんぜん！','空が すこし くもってきた。つぎの 敵が やってくる…！','未亜「ここは とおさないよ！」','利奈の ゴールを まもるため、みんなが 力を あわせる。','ピンクの 矢が とびかう。いざ、つぎの たたかいへ！','風が かわった。ふしぎな 気配が する…。'];
+var CLR=['てきを たおした！ ほっと ひといき。','みんなで しょうり！ つづきは つぎの 幕で…','ふぅ…なんとか まもりきった！','タワーも みんな がんばった！'];
+var BSS=['⚠ 大きな かげが、ゆっくり ちかづいてくる…！','⚠ ボスの とうじょう！ みんな、きをつけて！','⚠ じめんが ゆれる…！ つよい てきが くるよ！'];
+var AU={on:0,g:null,st:'',until:0,wa:false,t:'',iv:0};
+function say(t){if(cap._s!==t){cap._s=t;cap.textContent=t}}
+function card(h,t,x,hold,cls){
+ var d=document.createElement('div'),a=document.createElement('small'),b=document.createElement('b'),p=document.createElement('p');
+ d.className='ksd'+(cls?' '+cls:'');a.textContent=h;b.textContent=t;p.textContent=x;d.appendChild(a);d.appendChild(b);d.appendChild(p);
+ ks.innerHTML='';ks.appendChild(d);try{sfx('tap')}catch(e){}
+ setTimeout(function(){d.classList.add('out')},hold);setTimeout(function(){if(d.parentNode)d.parentNode.removeChild(d)},hold+450)}
+function hd(w){return '🎴 第'+w+'幕 ／ 全'+D.cl+'幕'}
+function intro(w){
+ var boss=w%5===0||w===3||w===7,t,x;
+ if(w===1){t='はじまりの おはなし';x='むかしむかし、未亜と利奈の まもりの たたかいが はじまった…。'}
+ else if(w===D.cl){t='さいごの 幕';x='ついに さいごの たたかい。ぜんぶの 力を、ここに！'}
+ else if(boss){t='ボスの かげ';x=BSS[w%BSS.length]}
+ else{t=TTL[w%TTL.length];x=OPN[w%OPN.length]}
+ card(hd(w),t,x,2300,boss||w===D.cl?'boss':'');AU.t=t;say('第'+w+'幕「'+t+'」じゅんび中…')}
+function clr(w){card(hd(w),'おしまい',CLR[w%CLR.length],1250,'');say('第'+w+'幕 おしまい。つづく…')}
+function bestCell(k){
+ var rg=T[k].rng,pts=[],occ={},best=null,bs=0.9,cx,cy,i,s,dx,dy;
+ road.forEach(function(q){var a=q.split(',');pts.push([a[0]*C+20,a[1]*C+20])});
+ G.tw.forEach(function(o){occ[o.cx+','+o.cy]=1});
+ for(cx=0;cx<COLS;cx++)for(cy=0;cy<ROWS;cy++){
+  if(road.has(cx+','+cy)||occ[cx+','+cy]||(cx<=2&&cy>=8))continue;
+  s=Math.random()*.5;
+  for(i=0;i<pts.length;i++){dx=pts[i][0]-cx*C-20;dy=pts[i][1]-cy*C-20;if(dx*dx+dy*dy<=rg*rg)s++}
+  if(s>bs){bs=s;best=[cx,cy]}}
+ return best}
+function place(k,c){var n=G.tw.length,ob=build;G.sel=null;build=k;try{tapMap(c[0]*C+20,c[1]*C+20)}finally{build=ob}return G.tw.length>n}
+function upgrade(t){var g=G.gold;G.sel=t;panel();var u=$('up');if(u&&!u.disabled)u.click();G.sel=null;hud();panel();return G.gold<g}
+function spend(){
+ for(var guard=0;guard<6;guard++){
+  var ts=G.tw.filter(function(o){return OKT.indexOf(o.k)>=0&&!o.broken}),n=ts.length,did=false;
+  var target=Math.min(24,4+Math.floor(G.wave*.6));
+  if(n<target){
+   var k=ORD[n%ORD.length];if(k==='D'&&ts.some(function(o){return o.k==='D'}))k='A';
+   if(G.gold<cst(k))break;
+   var c=bestCell(k);if(c)did=place(k,c)}
+  if(!did){
+   var low=null;ts.forEach(function(o){if(o.lv<99&&(!low||o.lv<low.lv))low=o});
+   if(low&&G.gold>=upCost(low))did=upgrade(low)}
+  if(!did)break}}
+function tick(){
+ if(!AU.on)return;
+ var now=performance.now();
+ if(typeof G==='undefined'||!G||G!==AU.g||shown('tt')){stop('ていし。ここからは じぶんで あそべるよ');return}
+ if(G.over||shown('ov')){stop('おしまい！ けっかを みてね');return}
+ if(typeof PZ!=='undefined'&&PZ)return;
+ if(['rk','ap','mp','chq','zk','pf','gxq','pz'].some(shown))return;
+ if(G.setup&&!pathOK()){autoMap();return}
+ if(G.active)AU.wa=true;else if(AU.wa){AU.wa=false;AU.st='clr';AU.until=now+1700;clr(G.wave)}
+ try{spend()}catch(e){console.error(e)}
+ if(G.active){say('第'+G.wave+'幕「'+(AU.t||'たたかい')+'」 ❤️'+G.lives);AU.st='fight';return}
+ if(G.wave>=D.cl)return;
+ if(AU.st==='clr'){if(now<AU.until)return;AU.st=''}
+ if(AU.st==='go'&&now<AU.until)return;
+ if(AU.st!=='intro'){AU.st='intro';intro(G.wave+1);AU.until=now+2800;return}
+ if(now<AU.until)return;
+ AU.st='go';AU.until=now+1500;$('go').click()}
+function stop(m){AU.on=0;clearInterval(AU.iv);btn.classList.remove('on');btn.textContent='🎴 全自動バトル';ks.innerHTML='';say(m||'ていし')}
+function start(){
+ if(typeof G==='undefined'||!G||G.over||shown('tt'))return;
+ AU.on=1;AU.g=G;AU.st='';AU.wa=!!G.active;AU.until=0;btn.classList.add('on');btn.textContent='⏹ 全自動 ストップ';say('全自動バトル かいし！');
+ AU.iv=setInterval(tick,300);tick()}
+btn.onclick=function(){AU.on?stop('ていし。ここからは じぶんで あそべるよ'):start()};
+window.miarinaAuto={tick:tick,start:start,stop:stop};
 })();
 </script>
 </body></html>
