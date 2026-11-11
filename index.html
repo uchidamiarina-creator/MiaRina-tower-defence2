@@ -4417,16 +4417,17 @@ document.addEventListener('pointerdown',function(e){
 <script>
 (function(){
 /* ===== オリジナルモンスターガチャ：タイトルのサイコロ→500Gでカプセル→名前をつけて登録（最大50匹）→敵として登場 ===== */
-var GK='miarina_td_gold_v1',MK='miarina_td_mons_v1',COST=500,MAX=999,RN=['','高','中','低','超激レア'],RW=[0,5,2,1,.04],CAPS=[['赤','#ff6fa5'],['青','#3b82f6'],['水色','#5cd6ff'],['黄色','#ffd93b'],['オレンジ','#ff9a2e'],['灰色','#9aa0a6'],['紫','#9b5cff'],['ピンク','#ffb8dc']],GOLDP=.05;
+var GK='miarina_td_gold_v1',MK='miarina_td_mons_v1',COST=500,MAX=999,RN=['','高','中','低','超激レア'],RW=[0,5,2,1,.04],CAPS=[['赤','#ff6fa5'],['青','#3b82f6'],['水色','#5cd6ff'],['黄色','#ffd93b'],['オレンジ','#ff9a2e'],['灰色','#9aa0a6'],['紫','#9b5cff'],['ピンク','#ffb8dc']],GOLDP=.05,SILP=.12;
 function gold(){try{var n=parseInt(localStorage.getItem(GK)||'0',10);return n>0?n:0}catch(e){return 0}}
 function setGold(n){try{localStorage.setItem(GK,String(Math.max(0,Math.floor(n))))}catch(e){}}
 function mons(){try{var a=JSON.parse(localStorage.getItem(MK)||'[]');if(!Array.isArray(a))return[];for(var i=0;i<a.length;i++){if(!(a[i].r>=1&&a[i].r<=4))a[i].r=2;if(!(a[i].g>=1&&a[i].g<=100))a[i].g=1+Math.floor(99*Math.pow(((a[i].p&&a[i].p[4]||0)%100)/100,3))}return a}catch(e){return[]}}
 function gmul(g){return .6+(g-1)/99*2.4}
-var TN=['めちゃ弱い','弱い','ふつう','やや強い','強い','とても強い','めちゃ強い'],TH=[14,28,43,57,71,86,100],TW=[40,25,15,10,6,3,1],RLN={N:'N（ノーマル）',R:'R（レア）',UR:'UR（ウルトラレア）'};
+var TN=['めちゃ弱い','弱い','ふつう','やや強い','強い','とても強い','めちゃ強い'],TH=[14,28,43,57,71,86,100],TW=[40,25,15,10,6,3,1],RLN={N:'N（ノーマル）',R:'R（レア）',SR:'SR（スーパーレア）',UR:'UR（ウルトラレア）'};
 function isGd(m){return !!(m&&m.p&&m.p[7]===1)}
+function isSv(m){return !!(m&&m.p&&m.p[7]===2)}
 function tier(g){for(var i=0;i<7;i++)if(g<=TH[i])return i;return 6}
-function rar(m){return isGd(m)?'UR':tier(m.g)>=3?'R':'N'}
-function wOf(m){return isGd(m)?.3:TW[tier(m.g)]}
+function rar(m){return isGd(m)?'UR':isSv(m)?'SR':tier(m.g)>=3?'R':'N'}
+function wOf(m){return isGd(m)?.3:isSv(m)?.8:TW[tier(m.g)]}
 function rollG(){var r=Math.random()*100,t=0,i;for(i=0;i<7;i++){r-=TW[i];if(r<0){t=i;break}}var lo=t?TH[t-1]+1:1;return lo+Math.floor(Math.random()*(TH[t]-lo+1))}
 function rinfo(m){return 'レア度：'+RLN[rar(m)]+'\n強さ：'+TN[tier(m.g)]}
 function saveMons(a){try{localStorage.setItem(MK,JSON.stringify(a))}catch(e){}}
@@ -4436,15 +4437,16 @@ function rollT(rn){rn=rn||Math.random;var r=rn()*100,s=2,W=[10,20,35,20,10,5],i;
 function traitsOf(m){if(m&&m.t&&typeof m.t.s==='number')return m.t;var sd=7,i,p=(m&&m.p)||[];for(i=0;i<p.length;i++)sd=(sd*31+(p[i]|0))>>>0;var rn=function(){sd=(sd+0x6D2B79F5)>>>0;var t=sd;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};return rollT(rn)}
 function pt(p,i,m){return p[i]===undefined?-1:(p[i]|0)%m}
 function legL(p){var ll=4+(p[2]/4|0)%4*1.6,lt=pt(p,11,6);if(lt==2)ll+=3;else if(lt==3)ll=Math.max(2.5,ll-2.5);return ll}
-function rp(gd){var p=[],i;for(i=0;i<7;i++)p.push(Math.random()*1000|0);p.push(gd?1:0);for(i=0;i<4;i++)p.push(Math.random()*1000|0);return p}
+function rp(gd){var p=[],i;for(i=0;i<7;i++)p.push(Math.random()*1000|0);p.push(gd===2?2:gd?1:0);for(i=0;i<4;i++)p.push(Math.random()*1000|0);return p}
 /* p = [顔,胴体,足,手,色,目,口] 各0〜999 */
 function drawMon(c,p,t,sz){
  var fa=p[0],bo=p[1],lg=p[2],ar=p[3],co=p[4],ey=p[5],mo=p[6],i,sd;
- var h=co*.36,sat=55+co%4*10,li=52+co%3*5,c1='hsl('+h+','+sat+'%,'+li+'%)',c2='hsl('+((h+30)%360)+','+sat+'%,'+(li-18)+'%)',c3='hsl('+((h+180)%360)+','+sat+'%,'+(li+14)+'%)',ink='#3a2a40',GD=p[7]===1,h2=(h+30)%360;
+ var h=co*.36,sat=55+co%4*10,li=52+co%3*5,c1='hsl('+h+','+sat+'%,'+li+'%)',c2='hsl('+((h+30)%360)+','+sat+'%,'+(li-18)+'%)',c3='hsl('+((h+180)%360)+','+sat+'%,'+(li+14)+'%)',ink='#3a2a40',GD=p[7]===1,SV=p[7]===2,h2=(h+30)%360;
  /* 茶色になりやすい色（オレンジ〜こげ茶ゾーン）は、あざやかなオレンジ・赤に寄せて茶色を出さない */
  if(h>=8&&h<=52)c1='hsl('+h+',90%,60%)';
  if(h2<=55)c2='hsl('+h2+',90%,54%)';
  if(GD){c1='hsl(46,100%,56%)';c2='hsl(40,95%,50%)';c3='hsl(54,100%,84%)'}
+  if(SV){c1='hsl(210,14%,80%)';c2='hsl(216,12%,58%)';c3='hsl(205,40%,95%)'}
  var bt=bo%10,bw=8+(bo/10|0)%5*1.6,bh=8+(bo/50|0)%5*1.4,dk=(bo/250|0)%4;
  c.save();c.scale(sz,sz);c.translate(0,Math.sin(t/200));c.lineJoin='round';c.lineCap='round';
  /* 足：いつも2本 */
@@ -4507,7 +4509,7 @@ function drawMon(c,p,t,sz){
  else if(mm==8){c.arc(0,my+.5,1.2,0,7);c.fill();c.stroke();c.fillStyle='rgba(255,122,168,.55)';c.beginPath();c.arc(-fw*.7,my-1,1.7,0,7);c.arc(fw*.7,my-1,1.7,0,7);c.fill();c.beginPath()}
  else{c.moveTo(-2.8,my-.3);c.quadraticCurveTo(0,my+2.5,3.2,my-1.6)}
  c.stroke();
- if(GD){var q,ang,rad,al,sr;c.lineWidth=0;for(q=0;q<9;q++){ang=q*.7+Math.sin(t/900+q)*.15;rad=11+(q%3)*3.5;al=Math.sin(t/170+q*2.1);if(al<=0)continue;sr=(1.2+(q%3)*.6)*(.5+al*.6);var sx=Math.cos(ang)*rad*1.05,sy=-2+Math.sin(ang)*rad*1.15;c.globalAlpha=al;c.fillStyle=q%2?'#fff':'#fff3a0';c.beginPath();c.moveTo(sx,sy-sr*2);c.quadraticCurveTo(sx,sy,sx+sr*2,sy);c.quadraticCurveTo(sx,sy,sx,sy+sr*2);c.quadraticCurveTo(sx,sy,sx-sr*2,sy);c.quadraticCurveTo(sx,sy,sx,sy-sr*2);c.fill()}c.globalAlpha=1}
+ if(GD||SV){var q,ang,rad,al,sr;c.lineWidth=0;for(q=0;q<9;q++){ang=q*.7+Math.sin(t/900+q)*.15;rad=11+(q%3)*3.5;al=Math.sin(t/170+q*2.1);if(al<=0)continue;sr=(1.2+(q%3)*.6)*(.5+al*.6);var sx=Math.cos(ang)*rad*1.05,sy=-2+Math.sin(ang)*rad*1.15;c.globalAlpha=al;c.fillStyle=q%2?'#fff':(SV?'#cfe6ff':'#fff3a0');c.beginPath();c.moveTo(sx,sy-sr*2);c.quadraticCurveTo(sx,sy,sx+sr*2,sy);c.quadraticCurveTo(sx,sy,sx,sy+sr*2);c.quadraticCurveTo(sx,sy,sx-sr*2,sy);c.quadraticCurveTo(sx,sy,sx,sy-sr*2);c.fill()}c.globalAlpha=1}
  c.restore()}
 function monCY(p){
  var fa=p[0],bo=p[1],lg=p[2],bh=8+(bo/50|0)%5*1.4,fw=7+fa%4*1.8,et=(fa/4|0)%4,ll=legL(p);
@@ -4554,13 +4556,13 @@ function roll(){
  if(gold()<COST){msg('ゴールドがたりないよ（'+COST+'G必要）。クリアして持ち越そう！');return}
  setGold(gold()-COST);ui();cancelAnimationFrame(raf);cur=null;busy=true;var myId=++rid,rb=ov.querySelector('.roll');rb.disabled=true;rb.style.opacity='.5';
  ov.querySelector('.reg').style.display='none';ov.querySelector('.nm').style.display='none';msg('');
- var st=ov.querySelector('.stage'),isG=Math.random()<goldP(),cp=CAPS[Math.random()*CAPS.length|0];
- st.innerHTML='<style>@keyframes cpw{0%,100%{transform:rotate(0)}20%{transform:rotate(-18deg)}40%{transform:rotate(16deg)}60%{transform:rotate(-12deg)}80%{transform:rotate(8deg)}}@keyframes cpg{0%,100%{box-shadow:0 0 10px 2px #ffd700}50%{box-shadow:0 0 26px 8px #fff3a0}}@keyframes cpt{0%,100%{opacity:0;transform:scale(.3)}50%{opacity:1;transform:scale(1.2)}}</style>'+(isG?'<div style=\"position:relative;width:70px;height:70px\"><div style=\"width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#fff7b0 0%,#ffd700 35%,#d99a00 55%,#ffe766 75%,#fff7b0 100%);border:3px solid #7a5a00;animation:cpw .5s ease-in-out 3,cpg .8s ease-in-out infinite\"></div><span style=\"position:absolute;left:-14px;top:-6px;font-size:18px;animation:cpt .9s infinite\">✨</span><span style=\"position:absolute;right:-14px;top:8px;font-size:15px;animation:cpt .9s .3s infinite\">✨</span><span style=\"position:absolute;left:4px;bottom:-12px;font-size:16px;animation:cpt .9s .6s infinite\">✨</span><span style=\"position:absolute;right:2px;top:-14px;font-size:13px;animation:cpt .9s .15s infinite\">⭐</span></div>':'<div style=\"width:70px;height:70px;border-radius:50%;background:linear-gradient('+cp[1]+' 50%,#fff 50%);border:3px solid #3a2a40;animation:cpw .5s ease-in-out 3\"></div>');
- msg(isG?'✨ きらきらの金色カプセルだ！！':cp[0]+'のカプセル！');
+ var st=ov.querySelector('.stage'),isG=Math.random()<goldP(),isS=!isG&&Math.random()<SILP,cp=CAPS[Math.random()*CAPS.length|0];
+ st.innerHTML='<style>@keyframes cpw{0%,100%{transform:rotate(0)}20%{transform:rotate(-18deg)}40%{transform:rotate(16deg)}60%{transform:rotate(-12deg)}80%{transform:rotate(8deg)}}@keyframes cpg{0%,100%{box-shadow:0 0 10px 2px #ffd700}50%{box-shadow:0 0 26px 8px #fff3a0}}@keyframes cpt{0%,100%{opacity:0;transform:scale(.3)}50%{opacity:1;transform:scale(1.2)}}</style>'+(isG?'<div style=\"position:relative;width:70px;height:70px\"><div style=\"width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#fff7b0 0%,#ffd700 35%,#d99a00 55%,#ffe766 75%,#fff7b0 100%);border:3px solid #7a5a00;animation:cpw .5s ease-in-out 3,cpg .8s ease-in-out infinite\"></div><span style=\"position:absolute;left:-14px;top:-6px;font-size:18px;animation:cpt .9s infinite\">✨</span><span style=\"position:absolute;right:-14px;top:8px;font-size:15px;animation:cpt .9s .3s infinite\">✨</span><span style=\"position:absolute;left:4px;bottom:-12px;font-size:16px;animation:cpt .9s .6s infinite\">✨</span><span style=\"position:absolute;right:2px;top:-14px;font-size:13px;animation:cpt .9s .15s infinite\">⭐</span></div>':isS?'<style>@keyframes cps{0%,100%{box-shadow:0 0 10px 2px #b8c6d8}50%{box-shadow:0 0 26px 8px #eef6ff}}</style><div style=\"position:relative;width:70px;height:70px\"><div style=\"width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#ffffff 0%,#c9d3e0 35%,#8d99ab 55%,#e3ebf5 75%,#ffffff 100%);border:3px solid #55606f;animation:cpw .5s ease-in-out 3,cps .8s ease-in-out infinite\"></div><span style=\"position:absolute;left:-14px;top:-6px;font-size:18px;animation:cpt .9s infinite\">✨</span><span style=\"position:absolute;right:-14px;top:8px;font-size:15px;animation:cpt .9s .3s infinite\">✨</span><span style=\"position:absolute;left:4px;bottom:-12px;font-size:16px;animation:cpt .9s .6s infinite\">✨</span></div>':'<div style=\"width:70px;height:70px;border-radius:50%;background:linear-gradient('+cp[1]+' 50%,#fff 50%);border:3px solid #3a2a40;animation:cpw .5s ease-in-out 3\"></div>');
+ msg(isG?'✨ きらきらの金色カプセルだ！！':isS?'✨ ぴかぴかの銀色カプセルだ！SRがでるよ！':cp[0]+'のカプセル！');
  setTimeout(function(){
   if(!ov||myId!==rid)return;
   busy=false;rb.disabled=false;rb.style.opacity='';
-  cur=isG?{p:rp(1),r:4,g:87+Math.floor(Math.random()*14),t:rollT()}:{p:rp(),r:2,g:rollG(),t:rollT()};
+  cur=isG?{p:rp(1),r:4,g:87+Math.floor(Math.random()*14),t:rollT()}:isS?{p:rp(2),r:3,g:70+Math.floor(Math.random()*31),t:rollT()}:{p:rp(),r:2,g:rollG(),t:rollT()};
   st.innerHTML='<canvas width="170" height="170" style="display:block;margin:0 auto;width:170px;height:170px;border:0;box-shadow:none;border-radius:0;background:transparent;outline:0"></canvas>';
   var cv=st.firstChild,c=cv.getContext('2d'),t0=performance.now();
   (function f(n){if(!ov)return;c.clearRect(0,0,170,170);c.save();c.translate(85,85-monCY(cur.p)*2.2);drawMon(c,cur.p,n,2.2);c.restore();raf=requestAnimationFrame(f)})(t0);
@@ -4749,7 +4751,7 @@ function dcDesc(m,all){var P=dcPool();return dcAssign(m,all).map(function(x){ret
 /* 初プレイから24時間は金色カプセルが1/10 */
 function goldP(){try{var k='miarina_td_firstplay_v1',t=parseInt(localStorage.getItem(k)||'0',10);if(!(t>0)){t=Date.now();localStorage.setItem(k,String(t))}if(Date.now()-t<86400000)return .1}catch(e){}return GOLDP}
 window.rinGoldP=goldP;(function(){try{goldP()}catch(e){}})();
-function SELLP(m){var r=rar(m);return r==='UR'?100000:r==='R'?500:250}
+function SELLP(m){var r=rar(m);return r==='UR'?100000:r==='SR'?5000:r==='R'?500:250}
 function openList(){
  stop();var a=mons();
  ov=document.createElement('div');
@@ -4774,7 +4776,7 @@ function openList(){
    var gh=document.createElement('div');gh.textContent=(sel<10?ROWS[sel][0]+'行':'ほか（かな以外）')+'　'+gs[sel].length+'匹';gh.style.cssText='font-size:12px;opacity:.75;margin-bottom:2px';box.appendChild(gh);
    if(!gs[sel].length){var e2=document.createElement('div');e2.textContent='この行はまだいないよ';e2.style.cssText='font-size:12px;opacity:.8;padding:10px 0';box.appendChild(e2)}
    gs[sel].forEach(function(m){
-    var row=document.createElement('button');row.textContent='['+rar(m)+'] '+(isGd(m)?'✨ ':'')+m.n;row.style.cssText='display:block;width:100%;margin:3px 0;padding:8px 10px;text-align:left;font-size:14px;font-weight:bold';
+    var row=document.createElement('button');row.textContent='['+rar(m)+'] '+((isGd(m)||isSv(m))?'✨ ':'')+m.n;row.style.cssText='display:block;width:100%;margin:3px 0;padding:8px 10px;text-align:left;font-size:14px;font-weight:bold';
     row.onclick=function(){try{sfx('tap')}catch(e){}detail(m)};box.appendChild(row)})}
   var cl=document.createElement('button');cl.textContent='とじる';cl.style.cssText='padding:7px 18px;margin-top:8px';cl.onclick=stop;box.appendChild(cl)}
  function detail(m){
@@ -4909,7 +4911,7 @@ stE=function(e){
  _se(e)};
 function parseMK(k){var a=k.split('|');return{n:decodeURIComponent(a[1]),p:a[2].split(',').map(Number),g:+a[3]}}
 window.rinMonThumb=function(cn,k){var m=parseMK(k),c=cn.getContext('2d');c.clearRect(0,0,cn.width,cn.height);c.save();c.translate(cn.width/2,cn.height/2-monCY(m.p)*2);drawMon(c,m.p,performance.now(),2);c.restore()};
-window.rinMonLabel=function(k){var m=parseMK(k);return (isGd(m)?'✨ ':'')+m.n};
+window.rinMonLabel=function(k){var m=parseMK(k);return ((isGd(m)||isSv(m))?'✨ ':'')+m.n};
 })();
 </script>
 <script>
