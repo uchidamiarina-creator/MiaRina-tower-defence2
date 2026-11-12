@@ -239,35 +239,35 @@ const DIFF=[
 {n:'超かんたん',gold:400,lives:50,hp:.5,sp:.8,cnt:.6,rw:1.4,up:1.5,cost:.8,bh:.6,iv:1.2,am:1,cl:10,d:'フェーズ10でクリア｜お金400・ライフ50｜敵は少なめで弱い｜強化の伸び×1.5・値段2割引｜味方は最大数まで持てる'},
 {n:'かんたん',gold:280,lives:35,hp:.7,sp:.9,cnt:.8,rw:1.2,up:1.25,cost:.9,bh:.8,iv:1.1,am:.85,cl:20,d:'フェーズ20でクリア｜お金280・ライフ35｜敵は少なめ｜強化の伸び×1.25・値段1割引｜味方の最大数×0.85'},
 {n:'ふつう',gold:150,lives:20,hp:1,sp:1,cnt:1,rw:1,up:1,cost:1,bh:1,iv:1,am:.7,cl:30,d:'フェーズ30でクリア｜お金150・ライフ20｜標準のバランス｜味方の最大数×0.7'},
-{n:'むずかしい',gold:120,lives:12,hp:1.5,sp:1.1,cnt:1.4,rw:.85,up:.85,cost:1.15,bh:1.4,iv:.85,am:.5,cl:50,d:'フェーズ50でクリア｜お金120・ライフ12｜敵は1.4倍の数で硬い｜強化の伸び×0.85・値段1.15倍｜味方の最大数×0.5'},{n:'ルナティック',gold:100,lives:10,hp:2.2,sp:1.2,cnt:1.8,rw:.8,up:.8,cost:1.3,bh:1.8,iv:.8,am:.4,cl:100,d:'フェーズ100でクリア｜お金100・ライフ10｜敵は1.8倍の数でとても硬くて速い｜強化の伸び×0.8・値段1.3倍｜味方の最大数×0.4｜最終フェーズは巨大スイカメ1体だけ｜最高難易度'},{n:'エクリプス',ec:1,gold:100,lives:10,hp:2.2,sp:1.2,cnt:1.8,rw:.8,up:.8,cost:1.3,bh:1.8,iv:.8,am:.4,cl:99999,d:'フェーズ∞（1つだけ）｜敵が1時間ずっとランダムに出てくる耐久バトル｜敵の強さはルナティックと同じで、時間がたつほど強くなる（さいごはフェーズ99くらい）｜敵・飛ぶ敵・ボス・穴から出る敵・特別な敵がぜんぶランダムに出る（10分すぎからパラシュートで降りてくるスナイパーも少しだけ）｜ラスト10分〜ラスト3分のあいだに、ラスボス四天王の4体が、時間をずらして全員出てくる（ラフレシア以外は、いまいる四天王を倒すまで次は出ない）｜味方はやられても2秒後にゴールから蘇って何度でも出撃する｜やられるまで戦える｜1時間たえぬいたらクリア！ボーナス+100000点｜全自動バトル・⏩は使えない｜セーブはできる（タワー・敵・残り時間はそのまま）'}];
+{n:'むずかしい',gold:120,lives:12,hp:1.5,sp:1.1,cnt:1.4,rw:.85,up:.85,cost:1.15,bh:1.4,iv:.85,am:.5,cl:50,d:'フェーズ50でクリア｜お金120・ライフ12｜敵は1.4倍の数で硬い｜強化の伸び×0.85・値段1.15倍｜味方の最大数×0.5'},{n:'ルナティック',gold:100,lives:10,hp:2.2,sp:1.2,cnt:1.8,rw:.8,up:.8,cost:1.3,bh:1.8,iv:.8,am:.4,cl:100,d:'フェーズ100でクリア｜お金100・ライフ10｜敵は1.8倍の数でとても硬くて速い｜強化の伸び×0.8・値段1.3倍｜味方の最大数×0.4｜最終フェーズは巨大スイカメ1体だけ｜最高難易度'},{n:'エクリプス',ec:1,gold:100,lives:10,hp:2.2,sp:1.2,cnt:1.8,rw:.8,up:.8,cost:1.3,bh:1.8,iv:.8,am:.4,cl:99999,d:'フェーズ∞（1つだけ）｜敵が10分間ずっとランダムに出てくる耐久バトル｜敵の強さはルナティックと同じで、時間がたつほどどんどん強くなる（10分でフェーズ99くらいまで一気に成長）｜敵・飛ぶ敵・ボス・穴から出る敵・特別な敵がぜんぶランダムに出る（1分40秒すぎからパラシュートで降りてくるスナイパーも少しだけ）｜ラスト4分〜ラスト1分のあいだに、ラスボス四天王の4体が、時間をずらして全員出てくる（ラフレシア以外は、いまいる四天王を倒すまで次は出ない）｜味方はやられても2秒後にゴールから蘇って何度でも出撃する｜やられるまで戦える｜10分たえぬいたらクリア！ボーナス+100000点｜全自動バトル・⏩は使えない｜セーブはできる（タワー・敵・残り時間はそのまま）'}];
 let D=DIFF[0],lv=0;function lunOK(){try{return localStorage.getItem('miarina_td_lunatic_v1')==='1'}catch(e){return false}}
 /* 難易度の解放：はじめは超かんたんだけ。クリアするたびに次の難易度が選べる（番号 = 選べる一番上の難易度） */
 const UNL_KEY='miarina_td_unlock_v1';
 function unlN(){var n=0;try{n=parseInt(localStorage.getItem(UNL_KEY)||'0',10)||0}catch(e){}if(lunOK())n=4;if(ecOK())n=5;return Math.max(0,Math.min(5,n))}
-/* ===== エクリプス：ルナティックをクリアすると出現する、1時間耐久バトル ===== */
-const EC_KEY='miarina_td_eclipse_v1',EC_SEC=3600,EC_WAVE=1,EC_BONUS=100000;
+/* ===== エクリプス：ルナティックをクリアすると出現する、10分耐久バトル ===== */
+const EC_KEY='miarina_td_eclipse_v1',EC_SEC=600,EC_LV_MAX=99,EC_CURVE=2,EC_BOSS_FROM=240,EC_BOSS_TO=60,EC_WAVE=1,EC_BONUS=100000;/* EC_SEC=制限時間(秒) EC_LV_MAX=最後の敵の強さ(フェーズ換算) EC_CURVE=強くなり方(1=一定／2=はじめゆっくり後半加速) EC_BOSS_FROM/TO=四天王が出る時間帯(終了の何秒前〜何秒前) */
 function ecOK(){try{if(localStorage.getItem(EC_KEY)==='1')return true;
  /* すでにルナティック（フェーズ100）をクリアした記録があれば、エクリプスも出現させる */
  var g=JSON.parse(localStorage.getItem('miarina_td_diary_log_v1')||'{}');
  for(var u in g)for(var d in g[u]){var r=g[u][d];if(r&&r.wins>0&&r.maxWave>=100){localStorage.setItem(EC_KEY,'1');return true}}}catch(e){}return false}
-function ecShow(){var e=document.getElementById('ecTm');if(!e){e=document.createElement('div');e.id='ecTm';e.style.cssText='position:fixed;top:6px;left:50%;transform:translateX(-50%);z-index:20;padding:3px 12px;border-radius:12px;background:rgba(30,20,50,.82);color:#ffe9a8;font:bold 13px sans-serif;white-space:nowrap;pointer-events:none';document.body.appendChild(e)}
- /* ライフ（❤️）が見えるように、上のステータス欄（💰・❤️）の下に置く */
- try{var st=document.getElementById('stats');if(st){var r=st.getBoundingClientRect();if(r.height>0){var ty=Math.round(r.bottom+4)+'px';if(e.style.top!==ty)e.style.top=ty}}}catch(er){}
+function ecShow(){var e=document.getElementById('ecTm');if(!e){e=document.createElement('div');e.id='ecTm';e.style.cssText='flex:none;align-self:center;padding:4px 9px;border-radius:12px;background:rgba(30,20,50,.82);color:#ffe9a8;font:bold 12px sans-serif;white-space:nowrap;pointer-events:none'}
+ /* 残り時間は全自動バトルボタンの右側に表示する */
+ var ab=document.getElementById('autoBtn');if(ab&&ab.parentNode&&e.previousSibling!==ab)ab.parentNode.insertBefore(e,ab.nextSibling);
  var t='🌑 エクリプス 残り '+tfmt(Math.max(0,EC_SEC-(G.ecT||0)));if(e.textContent!==t)e.textContent=t}
 function ecHide(){var e=document.getElementById('ecTm');if(e)e.remove()}
 function ecUp(dt){
  if(G.setup||G.over)return;
  G.ecT=(G.ecT||0)+dt;ecShow();
- if(G.ecT>=EC_SEC){G.q=[];G.en=[];G.active=false;D.cl=Math.max(1,G.wave);G.fx.push({x:180,y:200,txt:'1時間たえぬいた！',t:2,c:'#ffd23f'});end(true);return}
- /* エクリプス：フェーズは1つだけ。そのフェーズの敵が1時間ずっとランダムに出つづける */
+ if(G.ecT>=EC_SEC){G.q=[];G.en=[];G.active=false;D.cl=Math.max(1,G.wave);G.fx.push({x:180,y:200,txt:'10分たえぬいた！',t:2,c:'#ffd23f'});end(true);return}
+ /* エクリプス：フェーズは1つだけ。そのフェーズの敵が10分間ずっとランダムに出つづける */
  if(!G.active){G.ecGap=(G.ecGap===undefined?1.5:G.ecGap)-dt;
   if(G.ecGap<=0){G.ecGap=undefined;G.wave=Math.max(0,EC_WAVE-1);go.onclick();ecRestore()}return}
  if(G.q.length<8)ecRefill();ecBossUp()}
 function ecPrim(o){const r={};for(const k in o){const v=o[k];if(typeof v=='boolean'||typeof v=='string'||(typeof v=='number'&&isFinite(v)))r[k]=v}return r}
 /* セーブしたときの敵を元の位置・体力のまま出す（飛ぶ敵だけは出しなおし） */
 function ecRestore(){const s=G._ecR;G._ecR=null;if(!s||!G.active)return;try{G.en=[];for(const o of s.en){if(!R[o.r])continue;const e=Object.assign({},o);e.ro=getRo(e.r);e.d=Math.max(0,Math.min(e.d||0,e.ro.tot-1));[e.x,e.y]=pos(e.d,e.ro);e.fight=null;e.dead=false;G.en.push(e)}G.q=s.q.slice()}catch(err){console.error('ecRestore',err)}}
-/* 経過時間に応じた強さ：0秒でフェーズ1 → 1時間でルナティックのフェーズ99くらい */
-function ecLv(){return Math.max(1,Math.min(99,1+Math.floor(98*Math.min(1,(G.ecT||0)/EC_SEC))))}
+/* 経過時間に応じた強さ：0秒でフェーズ1 → 10分でルナティックのフェーズ99くらい（はじめはゆっくり、あとになるほど加速） */
+function ecLv(){return Math.max(1,Math.min(EC_LV_MAX,1+Math.floor((EC_LV_MAX-1)*Math.pow(Math.min(1,(G.ecT||0)/EC_SEC),EC_CURVE))))}
 function ecHp(w){const cap=Math.min(120,Math.round(70*D.cnt+20)),raw=(6+w*2)*D.cnt;return(w<=10?22*Math.pow(1.36,w-1):360*Math.pow(1.05,w-10))*D.hp*(raw>cap?raw/cap:1)}
 function ecRefill(){const w=ecLv(),hp=ecHp(w);G.hpb=hp;for(let i=0;i<10;i++){const f=Math.random()<.25;G.q.push({hp:f?hp*.6:hp,sp:f?Math.min(70+w*3,150):Math.min(42+w*3,95),f,boss:false,rw:Math.round((4+w)*D.rw)})}
  if(Math.random()<.6){const mc=1+(w>=30?1:0)+(w>=60?1:0);for(let i=0;i<mc;i++)G.q.splice(Math.random()*(G.q.length+1)|0,0,{hp:Math.max(3,5*Math.sqrt(D.hp)),sp:200,f:false,boss:false,q:1,rw:Math.max(1,Math.round((4+w)*D.rw*.5))})}}
@@ -279,8 +279,8 @@ window.bossNm=function(e,n){return e&&e.cn?e.cn+' '+n:n};
 window.bossTag=function(x,e,px,py){if(!e||!e.cn)return;x.save();x.textAlign='center';x.textBaseline='middle';x.font='bold 10px "Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif';x.lineWidth=3;x.strokeStyle='rgba(20,5,40,.85)';x.strokeText(e.cn,px,py);x.fillStyle=bossCc(e.cn);x.fillText(e.cn,px,py);x.restore()};
 window.bossCc=function(cn){const c=BOSS_COND.find(function(x){return x[0]===cn});return c?c[3]:'#fff'};
 const EC_BOSS=[['suika',100,6,500],['rafu',80,8,500],['neko',50,14,0],['dadan',120,4,800]];
-/* ラスト10分〜ラスト3分のあいだに、四天王4体（ランダムな順）が、時間をずらして全員出る（最終兵器田中は出ない） */
-function ecBossInit(){const lo=Math.max(EC_SEC-600,(G.ecT||0)+5),hi=Math.max(lo+5,EC_SEC-180),n=EC_BOSS.length,ks=EC_BOSS.slice();for(let i=ks.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[ks[i],ks[j]]=[ks[j],ks[i]]}const od=ks,w=(hi-lo)/n;G.ecBs=od.map((b,i)=>({k:b[0],t:lo+(i+Math.random()*.7)*w,done:0}))}
+/* ラスト4分〜ラスト1分のあいだに、四天王4体（ランダムな順）が、時間をずらして全員出る（最終兵器田中は出ない） */
+function ecBossInit(){const lo=Math.max(EC_SEC-EC_BOSS_FROM,(G.ecT||0)+5),hi=Math.max(lo+5,EC_SEC-EC_BOSS_TO),n=EC_BOSS.length,ks=EC_BOSS.slice();for(let i=ks.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[ks[i],ks[j]]=[ks[j],ks[i]]}const od=ks,w=(hi-lo)/n;G.ecBs=od.map((b,i)=>({k:b[0],t:lo+(i+Math.random()*.7)*w,done:0}))}
 function ecBossUp(){
  if(Array.isArray(G.ecBs))G.ecBs=G.ecBs.filter(b=>b&&b.k!=='tanaka');
  if(Array.isArray(G.q)&&G.q.some(q=>q&&q.tanaka))G.q=G.q.filter(q=>!(q&&q.tanaka));
@@ -294,11 +294,11 @@ function ecBossUp(){
  ecRandBoss()}
 /* エクリプス：ふつうのボス・中ボスもランダムに、ときどき出る */
 function ecRandBoss(){
- if(G.ecRbT===undefined)G.ecRbT=(G.ecT||0)+90+Math.random()*60;
+ if(G.ecRbT===undefined)G.ecRbT=(G.ecT||0)+45+Math.random()*30;
  if((G.ecT||0)<G.ecRbT)return;
- if(G.q.concat(G.en).filter(e=>e&&e.boss&&!e.dead).length>=3){G.ecRbT=G.ecT+15;return}
+ if(G.q.concat(G.en).filter(e=>e&&e.boss&&!e.dead).length>=3){G.ecRbT=G.ecT+8;return}
  const B=[['D',40,30],['W',35,44],['R',45,28],['L',60,24],['N',8,30],['U',8,30],['I',8,30]],b=B[Math.random()*B.length|0];
- G.ecRbT=G.ecT+60+Math.random()*60;
+ G.ecRbT=G.ecT+30+Math.random()*30;
  G.q.unshift({hp:ecHp(ecLv())*b[1]*D.bh,sp:b[2],f:false,boss:true,bt:b[0],mid:'NUI'.includes(b[0]),rw:Math.round(60*D.rw)});G.qt=0}
 
 function init(){G={gold:D.gold,lives:D.lives,wave:0,active:false,q:[],qt:0,en:[],tw:[],bl:[],fx:[],sel:null,speed:1,over:false};
@@ -392,9 +392,9 @@ const LTTL=['ころんじゃったひよこ','べそかきこぐま','ぷるぷ�
 function end(win){let lunNew=false,unNew=0,ecNew=false;try{ecHide()}catch(e){}G.over=true;bgm(false);if(!win)sfx('lose');
  let sc=Math.round(((win?D.cl:G.wave-1)*100+G.lives*20+(win?1000:0)+G.tw.reduce((a,o)=>a+(o.k=='X'?0:o.lv),0)*100)*(1+lv*.5));const ts=Math.max(0,(performance.now()-(G.t0||performance.now()))/1000);G.tm=ts;G.ttl='';G.ex='';bnx.textContent='';
  if(win){try{if(lv>=3&&!lunOK()){localStorage.setItem('miarina_td_lunatic_v1','1');lunNew=true}}catch(e){}try{if(lv===4&&!ecOK()){localStorage.setItem(EC_KEY,'1');ecNew=true}}catch(e){}try{var _un=unlN();if(lv<4&&lv+1>_un){localStorage.setItem(UNL_KEY,String(lv+1));unNew=lv+1}}catch(e){}const par=D.cl*12,mx=D.cl*40,tbn=0,ms=1+Math.floor(Math.random()*10000),cm=ms>9000?'ぱーふぇくと！だいすき！':ms>6000?'すごーい！かんぺきに近いよ！':ms>3000?'いいね！じょうずだったよ！':ms>1000?'まあまあかな〜！':'うーん、もうちょっとがんばろ！';const bs=sc,eb=D.ec?EC_BONUS:0;sc=bs+tbn+ms+eb;const cap=(D.cl*100+D.lives*20+1000)*(1+lv*.5)+D.cl*150+10000,ix=Math.max(0,Math.min(99,Math.round(Math.min(1,sc/cap/.8)*99+Math.random()*16-8)));G.ttl=G._auto?'全自動':TTL[ix];let nw=false,n=0;try{const kk='miarina_td_titles_v1',a=JSON.parse(localStorage.getItem(kk)||'[]'),st=new Set(Array.isArray(a)?a:[]);nw=!st.has(ix);st.add(ix);localStorage.setItem(kk,JSON.stringify([...st]));n=st.size}catch(e){}
-  G.ex='クリア '+bs+' ＋ タイム '+tbn+' ＋ 未亜 '+ms+(eb?' ＋ エクリプスたえぬきボーナス '+eb:'');bnx.textContent='🏁 クリアポイント +'+bs+'点\n💗 未亜の採点 +'+ms+'点'+(eb?'\n👑 エクリプス1時間たえぬきボーナス +'+eb+'点':'')+'\n🎀 称号「'+G.ttl+'」'}
+  G.ex='クリア '+bs+' ＋ タイム '+tbn+' ＋ 未亜 '+ms+(eb?' ＋ エクリプスたえぬきボーナス '+eb:'');bnx.textContent='🏁 クリアポイント +'+bs+'点\n💗 未亜の採点 +'+ms+'点'+(eb?'\n👑 エクリプス10分たえぬきボーナス +'+eb+'点':'')+'\n🎀 称号「'+G.ttl+'」'}
  else{const ms=-(1+Math.floor(Math.random()*1000)),bs=sc;sc=bs+ms;G.ttl=LTTL[Math.random()*LTTL.length|0];G.ex='とうたつ '+bs+' ＋ 未亜のおしおき '+ms;bnx.textContent='🌸 がんばりポイント +'+bs+'点\n💔 未亜のおしおき '+ms+'点\n🎀 称号「'+G.ttl+'」'}
- if((G.debt|0)>0){sc-=G.debt;G.ex+=' － 借金 '+G.debt;bnx.textContent+=(bnx.textContent?'\n':'')+'🏦 銀行の借金 −'+G.debt+'点'}G.sc=sc;profUpd(PN,sc,G.ttl);let dn=null;if(win&&!G._dd){G._dd=1;dn=danUp(PN,(DAN_XP[Math.max(0,DIFF.indexOf(D))]||40))}G.dn=dn;try{stS(sc)}catch(er){}rkResult(null);if(win)rkm.textContent='';ot.textContent=(PN?PN+'さん ':'')+(win?'クリア！🎉':'ゲームオーバー');om.textContent=win?((ecNew?'🌑 新しい難易度「エクリプス」が出現したよ！タイトルの難易度から選べるよ！ ':lunNew?'🌙 ルナティック（フェーズ100）が解放されたよ！ ':unNew?'🔓 「'+DIFF[unNew].n+'」が選べるようになったよ！ ':'')+(dn?(dn.nw>dn.old?'🥋 段位アップ！ '+danTxt(dn.old)+' → '+danTxt(dn.nw):dn.nw>=DAN_MAX?'🥋 最高段位「'+danTxt(dn.nw)+'」を保っているよ！':''):'')):'フェーズ '+(D.ec?'∞':G.wave)+' でやられちゃった… スコア '+G.sc+'点';(win&&window.__celebrate?(window.__celebrate(),setTimeout(function(){document.getElementById('ov').style.display='flex'},4800)):document.getElementById('ov').style.display='flex');mkCard(win);tw.href='https://twitter.com/intent/tweet?text='+encodeURIComponent('みありなタワーディフェンス ウルトラDX【'+D.n+'】で'+PN+'（'+danTxt(danGet(PN))+'）'+'は'+(win?(D.ec?'フェーズ∞を1時間たえぬいた！':'全'+D.cl+'フェーズクリア！'):'フェーズ'+(D.ec?'∞':G.wave)+'まで進んだ！')+' スコア'+G.sc+'点'+(G.ttl?' 称号「'+G.ttl+'」':''))+'&url='+encodeURIComponent(location.protocol.indexOf('http')==0?location.href.split(/[?#]/)[0]:'https://claude.ai/artifact/LA3foqEGRFcPVqc1oSVkbx')+'&hashtags='+encodeURIComponent('みありなタワーディフェンスウルトラDX')}
+ if((G.debt|0)>0){sc-=G.debt;G.ex+=' － 借金 '+G.debt;bnx.textContent+=(bnx.textContent?'\n':'')+'🏦 銀行の借金 −'+G.debt+'点'}G.sc=sc;profUpd(PN,sc,G.ttl);let dn=null;if(win&&!G._dd){G._dd=1;dn=danUp(PN,(DAN_XP[Math.max(0,DIFF.indexOf(D))]||40))}G.dn=dn;try{stS(sc)}catch(er){}rkResult(null);if(win)rkm.textContent='';ot.textContent=(PN?PN+'さん ':'')+(win?'クリア！🎉':'ゲームオーバー');om.textContent=win?((ecNew?'🌑 新しい難易度「エクリプス」が出現したよ！タイトルの難易度から選べるよ！ ':lunNew?'🌙 ルナティック（フェーズ100）が解放されたよ！ ':unNew?'🔓 「'+DIFF[unNew].n+'」が選べるようになったよ！ ':'')+(dn?(dn.nw>dn.old?'🥋 段位アップ！ '+danTxt(dn.old)+' → '+danTxt(dn.nw):dn.nw>=DAN_MAX?'🥋 最高段位「'+danTxt(dn.nw)+'」を保っているよ！':''):'')):'フェーズ '+(D.ec?'∞':G.wave)+' でやられちゃった… スコア '+G.sc+'点';(win&&window.__celebrate?(window.__celebrate(),setTimeout(function(){document.getElementById('ov').style.display='flex'},4800)):document.getElementById('ov').style.display='flex');mkCard(win);tw.href='https://twitter.com/intent/tweet?text='+encodeURIComponent('みありなタワーディフェンス ウルトラDX【'+D.n+'】で'+PN+'（'+danTxt(danGet(PN))+'）'+'は'+(win?(D.ec?'フェーズ∞を10分たえぬいた！':'全'+D.cl+'フェーズクリア！'):'フェーズ'+(D.ec?'∞':G.wave)+'まで進んだ！')+' スコア'+G.sc+'点'+(G.ttl?' 称号「'+G.ttl+'」':''))+'&url='+encodeURIComponent(location.protocol.indexOf('http')==0?location.href.split(/[?#]/)[0]:'https://claude.ai/artifact/LA3foqEGRFcPVqc1oSVkbx')+'&hashtags='+encodeURIComponent('みありなタワーディフェンスウルトラDX')}
 function hit(e,dmg,d){e.hp-=e.ty=='N'?dmg*.6:dmg;if(d.slow)e.slow=1.6;if(d.pois){e.pois=4;e.pd=Math.max(e.pd||0,dmg*4)}if(e.hp<=0&&!e.dead){e.dead=true;fsfx('kill');G.gold+=e.rw;if(e.ty=='P')splitSlime(e);G.fx.push({x:e.x,y:e.y,txt:'+'+e.rw,t:.8,c:'#ffb703'});hud()}}
 function update(dt){
  if(G.over)return;if(D.ec&&G.speed!==1){G.speed=1;try{sp.textContent='⏩1'}catch(e){}}dt*=G.speed;if(D.ec){ecUp(dt);if(G.over)return}gim(dt);ufoUp(dt);allyUp(dt);heroUp(dt);
@@ -597,7 +597,7 @@ function mkCard(win){const H=730,c=document.createElement('canvas');c.width=600;
  radarChart(g,300,520,120,!win);
  const t=(m,y,sz,col)=>{g.fillStyle=col;g.font='bold '+sz+'px "Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif';g.fillText(m,300,y,560)};
  t('みありなタワーディフェンス ウルトラDX',64,32,'#ff6fa5');t((PN||'プレイヤー')+' さん'+' '+danTxt(danGet(PN)),112,38,'#7a5cff');
- t(win?(D.ec?'フェーズ∞を1時間たえぬいた！':'全'+D.cl+'フェーズクリア！'):'フェーズ'+(D.ec?'∞':G.wave)+'まで到達',238,44,win?'#7a5cff':'#ff6b8b');
+ t(win?(D.ec?'フェーズ∞を10分たえぬいた！':'全'+D.cl+'フェーズクリア！'):'フェーズ'+(D.ec?'∞':G.wave)+'まで到達',238,44,win?'#7a5cff':'#ff6b8b');
  t('合計 '+G.sc+' 点',305,48,'#4a2740');if(G.ttl)t('🎀 '+G.ttl,184,24,'#ff6fa5');
  
  window._cc=c;rimg.src=c.toDataURL('image/png')}
@@ -1098,7 +1098,7 @@ function buildAp(){const ap=document.createElement('div');ap.id='ap';const card=
 function openAp(){if(!apEl)return;apOpen=true;apEl.style.display='flex';updAp();sfx('tap')}
 let last=performance.now();
 function loop(n){const dt=Math.min(.05,(n-last)/1000);last=n;update(dt);tmUp();miaUp();rnTalk(dt);CH.t=Math.max(0,CH.t-dt);CH.nin=Math.max(0,CH.nin-dt);CRY.t=Math.max(0,CRY.t-dt);CRY.cd=Math.max(0,CRY.cd-dt);for(const e of G.en){if(!e.sc&&!e.dead&&e.d>(e.fly?e.ft:e.ro.tot)-100){e.sc=1;if(CRY.cd<=0)whine(null,R[e.r].P[R[e.r].P.length-1])}}CH.idle+=dt;if(CH.idle>22&&!G.over){cheer(LINES[Math.random()*LINES.length|0])}draw2();drawCheer();drawWhine();drawUfo();try{window.trDraw&&window.trDraw()}catch(er){}requestAnimationFrame(loop)}
-function dfUI(){ledSet(dsc,DIFF[lv].d);document.getElementById('cli').textContent=DIFF[lv].ec?'フェーズ∞・1時間たえぬけばクリア':DIFF[lv].cl+'フェーズ守りきればクリア';df.innerHTML='';DIFF.forEach((d,i)=>{if(i===5&&!ecOK())return;const lk=i>unlN(),b=document.createElement('button');b.textContent=(lk?'🔒':'')+d.n;b.className=i==lv?'on':'';if(lk)b.style.opacity='.6';b.onclick=()=>{if(lk){ledSet(dsc,i==4?'むずかしいをクリアすると、ルナティック（フェーズ100）が解放されるよ　':'「'+DIFF[i-1].n+'」をクリアすると、「'+d.n+'」が解放されるよ　');return}lv=i;dfUI()};df.appendChild(b)})}
+function dfUI(){ledSet(dsc,DIFF[lv].d);document.getElementById('cli').textContent=DIFF[lv].ec?'フェーズ∞・10分たえぬけばクリア':DIFF[lv].cl+'フェーズ守りきればクリア';df.innerHTML='';DIFF.forEach((d,i)=>{if(i===5&&!ecOK())return;const lk=i>unlN(),b=document.createElement('button');b.textContent=(lk?'🔒':'')+d.n;b.className=i==lv?'on':'';if(lk)b.style.opacity='.6';b.onclick=()=>{if(lk){ledSet(dsc,i==4?'むずかしいをクリアすると、ルナティック（フェーズ100）が解放されるよ　':'「'+DIFF[i-1].n+'」をクリアすると、「'+d.n+'」が解放されるよ　');return}lv=i;dfUI()};df.appendChild(b)})}
 dfUI();
 let PN='';
 const RK_KEY='miarina_td_rank_v1',RK_MAX=100;
@@ -1470,7 +1470,7 @@ const _upd=update;update=function(dt){if(PZ)return;_upd(dt)};
 function snapshot(){
  const skip={cd:1,ang:1,spin:1,stun:1,sw:1,sl:1};
  const tw=G.tw.map(t=>{const o={};for(const k in t){const v=t[k];if(k[0]=='_'||skip[k])continue;if(typeof v=='number'||typeof v=='string'||typeof v=='boolean')o[k]=v}return o});
- return JSON.parse(JSON.stringify({v:1,name:PN,lv,wave:Math.max(0,G.wave-1),gold:G.gold,lives:G.lives,speed:G.speed,road:[...road],R:R.map(o=>({P:o.P,cs:[...o.cs]})),starts:G.starts,goal:G.goal,xr:G.xr,pits:G.pits.map(q=>({cx:q.cx,cy:q.cy})),loans:G.loans|0,debt:G.debt|0,hi:G.hi||{},own:G.own,alv:G.alv,ml:G.ml,sf:G.sf,cnt:G.cnt|0,tc:G.tc|0,fc:G.fc|0,th:G.th|0,ecT:D&&D.ec?(G.ecT||0):0,ecEn:D&&D.ec?G.en.filter(e=>!e.dead&&!e.fly).map(ecPrim):[],ecQ:D&&D.ec?G.q.map(ecPrim):[],ecBs:D&&D.ec?(G.ecBs||null):null,tw,ts:Date.now()}))}
+ return JSON.parse(JSON.stringify({v:1,name:PN,lv,wave:Math.max(0,G.wave-1),gold:G.gold,lives:G.lives,speed:G.speed,road:[...road],R:R.map(o=>({P:o.P,cs:[...o.cs]})),starts:G.starts,goal:G.goal,xr:G.xr,pits:G.pits.map(q=>({cx:q.cx,cy:q.cy})),loans:G.loans|0,debt:G.debt|0,hi:G.hi||{},own:G.own,alv:G.alv,ml:G.ml,sf:G.sf,cnt:G.cnt|0,tc:G.tc|0,fc:G.fc|0,th:G.th|0,ecT:D&&D.ec?(G.ecT||0):0,ecS:D&&D.ec?EC_SEC:0,ecEn:D&&D.ec?G.en.filter(e=>!e.dead&&!e.fly).map(ecPrim):[],ecQ:D&&D.ec?G.q.map(ecPrim):[],ecBs:D&&D.ec?(G.ecBs||null):null,tw,ts:Date.now()}))}
 function readSave(){try{const sv=JSON.parse(localStorage.getItem(SAVE_KEY));let ga=0;try{ga=parseInt(localStorage.getItem('miarina_td_giveup_v1')||'0',10)||0}catch(e){}return sv&&sv.v===1&&Array.isArray(sv.R)&&Array.isArray(sv.tw)&&!(sv.ts&&sv.ts<=ga)?sv:null}catch(e){return null}}
 function refreshCont(){const b=document.getElementById('cnb'),sv=readSave();if(!sv){b.style.display='none';return}if(sv.cleared){b.style.display='block';b.textContent='';b.disabled=true;b.style.opacity='.65';const c1=document.createElement('div'),c2=document.createElement('div');c1.textContent='✅ クリア済み';c2.style.cssText='font-size:12px;opacity:.9;margin-top:2px';c2.textContent=(sv.name?sv.name+'さん・':'')+(DIFF[sv.lv|0]?DIFF[sv.lv|0].n:'');b.append(c1,c2);if(typeof sv.gold==='number'){const c3=document.createElement('div');c3.style.cssText='font-size:13px;font-weight:800;margin-top:2px';c3.textContent='💰 '+Math.floor(sv.gold);b.append(c3)}return}b.disabled=false;b.style.opacity='';
  b.style.display='block';b.textContent='';const l1=document.createElement('div'),l2=document.createElement('div');l1.textContent='▶ つづきから';l2.style.cssText='font-size:12px;opacity:.9;margin-top:2px';l2.textContent=(sv.name?sv.name+'さん・':'')+(DIFF[sv.lv|0]&&DIFF[sv.lv|0].ec?'エクリプス':'フェーズ'+(sv.wave+1)+'から');b.append(l1,l2);if(typeof sv.gold==='number'){const l3=document.createElement('div');l3.style.cssText='font-size:13px;font-weight:800;margin-top:2px';l3.textContent='💰 '+Math.floor(sv.gold);b.append(l3)}}
@@ -1481,7 +1481,7 @@ function loadGame(){
  lv=Math.min(DIFF.length-1,Math.max(0,sv.lv|0));D=DIFF[lv];ac();tbgm(false);TBH.style.display='none';
  init();
  Object.assign(G,{gold:sv.gold,lives:sv.lives,wave:sv.wave,speed:sv.speed||1,setup:false,starts:sv.starts||[],goal:sv.goal||null,xr:sv.xr||[],pits:sv.pits||[],loans:sv.loans|0,debt:sv.debt|0,candy:sv.candy|0,hi:sv.hi||{z:0,zz:0},own:sv.own||{},alv:sv.alv||{},ml:sv.ml||1,sf:sv.sf||1,cnt:sv.cnt|0,tc:sv.tc|0,fc:sv.fc|0});
- if(D.ec){G.ecT=Math.max(0,+sv.ecT||0);G.ecBs=Array.isArray(sv.ecBs)?sv.ecBs:null;G._ecR={en:Array.isArray(sv.ecEn)?sv.ecEn:[],q:Array.isArray(sv.ecQ)?sv.ecQ:[]}}
+ if(D.ec){const _ecf=EC_SEC/(+sv.ecS||3600);G.ecT=Math.min(EC_SEC-1,Math.max(0,(+sv.ecT||0)*_ecf));G.ecBs=Array.isArray(sv.ecBs)?sv.ecBs.map(function(b){return b&&typeof b==='object'?Object.assign({},b,{t:(+b.t||0)*_ecf}):b}):null;G._ecR={en:Array.isArray(sv.ecEn)?sv.ecEn:[],q:Array.isArray(sv.ecQ)?sv.ecQ:[]}}
  if(Number.isInteger(sv.th)&&sv.th>=0&&sv.th<39){G.th=sv.th;window.NZ={t0:performance.now(),n:THN[G.th]}}
  road=new Set(sv.road);R=sv.R.map(o=>({P:o.P,segs:[],tot:0,cs:new Set(o.cs)}));
  G.rv=(G.rv||1)+1;G.rc=[];G._pk=undefined;G._pv=undefined;
@@ -2182,6 +2182,7 @@ if(pfb){var prev=pfb.onclick;pfb.onclick=function(){if(prev)prev.apply(this,argu
  var sv=document.getElementById('sv'),mu0=document.getElementById('mu');if(!sv)return;
  function toast(t,c){G.fx.push({x:180,y:200,txt:t,t:1.8,c:c||'#7a5cff'})}
  sv.onclick=function(){
+  if(typeof D!=='undefined'&&D&&D.ec){try{sfx('deny')}catch(e){}toast('エクリプスではセーブできないよ','#ff4d6d');return}
   if(!G||G.over){try{sfx('deny')}catch(e){}return}
   if(document.getElementById('svq'))return;
   var o=null;
@@ -7554,9 +7555,9 @@ window.__wx={load:load,stop:stop};
    else{E.next-=dt;if(E.next<=0){const sp=[28,42,31,48];E.w=Math.random()<.3?sp[Math.random()*sp.length|0]:6+(Math.random()*94|0);E.left=18}}
    G.wave=E.w||1}}catch(e){}
   const r=_uEv.apply(this,arguments);
-  /* パラシュートで降りてくるスナイパーは、10分すぎから、ときどき1体だけ */
+  /* パラシュートで降りてくるスナイパーは、最初の1/6（10分なら1分40秒）すぎから、ときどき1体だけ */
   try{if(D&&D.ec&&G&&G.X&&G.X.pend){const X=G.X,nw=X.pend.filter(p=>p&&p.k==='Z'&&!p._c);
-   if(nw.length){X.pend=X.pend.filter(p=>!(p&&p.k==='Z'&&!p._c));if((G.ecT||0)>=600&&Math.random()<.4)X.pend.push({k:'Z',t:nw[0].t,_c:1})}}}catch(e){}
+   if(nw.length){X.pend=X.pend.filter(p=>!(p&&p.k==='Z'&&!p._c));if((G.ecT||0)>=EC_SEC/6&&Math.random()<.4)X.pend.push({k:'Z',t:nw[0].t,_c:1})}}}catch(e){}
   return r};
  const _enE=end;
  end=function(){try{if(D&&D.ec&&G)G.wave=1}catch(e){}return _enE.apply(this,arguments)};
