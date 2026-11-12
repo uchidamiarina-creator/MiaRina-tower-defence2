@@ -271,6 +271,7 @@ function ecPrim(o){const r={};for(const k in o){const v=o[k];if(typeof v=='boole
 function ecRestore(){const s=G._ecR;G._ecR=null;if(!s||!G.active)return;try{G.en=[];for(const o of s.en){if(!R[o.r])continue;const e=Object.assign({},o);e.ro=getRo(e.r);e.d=Math.max(0,Math.min(e.d||0,e.ro.tot-1));[e.x,e.y]=pos(e.d,e.ro);e.fight=null;e.dead=false;G.en.push(e)}G.q=s.q.slice()}catch(err){console.error('ecRestore',err)}}
 /* 経過時間に応じた強さ：0秒でフェーズ1 → 10分でルナティックのフェーズ99くらい（はじめはゆっくり、あとになるほど加速） */
 function ecLv(){return Math.max(1,Math.min(EC_LV_MAX,1+Math.floor((EC_LV_MAX-1)*Math.pow(Math.min(1,(G.ecT||0)/EC_SEC),EC_CURVE))))}
+function bossHP(m){return 4000*m*D.bh*(0.9+Math.random()*0.2)}
 function ecHp(w){const cap=Math.min(120,Math.round(70*D.cnt+20)),raw=(6+w*2)*D.cnt;return(w<=10?22*Math.pow(1.36,w-1):360*Math.pow(1.05,w-10))*D.hp*(raw>cap?raw/cap:1)}
 function ecRefill(){const w=ecLv(),hp=ecHp(w);G.hpb=hp;for(let i=0;i<10;i++){const f=Math.random()<.25;G.q.push({hp:f?hp*.6:hp,sp:f?Math.min(70+w*3,150):Math.min(42+w*3,95),f,boss:false,rw:Math.round((4+w)*D.rw)})}
  if(Math.random()<.6){const mc=1+(w>=30?1:0)+(w>=60?1:0);for(let i=0;i<mc;i++)G.q.splice(Math.random()*(G.q.length+1)|0,0,{hp:Math.max(3,5*Math.sqrt(D.hp)),sp:200,f:false,boss:false,q:1,rw:Math.max(1,Math.round((4+w)*D.rw*.5))})}}
@@ -281,7 +282,7 @@ window.bossCond=function(o){const c=BOSS_COND[Math.random()*BOSS_COND.length|0];
 window.bossNm=function(e,n){return e&&e.cn?e.cn+' '+n:n};
 window.bossTag=function(x,e,px,py){if(!e||!e.cn)return;x.save();x.textAlign='center';x.textBaseline='middle';x.font='bold 10px "Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif';x.lineWidth=3;x.strokeStyle='rgba(20,5,40,.85)';x.strokeText(e.cn,px,py);x.fillStyle=bossCc(e.cn);x.fillText(e.cn,px,py);x.restore()};
 window.bossCc=function(cn){const c=BOSS_COND.find(function(x){return x[0]===cn});return c?c[3]:'#fff'};
-const EC_BOSS=[['suika',100,6,500],['rafu',80,8,500],['neko',50,14,0],['dadan',120,4,800]];
+const EC_BOSS=[['suika',25,6,500],['rafu',20,11,500],['neko',12,18,0],['dadan',30,5,800]];
 /* ラスト4分〜ラスト1分のあいだに、四天王4体（ランダムな順）が、時間をずらして全員出る（最終兵器田中は出ない） */
 function ecBossInit(){const lo=Math.max(EC_SEC-EC_BOSS_FROM,(G.ecT||0)+5),hi=Math.max(lo+5,EC_SEC-EC_BOSS_TO),n=EC_BOSS.length,ks=EC_BOSS.slice();for(let i=ks.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[ks[i],ks[j]]=[ks[j],ks[i]]}const od=ks,w=(hi-lo)/n;G.ecBs=od.map((b,i)=>({k:b[0],t:lo+(i+Math.random()*.7)*w,done:0}))}
 function ecBossUp(){
@@ -292,7 +293,7 @@ function ecBossUp(){
   const d=EC_BOSS.find(function(b){return b[0]===s.k});if(!d)continue;
    /* ラフレシア以外の四天王は、いまいる四天王を倒すまで次が出ない（ラフレシアはこれまでどおり） */
    if(d[0]!=='rafu'&&G.en.concat(G.q).some(function(e){return e&&!e.dead&&(e.suika||e.neko||e.dadan)}))continue;
-  const hp=ecHp(100)*d[1]*D.bh,o={hp:hp,sp:d[2],f:false,boss:true,bt:'L',mid:false,rw:d[0]==='neko'?777777:Math.round(d[3]*D.rw)};o[d[0]]=1;bossCond(o);
+  const hp=bossHP(d[1]),o={hp:hp,sp:d[2],f:false,boss:true,bt:'L',mid:false,rw:d[0]==='neko'?777777:Math.round(d[3]*D.rw)};o[d[0]]=1;bossCond(o);
   G.q.unshift(o);s.done=1;G.qt=0}
  ecRandBoss()}
 /* エクリプス：ふつうのボス・中ボスもランダムに、ときどき出る */
@@ -871,7 +872,7 @@ function cst(k){return Math.round(T[k].cost*D.cost)}
 function splitSlime(e){const tot=e.ro?e.ro.tot:1e9;[-10,0,10].forEach(o=>{const d=Math.max(0,Math.min(tot-1,e.d+o)),[px,py]=e.ro?pos(d,e.ro):[e.x,e.y];G.en.push({ty:'p',f:false,boss:false,x:px,y:py,d,r:e.r,ro:e.ro,hp:e.mx*.3,mx:e.mx*.3,sp:e.sp*1.15,rw:Math.max(1,Math.round(e.rw*.4)),slow:0,pois:0,sc:e.sc})});G.fx.push({x:e.x,y:e.y,r:16,t:.3,c:'#4aa8ff'});G.fx.push({x:e.x,y:e.y-14,txt:'ぷるん！',t:.7,c:'#4aa8ff'})}
 function midAbil(e,dt){e.ab=(e.ab===undefined?3:e.ab)-dt;if(e.ab>0)return;
  if(e.ty=='U'){let b=null,bd=100;for(const t of G.tw){if(t.stun>0)continue;const d=Math.hypot(t.x-e.x,t.y-e.y);if(d<bd){bd=d;b=t}}if(b){b.stun=3;G.fx.push({x:b.x,y:b.y-18,txt:'♥魅了',t:1.2,c:'#ff4f93'});e.ab=6}else e.ab=1}
- else{for(const o of G.en)if(!o.dead&&o!==e&&Math.hypot(o.x-e.x,o.y-e.y)<80)o.hp=Math.min(o.mx,o.hp+o.mx*.12);G.fx.push({x:e.x,y:e.y,r:80,t:.4,c:'#7a5cff'});e.ab=2}}
+ else{for(const o of G.en)if(!o.dead&&!o.boss&&o!==e&&Math.hypot(o.x-e.x,o.y-e.y)<80)o.hp=Math.min(o.mx,o.hp+o.mx*.12);G.fx.push({x:e.x,y:e.y,r:80,t:.4,c:'#7a5cff'});e.ab=2}}
 function angDiff(a,b){let d=a-b;while(d>Math.PI)d-=6.2832;while(d<-Math.PI)d+=6.2832;return d}
 const CFC=['#ff4d6d','#ffd166','#7bd88f','#4cc9f0','#b388eb','#ff9ec0','#ffffff'];
 function confetti(px,py,vx,vy,life,burst){G.pt.push({x:px,y:py,vx,vy,g:burst?300:40,t:life,c:CFC[Math.random()*CFC.length|0],w:5+Math.random()*3,h:2.5+Math.random()*2,rot:Math.random()*6.28,vr:(Math.random()-.5)*14,dr:burst?1.6:.2,fl:burst?18:30,ph:Math.random()*6.28,mv:burst?110:70})}
@@ -3932,9 +3933,9 @@ function beh(e,dt){const k=e.ty;e.tm=(e.tm||0)+dt;let m=1;
  if(k==='X01'){e.nt-=dt;if(e.nt<=0&&e.ro){e.nt=5+rnd()*3;e.d=Math.min(e.d+50,e.ro.tot-12);e.warp=.6;fx(e,'どこでもドア！','#ff6fa5')}}
  else if(k==='X02'){if(e.dash>0){e.dash-=dt;m=2.7}else{e.nt-=dt;if(e.nt<=0){e.nt=4.5+rnd()*2;e.dash=1.1;fx(e,'タックル！','#e53935')}}}
  else if(k==='X04'){if(e.slow>0)e.slow=0}
- else if(k==='X05'){e.hp=Math.min(e.mx,e.hp+e.mx*.02*dt)}
+ else if(k==='X05'&&!e.boss){e.hp=Math.min(e.mx,e.hp+e.mx*.02*dt)}
  else if(k==='X07'){if(!e.rage&&e.hp<e.mx*.5){e.rage=1;fx(e,'カッ！','#e53935')}if(e.rage)m=1.8}
- else if(k==='X09'){e.nt-=dt;if(e.nt<=0){e.nt=4;e.heal=.7;let n=0;for(const o of G.en)if(o!==e&&!o.dead&&!o.gone&&o.mx&&Math.hypot(o.x-e.x,o.y-e.y)<75){o.hp=Math.min(o.mx,o.hp+o.mx*.18);n++}if(n)fx(e,'ふぉっふぉっ','#2e9e5b')}if(e.heal>0)e.heal-=dt}
+ else if(k==='X09'){e.nt-=dt;if(e.nt<=0){e.nt=4;e.heal=.7;let n=0;for(const o of G.en)if(o!==e&&!o.dead&&!o.gone&&!o.boss&&o.mx&&Math.hypot(o.x-e.x,o.y-e.y)<75){o.hp=Math.min(o.mx,o.hp+o.mx*.18);n++}if(n)fx(e,'ふぉっふぉっ','#2e9e5b')}if(e.heal>0)e.heal-=dt}
  else if(k==='X12'){m=1+.7*Math.sin(e.tm*3.5)}
  else if(k==='X13'){if(e.inv>0){e.inv-=dt;m=1.7}else{e.nt-=dt;if(e.nt<=0){e.nt=5+rnd()*1.5;e.inv=1.6;fx(e,'すぅー…','#8a7aa8')}}}
  if(e.bs0)e.sp=e.bs0*m}
@@ -4725,15 +4726,15 @@ function beh(e,dt){const k=e.ty;e.tm=(e.tm||0)+dt;let m=1;
  if(e.px!==undefined&&(Math.abs(e.x-e.px)+Math.abs(e.y-e.py))>.3)e.hd=Math.atan2(e.y-e.py,e.x-e.px);e.px=e.x;e.py=e.y;
  if(e.warp>0)e.warp-=dt;
  const dash=(len,mul,cd,txt)=>{if(e.dash>0){e.dash-=dt;m=mul}else{e.nt-=dt;if(e.nt<=0){e.nt=cd+rnd()*1.5;e.dash=len;fx(e,txt)}}};
- const heal=(cd,rate,rad,txt,col)=>{e.nt-=dt;if(e.nt<=0){e.nt=cd;e.heal=.7;let n=0;for(const o of G.en)if(o!==e&&!o.dead&&!o.gone&&o.mx&&Math.hypot(o.x-e.x,o.y-e.y)<rad){o.hp=Math.min(o.mx,o.hp+o.mx*rate);n++}if(n)fx(e,txt,col)}if(e.heal>0)e.heal-=dt};
+ const heal=(cd,rate,rad,txt,col)=>{e.nt-=dt;if(e.nt<=0){e.nt=cd;e.heal=.7;let n=0;for(const o of G.en)if(o!==e&&!o.dead&&!o.gone&&!o.boss&&o.mx&&Math.hypot(o.x-e.x,o.y-e.y)<rad){o.hp=Math.min(o.mx,o.hp+o.mx*rate);n++}if(n)fx(e,txt,col)}if(e.heal>0)e.heal-=dt};
  const cloak=(cd,len,txt)=>{if(e.inv>0){e.inv-=dt;m=1.8}else{e.nt-=dt;if(e.nt<=0){e.nt=cd+rnd()*1.5;e.inv=len;fx(e,txt,'#8a7aa8')}}};
  if(k==='Z01'){if(!e.rage&&e.hp<e.mx*.5){e.rage=1;fx(e,'とけるぅ〜！','#3fb0ee')}if(e.rage)m=1.7}
- else if(k==='Z02'){e.hp=Math.min(e.mx,e.hp+e.mx*.01*dt)}
+ else if(k==='Z02'&&!e.boss){e.hp=Math.min(e.mx,e.hp+e.mx*.01*dt)}
  else if(k==='Z03'){if(e.gloom>0){e.gloom-=dt;m=.45}else if(e.fast>0){e.fast-=dt;m=2}else{e.nt-=dt;if(e.nt<=0){e.nt=6+rnd()*2;if(rnd()<.5){e.gloom=2;fx(e,'スベった…','#6a6a8a')}else{e.fast=1.6;fx(e,'ウケたー！','#ffb300')}}}}
  else if(k==='Z04'){dash(1.2,2.6,4,'ギュイーン！')}
  else if(k==='Z05'){dash(.9,3.2,3.5,'ドーン！')}
  else if(k==='Z06'){heal(4.5,.14,85,'ギュイ〜ン♪','#ff4d6d')}
- else if(k==='Z07'){e.hp=Math.min(e.mx,e.hp+e.mx*.025*dt);e.nt-=dt;if(e.nt<=0){e.nt=6;fx(e,'ほかほか…','#ff9a3c')}}
+ else if(k==='Z07'&&!e.boss){e.hp=Math.min(e.mx,e.hp+e.mx*.025*dt);e.nt-=dt;if(e.nt<=0){e.nt=6;fx(e,'ほかほか…','#ff9a3c')}}
  else if(k==='Z08'){dash(1.4,2,4.5,'ダダダッ！')}
  else if(k==='Z09'){e.nt-=dt;if(e.nt<=0){e.nt=3.5+rnd()*1.5;jump(e,45,'ぴょーん！','#ff6fa5')}}
  else if(k==='Z10'){if(e.slow>0)e.slow=0}
@@ -6975,12 +6976,12 @@ window.__wx={load:load,stop:stop};
 <script>
 /* ===== ルナティック フェーズ100：ラスボス「巨大スイカメ」1体だけ ===== */
 (function(){
- const SK_HP=100,   /* 体力：ふつうの敵1体ぶんの何倍か（これまでの最大ボスは60倍） */
+ const SK_HP=25,   /* 体力：ふつうの敵1体ぶんの何倍か（これまでの最大ボスは60倍） */
        SK_SP=6,     /* 歩く速さ：とても遅い（これまでの最遅ボスは24） */
        SK_WEAK=3,
-       RF_HP=80,RF_SP=8,RF_SIT=.5,RF_SLEEP=.25,
-       NK_HP=50,NK_SP=14,NK_GOLD=777777,NK_SCARE=85,
-       DD_HP=120,DD_SP=4,DD_WEAK=6,
+       RF_HP=20,RF_SP=11,RF_SIT=.5,RF_SLEEP=.25,
+       NK_HP=12,NK_SP=18,NK_GOLD=777777,NK_SCARE=85,
+       DD_HP=30,DD_SP=5,DD_WEAK=6,
        TN_HP=300,TN_SP=12,TN_CD=3.2,TN_LOCK=.9; /* 最終兵器田中：体力・速さ・ミサイル間隔・照準時間 */ /* 大魔王ダダン：体力・速さ・にじビームのダメージ倍率 */ /* まねきねこロボ：体力・速さ・倒したときのお金・犬が怖い距離 */ /* ラフレシアバニー：体力・速さ・乙女座りになる体力割合・眠る体力割合 */   /* 弱点「かざん」のダメージ倍率 */
  const on=()=>typeof G!=='undefined'&&G&&typeof lv!=='undefined'&&lv===4&&G.wave===100;
 
@@ -6991,10 +6992,10 @@ window.__wx={load:load,stop:stop};
   try{
    if(!was&&G.active&&!G.over&&on()){
     G.en=G.en.filter(e=>e.dead||e.suika||e.rafu||e.neko||e.dadan||e.tanaka);
-    G.q=[{hp:G.hpb*SK_HP*D.bh,sp:SK_SP,f:false,boss:true,bt:'L',mid:false,suika:1,rw:Math.round(500*D.rw)},
-      {hp:G.hpb*RF_HP*D.bh,sp:RF_SP,f:false,boss:true,bt:'L',mid:false,rafu:1,rw:Math.round(500*D.rw)},
-      {hp:G.hpb*NK_HP*D.bh,sp:NK_SP,f:false,boss:true,bt:'L',mid:false,neko:1,rw:NK_GOLD},
-      {hp:G.hpb*DD_HP*D.bh,sp:DD_SP,f:false,boss:true,bt:'L',mid:false,dadan:1,rw:Math.round(800*D.rw)}];
+    G.q=[{hp:bossHP(SK_HP),sp:SK_SP,f:false,boss:true,bt:'L',mid:false,suika:1,rw:Math.round(500*D.rw)},
+      {hp:bossHP(RF_HP),sp:RF_SP,f:false,boss:true,bt:'L',mid:false,rafu:1,rw:Math.round(500*D.rw)},
+      {hp:bossHP(NK_HP),sp:NK_SP,f:false,boss:true,bt:'L',mid:false,neko:1,rw:NK_GOLD},
+      {hp:bossHP(DD_HP),sp:DD_SP,f:false,boss:true,bt:'L',mid:false,dadan:1,rw:Math.round(800*D.rw)}];
     G.q.forEach(function(q){bossCond(q)});
     /* ラスボス四天王は、ランダムな順番で1体ずつ登場 */
     for(let i=G.q.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[G.q[i],G.q[j]]=[G.q[j],G.q[i]]}
@@ -8331,7 +8332,7 @@ function srWave(w){
  G.q=(G.q||[]).filter(function(q){return !!(q&&(q.suika||q.rafu||q.neko||q.dadan||q.tanaka))});
   const name=G.srOrd[w-1],d=EC_BOSS.find(function(b){return b[0]===name});
  if(!d)return;
- const pw=50+Math.floor(Math.random()*41);const o={hp:ecHp(pw)*d[1]*D.bh,sp:d[2],f:false,boss:true,bt:'L',mid:false,rw:name==='neko'?777777:Math.round(d[3]*D.rw)};
+ const o={hp:bossHP(d[1]),sp:d[2],f:false,boss:true,bt:'L',mid:false,rw:name==='neko'?777777:Math.round(d[3]*D.rw)};
  o[name]=1;bossCond(o);G.q.unshift(o);G.qt=0;
 }
 (function(){
@@ -8372,6 +8373,27 @@ function srWave(w){
   ok.onclick=function(){ov.remove();stbOK=true;stb.click()};
   r.append(no,ok);bx.append(m,r);ov.appendChild(bx);document.body.appendChild(ov);
  },true);
+})();
+</script>
+<script>
+/* ボスの弱点：カメ＝ロケットはなび／大魔王＝サイコロマシン・にじビーム／ラフレシア＝ピンクアロー・こたつレーザー／まねきねこ＝いかずち・ドカンほう */
+(function(){
+ var _hitW=hit;
+ hit=function(e,dmg,d){
+  if(e&&d&&dmg>0&&!e.dead){
+   var m=0;
+   if(e.suika&&d.name==='ロケットはなび')m=3;
+   else if(e.dadan&&d.name==='サイコロマシン')m=6;
+   else if(e.rafu&&(d.name==='ピンクアロー'||d.name==='こたつレーザー'))m=3;
+   else if(e.neko&&(d.name==='いかずち'||d.name==='ドカンほう'))m=3;
+   if(m){
+    dmg*=m;
+    var n=performance.now();
+    if(!e._wk2||n-e._wk2>900){e._wk2=n;try{G.fx.push({x:e.x,y:e.y-36,txt:'弱点！',t:.8,c:'#ff6a2f'})}catch(_){}}
+   }
+  }
+  return _hitW.call(this,e,dmg,d)
+ };
 })();
 </script>
 </body></html>
