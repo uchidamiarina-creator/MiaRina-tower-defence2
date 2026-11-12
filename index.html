@@ -457,7 +457,7 @@ function drawGim(t){const th=G.th,m=G.gm;if(!m)return;const s=t/1000;
  if(th==4&&m.o){const o=m.o;bird(o.x,o.y,2,s,o.ph?1:(o.tg.x>=o.x?1:-1),'#fff');if(o.car){x.save();x.translate(o.x,o.y+16);x.scale(.7,.7);drawEn2({ty:o.car.ty,f:o.car.f,boss:false,x:0,y:0,d:0,hp:1,mx:1,slow:0,pois:0},t);x.restore()}}
  if(th==5)for(const c of m.ck){const k=c.t/.7;x.fillStyle='rgba(60,30,20,.25)';x.beginPath();x.ellipse(c.x,c.y+10,6+k*34,3+k*14,0,0,7);x.fill();const oy=-(1-k)*170;x.fillStyle='#d8a25e';x.strokeStyle='#8a5a3c';x.lineWidth=2;x.beginPath();x.arc(c.x,c.y+oy,15,0,7);x.fill();x.stroke();x.fillStyle='#6b3f2a';for(const [a,b] of[[-5,-4],[4,-6],[0,5],[7,3],[-7,4]]){x.beginPath();x.arc(c.x+a,c.y+oy+b,2.2,0,7);x.fill()}}}
 function draw2(){const t=performance.now();
- const TC=TH[G.th];x.fillStyle=TC.bg;x.fillRect(0,0,360,440);
+ const TC=TH[G.th];if(!TC)return;x.fillStyle=TC.bg;x.fillRect(0,0,360,440);
  for(let i=0;i<COLS;i++)for(let j=0;j<ROWS;j++){if((i+j)%2==0){x.fillStyle=TC.ck;x.fillRect(i*C,j*C,C,C)}}
  x.drawImage(richBG(G.th),0,0,360,440);for(let i=0;i<COLS;i++)for(let j=0;j<ROWS;j++)if(!road.has(i+','+j)&&!G.tw.some(o=>o.cx==i&&o.cy==j))decor(i,j,G.th);
  x.lineCap=x.lineJoin='round';
@@ -1206,6 +1206,7 @@ function scan(t){
 
 /* --- ambient lighting --- */
 const MC=['#fff3a0','#ff9a3c','#ffd978','#ffffff','#ffffff','#ffb3d9','#ffb3e0','#ffe27a','#fff3a0','#d9ff7a','#ffffff','#ffd23f','#9ff0ff','#ffffff','#ffd978','#7bf0ff','#ffd9a0','#ff8a3c','#ffffff','#ffd0e0','#e6ff9a','#ff9ae0','#ffc8dc','#ffe9a0'],VT=[[40,90,50,.2],[8,6,30,.44],[90,10,40,.3],[0,50,110,.28],[70,100,170,.18],[130,50,90,.22],[120,40,110,.14],[10,10,40,.4],[0,90,110,.14],[10,50,20,.3],[0,0,40,.4],[30,30,40,.3],[0,20,70,.42],[120,70,30,.14],[60,10,20,.2],[20,0,50,.3],[110,30,70,.2],[60,0,0,.36],[60,100,160,.12],[100,10,50,.28],[30,60,20,.18],[30,10,50,.32],[120,60,70,.1],[30,35,50,.2]];
+window.MC=MC;window.VT=VT;
 function amb(s,th){
  if(th===0||th===3||th===4)for(let k=0;k<3;k++){x.save();x.translate(60+k*110,-20);x.rotate(-.35);const a=.05+.03*Math.sin(s*.8+k),g=x.createLinearGradient(0,0,0,520);g.addColorStop(0,'rgba(255,255,230,'+a*2+')');g.addColorStop(1,'rgba(255,255,230,0)');x.fillStyle=g;x.fillRect(-16-k*4,0,32+k*8,520);x.restore()}
  if(th===3){x.strokeStyle='rgba(255,255,255,.14)';x.lineWidth=2;for(let k=0;k<7;k++){x.beginPath();for(let ux=0;ux<=360;ux+=12){const uy=40+k*62+Math.sin(ux*.03+s*1.3+k*2)*7+Math.sin(ux*.07-s+k)*3;ux?x.lineTo(ux,uy):x.moveTo(ux,uy)}x.stroke()}}
@@ -2705,7 +2706,8 @@ gim=function(dt){const th=G.th;if(th>=3&&th<=5)return _gm(dt);const g=GX[th];if(
  else if(ty=='F'){for(const e of al)e.slow=Math.max(e.slow||0,2.5);G.fx.push({x:180,y:220,r:160,t:.5,c:col});say(180,200)}
 };
 })();
-/* ===== かわいい街：敵も味方もなかよく暮らす（未亜と利奈はお休み） ===== */
+
+/* ===== 街：敵も味方もなかよく暮らす（未亜と利奈はお休み） ===== */
 (function(){
 var W=360,H=560,TW=null;
 var EN=['P','p','M','K','S','G','W','Y','J','O','A','T','F','Q','C'];
@@ -2796,14 +2798,14 @@ function buildBG(DPR){var c=mkc(W*DPR,H*DPR),g=c.getContext('2d');g.scale(DPR,DP
  var seed=7,rn=function(){seed=(seed*16807)%2147483647;return seed/2147483647};var fc=['#ff7eb6','#ffd23f','#fff','#b388eb','#ff9a5c'];
  for(i=0;i<70;i++){var fx2=rn()*W,fy=rn()*(H-350)+345;if(Math.abs(fx2-180)<(60+(fy-330)*.25)&&fy>330)continue;if(Math.hypot((fx2-180)/125,(fy-440)/48)<1)continue;g.fillStyle=fc[i%5];for(var k=0;k<5;k++){g.beginPath();g.arc(fx2+Math.cos(k*1.256)*2.4,fy+Math.sin(k*1.256)*2.4,1.6,0,7);g.fill()}g.fillStyle='#ffe066';g.beginPath();g.arc(fx2,fy,1.2,0,7);g.fill()}
  tree(g,24,470,18,'#6fc860');tree(g,336,480,20,'#7fd070');tree(g,18,545,22,'#79cd69');tree(g,344,548,22,'#6fc860');
- g.fillStyle='#d98a5a';g.beginPath();g.roundRect(150,336,60,18,8);g.fill();g.fillStyle='#fff';g.font='bold 9px sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('なかよしタウン',180,345.5);
+ g.fillStyle='#d98a5a';g.beginPath();g.roundRect(150,336,60,18,8);g.fill();g.fillStyle='#fff';g.font='bold 9px sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('街',180,345.5);
  return c}
 /* ---- 画面 ---- */
 function openTown(){
  if(TW)return;var DPR=Math.min(2,Math.max(1,window.devicePixelRatio||1));
  var ov=document.createElement('div');ov.style.cssText='position:fixed;inset:0;z-index:60;background:linear-gradient(#ffe3f1,#d6f0ff);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)';
  var top=document.createElement('div');top.style.cssText='width:100%;max-width:520px;display:flex;align-items:center;justify-content:space-between;padding:6px 12px;box-sizing:border-box;font-weight:bold;color:#d05a8a;font-size:15px';
- var ttl=document.createElement('span');ttl.textContent='🏘️ かわいい街　みんななかよし';var xb=document.createElement('button');xb.textContent='✕ とじる';xb.style.cssText='padding:6px 14px;font-size:13px';top.appendChild(ttl);top.appendChild(xb);
+ var ttl=document.createElement('span');ttl.textContent='🏘️ 街';var xb=document.createElement('button');xb.textContent='✕ とじる';xb.style.cssText='padding:6px 14px;font-size:13px';top.appendChild(ttl);top.appendChild(xb);
  var cn=document.createElement('canvas');cn.width=W*DPR;cn.height=H*DPR;cn.style.cssText='height:min(calc(100dvh - 118px),calc(100vw*560/360));aspect-ratio:360/560;max-width:100vw;border-radius:16px;box-shadow:0 4px 16px rgba(120,60,100,.25);touch-action:manipulation';
  var bt=document.createElement('div');bt.style.cssText='display:flex;gap:10px;align-items:center;padding:8px';var cnt=document.createElement('span');cnt.style.cssText='font-size:13px;color:#8a5a7a;text-align:center';bt.appendChild(cnt);
  ov.appendChild(top);ov.appendChild(cn);ov.appendChild(bt);document.body.appendChild(ov);
@@ -2851,7 +2853,7 @@ function openTown(){
  xb.onclick=close;
  TW=ov;raf=requestAnimationFrame(frame)}
 window.openKawaiiTown=openTown;
-var btn=document.getElementById('vtb');if(btn&&!document.getElementById('twb')){var d=document.createElement('div');d.style.marginTop='8px';var b=document.createElement('button');b.id='twb';b.textContent='🏘️ かわいい街';b.style.cssText='padding:8px 22px;font-size:14px';b.onclick=function(){try{sfx('tap')}catch(e){}openTown()};d.appendChild(b);btn.parentNode.parentNode.insertBefore(d,btn.parentNode.nextSibling)}
+var btn=document.getElementById('vtb');if(btn&&!document.getElementById('twb')){var d=document.createElement('div');d.style.marginTop='8px';var b=document.createElement('button');b.id='twb';b.textContent='🏘️ 街';b.style.cssText='padding:8px 22px;font-size:14px';b.onclick=function(){try{sfx('tap')}catch(e){}openTown()};d.appendChild(b);btn.parentNode.parentNode.insertBefore(d,btn.parentNode.nextSibling)}
 })();
 </script>
 
