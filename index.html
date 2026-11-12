@@ -7844,8 +7844,8 @@ draw2=function(){
 var EC_TRK=[0,2,3,4,5,6,7,8];
 var _trk=trk;trk=function(){return isEc()?(G.ecBgm==null?(G.ecBgm=EC_TRK[Math.floor(Math.random()*EC_TRK.length)]):G.ecBgm):_trk()};
 
-/* 音量バランス：追加7曲(2〜8)のBGMだけ小さめに。タイトル・最初のマップ・最終フェーズ用(0,1)と効果音は元のまま */
-try{var BG_V={2:.5,3:.5,4:.5,5:.5,6:.5,7:.5,8:.6};for(var bk in BG_V)BXG[bk]=BG_V[bk]}catch(e){}
+/* 音量バランス：追加7曲(2〜8)だけ実測ラウドネスでそろえて小さめに（前回比およそ-6dB）。0・1番と効果音は元のまま。BGM_MASTERで一括調整可(1=今の設定,0.7=もっと小さく,1.3=大きく) */
+try{var BGM_MASTER=1,BG_V={2:0.25,3:0.25,4:0.311,5:0.262,6:0.277,7:0.259,8:0.341};for(var bk in BG_V)BXG[bk]=BG_V[bk]*BGM_MASTER}catch(e){}
 
 /* エクリプスのBGMだけ逆再生（既存曲をデコードして波形を反転・ループ） */
 var RV={},RT=0;
