@@ -8354,4 +8354,24 @@ function srWave(w){
  end=function(win){if(win&&lv===5){try{localStorage.setItem(SR_KEY,'1')}catch(e){}}return _srEnd.apply(this,arguments)};
 })();
 </script>
+<script>
+/* タイトルの「はじめる」を押したら、はじめてよいか確認する */
+(function(){
+ var stb=document.getElementById('stb'),stbOK=false;
+ stb.addEventListener('click',function(e){
+  if(stbOK){stbOK=false;return}
+  if(stb.disabled)return;
+  e.stopImmediatePropagation();e.preventDefault();
+  var ov=document.createElement('div');ov.style.cssText='position:fixed;inset:0;z-index:2100;display:flex;align-items:center;justify-content:center;background:rgba(36,20,38,.6);padding:16px';
+  var bx=document.createElement('div');bx.style.cssText='background:var(--card);color:var(--ink);border:3px solid var(--accent);border-radius:16px;padding:16px;width:min(100%,300px);text-align:center;font-size:15px;line-height:1.6';
+  var m=document.createElement('div');m.textContent='ぼうけんをはじめますか？';m.style.cssText='margin-bottom:12px;font-weight:bold';
+  var r=document.createElement('div');r.style.cssText='display:flex;gap:8px';
+  var no=document.createElement('button');no.textContent='いいえ';
+  var ok=document.createElement('button');ok.textContent='はじめる';ok.className='go';
+  no.onclick=function(){ov.remove()};
+  ok.onclick=function(){ov.remove();stbOK=true;stb.click()};
+  r.append(no,ok);bx.append(m,r);ov.appendChild(bx);document.body.appendChild(ov);
+ },true);
+})();
+</script>
 </body></html>
