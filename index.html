@@ -250,7 +250,10 @@ function ecOK(){try{if(localStorage.getItem(EC_KEY)==='1')return true;
  /* すでにルナティック（フェーズ100）をクリアした記録があれば、エクリプスも出現させる */
  var g=JSON.parse(localStorage.getItem('miarina_td_diary_log_v1')||'{}');
  for(var u in g)for(var d in g[u]){var r=g[u][d];if(r&&r.wins>0&&r.maxWave>=100){localStorage.setItem(EC_KEY,'1');return true}}}catch(e){}return false}
-function ecShow(){var e=document.getElementById('ecTm');if(!e){e=document.createElement('div');e.id='ecTm';e.style.cssText='position:fixed;top:6px;left:50%;transform:translateX(-50%);z-index:20;padding:3px 12px;border-radius:12px;background:rgba(30,20,50,.82);color:#ffe9a8;font:bold 13px sans-serif;pointer-events:none';document.body.appendChild(e)}var t='🌑 エクリプス 残り '+tfmt(Math.max(0,EC_SEC-(G.ecT||0)));if(e.textContent!==t)e.textContent=t}
+function ecShow(){var e=document.getElementById('ecTm');if(!e){e=document.createElement('div');e.id='ecTm';e.style.cssText='position:fixed;top:6px;left:50%;transform:translateX(-50%);z-index:20;padding:3px 12px;border-radius:12px;background:rgba(30,20,50,.82);color:#ffe9a8;font:bold 13px sans-serif;white-space:nowrap;pointer-events:none';document.body.appendChild(e)}
+ /* ライフ（❤️）が見えるように、上のステータス欄（💰・❤️）の下に置く */
+ try{var st=document.getElementById('stats');if(st){var r=st.getBoundingClientRect();if(r.height>0){var ty=Math.round(r.bottom+4)+'px';if(e.style.top!==ty)e.style.top=ty}}}catch(er){}
+ var t='🌑 エクリプス 残り '+tfmt(Math.max(0,EC_SEC-(G.ecT||0)))+'　❤️ '+Math.max(0,G.lives|0);if(e.textContent!==t)e.textContent=t}
 function ecHide(){var e=document.getElementById('ecTm');if(e)e.remove()}
 function ecUp(dt){
  if(G.setup||G.over)return;
@@ -296,7 +299,7 @@ function panel(){const lb=document.getElementById('lbx'),pb=document.getElementB
   if(G.brk&&!G.sel){ledSet(lb,'スロットが爆発して壊れている');return}
   if(G.setup&&!G.sel&&(!G.goal||!G.starts.length)){ledSet(lb,!G.goal?'① 利奈のゴールにしたい場所をタップしよう（未亜の近くには置けないよ）　🗺️ボタンでおまかせ作成もできるよ':'② 敵が出てくるスタートの場所をタップしよう（未亜の近くには置けないよ）');return}
   if(G.setup&&!G.sel&&(build=='Z'||build=='K')){ledSet(lb,'道づくり：旗から利奈まで道をつなごう（無料）。つながると▶が押せるよ');return}
-  if(G.sel){const t=G.sel,d=T[t.k];ledSet(lb,d.name+' Lv'+t.lv+(t.k=='M'?'　':t.k=='X'?'　借金 '+(G.debt|0)+'G（'+(G.loans|0)+'/10回）　':t.k=='I'?'　タップで今のフェーズをスキップ 💰1000　':t.k=='Q'?'　出目×'+Math.round(t.dmg*10)/10+'（1〜6の目）　射程 '+Math.round(t.rng)+'　':t.k=='L'?'　当たり確率 '+Math.round(23.3*(1+.4*(t.lv-1)))+'%　':'　こうげき '+Math.round(t.dmg)+'　射程 '+Math.round(t.rng)+'　')+(TD[t.k]||''));wp.style.display='flex';
+  if(G.sel){const t=G.sel,d=T[t.k];ledSet(lb,d.name+' Lv'+t.lv+(t.k=='M'?'　':t.k=='X'?'　借金 '+(G.debt|0)+'G（'+(G.loans|0)+'/10回）　':t.k=='I'?(D&&D.ec?'　タップで空きマスぜんぶピンクアロー 💰1000　':'　タップで今のフェーズをスキップ 💰1000　'):t.k=='Q'?'　出目×'+Math.round(t.dmg*10)/10+'（1〜6の目）　射程 '+Math.round(t.rng)+'　':t.k=='L'?'　当たり確率 '+Math.round(23.3*(1+.4*(t.lv-1)))+'%　':'　こうげき '+Math.round(t.dmg)+'　射程 '+Math.round(t.rng)+'　')+(TD[t.k]||''));wp.style.display='flex';
    wp.innerHTML='<b style="width:100%;text-align:center;font-size:13px">'+d.name+' Lv'+t.lv+'</b>'+(t.k=='W'?'<button id="wsp">かいてん 💰1000</button>':'')+((t.k=='X'||t.k=='I')?'':t.lv<(t.k=='L'?6:t.k=='W'?3:t.k=='M'?3:t.k=='ZO'?(T.ZO.mx||5):99)?'<button id="up">強化 💰'+upCost(t)+'</button>':'<button disabled>最大Lv</button>')+'<button id="sell">売る 💰'+Math.round(t.spent*.6*(t.gold?10:1))+'</button><button id="wcl">✕</button>';
   const u=document.getElementById('up'),ws=document.getElementById('wsp');if(ws)ws.onclick=()=>window.whipSpin(t);if(u)u.onclick=()=>{if(t.k=='L'&&t.lv>=6)return;if(t.k=='W'&&t.lv>=3)return;if(t.k=='M'&&t.lv>=3)return;const c=upCost(t);if(G.gold>=c){G.gold-=c;sfx('up');t.spent+=c;t.lv++;t.dmg=T[t.k].dmg*(1+.45*D.up*(t.lv-1)*(1+(t.lv-1)/60));if(t.k=='W')t.rng+=15;else if(t.lv<=6&&t.k!='M')t.rng+=6;hud();panel()}};
   document.getElementById('wcl').onclick=()=>{G.sel=null;hud();panel()};document.getElementById('sell').onclick=()=>{sfx('sell');G.gold+=Math.round(t.spent*.6*(t.gold?10:1));G.tw=G.tw.filter(o=>o!==t);G.sel=null;hud();panel()}
@@ -339,6 +342,14 @@ go.onclick=()=>{if(G.over||G.active||G.wave>=D.cl||!pathOK())return;if(G.setup){
  if(w>=20){const mc=Math.max(1,Math.round((Math.floor((w-19)/3)+2)*D.cnt));for(let i=0;i<mc;i++)NQ.splice(Math.random()*(NQ.length+1)|0,0,{hp:Math.max(3,5*Math.sqrt(D.hp)),sp:200,f:false,boss:false,q:1,rw:Math.max(1,Math.round((4+w)*D.rw*.5))})}
  G.mf=0;G.k5=0;G.hpb=hp;G.allyUsed=false;if(!G.active)sortie();G.q=NQ.concat(G.q);G.active=true;G.qt=0;hud()};
  window.phaseSkip=function(t){if(!G||G.over)return;const say=(m,c)=>G.fx.push({x:t.x,y:t.y-24,txt:m,t:1.3,c:c||'#ff4d6d'});
+  if(D&&D.ec){/* エクリプス：空いているマスすべてにピンクアローを置く（敵は消さない） */
+   if(G.setup){sfx('deny');say('バトルがはじまってから押してね');return}
+   const free=[];for(let cx=0;cx<COLS;cx++)for(let cy=0;cy<ROWS;cy++){if(road.has(cx+','+cy)||G.tw.some(o=>o.cx==cx&&o.cy==cy))continue;free.push([cx,cy])}
+   if(!free.length){sfx('deny');say('あいてるマスがないよ');return}
+   if(G.gold<1000){sfx('deny');say('お金たりない');return}
+   G.gold-=1000;const d=T.A;
+   for(const p of free){G.tw.push({k:'A',cx:p[0],cy:p[1],x:p[0]*C+20,y:p[1]*C+20,lv:1,dmg:d.dmg,rng:d.rng,cd:0,spent:0});try{stW('A')}catch(er){}}
+   sfx('clear');say('🏹 ピンクアローだらけ！','#ff6fa5');hud();panel();return}
   if(G.active&&!G.q.length&&!G.en.length)return;
   if(!G.active&&(G.wave>=D.cl||!pathOK())){sfx('deny');say(G.wave>=D.cl?'もうフェーズがないよ':'道をつないでね');return}
   if(G.gold<1000){sfx('deny');say('お金たりない');return}
@@ -981,7 +992,7 @@ function drawLips(a,t,x){const r=a.r||12,fl=a.fly,py=a.y+(fl?-8+Math.sin(t/220+a
   x.fillStyle='rgba(255,255,255,.75)';x.beginPath();x.ellipse(-3,5,3.4,1.5,-.15,0,7);x.fill();
   if(rush){x.strokeStyle='#ff4f93';x.lineWidth=2;x.beginPath();x.moveTo(-17,-4);x.lineTo(-24,-4);x.moveTo(-17,3);x.lineTo(-26,3);x.stroke()}}
  x.restore()}
-function drawAlly(a,t,ctx){if(a.k==='L'){drawLips(a,t,ctx||GX);return}const x=ctx||GX,r=a.r,fl=a.fly,bob=a.eng?0:Math.sin(t/(a.sleep?500:90)+a.x)*(a.sleep?.8:1.2),k=a.k,sw=a.eng?Math.sin(t/70):0;
+function drawAlly(a,t,ctx){if(a.k==='L'){drawLips(a,t,ctx||GX);return}if(a.conv&&window.__drawConv){window.__drawConv(a,t,ctx||GX);return}const x=ctx||GX,r=a.r,fl=a.fly,bob=a.eng?0:Math.sin(t/(a.sleep?500:90)+a.x)*(a.sleep?.8:1.2),k=a.k,sw=a.eng?Math.sin(t/70):0;
  x.save();x.translate(a.x,a.y+(fl?-8+Math.sin(t/180)*2:0));x.scale(a.dr||1,1);x.lineWidth=2;x.strokeStyle='rgba(40,30,70,.75)';
  x.fillStyle='rgba(20,5,40,.3)';x.beginPath();x.ellipse(0,r+(fl?9:0),r*.9,3,0,0,7);x.fill();
  const eyes=(dy,col)=>{x.fillStyle=col||'#4a2740';x.beginPath();x.arc(-3,dy,1.2,0,7);x.arc(3,dy,1.2,0,7);x.fill()},cheek=dy=>{x.fillStyle='rgba(255,90,140,.4)';x.beginPath();x.arc(-5.5,dy,1.5,0,7);x.arc(5.5,dy,1.5,0,7);x.fill()};
@@ -1324,7 +1335,7 @@ function custom(dt){if(!G.rk)G.rk=[];if(!G.hv)G.hv=[];
    if(b){const FT=1.15;let tx=b.x,ty=b.y;if(!b.fly&&b.ro){const p=pos(Math.min(b.d+b.sp*(b.slow>0?.5:1)*FT,b.ro.tot),b.ro);tx=p[0];ty=p[1]}t.ang=Math.atan2(ty-t.y,tx-t.x);t.cd=d.rate;G.rk.push({x0:t.x,y0:t.y,x1:tx,y1:ty,t:0,T:FT,dmg:t.dmg,rad:d.spl+Math.min(20,(t.lv-1)*2)});fsfx('H')}
    continue}
   if(t.k==='W'){
-   if(t.spin>0){t.spin-=dt;for(const e of G.en){if(e.dead||e._ws===t._sid)continue;if(Math.hypot(e.x-t.x,e.y-t.y)<=t.rng+6){e._ws=t._sid;e.bk=(e.bk||0)+(5+rnd()*5+(t.mp||0))*C*(e.boss?.5:1);e.stun=Math.max(e.stun||0,.4);hit(e,t.dmg,{col:'#ffd166'});burst(e.x,e.y,'#ffe0a0',6,110,.35,1.8,0);ring(e.x,e.y,'#ffffff',6,.3,2.5)}}continue}
+   if(t.spin>0){t.spin-=dt;for(const e of G.en){if(e.dead||e._ws===t._sid)continue;if(Math.hypot(e.x-t.x,e.y-t.y)<=t.rng+6){e._ws=t._sid;if(D&&D.ec&&wConv(e,t))continue;e.bk=(e.bk||0)+(5+rnd()*5+(t.mp||0))*C*(e.boss?.5:1);e.stun=Math.max(e.stun||0,.4);hit(e,t.dmg,{col:'#ffd166'});burst(e.x,e.y,'#ffe0a0',6,110,.35,1.8,0);ring(e.x,e.y,'#ffffff',6,.3,2.5)}}continue}
    
    
    continue}
@@ -1335,6 +1346,18 @@ function custom(dt){if(!G.rk)G.rk=[];if(!G.hv)G.hv=[];
  for(let i=G.rk.length-1;i>=0;i--){const r=G.rk[i];r.t+=dt;if(r.t<r.T)continue;G.rk.splice(i,1);
   for(const e of G.en){if(e.dead)continue;const q=Math.hypot(e.x-r.x1,e.y-r.y1);if(q<=r.rad)hit(e,r.dmg*(1-.35*q/r.rad),{col:'#ff7ac0'})}
   G.fx.push({x:r.x1,y:r.y1,r:r.rad,t:.35,c:'#ff7ac0'});fireworks(r.x1,r.y1,1);fsfx('B')}}
+/* エクリプス：かいてんムチに当たった敵（ラスボスも）は味方になって、ほかの敵と戦ってくれる（最大40体）。ラスボスの味方はボスとも戦える */
+function wConv(e,t){if(!G.al)G.al=[];if(G.al.filter(function(a){return a.conv&&!a.dead}).length>=40)return false;
+ e.dead=true;if(e.fight)e.fight=null;const m=Math.max(e.mx||e.hp||1,1);
+ const bs=e.boss?1:0;G.al.push({k:'C',cv:0,conv:1,src:e,x:e.x,y:e.y,hp:m*1.5,mhp:m*1.5,dps:bs?m*.1:Math.max(m,G.hpb||m)*.6,sp:bs?50:70,reach:bs?30:16,r:bs?24:10,fly:e.fly?1:0,boss:bs,dr:-1,tg:null,eng:false,ro:null,d:0});
+ try{burst(e.x,e.y,'#ff8fc0',8,120,.45,2,0);ring(e.x,e.y,'#ff6fa5',6,.35,2.5)}catch(er){}
+ G.fx.push({x:e.x,y:e.y-14,txt:'💗味方に！',t:1,c:'#ff4d8d'});return true}
+function drawConv(a,t,x){const s=a.src;let ok=false;
+ try{if(s&&typeof drawEn2==='function'){s.x=a.x;s.y=a.y;s.hp=a.hp;s.mx=a.mhp;s.dead=false;s.dr=a.dr;s.stun=0;drawEn2(s,t);ok=true}}catch(er){}
+ if(!ok){x.fillStyle='#ff9ec4';x.beginPath();x.arc(a.x,a.y,a.r,0,7);x.fill()}
+ x.save();x.strokeStyle='rgba(255,111,165,.85)';x.lineWidth=1.6;x.beginPath();x.arc(a.x,a.y,a.r+3,0,7);x.stroke();x.fillStyle='#ff3d71';x.font='bold 10px sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('♥',a.x,a.y-a.r-10-(a.fly?8:0)+Math.sin(t/200)*1.5);
+ const yy=a.y-a.r-(a.fly?16:8);x.fillStyle='rgba(20,5,40,.45)';x.fillRect(a.x-11,yy,22,4);x.fillStyle='#4cc9f0';x.fillRect(a.x-11,yy,22*Math.max(0,a.hp/a.mhp),4);x.restore()}
+window.__drawConv=drawConv;
 window.whipSpin=function(t){if(G.over||t.spin>0)return;if(!G.active){G.fx.push({x:t.x,y:t.y-24,txt:'フェーズ中だけ使えるよ',t:1.2,c:'#ff4d6d'});sfx('deny');return}if(G.gold<1000){sfx('deny');G.fx.push({x:t.x,y:t.y-24,txt:'お金たりない',t:1,c:'#ff4d6d'});return}G.gold-=1000;t._sid=++SPIN;t.spin=.5;fsfx('A');hud();panel()};
 window.bankLoan=function(t){if(!G||G.over)return;if((G.loans|0)>=10){sfx('deny');G.fx.push({x:t.x,y:t.y-24,txt:'借りすぎ！10回まで',t:1.4,c:'#ff4d6d'});return}G.loans=(G.loans|0)+1;G.debt=(G.debt|0)+5000;G.gold+=5000;sfx('up');G.fx.push({x:t.x,y:t.y-24,txt:'+5000G 借りた！（'+G.loans+'/10）',t:1.5,c:'#2e9e5b'});try{stars(t.x,t.y-10,'#ffd166',4,.9)}catch(e){}hud();panel()};
 const _up=update;update=function(dt){_up(dt);if(!G||G.over||!G.tw)return;custom(dt*(G.speed||1))};
@@ -3666,7 +3689,7 @@ window.__DV={spawn:spawnDevil,S};
 <script>
 (function(){
 /* ===== 半月ボール：当たった敵のHPを必ず半分にする武器 ===== */
-TD.S='半月ボールを投げて、当たった敵の今のHPを必ず半分にする（ボスにも効く）。強化すると投げるのが速くなって、射程ものびる';
+TD.S='半月ボールを投げて、当たった敵の今のHPを必ず半分にする（四天王や最終兵器田中を含むボスにも効く）。強化すると投げるのが速くなって、射程ものびる';
 SFX.smile=function(){bp(880,.06,'square',.05,0,0);bp(1175,.08,'square',.05,0,.05)};
 SFX.smileHit=function(){bp(523,.07,'square',.06,0,0);bp(784,.09,'square',.06,0,.06);bp(1047,.12,'square',.05,0,.12)};
 function face(c,r){c.save();c.lineJoin='round';c.lineCap='round';
@@ -3694,7 +3717,7 @@ const _up=update;update=function(dt){_up(dt);
   for(const m of G.sm){m.t+=sd;m.rot+=sd*14;
    if(m.tg&&m.tg.dead){let n=null,nd=90;for(const e of G.en){if(e.dead||e.x==null)continue;const q=Math.hypot(e.x-m.x,e.y-m.y);if(q<nd){nd=q;n=e}}m.tg=n;if(!n){m.rm=1;continue}}
    const tx=m.tg.x,ty=m.tg.y,dx=tx-m.x,dy=ty-m.y,L=Math.hypot(dx,dy),st=280*sd;
-   if(L<=st+8){m.rm=1;const e=m.tg;if(!e.dead&&(e.suika||e.rafu||e.neko||e.dadan||e.tanaka)){G.fx.push({x:e.x,y:e.y-22,txt:'むこう！',t:1,c:'#8a7aa8'});G.fx.push({x:e.x,y:e.y,r:20,t:.3,c:'#b9b3d9'});fsfx('smileHit')}else if(!e.dead){e.hp=e.hp/2;try{window.__pienAnger&&window.__pienAnger(e)}catch(_){}
+   if(L<=st+8){m.rm=1;const e=m.tg;if(!e.dead){e.hp=e.hp/2;try{window.__pienAnger&&window.__pienAnger(e)}catch(_){}
      G.fx.push({x:e.x,y:e.y-22,txt:'½',t:1,c:'#ff9a00'});G.fx.push({x:e.x,y:e.y,r:20,t:.3,c:'#ffe98a'});fsfx('smileHit');
      for(let i=0;i<7;i++){const a=i/7*6.283;G.smp.push({x:e.x,y:e.y,vx:Math.cos(a)*70,vy:Math.sin(a)*70-20,t:0,T:.5})}}}
    else{m.x+=dx/L*st;m.y+=dy/L*st}}
@@ -5438,6 +5461,15 @@ function repay(t,all){
  sfx('up');G.fx.push({x:t.x,y:t.y-24,txt:'−'+(5000*n)+'G 返した！',t:1.5,c:'#2e9e5b'});
  try{stars(t.x,t.y-10,'#ffd166',4,.9)}catch(e){}
  hud();panel()}
+/* ===== エクリプスの銀行：リナコインの売り買い（相場は毎日ちがう 1〜199G／持ってる枚数はとっておける） ===== */
+var RCK='miarina_td_rinacoin_v1';
+function rcPrice(off){var d=new Date();d.setDate(d.getDate()-(off|0));var h=(d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate())*2654435761>>>0;h^=h>>>15;h=Math.imul(h,2246822519)>>>0;h^=h>>>13;h=Math.imul(h,3266489917)>>>0;h^=h>>>16;return 1+(h>>>0)%199}
+function rcGet(){try{return Math.max(0,parseInt(localStorage.getItem(RCK)||'0',10)||0)}catch(e){return 0}}
+function rcSet(n){try{localStorage.setItem(RCK,String(Math.max(0,n|0)))}catch(e){}}
+function rcTrade(t,n,buy){var p=rcPrice(0),have=rcGet(),say=function(m,c){G.fx.push({x:t.x,y:t.y-24,txt:m,t:1.4,c:c||'#ff4d6d'})};
+ if(buy){n=Math.min(n,Math.floor(G.gold/p));if(n<=0){sfx('deny');say('お金たりない');return}G.gold-=p*n;rcSet(have+n);sfx('up');say('🪙 '+n+'枚 買った（−'+p*n+'G）','#2e9e5b')}
+ else{n=Math.min(n,have);if(n<=0){sfx('deny');say('リナコインがないよ');return}G.gold+=p*n;rcSet(have-n);sfx('up');say('🪙 '+n+'枚 売った（+'+p*n+'G）','#2e9e5b')}
+ hud();panel()}
 var _pb=panel;
 panel=function(){
  _pb();
@@ -5447,10 +5479,11 @@ panel=function(){
   var wp=document.getElementById('wpop');if(!wp)return;
   var t=G.sel;
   wp.style.display='flex';
-  wp.innerHTML='<b style="width:100%;text-align:center;font-size:13px">銀行　借金 '+(G.debt|0)+'G（'+(G.loans|0)+'/10回）</b><button id="bkb">借りる</button><button id="bk1">返す 5000</button><button id="bka">ぜんぶ返す</button><button id="bkx">✕</button>';
+  wp.innerHTML='<b style="width:100%;text-align:center;font-size:13px">銀行　借金 '+(G.debt|0)+'G（'+(G.loans|0)+'/10回）</b><button id="bkb">借りる</button><button id="bk1">返す 5000</button><button id="bka">ぜんぶ返す</button>'+(D&&D.ec?(function(){var p=rcPrice(0),y=rcPrice(1),df=p-y;return'<div style="width:100%;text-align:center;font-size:12px;line-height:1.5;border-top:1px dashed #d9a;padding-top:4px">🪙 リナコイン 今日 <b>'+p+'G</b>（きのう '+y+'G '+(df>0?'▲'+df:df<0?'▼'+(-df):'→')+'）<br>もってる '+rcGet()+'枚（相場は毎日かわるよ 1〜199G）</div><button id="rcb1">買う ×1</button><button id="rcb10">買う ×10</button><button id="rcs1">売る ×1</button><button id="rcsa">ぜんぶ売る</button>'})():'')+'<button id="bkx">✕</button>';
   document.getElementById('bkb').onclick=function(){_bl(t);saveD()};
   document.getElementById('bk1').onclick=function(){repay(t,false)};
   document.getElementById('bka').onclick=function(){repay(t,true)};
+  if(D&&D.ec){document.getElementById('rcb1').onclick=function(){rcTrade(t,1,true)};document.getElementById('rcb10').onclick=function(){rcTrade(t,10,true)};document.getElementById('rcs1').onclick=function(){rcTrade(t,1,false)};document.getElementById('rcsa').onclick=function(){rcTrade(t,rcGet(),false)}}
   document.getElementById('bkx').onclick=function(){G.sel=null;hud();panel()};
    wp.style.cssText='position:absolute;left:0;top:0;transform:none;z-index:6;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:5px;padding:6px 8px;background:var(--card);color:var(--ink);border:3px solid var(--accent);border-radius:16px;box-shadow:0 6px 16px rgba(255,111,165,.45);width:max-content;max-width:calc(100% - 8px)';
    var wrp=document.getElementById('wrap'),cr2=cv.getBoundingClientRect(),wr2=wrp.getBoundingClientRect();
