@@ -239,13 +239,13 @@ const DIFF=[
 {n:'超かんたん',gold:400,lives:50,hp:.5,sp:.8,cnt:.6,rw:1.4,up:1.5,cost:.8,bh:.6,iv:1.2,am:1,cl:10,d:'フェーズ10でクリア｜お金400・ライフ50｜敵は少なめで弱い｜強化の伸び×1.5・値段2割引｜味方は最大数まで持てる'},
 {n:'かんたん',gold:280,lives:35,hp:.7,sp:.9,cnt:.8,rw:1.2,up:1.25,cost:.9,bh:.8,iv:1.1,am:.85,cl:20,d:'フェーズ20でクリア｜お金280・ライフ35｜敵は少なめ｜強化の伸び×1.25・値段1割引｜味方の最大数×0.85'},
 {n:'ふつう',gold:150,lives:20,hp:1,sp:1,cnt:1,rw:1,up:1,cost:1,bh:1,iv:1,am:.7,cl:30,d:'フェーズ30でクリア｜お金150・ライフ20｜標準のバランス｜味方の最大数×0.7'},
-{n:'むずかしい',gold:120,lives:12,hp:1.5,sp:1.1,cnt:1.4,rw:.85,up:.85,cost:1.15,bh:1.4,iv:.85,am:.5,cl:50,d:'フェーズ50でクリア｜お金120・ライフ12｜敵は1.4倍の数で硬い｜強化の伸び×0.85・値段1.15倍｜味方の最大数×0.5'},{n:'ルナティック',gold:100,lives:10,hp:2.2,sp:1.2,cnt:1.8,rw:.8,up:.8,cost:1.3,bh:1.8,iv:.8,am:.4,cl:100,d:'フェーズ100でクリア｜お金100・ライフ10｜敵は1.8倍の数でとても硬くて速い｜強化の伸び×0.8・値段1.3倍｜味方の最大数×0.4｜最終フェーズは巨大スイカメ1体だけ｜最高難易度'},{n:'エクリプス',ec:1,gold:100,lives:10,hp:2.2,sp:1.2,cnt:1.8,rw:.8,up:.8,cost:1.3,bh:1.8,iv:.8,am:.4,cl:99999,d:'フェーズ∞（1つだけ）｜敵が1時間ずっとランダムに出てくる耐久バトル｜敵の強さはルナティックと同じで、時間がたつほど強くなる（さいごはフェーズ99くらい）｜ラスト10分〜ラスト3分のあいだに、ラスボス四天王の4体と最終兵器田中が、時間をずらして全員出てくる｜やられるまで戦える｜1時間たえぬいたらクリア！ボーナス+100000点｜全自動バトル・⏩は使えない｜セーブはできる（タワー・敵・残り時間はそのまま）'}];
+{n:'むずかしい',gold:120,lives:12,hp:1.5,sp:1.1,cnt:1.4,rw:.85,up:.85,cost:1.15,bh:1.4,iv:.85,am:.5,cl:50,d:'フェーズ50でクリア｜お金120・ライフ12｜敵は1.4倍の数で硬い｜強化の伸び×0.85・値段1.15倍｜味方の最大数×0.5'},{n:'ルナティック',gold:100,lives:10,hp:2.2,sp:1.2,cnt:1.8,rw:.8,up:.8,cost:1.3,bh:1.8,iv:.8,am:.4,cl:100,d:'フェーズ100でクリア｜お金100・ライフ10｜敵は1.8倍の数でとても硬くて速い｜強化の伸び×0.8・値段1.3倍｜味方の最大数×0.4｜最終フェーズは巨大スイカメ1体だけ｜最高難易度'},{n:'エクリプス',ec:1,gold:100,lives:10,hp:2.2,sp:1.2,cnt:1.8,rw:.8,up:.8,cost:1.3,bh:1.8,iv:.8,am:.4,cl:99999,d:'フェーズ∞（1つだけ）｜敵が30分ずっとランダムに出てくる耐久バトル｜空を飛ぶ敵・穴から出てくるモンスター・ボスも、ぜんぶランダムに出てくる｜敵の強さはルナティックと同じで、時間がたつほど強くなる（さいごはフェーズ99くらい）｜ラスト10分〜ラスト3分のあいだに、ラスボス四天王が何体でも出てくる（1種につき最大3体まで）｜そして最後に、真のラスボスが現れる…｜味方はやられても2秒後にゴールから蘇って何度でも出撃する｜やられるまで戦える｜30分たえぬいたらクリア！ボーナス+100000点｜全自動バトル・⏩は使えない｜セーブはできる（タワー・敵・残り時間はそのまま）'}];
 let D=DIFF[0],lv=0;function lunOK(){try{return localStorage.getItem('miarina_td_lunatic_v1')==='1'}catch(e){return false}}
 /* 難易度の解放：はじめは超かんたんだけ。クリアするたびに次の難易度が選べる（番号 = 選べる一番上の難易度） */
 const UNL_KEY='miarina_td_unlock_v1';
 function unlN(){var n=0;try{n=parseInt(localStorage.getItem(UNL_KEY)||'0',10)||0}catch(e){}if(lunOK())n=4;if(ecOK())n=5;return Math.max(0,Math.min(5,n))}
 /* ===== エクリプス：ルナティックをクリアすると出現する、1時間耐久バトル ===== */
-const EC_KEY='miarina_td_eclipse_v1',EC_SEC=3600,EC_WAVE=1,EC_BONUS=100000;
+const EC_KEY='miarina_td_eclipse_v1',EC_SEC=1800,EC_WAVE=1,EC_BONUS=100000;
 function ecOK(){try{if(localStorage.getItem(EC_KEY)==='1')return true;
  /* すでにルナティック（フェーズ100）をクリアした記録があれば、エクリプスも出現させる */
  var g=JSON.parse(localStorage.getItem('miarina_td_diary_log_v1')||'{}');
@@ -258,27 +258,53 @@ function ecHide(){var e=document.getElementById('ecTm');if(e)e.remove()}
 function ecUp(dt){
  if(G.setup||G.over)return;
  G.ecT=(G.ecT||0)+dt;ecShow();
- if(G.ecT>=EC_SEC){G.q=[];G.en=[];G.active=false;D.cl=Math.max(1,G.wave);G.fx.push({x:180,y:200,txt:'1時間たえぬいた！',t:2,c:'#ffd23f'});end(true);return}
- /* エクリプス：フェーズは1つだけ。そのフェーズの敵が1時間ずっとランダムに出つづける */
+ if(G.ecT>=EC_SEC){G.q=[];G.en=[];G.active=false;D.cl=Math.max(1,G.wave);G.fx.push({x:180,y:200,txt:'30分たえぬいた！',t:2,c:'#ffd23f'});end(true);return}
+ /* エクリプス：フェーズは1つだけ。そのフェーズの敵が30分ずっとランダムに出つづける */
  if(!G.active){G.ecGap=(G.ecGap===undefined?1.5:G.ecGap)-dt;
   if(G.ecGap<=0){G.ecGap=undefined;G.wave=Math.max(0,EC_WAVE-1);go.onclick();ecRestore()}return}
- if(G.q.length<8)ecRefill();ecBossUp()}
+ if(G.q.length<8)ecRefill();ecMidUp(dt);ecBossUp()}
 function ecPrim(o){const r={};for(const k in o){const v=o[k];if(typeof v=='boolean'||typeof v=='string'||(typeof v=='number'&&isFinite(v)))r[k]=v}return r}
 /* セーブしたときの敵を元の位置・体力のまま出す（飛ぶ敵だけは出しなおし） */
 function ecRestore(){const s=G._ecR;G._ecR=null;if(!s||!G.active)return;try{G.en=[];for(const o of s.en){if(!R[o.r])continue;const e=Object.assign({},o);e.ro=getRo(e.r);e.d=Math.max(0,Math.min(e.d||0,e.ro.tot-1));[e.x,e.y]=pos(e.d,e.ro);e.fight=null;e.dead=false;G.en.push(e)}G.q=s.q.slice()}catch(err){console.error('ecRestore',err)}}
 /* 経過時間に応じた強さ：0秒でフェーズ1 → 1時間でルナティックのフェーズ99くらい */
 function ecLv(){return Math.max(1,Math.min(99,1+Math.floor(98*Math.min(1,(G.ecT||0)/EC_SEC))))}
 function ecHp(w){const cap=Math.min(120,Math.round(70*D.cnt+20)),raw=(6+w*2)*D.cnt;return(w<=10?22*Math.pow(1.36,w-1):360*Math.pow(1.05,w-10))*D.hp*(raw>cap?raw/cap:1)}
-function ecRefill(){const w=ecLv(),hp=ecHp(w);G.hpb=hp;for(let i=0;i<10;i++){const f=Math.random()<.25;G.q.push({hp:f?hp*.6:hp,sp:f?Math.min(70+w*3,150):Math.min(42+w*3,95),f,boss:false,rw:Math.round((4+w)*D.rw)})}}
+function ecRefill(){const w=ecLv(),hp=ecHp(w);G.hpb=hp;for(let i=0;i<10;i++){const f=Math.random()<.25;G.q.push({hp:f?hp*.6:hp,sp:f?Math.min(70+w*3,150):Math.min(42+w*3,95),f,boss:false,rw:Math.round((4+w)*D.rw)})}
+ if(w>=20&&Math.random()<.5)G.q.splice(Math.random()*(G.q.length+1)|0,0,{hp:Math.max(3,5*Math.sqrt(D.hp)),sp:200,f:false,boss:false,q:1,rw:Math.max(1,Math.round((4+w)*D.rw*.5))})}
 /* フェーズ100のラスボス（巨大スイカメ・ラフレシアバニー・まねきねこロボ・大魔王ダダン）のうち、ランダムな1体だけを出す */
-const EC_BOSS=[['suika',100,6,500],['rafu',80,8,500],['neko',50,14,0],['dadan',120,4,800],['tanaka',300,12,2000]];
-/* ラスト10分〜ラスト3分のあいだに、四天王4体（ランダムな順）→最終兵器田中の順で、時間をずらして全員出る */
-function ecBossInit(){const lo=Math.max(EC_SEC-600,(G.ecT||0)+5),hi=Math.max(lo+5,EC_SEC-180),n=EC_BOSS.length,ks=EC_BOSS.filter(b=>b[0]!=='tanaka');for(let i=ks.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[ks[i],ks[j]]=[ks[j],ks[i]]}const od=ks.concat(EC_BOSS.filter(b=>b[0]==='tanaka')),w=(hi-lo)/n;G.ecBs=od.map((b,i)=>({k:b[0],t:lo+(i+Math.random()*.7)*w,done:0}))}
+/* ラスボス四天王の調子：絶好調〜絶不調（体力と歩く速さが変わる） */
+window.BOSS_COND=[['絶好調',1.5,1.25,'#ff1744'],['好調',1.25,1.1,'#ff9100'],['ふつう',1,1,'#78909c'],['不調',.8,.9,'#42a5f5'],['絶不調',.6,.8,'#5c6bc0']];
+window.bossCond=function(o){const c=BOSS_COND[Math.random()*BOSS_COND.length|0];o.hp*=c[1];o.sp*=c[2];o.cn=c[0];return o};
+window.bossNm=function(e,n){return e&&e.cn?e.cn+' '+n:n};
+window.bossCc=function(cn){const c=BOSS_COND.find(function(x){return x[0]===cn});return c?c[3]:'#fff'};
+const EC_BOSS=[['suika',100,6,500],['rafu',80,8,500],['neko',50,14,0],['dadan',120,4,800]];
+/* ラスト10分〜ラスト3分のあいだに、四天王4体（ランダムな順）が、時間をずらして全員出る（最終兵器田中は出ない） */
+function ecBossInit(){const lo=Math.max(EC_SEC-600,(G.ecT||0)+5),hi=Math.max(lo+5,EC_SEC-180),ks=[];
+ /* 四天王は1種につき1〜3体（ランダム） */
+ for(const b of EC_BOSS){const n=1+(Math.random()*3|0);for(let i=0;i<n;i++)ks.push(b[0])}
+ for(let i=ks.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[ks[i],ks[j]]=[ks[j],ks[i]]}
+ const w=(hi-lo)/ks.length;G.ecBs=ks.map((k,i)=>({k:k,t:lo+(i+Math.random()*.7)*w,done:0}))}
+/* エクリプス：ふつうのボス（R・D・W・中ボスN/U/I・V・キャンディボス・Lなど）もランダムなタイミングで出る */
+const EC_MB=[['R',9,24],['D',9,30],['W',9,44],['N',7,30],['U',7,30],['I',7,30],['V',16,18]];
+function ecMidUp(dt){
+ G.ecMb=(G.ecMb===undefined?10+Math.random()*10:G.ecMb)-dt;
+ if(G.ecMb>0||!G.active)return;
+ G.ecMb=18+Math.random()*22;
+ const w=ecLv(),hp=ecHp(w);let b;
+ const pool=EC_MB.slice();if(w>=50)pool.push(['L',40,24]);
+ const cb=window.__CB;
+ if(cb&&cb.length&&Math.random()<1/(pool.length+1)){const i=Math.random()*cb.length|0;b={hp:G.hpb*(3+w*.1)*D.bh,sp:26+(i%5)*2,f:false,boss:true,bt:'CB',mid:false,cb:i,beh:i%3,rw:Math.round((30+w)*D.rw)}}
+ else{const m=pool[Math.random()*pool.length|0];b={hp:hp*m[1]*D.bh,sp:m[2],f:false,boss:true,bt:m[0],mid:'NUI'.includes(m[0]),rw:Math.round(60*D.rw)}}
+ G.q.splice(Math.random()*Math.min(G.q.length+1,5)|0,0,b)}
 function ecBossUp(){
- if(!Array.isArray(G.ecBs)||G.ecBs.length!==EC_BOSS.length)ecBossInit();
+ if(Array.isArray(G.ecBs))G.ecBs=G.ecBs.filter(b=>b&&b.k!=='tanaka');
+ if(Array.isArray(G.q)&&G.q.some(q=>q&&q.tanaka))G.q=G.q.filter(q=>!(q&&q.tanaka));
+ if(!Array.isArray(G.ecBs)||!G.ecBs.length)ecBossInit();
  for(const s of G.ecBs){if(s.done||G.ecT<s.t)continue;
   const d=EC_BOSS.find(function(b){return b[0]===s.k});if(!d)continue;
-  const hp=ecHp(100)*d[1]*D.bh,o={hp:hp,sp:d[2],f:false,boss:true,bt:'L',mid:false,rw:d[0]==='neko'?777777:Math.round(d[3]*D.rw)};o[d[0]]=1;
+  const o={hp:1,sp:d[2],f:false,boss:true,bt:'L',mid:false,rw:d[0]==='neko'?777777:Math.round(d[3]*D.rw)};o[d[0]]=1;bossCond(o);
+  /* 調子でレベルが変わる（HP倍率は調子ではなくレベルで反映。速度はbossCondのまま） */
+  const LVC={'絶好調':100,'好調':88,'ふつう':75,'不調':62,'絶不調':50};o.lv=LVC[o.cn]||75;o.hp=ecHp(o.lv)*d[1]*D.bh;
   G.q.unshift(o);s.done=1;G.qt=0}}
 
 function init(){G={gold:D.gold,lives:D.lives,wave:0,active:false,q:[],qt:0,en:[],tw:[],bl:[],fx:[],sel:null,speed:1,over:false};
@@ -372,13 +398,13 @@ const LTTL=['ころんじゃったひよこ','べそかきこぐま','ぷるぷ�
 function end(win){let lunNew=false,unNew=0,ecNew=false;try{ecHide()}catch(e){}G.over=true;bgm(false);if(!win)sfx('lose');
  let sc=Math.round(((win?D.cl:G.wave-1)*100+G.lives*20+(win?1000:0)+G.tw.reduce((a,o)=>a+(o.k=='X'?0:o.lv),0)*100)*(1+lv*.5));const ts=Math.max(0,(performance.now()-(G.t0||performance.now()))/1000);G.tm=ts;G.ttl='';G.ex='';bnx.textContent='';
  if(win){try{if(lv>=3&&!lunOK()){localStorage.setItem('miarina_td_lunatic_v1','1');lunNew=true}}catch(e){}try{if(lv===4&&!ecOK()){localStorage.setItem(EC_KEY,'1');ecNew=true}}catch(e){}try{var _un=unlN();if(lv<4&&lv+1>_un){localStorage.setItem(UNL_KEY,String(lv+1));unNew=lv+1}}catch(e){}const par=D.cl*12,mx=D.cl*40,tbn=0,ms=1+Math.floor(Math.random()*10000),cm=ms>9000?'ぱーふぇくと！だいすき！':ms>6000?'すごーい！かんぺきに近いよ！':ms>3000?'いいね！じょうずだったよ！':ms>1000?'まあまあかな〜！':'うーん、もうちょっとがんばろ！';const bs=sc,eb=D.ec?EC_BONUS:0;sc=bs+tbn+ms+eb;const cap=(D.cl*100+D.lives*20+1000)*(1+lv*.5)+D.cl*150+10000,ix=Math.max(0,Math.min(99,Math.round(Math.min(1,sc/cap/.8)*99+Math.random()*16-8)));G.ttl=G._auto?'全自動':TTL[ix];let nw=false,n=0;try{const kk='miarina_td_titles_v1',a=JSON.parse(localStorage.getItem(kk)||'[]'),st=new Set(Array.isArray(a)?a:[]);nw=!st.has(ix);st.add(ix);localStorage.setItem(kk,JSON.stringify([...st]));n=st.size}catch(e){}
-  G.ex='クリア '+bs+' ＋ タイム '+tbn+' ＋ 未亜 '+ms+(eb?' ＋ エクリプスたえぬきボーナス '+eb:'');bnx.textContent='🏁 クリアポイント +'+bs+'点\n💗 未亜の採点 +'+ms+'点'+(eb?'\n👑 エクリプス1時間たえぬきボーナス +'+eb+'点':'')+'\n🎀 称号「'+G.ttl+'」'}
+  G.ex='クリア '+bs+' ＋ タイム '+tbn+' ＋ 未亜 '+ms+(eb?' ＋ エクリプスたえぬきボーナス '+eb:'');bnx.textContent='🏁 クリアポイント +'+bs+'点\n💗 未亜の採点 +'+ms+'点'+(eb?'\n👑 エクリプス30分たえぬきボーナス +'+eb+'点':'')+'\n🎀 称号「'+G.ttl+'」'}
  else{const ms=-(1+Math.floor(Math.random()*1000)),bs=sc;sc=bs+ms;G.ttl=LTTL[Math.random()*LTTL.length|0];G.ex='とうたつ '+bs+' ＋ 未亜のおしおき '+ms;bnx.textContent='🌸 がんばりポイント +'+bs+'点\n💔 未亜のおしおき '+ms+'点\n🎀 称号「'+G.ttl+'」'}
- if((G.debt|0)>0){sc-=G.debt;G.ex+=' － 借金 '+G.debt;bnx.textContent+=(bnx.textContent?'\n':'')+'🏦 銀行の借金 −'+G.debt+'点'}G.sc=sc;profUpd(PN,sc,G.ttl);let dn=null;if(win&&!G._dd){G._dd=1;dn=danUp(PN,(DAN_XP[Math.max(0,DIFF.indexOf(D))]||40))}G.dn=dn;try{stS(sc)}catch(er){}rkResult(null);if(win)rkm.textContent='';ot.textContent=(PN?PN+'さん ':'')+(win?'クリア！🎉':'ゲームオーバー');om.textContent=win?((ecNew?'🌑 新しい難易度「エクリプス」が出現したよ！タイトルの難易度から選べるよ！ ':lunNew?'🌙 ルナティック（フェーズ100）が解放されたよ！ ':unNew?'🔓 「'+DIFF[unNew].n+'」が選べるようになったよ！ ':'')+(dn?(dn.nw>dn.old?'🥋 段位アップ！ '+danTxt(dn.old)+' → '+danTxt(dn.nw):dn.nw>=DAN_MAX?'🥋 最高段位「'+danTxt(dn.nw)+'」を保っているよ！':''):'')):'フェーズ '+(D.ec?'∞':G.wave)+' でやられちゃった… スコア '+G.sc+'点';(win&&window.__celebrate?(window.__celebrate(),setTimeout(function(){document.getElementById('ov').style.display='flex'},4800)):document.getElementById('ov').style.display='flex');mkCard(win);tw.href='https://twitter.com/intent/tweet?text='+encodeURIComponent('みありなタワーディフェンス ウルトラDX【'+D.n+'】で'+PN+'（'+danTxt(danGet(PN))+'）'+'は'+(win?(D.ec?'フェーズ∞を1時間たえぬいた！':'全'+D.cl+'フェーズクリア！'):'フェーズ'+(D.ec?'∞':G.wave)+'まで進んだ！')+' スコア'+G.sc+'点'+(G.ttl?' 称号「'+G.ttl+'」':''))+'&url='+encodeURIComponent(location.protocol.indexOf('http')==0?location.href.split(/[?#]/)[0]:'https://claude.ai/artifact/LA3foqEGRFcPVqc1oSVkbx')+'&hashtags='+encodeURIComponent('みありなタワーディフェンスウルトラDX')}
+ if((G.debt|0)>0){sc-=G.debt;G.ex+=' － 借金 '+G.debt;bnx.textContent+=(bnx.textContent?'\n':'')+'🏦 銀行の借金 −'+G.debt+'点'}G.sc=sc;profUpd(PN,sc,G.ttl);let dn=null;if(win&&!G._dd){G._dd=1;dn=danUp(PN,(DAN_XP[Math.max(0,DIFF.indexOf(D))]||40))}G.dn=dn;try{stS(sc)}catch(er){}rkResult(null);if(win)rkm.textContent='';ot.textContent=(PN?PN+'さん ':'')+(win?'クリア！🎉':'ゲームオーバー');om.textContent=win?((ecNew?'🌑 新しい難易度「エクリプス」が出現したよ！タイトルの難易度から選べるよ！ ':lunNew?'🌙 ルナティック（フェーズ100）が解放されたよ！ ':unNew?'🔓 「'+DIFF[unNew].n+'」が選べるようになったよ！ ':'')+(dn?(dn.nw>dn.old?'🥋 段位アップ！ '+danTxt(dn.old)+' → '+danTxt(dn.nw):dn.nw>=DAN_MAX?'🥋 最高段位「'+danTxt(dn.nw)+'」を保っているよ！':''):'')):'フェーズ '+(D.ec?'∞':G.wave)+' でやられちゃった… スコア '+G.sc+'点';(win&&window.__celebrate?(window.__celebrate(),setTimeout(function(){document.getElementById('ov').style.display='flex'},4800)):document.getElementById('ov').style.display='flex');mkCard(win);tw.href='https://twitter.com/intent/tweet?text='+encodeURIComponent('みありなタワーディフェンス ウルトラDX【'+D.n+'】で'+PN+'（'+danTxt(danGet(PN))+'）'+'は'+(win?(D.ec?'フェーズ∞を30分たえぬいた！':'全'+D.cl+'フェーズクリア！'):'フェーズ'+(D.ec?'∞':G.wave)+'まで進んだ！')+' スコア'+G.sc+'点'+(G.ttl?' 称号「'+G.ttl+'」':''))+'&url='+encodeURIComponent(location.protocol.indexOf('http')==0?location.href.split(/[?#]/)[0]:'https://claude.ai/artifact/LA3foqEGRFcPVqc1oSVkbx')+'&hashtags='+encodeURIComponent('みありなタワーディフェンスウルトラDX')}
 function hit(e,dmg,d){e.hp-=e.ty=='N'?dmg*.6:dmg;if(d.slow)e.slow=1.6;if(d.pois){e.pois=4;e.pd=Math.max(e.pd||0,dmg*4)}if(e.hp<=0&&!e.dead){e.dead=true;fsfx('kill');G.gold+=e.rw;if(e.ty=='P')splitSlime(e);G.fx.push({x:e.x,y:e.y,txt:'+'+e.rw,t:.8,c:'#ffb703'});hud()}}
 function update(dt){
  if(G.over)return;if(D.ec&&G.speed!==1){G.speed=1;try{sp.textContent='⏩1'}catch(e){}}dt*=G.speed;if(D.ec){ecUp(dt);if(G.over)return}gim(dt);ufoUp(dt);allyUp(dt);heroUp(dt);
- if(G.active&&G.q.length){G.qt-=dt;let ag;do{ag=false;if(G.qt<=0&&G.q.length){const e=G.q.shift();e.d=e.nw?(G.k5=(G.k5||0)+5):0;e.slow=0;e.sp*=D.sp*G.sf;if(e.boss)G.fx.push({x:180,y:200,txt:e.suika?'巨大スイカメ 登場！':e.bt=='L'?'ラスボス登場！':'NUI'.includes(e.bt)?'中ボス登場！':'ボス登場！',t:1.6,c:'#ff4d6d'});e.mx=e.hp;e.ty=e.boss?(e.bt||'D'):e.q?'Q':e.f?(((G.fc=(G.fc||0)+1)%2)?'G':'S'):NP()[D.ec?Math.random()*NP().length|0:(G.tc=(G.tc||0)+1)%NP().length];const ST={K:[1.3,.85],A:[2.6,.6],T:[.5,1.7],F:[.9,1.15],Y:[1.1,.7],J:[.45,1.0],O:[1.8,.55]}[e.ty];if(ST){e.hp*=ST[0];e.mx=e.hp;e.sp*=ST[1];if(e.ty=='A')e.rw=Math.round(e.rw*1.6)}e.r=G.cnt++%R.length;e.ro=getRo(e.r);e.d=Math.min(e.d,Math.max(0,e.ro.tot-60));if(e.ty=='Q'&&!G.mf){G.mf=1;G.fx.push({x:180,y:170,txt:'ミサイル接近！',t:1.6,c:'#ff4d6d'})}if('YJOQ'.includes(e.ty)){const z=R[e.r].P[R[e.r].P.length-1],a=spawnPt(z),W=[a];for(let k=0;k<(e.ty=='Q'?0:2);k++){let p,g=0;do{p=[30+Math.random()*300,40+Math.random()*320];g++}while(g<25&&(Math.hypot(p[0]-z[0],p[1]-z[1])<150||Math.hypot(p[0]-W[W.length-1][0],p[1]-W[W.length-1][1])<110));W.push(p)}W.push(z);e.fly=1;e.fro=mkRoP(W);e.ft=e.fro.tot;e.sx=a[0];e.sy=a[1];e.ex=z[0];e.ey=z[1];e.dr=a[0]<z[0]?1:-1;e.pat=Math.random()*3|0;e.ph=Math.random()*6.28}[e.x,e.y]=e.fly?(e.d=0,[e.sx,e.sy]):pos(e.d,e.ro);G.en.push(e);G.qt=e.nw?0:Math.max(.3,.75-G.wave*.005)*D.iv;if(e.nw&&G.q.length)ag=true}}while(ag)}
+ if(G.active&&G.q.length){G.qt-=dt;let ag;do{ag=false;if(G.qt<=0&&G.q.length){const e=G.q.shift();e.d=e.nw?(G.k5=(G.k5||0)+5):0;e.slow=0;e.sp*=D.sp*G.sf;if(e.boss)G.fx.push({x:180,y:200,txt:e.suika?'巨大スイカメ 登場！':e.bt=='L'?'ラスボス登場！':'NUI'.includes(e.bt)?'中ボス登場！':'ボス登場！',t:1.6,c:'#ff4d6d'});if(e.boss&&e.cn)G.fx.push({x:180,y:230,txt:'調子：'+e.cn+(e.lv?'　Lv'+e.lv:'')+'！',t:2.2,c:bossCc(e.cn)});e.mx=e.hp;e.ty=e.boss?(e.bt||'D'):e.q?'Q':e.f?(((G.fc=(G.fc||0)+1)%2)?'G':'S'):NP()[D.ec?Math.random()*NP().length|0:(G.tc=(G.tc||0)+1)%NP().length];const ST={K:[1.3,.85],A:[2.6,.6],T:[.5,1.7],F:[.9,1.15],Y:[1.1,.7],J:[.45,1.0],O:[1.8,.55]}[e.ty];if(ST){e.hp*=ST[0];e.mx=e.hp;e.sp*=ST[1];if(e.ty=='A')e.rw=Math.round(e.rw*1.6)}e.r=G.cnt++%R.length;e.ro=getRo(e.r);e.d=Math.min(e.d,Math.max(0,e.ro.tot-60));if(e.ty=='Q'&&!G.mf){G.mf=1;G.fx.push({x:180,y:170,txt:'ミサイル接近！',t:1.6,c:'#ff4d6d'})}if('YJOQ'.includes(e.ty)){const z=R[e.r].P[R[e.r].P.length-1],a=spawnPt(z),W=[a];for(let k=0;k<(e.ty=='Q'?0:2);k++){let p,g=0;do{p=[30+Math.random()*300,40+Math.random()*320];g++}while(g<25&&(Math.hypot(p[0]-z[0],p[1]-z[1])<150||Math.hypot(p[0]-W[W.length-1][0],p[1]-W[W.length-1][1])<110));W.push(p)}W.push(z);e.fly=1;e.fro=mkRoP(W);e.ft=e.fro.tot;e.sx=a[0];e.sy=a[1];e.ex=z[0];e.ey=z[1];e.dr=a[0]<z[0]?1:-1;e.pat=Math.random()*3|0;e.ph=Math.random()*6.28}[e.x,e.y]=e.fly?(e.d=0,[e.sx,e.sy]):pos(e.d,e.ro);G.en.push(e);G.qt=e.nw?0:Math.max(.3,.75-G.wave*.005)*D.iv;if(e.nw&&G.q.length)ag=true}}while(ag)}
  for(const e of G.en){if(e.dead)continue;e.slow=Math.max(0,e.slow-dt);if(e.pois>0){e.pois-=dt;hit(e,e.pd*dt,{});if(e.dead)continue}if(e.fight&&e.fight.dead)e.fight=null;if(e.bk>0){const mvb=Math.min(e.bk,900*dt);e.bk-=mvb;e.d=Math.max(0,e.d-mvb)}if(e.stun>0)e.stun-=dt;else if(!e.fight)e.d+=e.sp*(e.slow>0?.5:1)*dt;{const ox=e.x,oy=e.y;[e.x,e.y]=e.fly?fpos(e):pos(e.d,e.ro);if(e.fly&&Math.abs(e.x-ox)>.05)e.dr=e.x>ox?1:-1;if(e.ty=='Q')e.ang=Math.atan2(e.y-oy,e.x-ox);pitCheck(e,ox,oy)}if(e.dead)continue;if(e.ty=='U'||e.ty=='I')midAbil(e,dt);
   if(e.d>=(e.fly?e.ft:e.ro.tot)){e.dead=true;e.gone=true;G.lives-=e.boss?(e.mid?3:5):1;sfx('leak');cheer('ファイト〜！');whine('うわぁぁん！',R[e.r].P[R[e.r].P.length-1]);hud();if(G.lives<=0){G.lives=0;hud();end(false)}}}
  for(const t of G.tw){if(t.stun>0){t.stun-=dt;continue}t.cd-=dt;if(t.cd>0)continue;let b=null;const dd=T[t.k];if(dd.cust)continue;
@@ -388,7 +414,8 @@ function update(dt){
   else if(dd.blast){const br=Math.max(dd.blast,t.rng+7);G.fx.push({x:t.x,y:t.y,r:br,t:.45,c:'#ff6a2f'});G.fx.push({x:t.x,y:t.y,r:br*.6,t:.3,c:'#ffd166'});for(const e of G.en)if(!e.dead&&Math.hypot(e.x-t.x,e.y-t.y)<=br)hit(e,t.dmg,dd)}
   else G.bl.push({x:t.x,y:t.y,t:b,d:dd,dmg:t.dmg})}
  MI.cd-=dt;if(MI.cd<=0&&!CH.away){const ml=G.ml||1,al=G.en.filter(e=>!e.dead),bs=al.find(e=>e.boss);let mn=null,md=1e9;if(ml>=2)for(const e of al){if(e.boss)continue;const dd=Math.hypot(e.x-54,e.y-392);if(ml<4&&(dd>140||(AIR(e)&&ml<3)))continue;if(dd<md){md=dd;mn=e}}if(bs||mn){MI.cd=1.2;MI.n++;for(const t of[bs,mn])if(t)G.bl.push({x:54,y:392,t,d:{col:'#ffc93c',star:1},dmg:5+G.wave*1.5});fsfx('star');if(MI.n%3==1)cheer(['えいっ！','それっ！','星のパワー！','退治するよ〜！'][Math.random()*4|0])}}
- if((G.ml||1)>=5&&G.active&&!CH.away&&G.en.some(e=>!e.dead)){MI.u=(MI.u===undefined?18:MI.u)-dt;if(MI.u<=0){MI.u=22+Math.random()*12;window.__miaNuke=1;try{for(let p=0;p<3;p++)for(const e of G.en.slice())if(!e.dead)hit(e,1e9,{})}finally{window.__miaNuke=0}window.miaHearts&&window.miaHearts(54,392,14);G.fx.push({x:180,y:200,txt:'ミラクルスターバースト！',t:1.8,c:'#ff4f93'});cheer('ミラクルスターバースト！');fsfx('star')}}
+ if((G.ml||1)>=5&&G.active&&!CH.away&&G.en.some(e=>!e.dead)){MI.u=(MI.u===undefined?18:MI.u)-dt;if(MI.u<=0){MI.u=22+Math.random()*12;const sk=new Set(),PR={'絶好調':.1,'好調':.3,'ふつう':.5,'不調':.7,'絶不調':.9};for(const e of G.en)if(!e.dead&&(e.suika||e.rafu||e.neko||e.dadan)){const pr=PR[e.cn];if(Math.random()<(pr===undefined?.5:pr))G.fx.push({x:e.x,y:e.y-20,txt:'一撃成功！',t:1.2,c:'#ff4f93'});else{sk.add(e);G.fx.push({x:e.x,y:e.y-20,txt:'効かなかった！',t:1.2,c:'#78909c'})}}
+window.__miaNuke=1;try{for(let p=0;p<3;p++)for(const e of G.en.slice())if(!e.dead&&!sk.has(e))hit(e,1e9,{})}finally{window.__miaNuke=0}window.miaHearts&&window.miaHearts(54,392,14);G.fx.push({x:180,y:200,txt:'ミラクルスターバースト！',t:1.8,c:'#ff4f93'});cheer('ミラクルスターバースト！');fsfx('star')}}
  for(const b of G.bl){if(b.t.dead){b.rm=1;continue}const dx=b.t.x-b.x,dy=b.t.y-b.y,L=Math.hypot(dx,dy),s=340*dt;
   if(L<=s){b.rm=1;if(b.d.spl){for(const e of G.en)if(!e.dead&&(!b.d.air||AIR(e))&&Math.hypot(e.x-b.t.x,e.y-b.t.y)<=b.d.spl)hit(e,b.dmg,b.d);G.fx.push({x:b.t.x,y:b.t.y,r:b.d.spl,t:.3,c:b.d.air?'#9be0ff':'#ff9a3c'})}else{hit(b.t,b.dmg,b.d);if(b.d.chain){let cur=b.t,seen=[cur];for(let k=0;k<b.d.chain;k++){let n=null,nd=70;for(const e of G.en){if(e.dead||seen.includes(e))continue;const q=Math.hypot(e.x-cur.x,e.y-cur.y);if(q<nd){nd=q;n=e}}if(!n)break;G.fx.push({ln:[cur.x,cur.y,n.x,n.y],t:.15,c:'#ffd000'});hit(n,b.dmg*.7,b.d);seen.push(n);cur=n}}}}
   else{b.x+=dx/L*s;b.y+=dy/L*s}}
@@ -577,7 +604,7 @@ function mkCard(win){const H=730,c=document.createElement('canvas');c.width=600;
  radarChart(g,300,520,120,!win);
  const t=(m,y,sz,col)=>{g.fillStyle=col;g.font='bold '+sz+'px "Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif';g.fillText(m,300,y,560)};
  t('みありなタワーディフェンス ウルトラDX',64,32,'#ff6fa5');t((PN||'プレイヤー')+' さん'+' '+danTxt(danGet(PN)),112,38,'#7a5cff');
- t(win?(D.ec?'フェーズ∞を1時間たえぬいた！':'全'+D.cl+'フェーズクリア！'):'フェーズ'+(D.ec?'∞':G.wave)+'まで到達',238,44,win?'#7a5cff':'#ff6b8b');
+ t(win?(D.ec?'フェーズ∞を30分たえぬいた！':'全'+D.cl+'フェーズクリア！'):'フェーズ'+(D.ec?'∞':G.wave)+'まで到達',238,44,win?'#7a5cff':'#ff6b8b');
  t('合計 '+G.sc+' 点',305,48,'#4a2740');if(G.ttl)t('🎀 '+G.ttl,184,24,'#ff6fa5');
  
  window._cc=c;rimg.src=c.toDataURL('image/png')}
@@ -4376,10 +4403,11 @@ P.measureText=function(t){t=String(t);if(!has(t))return _meas.call(this,t);const
     if(!best||dd<best.dist)best={r:r,o:o,d:sg.s+u*sg.l,dist:dd}}}
   return best}
 
+ function EW(){return(typeof D!=='undefined'&&D&&D.ec&&typeof ecLv==='function')?ecLv():G.wave}
  var HOLE_CHANCE=.12,HOLE_AWAY=170; /* 穴があくのは1フェーズごとに12%／利奈から170px（約4マス）以内にはあかない */
  function digHole(){
-  if(G.wave<2||(G.hi&&G.hi.nh>=G.wave)||Math.random()>=HOLE_CHANCE)return;
-  var max=Math.min(5,1+Math.floor(G.wave/5));if(G.hl.length>=max)return;
+  if(EW()<2||(G.hi&&G.hi.nh>=EW())||Math.random()>=(D&&D.ec?.35:HOLE_CHANCE))return;
+  var max=Math.min(5,1+Math.floor(EW()/5));if(G.hl.length>=max)return;
   var bad={};
   G.tw.forEach(function(o){bad[o.cx+','+o.cy]=1});G.hl.forEach(function(h){bad[h.cx+','+h.cy]=1});
   (G.starts||[]).forEach(function(p){bad[p[0]+','+p[1]]=1});if(G.goal)bad[G.goal[0]+','+G.goal[1]]=1;
@@ -4396,7 +4424,7 @@ P.measureText=function(t){t=String(t);if(!has(t))return _meas.call(this,t);const
   G.fx.push({x:p[0]*C+20,y:p[1]*C+8,txt:'あながあいた！',t:1.4,c:'#8a5a2b'})}
 
  function spawnMon(h){
-  var w=G.wave,pool=Object.keys(ST).filter(function(k){return w>=ST[k][3]});if(!pool.length)return false;
+  var w=EW(),pool=Object.keys(ST).filter(function(k){return w>=ST[k][3]});if(!pool.length)return false;
   var ty=pool[Math.floor(Math.random()*pool.length)],st=ST[ty];
   var hx=h.cx*C+20,hy=h.cy*C+20,nr=nearest(hx,hy);if(!nr)return false;
   var hp=(G.hpb||22)*st[0],sp=Math.min(42+w*3,95)*D.sp*(G.sf||1)*st[1];
@@ -4413,7 +4441,7 @@ P.measureText=function(t){t=String(t);if(!has(t))return _meas.call(this,t);const
    if(!G||G.over)return;
    var sd=dt*(G.speed||1);
    if(!G.hl)G.hl=[];
-   if(G.active&&G.hseen!==G.wave){G.hseen=G.wave;G.hmc=0;digHole()}
+   if(G.active&&G.hseen!==EW()){G.hseen=EW();G.hmc=0;digHole()}
    /* 武器や道でふさがれた穴を消す */
    for(var i=G.hl.length-1;i>=0;i--){var h=G.hl[i];
     if(G.tw.some(function(o){return o.cx===h.cx&&o.cy===h.cy})){
@@ -4423,7 +4451,7 @@ P.measureText=function(t){t=String(t);if(!has(t))return _meas.call(this,t);const
     else if(road.has(h.cx+','+h.cy))G.hl.splice(i,1)}
    for(var q=0;q<G.en.length;q++){var en=G.en[q];if(en.hm&&en.em>0)en.em-=sd}
    if(G.active&&G.q.length){
-    var cap=Math.min(14,4+Math.floor(G.wave/3));
+    var cap=Math.min(14,4+Math.floor(EW()/3));
     for(var j=0;j<G.hl.length;j++){var hh=G.hl[j];hh.age+=sd;hh.cd-=sd;
      if(hh.cd<=0&&(G.hmc|0)<cap){if(spawnMon(hh))G.hmc=(G.hmc|0)+1;hh.cd=Math.max(2.5,6-G.wave*.05)+Math.random()*3}}}
    else for(var m=0;m<G.hl.length;m++)G.hl[m].age+=sd;
@@ -6853,6 +6881,7 @@ window.__wx={load:load,stop:stop};
       {hp:G.hpb*RF_HP*D.bh,sp:RF_SP,f:false,boss:true,bt:'L',mid:false,rafu:1,rw:Math.round(500*D.rw)},
       {hp:G.hpb*NK_HP*D.bh,sp:NK_SP,f:false,boss:true,bt:'L',mid:false,neko:1,rw:NK_GOLD},
       {hp:G.hpb*DD_HP*D.bh,sp:DD_SP,f:false,boss:true,bt:'L',mid:false,dadan:1,rw:Math.round(800*D.rw)}];
+    G.q.forEach(function(q){bossCond(q)});
     /* ラスボス四天王は、ランダムな順番で1体ずつ登場 */
     for(let i=G.q.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[G.q[i],G.q[j]]=[G.q[j],G.q[i]]}
     /* 四天王のあとに、最終ラスボス「最終兵器田中」 */
@@ -6932,7 +6961,7 @@ window.__wx={load:load,stop:stop};
   /* 名前とHPバー */
   const by=y0+bob-u*1.2-14,W=62;
   x.save();x.textAlign='center';x.textBaseline='middle';x.font='bold 11px "Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif';
-  x.lineWidth=3;x.strokeStyle='#c2185b';x.strokeText('巨大スイカメ',x0,by-9);x.fillStyle='#fff';x.fillText('巨大スイカメ',x0,by-9);
+  x.lineWidth=3;x.strokeStyle='#c2185b';x.strokeText(bossNm(e,'巨大スイカメ'),x0,by-9);x.fillStyle='#fff';x.fillText(bossNm(e,'巨大スイカメ'),x0,by-9);
   x.fillStyle='rgba(20,5,40,.5)';x.fillRect(x0-W/2,by,W,6);x.fillStyle='#3ddc84';x.fillRect(x0-W/2,by,W*Math.max(0,e.hp/e.mx),6);
   x.restore()}
 
@@ -7068,7 +7097,7 @@ window.__wx={load:load,stop:stop};
   /* 名前とHPバー */
   const hy=cy-topPx-(st==2?22:10),W=62;
   x.save();x.textAlign='center';x.textBaseline='middle';x.font='bold 11px "Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif';
-  x.lineWidth=3;x.strokeStyle='#c2185b';x.strokeText('ラフレシアバニー',x0,hy-9);x.fillStyle='#fff';x.fillText('ラフレシアバニー',x0,hy-9);
+  x.lineWidth=3;x.strokeStyle='#c2185b';x.strokeText(bossNm(e,'ラフレシアバニー'),x0,hy-9);x.fillStyle='#fff';x.fillText(bossNm(e,'ラフレシアバニー'),x0,hy-9);
   x.fillStyle='rgba(20,5,40,.5)';x.fillRect(x0-W/2,hy,W,6);x.fillStyle='#3ddc84';x.fillRect(x0-W/2,hy,W*Math.max(0,e.hp/e.mx),6);
   x.restore()}
 
@@ -7160,7 +7189,7 @@ window.__wx={load:load,stop:stop};
   /* 名前とHPバー */
   const hy=y0-3.7*bu-10,W=62;
   x.save();x.textAlign='center';x.textBaseline='middle';x.font='bold 11px "Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif';
-  x.lineWidth=3;x.strokeStyle='#c2185b';x.strokeText('まねきねこロボ',x0,hy-9);x.fillStyle='#fff';x.fillText('まねきねこロボ',x0,hy-9);
+  x.lineWidth=3;x.strokeStyle='#c2185b';x.strokeText(bossNm(e,'まねきねこロボ'),x0,hy-9);x.fillStyle='#fff';x.fillText(bossNm(e,'まねきねこロボ'),x0,hy-9);
   x.fillStyle='rgba(20,5,40,.5)';x.fillRect(x0-W/2,hy,W,6);x.fillStyle='#3ddc84';x.fillRect(x0-W/2,hy,W*Math.max(0,e.hp/e.mx),6);
   x.restore()}
 
@@ -7249,7 +7278,7 @@ window.__wx={load:load,stop:stop};
   /* 名前とHPバー */
   const hy=y0-4.5*bu-12,W=62,lx=x0-14;
   x.save();x.textAlign='center';x.textBaseline='middle';x.font='bold 11px "Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif';
-  x.lineWidth=3;x.strokeStyle='#4a148c';x.strokeText('大魔王ダダン',lx,hy-9);x.fillStyle='#fff';x.fillText('大魔王ダダン',lx,hy-9);
+  x.lineWidth=3;x.strokeStyle='#4a148c';x.strokeText(bossNm(e,'大魔王ダダン'),lx,hy-9);x.fillStyle='#fff';x.fillText(bossNm(e,'大魔王ダダン'),lx,hy-9);
   x.fillStyle='rgba(20,5,40,.5)';x.fillRect(lx-W/2,hy,W,6);x.fillStyle='#3ddc84';x.fillRect(lx-W/2,hy,W*Math.max(0,e.hp/e.mx),6);
   x.restore()}
 
@@ -7390,6 +7419,19 @@ window.__wx={load:load,stop:stop};
    const nn=al.filter(a=>a.k==='N');G.al=al.filter(a=>a.k!=='N');
    try{_aUN(dt)}finally{G.al=(G.al||[]).concat(nn.filter(a=>!a.dead))}
   }else _aUN(dt)};
+ /* エクリプス：味方はやられても何度でも蘇って、ゴールから出撃しなおす */
+ const _aUR=allyUp;
+ allyUp=function(dt){_aUR(dt);try{
+  if(typeof D!=='undefined'&&D&&D.ec&&G&&G.active&&!G.over&&G.own&&R&&R[0]){
+   const rt=G.ecRv||(G.ecRv={});
+   for(const k of Object.keys(G.own)){
+    const need=G.own[k]|0;if(!need||!AL[k])continue;
+    const alive=(G.al||[]).filter(a=>a.ow&&a.k===k&&!a.dead).length;
+    if(alive>=need){rt[k]=0;continue}
+    rt[k]=(rt[k]||0)+dt;
+    if(rt[k]>=2){rt[k]=0;spawnAlly(k,alive)}
+   }
+  }}catch(e){}};
 
  const _alc=allyLvCost;allyLvCost=function(k){return k==='N'?Math.round(20000*(G.alv[k]||1)*D.cost):_alc(k)};
  const NAM=[];
@@ -8132,5 +8174,185 @@ bgm=function(on,k){
 window.__ecStage={getRev:getRev,burst:function(s){startBurst(!!s,performance.now()/1000)},FX:FX};
 })();
 </script>
+<script>
+/* ===== エクリプス 真のラスボス「イエロ」 ===== */
+(function(){
+var YE_T=165,YE_HP=12,YE_SP=22,BEAT=60000/124,UTIL={M:1,X:1,L:1,I:1},SKIN='#f2c29b';
+function on(){try{return typeof D!=='undefined'&&D&&D.ec&&typeof G!=='undefined'&&G&&G.en&&!G.over}catch(_){return false}}
+function alive(){if(!on())return false;for(var i=0;i<G.en.length;i++){var e=G.en[i];if(e&&e.yero&&!e.dead)return true}return false}
+function paused(){try{return typeof PZ!=='undefined'&&PZ}catch(_){return false}}
+function hsl(h,s,l,a){return 'hsla('+((((h%360)+360)%360)|0)+','+s+'%,'+l+'%,'+(a==null?1:a)+')'}
+var dsc=0,lastT=0,nk=0;
+
+/* 登場：四天王のあと（ラスト約2分45秒）に出す。ふつうのボスくらいの強さ */
+var _bu=ecBossUp;
+ecBossUp=function(){
+ _bu.apply(this,arguments);
+ try{
+  if(!Array.isArray(G.ecBs))return;
+  var s=G.ecBs.find(function(b){return b&&b.k==='yero'});
+  if(!s){s={k:'yero',t:Math.max(0,EC_SEC-YE_T),done:0};G.ecBs.push(s)}
+  if(s.done||G.ecT<s.t)return;
+  s.done=1;
+  G.q.unshift({hp:ecHp(ecLv())*YE_HP*D.bh,sp:YE_SP,f:false,boss:true,bt:'L',mid:false,yero:1,rw:Math.round(30000*D.rw)});G.qt=0;
+ }catch(e){console.error('yero',e)}
+};
+
+/* 武器は全部ダンス中＝攻撃しない（味方・未亜の星は動く）。登場メッセージ */
+var _upd=update;
+update=function(dt){
+ try{if(on()&&!paused()&&alive())for(var i=0;i<G.tw.length;i++){var t=G.tw[i];if(!t||UTIL[t.k])continue;if(!(t.stun>0))t._yz=1;if(!(t.stun>.3))t.stun=.3}}catch(_){}
+ var r=_upd.apply(this,arguments);
+ try{if(on())for(var j=0;j<G.en.length;j++){var e=G.en[j];if(e&&e.yero&&!e._yi){e._yi=1;
+  G.fx.push({x:180,y:150,txt:'真のラスボス イエロ 登場！',t:2.8,c:'#ff4fd8'});
+  G.fx.push({x:180,y:190,txt:'マップがディスコに！',t:2.6,c:'#ffd23f'});
+  G.fx.push({x:180,y:230,txt:'武器はダンスに夢中…',t:2.8,c:'#7ee7ff'});
+  G.fx.push({x:180,y:255,txt:'味方にまかせよう！',t:2.8,c:'#7ee7ff'});}}}catch(_){}
+ return r};
+
+/* 未亜の一撃必殺は効かない */
+var _hit=hit;
+hit=function(e,dmg,d){
+ if(e&&e.yero&&window.__miaNuke){var n=performance.now();if(n-nk>2000){nk=n;try{G.fx.push({x:e.x,y:e.y-70,txt:'イエロには効かない！',t:1.4,c:'#ff4fd8'})}catch(_){}}return}
+ var was=!!(e&&e.yero&&!e.dead),r=_hit.apply(this,arguments);
+ if(was&&e.dead&&!e._yk){e._yk=1;try{G.fx.push({x:180,y:170,txt:'イエロを撃破！',t:2.4,c:'#ffd23f'});G.fx.push({x:180,y:210,txt:'ディスコ終了〜♪',t:2.2,c:'#ff4fd8'})}catch(_){}}
+ return r};
+
+/* 味方はみんなイエロと戦える（同時にもOK）／ムチで味方化・ムチ回転は不可 */
+var _ok=okT;okT=function(a,e){if(e&&e.yero)return !e.dead;return _ok.apply(this,arguments)};
+var _wc=wConv;wConv=function(e){if(e&&e.yero)return false;return _wc.apply(this,arguments)};
+var _ws=window.whipSpin;
+if(_ws)window.whipSpin=function(t){if(alive()){G.fx.push({x:t.x,y:t.y-24,txt:'ムチもノリノリ♪',t:1.2,c:'#ff4fd8'});return}return _ws.apply(this,arguments)};
+
+/* 武器のダンス */
+var _dT=drawTower;
+drawTower=function(c,k,px,py,a,lv){
+ if(c===x&&dsc>.02){
+  var ph=Math.PI*performance.now()/BEAT+px*.05+py*.03,sy=1+.09*Math.sin(ph*2)*dsc;
+  c.save();c.translate(px,py-Math.abs(Math.sin(ph))*6*dsc);c.rotate(Math.sin(ph*.5)*.26*dsc);c.scale(2-sy,sy);c.translate(-px,-py);
+  try{return _dT.apply(this,arguments)}finally{c.restore()}
+ }
+ return _dT.apply(this,arguments)};
+
+/* ディスコ演出：光る床・ビーム・ミラーボール・音符 */
+function disco(t,k){
+ var s=t/1000,pulse=Math.pow(1-(t%BEAT)/BEAT,2.2),bc=Math.floor(t/BEAT),i,j,b,q;
+ x.save();
+ x.globalAlpha=.22*k;x.fillStyle='#14002b';x.fillRect(0,0,360,440);
+ x.globalCompositeOperation='overlay';
+ for(i=0;i<COLS;i++)for(j=0;j<ROWS;j++){x.globalAlpha=k*(((i+j+bc)&1)?.2:.6)*(.7+.3*pulse);x.fillStyle=hsl(i*40+j*25+s*70,95,55);x.fillRect(i*C,j*C,C,C)}
+ x.globalCompositeOperation='lighter';
+ var ox=[30,330,120,240];
+ for(b=0;b<4;b++){
+  var an=Math.PI/2+Math.sin(s*1.1+b*1.9)*.75*(b%2?-1:1),w=.13+.05*Math.sin(s*2+b),L=560,h=s*90+b*90,g=x.createLinearGradient(ox[b],0,ox[b]+Math.cos(an)*L,Math.sin(an)*L);
+  g.addColorStop(0,hsl(h,100,70,.5*k));g.addColorStop(1,hsl(h,100,70,0));x.globalAlpha=1;x.fillStyle=g;
+  x.beginPath();x.moveTo(ox[b],-4);x.lineTo(ox[b]+Math.cos(an-w)*L,Math.sin(an-w)*L);x.lineTo(ox[b]+Math.cos(an+w)*L,Math.sin(an+w)*L);x.closePath();x.fill()}
+ for(q=0;q<26;q++){var aq=q*2.399+s*.35*(q%2?1:-1),rd=50+(q*13)%190;x.globalAlpha=k*.8;x.fillStyle=hsl(q*40+s*90,100,75);x.beginPath();x.arc(180+Math.cos(aq)*rd,200+Math.sin(aq)*rd*1.15,1.5+2*pulse,0,7);x.fill()}
+ x.globalCompositeOperation='source-over';x.globalAlpha=k;
+ x.strokeStyle='rgba(255,255,255,.6)';x.lineWidth=1;x.beginPath();x.moveTo(180,0);x.lineTo(180,3);x.stroke();
+ var rg=x.createRadialGradient(176,14,2,180,20,17);rg.addColorStop(0,'#fff');rg.addColorStop(.5,'#b8c4d6');rg.addColorStop(1,'#5d6b85');
+ x.fillStyle=rg;x.beginPath();x.arc(180,20,16,0,7);x.fill();x.strokeStyle='rgba(40,50,80,.55)';x.lineWidth=.8;
+ for(i=0;i<4;i++){x.beginPath();x.ellipse(180,20,Math.abs(16*Math.cos(s*1.2+i*Math.PI/4)),16,0,0,7);x.stroke()}
+ for(i=-3;i<=3;i+=2){var ly=20+i*4.5,hw=Math.sqrt(256-(i*4.5)*(i*4.5));x.beginPath();x.moveTo(180-hw,ly);x.lineTo(180+hw,ly);x.stroke()}
+ x.textAlign='center';x.textBaseline='middle';x.font='bold 13px sans-serif';
+ for(i=0;i<G.tw.length;i++){var tw=G.tw[i];if(!tw)continue;var sd=tw.x*.07+tw.y*.13,ph=(s*.9+sd)%1;
+  x.globalAlpha=Math.sin(ph*Math.PI)*k;x.fillStyle=hsl(sd*90+s*100,100,65);x.fillText(((i+((s*.9+sd)|0))%2)?'♪':'♫',tw.x+Math.sin(ph*5+sd)*8,tw.y-20-ph*26)}
+ x.restore()}
+function rr(c,x0,y0,w,h,r){c.beginPath();c.moveTo(x0+r,y0);c.arcTo(x0+w,y0,x0+w,y0+h,r);c.arcTo(x0+w,y0+h,x0,y0+h,r);c.arcTo(x0,y0+h,x0,y0,r);c.arcTo(x0,y0,x0+w,y0,r);c.closePath()}
+var _d2=draw2;
+draw2=function(){
+ var now=performance.now(),dt=Math.min(.1,Math.max(0,(now-lastT)/1000)),al=false,hid=[],i;lastT=now;
+ try{al=alive()}catch(_){}
+ dsc+=((al?1:0)-dsc)*Math.min(1,dt*2.5);if(!al&&dsc<.005)dsc=0;
+ try{if(on()&&G.tw)for(i=0;i<G.tw.length;i++){var t=G.tw[i];if(!t||!t._yz)continue;if(!al){t._yz=0;t.stun=0}else if(t.stun>0){hid.push([t,t.stun]);t.stun=0}}}catch(_){}
+ try{_d2.apply(this,arguments)}finally{for(i=0;i<hid.length;i++)hid[i][0].stun=hid[i][1]}
+ if(dsc>.01){try{disco(now,dsc)}catch(e){console.error('disco',e)}}};
+
+/* イエロ本体：ラジカセを持ち上げて踊る、赤髪サングラスのスペイン人DJ */
+function drawYero(e,t){
+ var c=x,s=t/1000,ph=Math.PI*t/BEAT,bob=Math.abs(Math.sin(ph)),sw=Math.sin(ph/2),pulse=Math.pow(1-(t%BEAT)/BEAT,2.2),lift=-bob*4,i;
+ var ox=e.x,oy=e.y+14;c.save();c.translate(ox,oy);c.lineCap='round';
+ c.save();c.globalCompositeOperation='lighter';var hg=c.createRadialGradient(0,-38,4,0,-38,52);hg.addColorStop(0,hsl(s*120,100,60,.35+.2*pulse));hg.addColorStop(1,hsl(s*120+90,100,60,0));c.fillStyle=hg;c.beginPath();c.arc(0,-38,52,0,7);c.fill();c.restore();
+ c.fillStyle='rgba(0,0,0,.28)';c.beginPath();c.ellipse(0,1,15-bob*3,4.2,0,0,7);c.fill();
+ var lf=Math.max(0,sw),rf=Math.max(0,-sw);
+ c.strokeStyle='#1d1d2b';c.lineWidth=6.5;c.beginPath();c.moveTo(-4,lift-22);c.lineTo(-6-lf*4,-lf*9);c.moveTo(4,lift-22);c.lineTo(6+rf*4,-rf*9);c.stroke();
+ c.fillStyle='#fafafa';c.beginPath();c.ellipse(-7-lf*4,-lf*9+1,5.5,3,0,0,7);c.ellipse(7+rf*4,-rf*9+1,5.5,3,0,0,7);c.fill();
+ c.save();c.translate(0,lift-22);c.rotate(sw*.1);
+ c.fillStyle='#ffd23f';c.beginPath();c.moveTo(-9.5,0);c.lineTo(9.5,0);c.quadraticCurveTo(11,-10,8.5,-20);c.lineTo(-8.5,-20);c.quadraticCurveTo(-11,-10,-9.5,0);c.closePath();c.fill();
+ c.save();c.clip();c.strokeStyle='#e53935';c.lineWidth=2.4;for(i=-2;i<=3;i++){c.beginPath();c.moveTo(-14,-22+i*6);c.lineTo(14,-10+i*6);c.stroke()}c.restore();
+ c.fillStyle=SKIN;c.beginPath();c.moveTo(-3.5,-20);c.lineTo(3.5,-20);c.lineTo(0,-12);c.fill();
+ c.strokeStyle='#ffb300';c.lineWidth=1.2;c.beginPath();c.arc(0,-19,5,.5,2.6);c.stroke();
+ c.fillStyle='#b71c1c';c.fillRect(-9.5,-3,19,3);
+ /* 頭 */
+ c.save();c.translate(0,-20);c.rotate(-sw*.16);
+ var hs=sw*2-bob*1.5;
+ c.fillStyle='#b71c1c';c.beginPath();c.ellipse(0,-10,10.5,9.5,0,0,7);c.fill();
+ c.fillStyle=SKIN;c.beginPath();c.ellipse(0,-8,8,8.8,0,0,7);c.fill();
+ c.fillStyle='#e53935';c.beginPath();c.moveTo(-9,-11);c.quadraticCurveTo(-11+hs,-25,hs,-22);c.quadraticCurveTo(12+hs,-25,9,-11);c.quadraticCurveTo(4,-16,0,-14.5);c.quadraticCurveTo(-4,-16,-9,-11);c.fill();
+ c.strokeStyle='#ff8a80';c.lineWidth=1.4;c.beginPath();c.moveTo(-5+hs*.8,-19);c.quadraticCurveTo(hs,-22,5+hs,-19);c.stroke();
+ c.fillStyle='#0b0b12';
+ c.beginPath();c.moveTo(-8.5,-9.5);c.lineTo(-.9,-9.5);c.lineTo(-1.6,-4.5);c.quadraticCurveTo(-4.7,-3,-7.6,-4.5);c.fill();
+ c.beginPath();c.moveTo(8.5,-9.5);c.lineTo(.9,-9.5);c.lineTo(1.6,-4.5);c.quadraticCurveTo(4.7,-3,7.6,-4.5);c.fill();
+ c.fillRect(-1,-9.4,2,1.4);c.strokeStyle='rgba(255,255,255,.8)';c.lineWidth=1;c.beginPath();c.moveTo(-7,-8.4);c.lineTo(-5,-9.2);c.moveTo(2.6,-8.4);c.lineTo(4.6,-9.2);c.stroke();
+ c.fillStyle='#8d1a1a';c.beginPath();c.moveTo(0,-2.6);c.quadraticCurveTo(-3,-4.2,-6,-2.2);c.quadraticCurveTo(-3,-1.6,0,-1.8);c.quadraticCurveTo(3,-1.6,6,-2.2);c.quadraticCurveTo(3,-4.2,0,-2.6);c.fill();
+ c.fillStyle='#fff';c.strokeStyle='#5a1e1e';c.lineWidth=.9;c.beginPath();c.moveTo(-3.6,-.4);c.quadraticCurveTo(0,4.2,3.6,-.4);c.closePath();c.fill();c.stroke();
+ c.restore();
+ /* 右腕でラジカセを持ち上げる */
+ var hx=14+sw*2.5,hy=-37-bob*2;
+ c.strokeStyle='#ffd23f';c.lineWidth=5;c.beginPath();c.moveTo(8.5,-17);c.lineTo(16,-27);c.stroke();
+ c.strokeStyle=SKIN;c.lineWidth=4;c.beginPath();c.moveTo(16,-27);c.lineTo(hx,hy);c.stroke();
+ c.save();c.translate(hx+1,hy-9);
+ c.strokeStyle='#263238';c.lineWidth=2;c.beginPath();c.moveTo(-8,-8);c.quadraticCurveTo(0,-15,8,-8);c.stroke();
+ c.strokeStyle='#b0bec5';c.lineWidth=1.2;c.beginPath();c.moveTo(11,-8);c.lineTo(17,-19);c.stroke();
+ c.fillStyle='#37474f';rr(c,-15,-8,30,16,3);c.fill();c.strokeStyle='#cfd8dc';c.lineWidth=1;c.stroke();
+ c.fillStyle='#e53935';c.fillRect(-14,-7.2,28,2);c.fillStyle='#ffd23f';c.fillRect(-14,-5.2,28,1);
+ for(i=-1;i<=1;i+=2){c.fillStyle='#1b2428';c.beginPath();c.arc(i*9,1.5,5.6,0,7);c.fill();c.fillStyle='#90a4ae';c.beginPath();c.arc(i*9,1.5,3+pulse*1.6,0,7);c.fill();c.fillStyle='#263238';c.beginPath();c.arc(i*9,1.5,1.3+pulse*.8,0,7);c.fill()}
+ c.fillStyle='#0d1f26';c.fillRect(-4.5,-2,9,6);c.fillStyle=hsl(s*200,100,60);c.fillRect(-3.5,-1,2,1.6);c.fillRect(1.5,-1,2,1.6);
+ c.restore();
+ c.fillStyle=SKIN;c.beginPath();c.arc(hx,hy,2.8,0,7);c.fill();
+ /* 左腕はディスコポーズ */
+ var a=-2.2+sw*.7,e1x=-8.5+Math.cos(a+.35)*9,e1y=-17+Math.sin(a+.35)*9,h1x=e1x+Math.cos(a-.2)*9,h1y=e1y+Math.sin(a-.2)*9;
+ c.strokeStyle='#ffd23f';c.lineWidth=5;c.beginPath();c.moveTo(-8.5,-17);c.lineTo(e1x,e1y);c.stroke();
+ c.strokeStyle=SKIN;c.lineWidth=4;c.beginPath();c.moveTo(e1x,e1y);c.lineTo(h1x,h1y);c.stroke();
+ c.lineWidth=2;c.beginPath();c.moveTo(h1x,h1y);c.lineTo(h1x+Math.cos(a-.2)*5,h1y+Math.sin(a-.2)*5);c.stroke();
+ c.fillStyle=SKIN;c.beginPath();c.arc(h1x,h1y,2.6,0,7);c.fill();
+ c.restore();
+ /* 音符・状態・名前とHP */
+ c.textAlign='center';c.textBaseline='middle';c.font='bold 12px sans-serif';
+ for(i=0;i<3;i++){var p=(s*.9+i/3)%1;c.globalAlpha=Math.sin(p*Math.PI);c.fillStyle=hsl(i*110+s*120,100,70);c.fillText(['♪','♫','♬'][i],hx+1+(i-1)*9+Math.sin(p*6+i)*4,lift-80-p*26)}
+ c.globalAlpha=1;
+ if(e.slow>0){c.strokeStyle='rgba(120,200,255,.85)';c.lineWidth=2;c.beginPath();c.arc(0,-32,26,0,7);c.stroke()}
+ var hy2=(oy-96<12)?14:-96,W=64;
+ c.font='bold 11px "Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif';c.lineWidth=3;c.strokeStyle='#4a148c';
+ c.strokeText('真のラスボス イエロ',0,hy2-9);c.fillStyle='#fff';c.fillText('真のラスボス イエロ',0,hy2-9);
+ c.fillStyle='rgba(20,5,40,.55)';c.fillRect(-W/2,hy2,W,6);c.fillStyle=hsl(s*60+300,90,60);c.fillRect(-W/2,hy2,W*Math.max(0,Math.min(1,e.hp/(e.mx||e.hp||1))),6);
+ c.restore()}
+var _de=drawEn2;
+drawEn2=function(e,t){if(e&&e.yero&&e.x!=null){try{drawYero(e,t)}catch(err){console.error(err)}return}return _de.apply(this,arguments)};
+})();
+</script>
 </body></html>
+<script>
+/* ===== 四天王（スイカ・ラフ・ネコ・ダダン）：地味にコンパクトなキラキラ ===== */
+(function(){
+var _d=drawEn2;
+drawEn2=function(e,t){
+ var r=_d.apply(this,arguments);
+ try{
+  if(e&&!e.dead&&e.x!=null&&(e.suika||e.rafu||e.neko||e.dadan)){
+   var c=x,s=t/1000,seed=e.suika?0:e.rafu?1.3:e.neko?2.6:3.9;
+   c.save();c.globalCompositeOperation='lighter';
+   for(var i=0;i<5;i++){
+    var tw=(s*.8+i*.2+seed)%1,a=Math.sin(tw*Math.PI);if(a<.05)continue;
+    var an=i*2.4+seed+s*.35,rd=15+(i*7)%9,px=e.x+Math.cos(an)*rd,py=e.y-6+Math.sin(an)*rd*.8,sz=1+1.6*a;
+    c.globalAlpha=.65*a;c.fillStyle=i%2?'#fff6c8':'#d8f4ff';
+    c.beginPath();c.moveTo(px,py-sz*1.6);c.lineTo(px+sz*.4,py-sz*.4);c.lineTo(px+sz*1.6,py);c.lineTo(px+sz*.4,py+sz*.4);
+    c.lineTo(px,py+sz*1.6);c.lineTo(px-sz*.4,py+sz*.4);c.lineTo(px-sz*1.6,py);c.lineTo(px-sz*.4,py-sz*.4);c.closePath();c.fill();
+   }
+   c.restore();
+  }
+ }catch(err){}
+ return r};
+})();
+</script>
 </body></html>
