@@ -8558,4 +8558,19 @@ var YERO_B64='SUQzBAAAAAAAM1RJVDIAAAAGAAADeWVybwBUU1NFAAAADwAAA0xhdmY2MC4xNi4xMD
  };
 })();
 </script>
+<script>
+/* 直線では SOSボタン（I）を置けない・使えない */
+(function(){
+ var _tmS=tapMap;
+ tapMap=function(px,py){
+  if(srIs()&&build==='I'){try{G.fx.push({x:px,y:py,txt:'直線ではSOSボタンは使えないよ',t:1.2,c:'#ff4d6d'})}catch(e){}return}
+  return _tmS.apply(this,arguments);
+ };
+ var _psS=window.phaseSkip;
+ window.phaseSkip=function(){
+  if(srIs()){try{G.fx.push({x:180,y:200,txt:'直線ではSOSボタンは使えないよ',t:1.2,c:'#ff4d6d'})}catch(e){}return}
+  return _psS&&_psS.apply(this,arguments);
+ };
+})();
+</script>
 </body></html>
