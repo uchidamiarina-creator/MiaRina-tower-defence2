@@ -8773,11 +8773,12 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
  var TRC=[],STUN=[];
   function trStar(cx,cy,R){x.beginPath();for(var k=0;k<10;k++){var a=-Math.PI/2+k*Math.PI/5,rr=k%2?R*.45:R;x.lineTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr)}x.closePath();x.fillStyle='#ffd23f';x.strokeStyle='#8a5a00';x.lineWidth=1.2;x.fill();x.stroke()}
   function trStun(){for(var i=STUN.length-1;i>=0;i--){var s=STUN[i];s.t+=.016;if(s.t>=1.6){STUN.splice(i,1);continue}var al=Math.min(1,(1.6-s.t)/.4),a=s.t*7;x.save();x.globalAlpha=al;for(var k=0;k<3;k++){var an=a+k*2.094;trStar(s.x+Math.cos(an)*16,s.y-6+Math.sin(an)*5,5.5)}x.restore()}}
- function trPick(e){var g=gp();e.djMia=Math.random()<.7;var mp=null;try{if(e.djMia&&window.miaPos)mp=window.miaPos()}catch(_){mp=null}e.djTx=e.djMia?(mp?mp[0]:50):g[0];e.djTy=e.djMia?(mp?mp[1]:385):g[1]-11;e.djDir=e.djTx>=e.x?1:-1}
+ function trPick(e){var g=gp();e.djMia=Math.random()<.5;var mp=null;try{if(e.djMia&&window.miaPos)mp=window.miaPos()}catch(_){mp=null}e.djTx=e.djMia?(mp?mp[0]:50):g[0];e.djTy=e.djMia?(mp?mp[1]:385):g[1]-11;e.djDir=e.djTx>=e.x?1:-1}
  /* スズメがレコードを壊した時のスクラッチ音（BGMの上に重ねる） */
  function trScratch(){try{if(typeof SND!=='undefined'&&!SND)return;var a=ac();if(!a)return;var t=a.currentTime,d=.28,n=Math.floor(a.sampleRate*d),bf=a.createBuffer(1,n,a.sampleRate),c=bf.getChannelData(0);for(var i=0;i<n;i++)c[i]=(Math.random()*2-1)*(1-i/n);var src=a.createBufferSource(),f=a.createBiquadFilter(),g=a.createGain();src.buffer=bf;f.type='bandpass';f.Q.value=1.2;f.frequency.setValueAtTime(2600,t);f.frequency.exponentialRampToValueAtTime(700,t+d);g.gain.setValueAtTime(.5,t);g.gain.exponentialRampToValueAtTime(.001,t+d);src.connect(f);f.connect(g);g.connect(a.destination);src.start(t)}catch(e){}}
  function trPos(r){var p=Math.min(1,r.t/r.T);return [r.x0+(r.x1-r.x0)*p,r.y0+(r.y1-r.y0)*p-Math.sin(p*Math.PI)*60]}
   function trDrawRec(r){
+  if(r.t<0)return;
   var pp=trPos(r),X=pp[0],Y=pp[1];
   x.save();x.translate(X,Y);x.rotate(r.t*14);
   x.fillStyle='#161616';x.beginPath();x.arc(0,0,11,0,7);x.fill();
@@ -8798,16 +8799,28 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
    if(srIs()&&G&&G.active&&!G.over&&!PZ&&G.en){
     G.en.forEach(function(e){
      if(!e||!e.yero||e.dead||e.yBye||!e.ro||e.d<e.ro.tot/2)return;
-     if(!e.djOn){e.djOn=1;e.djT=0;trPick(e);G.fx.push({x:e.x,y:e.y-60,txt:'DJプレイ開始！',t:1.8,c:'#ff2e63'})}
+     if(!e.djOn){e.djOn=1;e.djT=3.5;trPick(e);G.fx.push({x:e.x,y:e.y-60,txt:'DJプレイ開始！',t:1.8,c:'#ff2e63'})}
      e.sp=0;e.bk=0;e.d=e.ro.tot/2;
      e.djT=(e.djT||0)+dt;
-     if(e.djT>=10){
-      e.djT-=10;
+     if(e.djT>=5.5){
+      e.djT-=5.5;
       var x0=e.x+(e.djDir||1)*28,y0=e.y-40;
-      TRC.push({x0:x0,y0:y0,x1:e.djTx,y1:e.djTy,mia:e.djMia,t:0,T:Math.max(1,Math.hypot(e.djTx-x0,e.djTy-y0)/80)});
+      TRC.push({x0:x0,y0:y0,x1:e.djTx,y1:e.djTy,mia:e.djMia,t:0,T:Math.max(1.5,Math.hypot(e.djTx-x0,e.djTy-y0)/55)});
+      trPick(e);
+      TRC.push({x0:x0,y0:y0-8,x1:e.djTx,y1:e.djTy,mia:e.djMia,t:-.6,T:Math.max(1.5,Math.hypot(e.djTx-x0,e.djTy-y0)/55)});
       trPick(e);
      }
     });
+    /* イエロがいる間、ターゲットのないスズメはマップをランダムに飛び回る */
+    if((G.en||[]).some(function(e){return e&&e.yero&&e.djOn&&!e.dead&&!e.yBye})){
+     G.al.forEach(function(a){
+      if(!a||a.k!=='B'||a.dead||a.tg)return;
+      a.sleep=false;a.eng=false;
+      if(a._fx===undefined||Math.hypot(a._fx-a.x,a._fy-a.y)<8||(a._ft=(a._ft||0)-dt)<=0){a._fx=25+Math.random()*310;a._fy=50+Math.random()*470;a._ft=2+Math.random()*2}
+      var dx=a._fx-a.x,dy=a._fy-a.y,L=Math.hypot(dx,dy)||1,st=Math.min(L,a.sp*.8*dt);
+      a.x+=dx/L*st;a.y+=dy/L*st;a.dr=dx>=0?1:-1;
+     });
+    }
     /* スズメ（空の味方）は近くまで来たレコードを撃ち落とす */
     G.al.forEach(function(a){
      if(!a||a.k!=='B'||!(a.hp>0))return;
@@ -8815,7 +8828,7 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
      if(a._rc>0)return;
      for(var j=TRC.length-1;j>=0;j--){
       var q=trPos(TRC[j]);
-      if(Math.hypot(q[0]-a.x,q[1]-a.y)<=60){
+      if(TRC[j].t>=0){
        G.fx.push({x:q[0],y:q[1]-16,txt:'スズメが撃ち落とした！',t:1.2,c:'#2e9e5b'});
        TRC.splice(j,1);a._rc=.8;trScratch();cheer('流石スズメさん！');break;
       }
@@ -8823,7 +8836,7 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     });
     for(var i=TRC.length-1;i>=0;i--){
      var r=TRC[i];r.t+=dt;
-     if(r.t>=r.T){TRC.splice(i,1);STUN.push({x:r.x1,y:r.y1-34,t:0});if(r.mia){cheer('あぶない！')}else{try{window.lose(1,r.x1,r.y1,'レコード命中！ -1',true)}catch(_){}}}
+     if(r.t>=r.T){TRC.splice(i,1);STUN.push({x:r.x1,y:r.y1-34,t:0});if(r.mia){G.fx.push({x:r.x1,y:r.y1-30,txt:'未亜にレコード命中！',t:1.4,c:'#ff2e63'});cheer('レコード投げるな！')}else{try{window.lose(1,r.x1,r.y1,'レコード命中！ -1',true)}catch(_){}}}
     }
    }
   }catch(_){}
