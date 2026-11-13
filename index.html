@@ -8777,12 +8777,12 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
  var TRC=[],STUN=[];
   function trStar(cx,cy,R){x.beginPath();for(var k=0;k<10;k++){var a=-Math.PI/2+k*Math.PI/5,rr=k%2?R*.45:R;x.lineTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr)}x.closePath();x.fillStyle='#ffd23f';x.strokeStyle='#8a5a00';x.lineWidth=1.2;x.fill();x.stroke()}
   function trStun(){for(var i=STUN.length-1;i>=0;i--){var s=STUN[i];s.t+=.016;if(s.t>=1.6){STUN.splice(i,1);continue}var al=Math.min(1,(1.6-s.t)/.4),a=s.t*7;x.save();x.globalAlpha=al;for(var k=0;k<3;k++){var an=a+k*2.094;trStar(s.x+Math.cos(an)*16,s.y-6+Math.sin(an)*5,5.5)}x.restore()}}
- function trPick(e){var g=gp();e.djMia=Math.random()<.5;var mp=null;try{if(e.djMia&&window.miaPos)mp=window.miaPos()}catch(_){mp=null}e.djTx=e.djMia?(mp?mp[0]:50):g[0];e.djTy=e.djMia?(mp?mp[1]:385):g[1]-11;e.djDir=e.djTx>=e.x?1:-1}
+ function trPick(e){var g=(R&&R[0]&&R[0].P?R[0].P[R[0].P.length-1]:[180,220]);e.djMia=Math.random()<.5;var mp=null;try{if(e.djMia&&window.miaPos)mp=window.miaPos()}catch(_){mp=null}e.djTx=e.djMia?(mp?mp[0]:50):g[0];e.djTy=e.djMia?(mp?mp[1]:385):g[1]-11;e.djDir=e.djTx>=e.x?1:-1}
  /* スズメがレコードを壊した時のスクラッチ音（BGMの上に重ねる） */
  function trScratch(){try{if(typeof SND!=='undefined'&&!SND)return;var a=ac();if(!a)return;var t=a.currentTime,d=.28,n=Math.floor(a.sampleRate*d),bf=a.createBuffer(1,n,a.sampleRate),c=bf.getChannelData(0);for(var i=0;i<n;i++)c[i]=(Math.random()*2-1)*(1-i/n);var src=a.createBufferSource(),f=a.createBiquadFilter(),g=a.createGain();src.buffer=bf;f.type='bandpass';f.Q.value=1.2;f.frequency.setValueAtTime(2600,t);f.frequency.exponentialRampToValueAtTime(700,t+d);g.gain.setValueAtTime(.5,t);g.gain.exponentialRampToValueAtTime(.001,t+d);src.connect(f);f.connect(g);g.connect(a.destination);src.start(t)}catch(e){}}
  function trPos(r){var p=Math.min(1,r.t/r.T);return [r.x0+(r.x1-r.x0)*p,r.y0+(r.y1-r.y0)*p-Math.sin(p*Math.PI)*60]}
   function trDrawRec(r){
-  if(r.t<0)return;
+  return;
   var pp=trPos(r),X=pp[0],Y=pp[1];
   x.save();x.translate(X,Y);x.rotate(r.t*14);
   x.fillStyle='#161616';x.beginPath();x.arc(0,0,11,0,7);x.fill();
@@ -8796,6 +8796,7 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
  var _rcW=drawWhine;
  drawWhine=function(){_rcW.apply(this,arguments);try{for(var i=0;i<TRC.length;i++)trDrawRec(TRC[i])}catch(_){}};
  var _d2r=draw2;draw2=function(){_d2r.apply(this,arguments);try{for(var i=0;i<TRC.length;i++)trDrawRec(TRC[i]);trStun()}catch(_){}};
+  window.__trDraw=function(){try{for(var i=0;i<TRC.length;i++){var r=TRC[i];if(r.t<0)continue;var pp=trPos(r);x.save();x.translate(pp[0],pp[1]);x.rotate(r.t*12);x.shadowColor='rgba(255,255,255,.9)';x.shadowBlur=9;x.fillStyle='#111';x.beginPath();x.arc(0,0,15,0,7);x.fill();x.shadowBlur=0;x.strokeStyle='#fff';x.lineWidth=1.5;x.beginPath();x.arc(0,0,15,0,7);x.stroke();x.strokeStyle='#3d3d3d';x.lineWidth=.9;for(var k=0;k<5;k++){x.beginPath();x.arc(0,0,7.5+k*1.45,0,7);x.stroke()}x.strokeStyle='rgba(255,255,255,.8)';x.lineWidth=2;x.beginPath();x.arc(0,0,12.5,-2.5,-1.1);x.stroke();x.beginPath();x.arc(0,0,12.5,.64,2.04);x.stroke();x.fillStyle='#ff2e63';x.beginPath();x.arc(0,0,6,0,7);x.fill();x.fillStyle='#ffd23f';x.beginPath();x.arc(0,0,3.2,0,7);x.fill();x.fillStyle='#111';x.beginPath();x.arc(0,0,1.2,0,7);x.fill();x.restore()}}catch(_){}};
   var _djU=update;
  update=function(dt){
   try{
@@ -8809,6 +8810,7 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
      if(e.djT>=5.5){
       e.djT-=5.5;
       var x0=e.x+(e.djDir||1)*28,y0=e.y-40;
+      G.fx.push({x:x0,y:y0-18,txt:'ポイッ！',t:.8,c:'#ff2e63'});
       TRC.push({x0:x0,y0:y0,x1:e.djTx,y1:e.djTy,mia:e.djMia,t:0,T:Math.max(1.5,Math.hypot(e.djTx-x0,e.djTy-y0)/55)});
       trPick(e);
       TRC.push({x0:x0,y0:y0-8,x1:e.djTx,y1:e.djTy,mia:e.djMia,t:-.6,T:Math.max(1.5,Math.hypot(e.djTx-x0,e.djTy-y0)/55)});
@@ -8959,6 +8961,7 @@ function trByeCar(e,X,Y){
    if(on&&!fxDone){fxDone=true;G.fx.push({x:180,y:200,txt:'ナイトクラブへようこそ🪩',t:2,c:'#e0a8ff'})}
    if(!on)fxDone=false;
    if(CA>0)clubDraw(now,CA);
+   if(window.__trDraw)window.__trDraw();
   }catch(_){}
  };
 })();
