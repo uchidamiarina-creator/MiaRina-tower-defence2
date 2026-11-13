@@ -804,7 +804,8 @@ const TA=new Audio('data:audio/mpeg;base64,'+TITLE_B64);TA.loop=false;TA.volume=
 function tbgm(on){try{if(window.__townOn){TA.pause();return}if(on&&SND&&tt.style.display!='none'&&!document.hidden){TA.volume=Math.max(0,Math.min(1,.5*BVM));const p=TA.play();if(p&&p.catch)p.catch(()=>{if(tt.style.display!='none'&&SND)TBH.style.display='block'})}else{TA.pause();if(!on)TA.currentTime=0}}catch(e){}}
 const TBH=document.createElement('div');TBH.textContent='🎵 画面をタップするとBGMが流れるよ';TBH.style.cssText='display:none;position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 30px);transform:translateX(-50%);background:var(--card);color:var(--mute);border:2px solid var(--line);border-radius:999px;padding:6px 14px;font-size:12px;white-space:nowrap;pointer-events:none;z-index:2';tt.appendChild(TBH);
 TA.addEventListener('playing',()=>{TBH.style.display='none'});
-TA.addEventListener('timeupdate',()=>{if(!TA.duration)return;const left=TA.duration-TA.currentTime,base=Math.max(0,Math.min(1,.5*BVM));TA.volume=left<3?base*Math.max(0,left/3):base});
+/* タイトルBGM：最後の6秒をなめらかにフェードアウト（毎フレーム音量を更新） */
+(function(){const FADE=6;function tick(){try{if(!TA.paused&&TA.duration&&isFinite(TA.duration)){const left=TA.duration-TA.currentTime,base=Math.max(0,Math.min(1,.5*BVM));let v=base;if(left<FADE){const u=Math.max(0,left/FADE);v=base*u*u*(3-2*u)}TA.volume=Math.max(0,Math.min(1,v))}}catch(e){}requestAnimationFrame(tick)}requestAnimationFrame(tick)})();
 ['pointerup','click','touchend','keydown'].forEach(ev=>document.addEventListener(ev,()=>{if(TA.paused&&tt.style.display!='none')tbgm(true)},{capture:true,passive:true}));
 document.addEventListener('visibilitychange',()=>{if(document.hidden)TA.pause();else if(tt.style.display!='none')tbgm(true)});
 tbgm(true);
@@ -1429,11 +1430,12 @@ const TW=(()=>{
   const VIS=()=>tt.style.display!='none';
   function fit(){const r=el.getBoundingClientRect();W=Math.max(1,r.width);dpr=Math.min(2,window.devicePixelRatio||1);el.width=Math.round(W*dpr);el.height=Math.round(H*dpr)}
   const nSlots=()=>1;
-  const key=c=>c.kind+c.ty;
+  const key=c=>c.kind+c.ty+(c.king||'');
   function pick(){let c,n=0;do{const r=Math.random();
-    if(r<.24){const ks=Object.keys(AL).filter(k=>k!='L');c={kind:'ally',ty:ks[Math.random()*ks.length|0]}}
+    if(r<.24){const ks=Object.keys(AL).filter(k=>k!='L'&&k!='N');c={kind:'ally',ty:ks[Math.random()*ks.length|0]}}
     else if(r<.36)c={kind:'dev',ty:'DV',ci:Math.random()*5|0};
     else if(r<.4)c={kind:'dev',ty:'DR',ci:0};
+    else if(r<.55){const kk=['suika','rafu','neko','dadan','yero'];c={kind:'en',ty:'B',boss:true,king:kk[Math.random()*5|0]}}
     else{const b=Math.random()<.18,l=b?BOSS:NORMAL;c={kind:'en',ty:l[Math.random()*l.length|0],boss:b,f:!b&&Math.random()<.25}}
   }while(ws.some(w=>key(w)==key(c))&&++n<80);return ws.some(w=>key(w)==key(c))?null:c}
   function spawn(now){const n=nSlots(),used=new Set(ws.map(w=>w.slot)),free=[];for(let i=0;i<n;i++)if(!used.has(i))free.push(i);if(!free.length)return;
@@ -1442,8 +1444,9 @@ const TW=(()=>{
     nextAt=now+500+Math.random()*1200}
   function draw(w,now,look,walking,sc){
     
-    const dv=w.kind=='dev',k=dv?(w.ty=='DR'?.85:1.4):w.kind=='ally'?1.35:(w.boss?1.15:1.4),
+    const dv=w.kind=='dev',k=dv?(w.ty=='DR'?.85:1.4):w.king?.62:w.kind=='ally'?1.35:(w.boss?1.15:1.4),
       e={ty:w.ty,f:w.f,boss:w.boss,x:0,y:0,d:w.d,hp:1,mx:1,slow:0,pois:0};
+    if(w.king)e[w.king]=1;
     if(dv)Object.assign(e,{ci:w.ci,age:2,w:w.w,dr:w.dir,stun:0});
     x.save();x.setTransform(sc,0,0,sc,0,0);x.clearRect(180-BOX/2-4,220-BOX/2-4,BOX+8,BOX+8);
     x.translate(180,220+(walking?-Math.abs(Math.sin(now/130))*3:0));
@@ -8668,16 +8671,17 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   var c=ac();if(!c)return;
   var s=c.createBufferSource(),g=c.createGain();
   s.buffer=_yBuf;s.connect(g);g.connect(c.destination);
-  g.gain.value=.6*BVM;
+  g.gain.value=.3*BVM;
   s.start(0,_yEl);
   _ySrc=s;_yG=g;
  }
  function yVol(){
   if(!_yG)return;
   var left=_yBuf?(_yBuf.duration-_yEl):99;
-  _yG.gain.value=Math.max(0,Math.min(1,Math.min(1,left/4)*.6*BVM));
+  _yG.gain.value=Math.max(0,Math.min(1,Math.min(1,left/4)*.3*BVM));
  }
  window.__yVolNow=function(){if(_yOn)yVol()};
+ setInterval(function(){try{if(BVF&&BS)BVF();if(_yOn)yVol()}catch(e){}},100);
  function yStart(){
   if(_yOn)return;_yOn=true;_yBye=false;_yDone=false;_yEl=0;
   try{bgm(false)}catch(e){}
@@ -8815,6 +8819,17 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
       trPick(e);
       TRC.push({x0:x0,y0:y0-8,x1:e.djTx,y1:e.djTy,mia:e.djMia,t:-.6,T:Math.max(1.5,Math.hypot(e.djTx-x0,e.djTy-y0)/55)});
       trPick(e);
+      /* ダミー：利奈にも未亜にも当たらない場所へランダムに投げる（ダメージなし） */
+      if(Math.random()<.7){
+       var nd=1+(Math.random()<.4?1:0);
+       for(var di=0;di<nd;di++){
+        var dx1,dy1,tries=0,mp2=null;try{mp2=window.miaPos?window.miaPos():null}catch(_){}
+        var gg=(R&&R[0]&&R[0].P?R[0].P[R[0].P.length-1]:[180,220]);
+        do{dx1=25+Math.random()*310;dy1=60+Math.random()*460;tries++}
+        while(tries<20&&(Math.hypot(dx1-gg[0],dy1-gg[1])<70||(mp2&&Math.hypot(dx1-mp2[0],dy1-mp2[1])<70)));
+        TRC.push({x0:x0,y0:y0-4,x1:dx1,y1:dy1,mia:false,dummy:1,t:-.2-di*.3,T:Math.max(1.5,Math.hypot(dx1-x0,dy1-y0)/55)});
+       }
+      }
      }
     });
     /* イエロがいる間、ターゲットのないスズメはマップをランダムに飛び回る */
@@ -8834,7 +8849,7 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
      if(a._rc>0)return;
      for(var j=TRC.length-1;j>=0;j--){
       var q=trPos(TRC[j]);
-      if(TRC[j].t>=0){
+      if(TRC[j].t>=0&&!TRC[j].dummy){
        G.fx.push({x:q[0],y:q[1]-16,txt:'スズメが撃ち落とした！',t:1.2,c:'#2e9e5b'});
        TRC.splice(j,1);a._rc=.8;trScratch();cheer('流石スズメさん！');break;
       }
@@ -8842,7 +8857,7 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     });
     for(var i=TRC.length-1;i>=0;i--){
      var r=TRC[i];r.t+=dt;
-     if(r.t>=r.T){TRC.splice(i,1);STUN.push({x:r.x1,y:r.y1-34,t:0});if(r.mia){G.fx.push({x:r.x1,y:r.y1-30,txt:'未亜にレコード命中！',t:1.4,c:'#ff2e63'});cheer('レコード投げるな！')}else{try{window.lose(1,r.x1,r.y1,'レコード命中！ -1',true)}catch(_){}}}
+     if(r.t>=r.T){TRC.splice(i,1);if(r.dummy)continue;STUN.push({x:r.x1,y:r.y1-34,t:0});if(r.mia){G.fx.push({x:r.x1,y:r.y1-30,txt:'未亜にレコード命中！',t:1.4,c:'#ff2e63'});cheer('レコード投げるな！')}else{try{window.lose(1,r.x1,r.y1,'レコード命中！ -1',true)}catch(_){}}}
     }
    }
   }catch(_){}
