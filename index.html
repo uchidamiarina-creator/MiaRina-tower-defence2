@@ -180,7 +180,7 @@ body{width:100%;margin:0;overflow:hidden;
 </style>
 
 <script>(function(){function f(){document.body.classList.add("ld")}if(document.body)f();else document.addEventListener("DOMContentLoaded",f)})()</script><div id="ld" style="position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:#fff1f5;color:#ff6fa5;font:bold 18px sans-serif">読み込み中…</div>
-<div id="tt"><button id="bkb" aria-label="攻略本" title="攻略本" style="position:fixed;right:12px;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:5;width:44px;height:44px;padding:0;font-size:26px;line-height:1;background:transparent;border:none;box-shadow:none;cursor:pointer">📖</button><div id="tcr" style="position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 6px);text-align:center;font-size:10px;line-height:1.3;color:#ff8a00;letter-spacing:.02em;pointer-events:none;z-index:2">©2026 MiaRina, Karaage Records, All rights reserved.</div><div class="tin"><div id="thd"><img id="tmia" alt="未亜" width="60" height="60"><h2>みありな<br>タワーディフェンス<br>ウルトラDX</h2><img id="trin" alt="利奈" width="60" height="56"></div><div style="font-size:10px;color:var(--mute);text-align:center;margin:-2px 0 8px;letter-spacing:.04em">- 最終完全ちょっとバグってるファイナル Ultimate Version -</div><input id="pn" maxlength="8" placeholder="なまえ（8文字まで）" style="font:inherit;font-size:15px;text-align:center;padding:9px;border-radius:14px;border:3px solid var(--line);background:var(--card);color:var(--ink);width:70%;margin:0 0 6px"><div id="dan" style="font-size:13px;color:var(--accent2);min-height:18px;margin:0 0 8px;text-align:center"></div><div id="df"></div><div id="dsc" style="display:none"></div><button class="go" id="cnb" style="display:none;margin:0 auto 8px;line-height:1.35"></button><button class="go" id="stb">はじめる</button><div style="margin-top:10px"><button id="rkb" hidden style="padding:8px 22px;font-size:14px">🏆 ランキング</button> <button id="pcb" style="padding:8px 22px;font-size:14px">🔑 パスコード</button></div><div style="margin-top:8px"><button id="pfb" style="padding:8px 22px;font-size:14px">👤 プロフィール</button> <button id="vtb" style="padding:8px 22px;font-size:14px">🔐 金庫</button></div><div id="crTap" style="margin-top:12px;font-size:11px;color:var(--mute);letter-spacing:.04em">📱 iPhone / Android 対応</div><ul style="display:none">強化・売却</li><li id="cli">30フェーズ守りきればクリア</li></ul></div></div>
+<div id="tt"><button id="bkb" aria-label="みありなタワーディフェンス攻略法" title="みありなタワーディフェンス攻略法" style="position:fixed;right:12px;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:5;width:44px;height:44px;padding:0;font-size:26px;line-height:1;background:transparent;border:none;box-shadow:none;cursor:pointer">📖</button><div id="tcr" style="position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 6px);text-align:center;font-size:10px;line-height:1.3;color:#ff8a00;letter-spacing:.02em;pointer-events:none;z-index:2">©2026 MiaRina, Karaage Records, All rights reserved.</div><div class="tin"><div id="thd"><img id="tmia" alt="未亜" width="60" height="60"><h2>みありな<br>タワーディフェンス<br>ウルトラDX</h2><img id="trin" alt="利奈" width="60" height="56"></div><div style="font-size:10px;color:var(--mute);text-align:center;margin:-2px 0 8px;letter-spacing:.04em">- 最終完全ちょっとバグってるファイナル Ultimate Version -</div><input id="pn" maxlength="8" placeholder="なまえ（8文字まで）" style="font:inherit;font-size:15px;text-align:center;padding:9px;border-radius:14px;border:3px solid var(--line);background:var(--card);color:var(--ink);width:70%;margin:0 0 6px"><div id="dan" style="font-size:13px;color:var(--accent2);min-height:18px;margin:0 0 8px;text-align:center"></div><div id="df"></div><div id="dsc" style="display:none"></div><button class="go" id="cnb" style="display:none;margin:0 auto 8px;line-height:1.35"></button><button class="go" id="stb">はじめる</button><div style="margin-top:10px"><button id="rkb" hidden style="padding:8px 22px;font-size:14px">🏆 ランキング</button> <button id="pcb" style="padding:8px 22px;font-size:14px">🔑 パスコード</button></div><div style="margin-top:8px"><button id="pfb" style="padding:8px 22px;font-size:14px">👤 プロフィール</button> <button id="vtb" style="padding:8px 22px;font-size:14px">🔐 金庫</button></div><div id="crTap" style="margin-top:12px;font-size:11px;color:var(--mute);letter-spacing:.04em">📱 iPhone / Android 対応</div><ul style="display:none">強化・売却</li><li id="cli">30フェーズ守りきればクリア</li></ul></div></div>
 <h1>みありなタワーディフェンス ウルトラDX</h1>
 <div id="wrap">
 <div id="stats"><span id="sg"></span><span id="sl"></span><span id="sw" style="display:none"></span><span id="stm" style="display:none"></span></div>
@@ -3578,8 +3578,8 @@ function openBook(){
   pv.disabled=cur===0;nx.disabled=cur===pages.length-1;
   pv.style.opacity=pv.disabled?'.35':'';nx.style.opacity=nx.disabled?'.35':'';
   if(P.k==='cover'){
-   body.append(para('height:12px',''),(function(){var w=para('text-align:center;',''),k=document.querySelector('#kiri img.kimg');if(k&&k.src){var im=document.createElement('img');im.src=k.src;im.alt='キリン';im.style.cssText='height:170px;width:auto;max-width:100%;display:block;margin:0 auto;filter:drop-shadow(0 3px 4px rgba(110,70,20,.35))';w.appendChild(im)}else w.innerHTML=SVGG;return w})(),head('攻略本','22px'),
-    para('text-align:center;margin-top:10px;font-size:12px;color:#7a5230;line-height:1.6','みありなタワーディフェンス ウルトラDX'),
+   body.append(para('height:12px',''),(function(){var w=para('text-align:center;',''),k=document.querySelector('#kiri img.kimg');if(k&&k.src){var im=document.createElement('img');im.src=k.src;im.alt='キリン';im.style.cssText='height:170px;width:auto;max-width:100%;display:block;margin:0 auto;filter:drop-shadow(0 3px 4px rgba(110,70,20,.35))';w.appendChild(im)}else w.innerHTML=SVGG;return w})(),(function(){var h=head('みありなタワーディフェンス\n🎀 攻略法 🎀','21px');h.style.whiteSpace='pre-line';h.style.lineHeight='1.35';h.style.margin='8px 0 4px';return h})(),
+    para('text-align:center;margin-top:10px;font-size:12px;color:#7a5230;line-height:1.6','～ ウルトラDX ～'),
     para('text-align:center;margin-top:20px;font-size:13px;font-weight:800;color:#7a5230','見つけたヒント '+seen.length+' / '+TIPS.length),
     (function(){var ob=document.createElement('button');ob.textContent='📑 もくじをひらく';ob.style.cssText='display:block;margin:14px auto 0;padding:10px 18px;min-height:0;height:auto;border-radius:999px;background:#fff8ea;border:2px solid #d9962b;border-bottom-width:4px;color:#c97a1e;font-size:14px;font-weight:900';ob.onclick=function(){go(1)};return ob})());
    if(!unlocked){
@@ -3626,7 +3626,7 @@ function openBook(){
     var hr2=para(rowCss+';cursor:pointer','');
     hr2.append(para('','🌟 おたすけキャラたち'),para('font-size:12px;color:#c97a1e','p.'+P.helpN));hr2.onclick=function(){go(P.helpN-1)};box.appendChild(hr2);
     var mr=para(rowCss+';cursor:pointer','');
-    mr.append(para('','👾 モンスター図鑑'),para('font-size:12px;color:#c97a1e','p.'+P.monN));mr.onclick=function(){go(P.monN-1)};box.appendChild(mr);
+    mr.append(para('','👾 モンスター図鑑（一部）'),para('font-size:12px;color:#c97a1e','p.'+P.monN));mr.onclick=function(){go(P.monN-1)};box.appendChild(mr);
     var pr=para(rowCss+';cursor:pointer','');
     pr.append(para('','🔑 パスコードのこと'),para('font-size:12px;color:#c97a1e','p.'+P.passN));pr.onclick=function(){go(P.passN-1)};box.appendChild(pr);
     var cr=para(rowCss+';cursor:pointer','');
@@ -3705,8 +3705,8 @@ function openBook(){
     if(h.warn)tx.appendChild(para('font-size:12px;line-height:1.5;font-weight:800;color:#d0344f;margin-top:5px',h.warn));
     row.append(ic,tx);body.appendChild(row)});
   }else if(P.k==='mon'){
-   body.appendChild(head('👾 モンスター図鑑','18px'));
-   body.appendChild(para('text-align:center;font-size:12px;line-height:1.6;color:#9a7048;margin-bottom:4px','バトルに出てくる敵キャラ全員だよ'));
+   body.appendChild(head('👾 モンスター図鑑（一部）','17px'));
+   body.appendChild(para('text-align:center;font-size:12px;line-height:1.6;color:#9a7048;margin-bottom:4px','バトルに出てくる敵キャラの一部だよ'));
    var BOSSK=['B','R','L','N','U','I'],zl=[],bl=[];
    ZKAN.forEach(function(k){if(k==='S'||!ENAME[k])return;if(BOSSK.indexOf(k)>=0)bl.push([k,ENAME[k],1]);else zl.push([k,ENAME[k]])});
    Object.keys(ENAME).filter(function(k){return /^Z\d+$/.test(k)}).sort().forEach(function(k){zl.push([k,ENAME[k]])});
@@ -3794,6 +3794,7 @@ function openBook(){
   }
  }
  var lp=0;try{lp=parseInt(localStorage.getItem(GUIDE_PK)||'0',10)||0}catch(e){}
+ if(unlocked)lp=0;/* 購入後も最初のキリンさんのページから */
  go(lp,true);
 }
 var bkb=document.getElementById('bkb');if(bkb)bkb.onclick=function(){try{sfx('tap')}catch(e){}openBook()};
