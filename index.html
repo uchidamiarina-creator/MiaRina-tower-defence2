@@ -783,9 +783,9 @@ function loadB(k){if(BU[k]||BLd[k])return;const a=ac();if(!a)return;BLd[k]=true;
  try{if(k<2){const bin=atob(k?BGM2_B64:BGM_B64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);a.decodeAudioData(u.buffer).then(done).catch(()=>{BLd[k]=false})}
  else fetch(bu(k)).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()}).then(ab=>a.decodeAudioData(ab)).then(done).catch(()=>{BLd[k]=false;BF[k]=true;if(BW&&SND&&BK==k)bgm(true,k)})}catch(e){BLd[k]=false}}
 function bgm(on,k){k=k||0;if(on&&!k){k=trk();if(BD[k])k=0}BW=on;BK=k;BVF=null;if(BS){try{BS.stop()}catch(e){}BS=null}for(let i=2;i<BU.length;i++)if(i!=k){BU[i]=null;BLd[i]=false}if(!on||!SND)return;const a=ac();if(!a)return;
- if(k>=2){try{const el=new Audio(bu(k));el.loop=true;const sv=elVol(el);const bvA=()=>{sv(Math.max(0,Math.min(1,.22*(BXG[k]||1)*BVM)))};bvA();BVF=bvA;const bad=()=>{if(BK==k&&BS&&BS.el===el){BD[k]=true;bgm(true,0)}};el.addEventListener('error',bad);const p=el.play();if(p&&p.catch)p.catch(bad);BS={el:el,stop(){try{el.pause();el.removeAttribute('src');el.load()}catch(e){}}}}catch(e){BD[k]=true;bgm(true,0)}return}
- if(!BU[k]){if(BF[k]){try{const el=new Audio(bu(k));el.loop=true;const sv=elVol(el);const bvB=()=>{sv(Math.max(0,Math.min(1,.22*(BXG[k]||1)*BVM)))};bvB();BVF=bvB;const p=el.play();if(p&&p.catch)p.catch(()=>{});BS={stop(){try{el.pause();el.removeAttribute('src');el.load()}catch(e){}}}}catch(e){}}else loadB(k);return}
- const sr=a.createBufferSource(),g=a.createGain();sr.buffer=BU[k];sr.loop=true;const bvC=()=>{g.gain.value=.22*(BXG[k]||1)*BVM};bvC();BVF=bvC;sr.connect(g);g.connect(a.destination);sr.start();BS=sr}
+ if(k>=2){try{const el=new Audio(bu(k));el.loop=true;const sv=elVol(el);const bvA=()=>{sv(Math.max(0,Math.min(1,BVM)))};bvA();BVF=bvA;const bad=()=>{if(BK==k&&BS&&BS.el===el){BD[k]=true;bgm(true,0)}};el.addEventListener('error',bad);const p=el.play();if(p&&p.catch)p.catch(bad);BS={el:el,stop(){try{el.pause();el.removeAttribute('src');el.load()}catch(e){}}}}catch(e){BD[k]=true;bgm(true,0)}return}
+ if(!BU[k]){if(BF[k]){try{const el=new Audio(bu(k));el.loop=true;const sv=elVol(el);const bvB=()=>{sv(Math.max(0,Math.min(1,BVM)))};bvB();BVF=bvB;const p=el.play();if(p&&p.catch)p.catch(()=>{});BS={stop(){try{el.pause();el.removeAttribute('src');el.load()}catch(e){}}}}catch(e){}}else loadB(k);return}
+ const sr=a.createBufferSource(),g=a.createGain();sr.buffer=BU[k];sr.loop=true;const bvC=()=>{g.gain.value=BVM};bvC();BVF=bvC;sr.connect(g);g.connect(a.destination);sr.start();BS=sr}
 (function(){const mb=document.getElementById('mono'),H=document.documentElement;
  const ic='<svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="8.5" fill="#fff" stroke="#4a2740" stroke-width="2"/><path d="M11 2.5 A8.5 8.5 0 0 0 11 19.5 Z" fill="#4a2740"/></svg>';
  mb.textContent='モノ';mb.style.fontSize='13px';mb.style.fontWeight='bold';const set=on=>{H.classList.toggle('mono',on);mb.classList.toggle('on',on);mb.title=on?'モノクロ（オン）':'モノクロ';try{localStorage.setItem('miarina_td_mono','1'===(on?'1':'0')?(on?'1':'0'):'0')}catch(e){}};
@@ -8325,7 +8325,7 @@ bgm=function(on,k){
   getRev(k,a).then(function(buf){
     if(tok!==RT||!BW||!SND||!isEc())return;
     var sr=a.createBufferSource(),g=a.createGain();
-    sr.buffer=buf;sr.loop=true;var bvE=function(){g.gain.value=.22*(BXG[k]||1)*BVM};bvE();BVF=bvE;sr.connect(g);g.connect(a.destination);sr.start();
+    sr.buffer=buf;sr.loop=true;var bvE=function(){g.gain.value=BVM};bvE();BVF=bvE;sr.connect(g);g.connect(a.destination);sr.start();
     BS={stop:function(){try{sr.stop()}catch(e){}}};
   }).catch(function(){if(tok===RT)_bgm(true,k)});
 };
@@ -8685,14 +8685,14 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   var c=ac();if(!c)return;
   var s=c.createBufferSource(),g=c.createGain();
   s.buffer=_yBuf;s.connect(g);g.connect(c.destination);
-  g.gain.value=.3*BVM;
+  g.gain.value=BVM;
   s.start(0,_yEl);
   _ySrc=s;_yG=g;
  }
  function yVol(){
   if(!_yG)return;
   var left=_yBuf?(_yBuf.duration-_yEl):99;
-  _yG.gain.value=Math.max(0,Math.min(1,Math.min(1,left/4)*.3*BVM));
+  _yG.gain.value=Math.max(0,Math.min(1,Math.min(1,left/4)*BVM));
  }
  window.__yVolNow=function(){if(_yOn)yVol()};
  setInterval(function(){try{if(BVF&&BS)BVF();if(_yOn)yVol()}catch(e){}},100);
@@ -8797,7 +8797,7 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   function trStun(){for(var i=STUN.length-1;i>=0;i--){var s=STUN[i];s.t+=.016;if(s.t>=1.6){STUN.splice(i,1);continue}var al=Math.min(1,(1.6-s.t)/.4),a=s.t*7;x.save();x.globalAlpha=al;for(var k=0;k<3;k++){var an=a+k*2.094;trStar(s.x+Math.cos(an)*16,s.y-6+Math.sin(an)*5,5.5)}x.restore()}}
  function trPick(e){var g=(R&&R[0]&&R[0].P?R[0].P[R[0].P.length-1]:[180,220]);e.djMia=Math.random()<.5;var mp=null;try{if(e.djMia&&window.miaPos)mp=window.miaPos()}catch(_){mp=null}e.djTx=e.djMia?(mp?mp[0]:50):g[0];e.djTy=e.djMia?(mp?mp[1]:385):g[1]-11;e.djDir=e.djTx>=e.x?1:-1}
  /* スズメがレコードを壊した時のスクラッチ音（BGMの上に重ねる） */
- function trScratch(){try{if(typeof SND!=='undefined'&&!SND)return;var a=ac();if(!a)return;var t=a.currentTime,d=.28,n=Math.floor(a.sampleRate*d),bf=a.createBuffer(1,n,a.sampleRate),c=bf.getChannelData(0);for(var i=0;i<n;i++)c[i]=(Math.random()*2-1)*(1-i/n);var src=a.createBufferSource(),f=a.createBiquadFilter(),g=a.createGain();src.buffer=bf;f.type='bandpass';f.Q.value=1.2;f.frequency.setValueAtTime(2600,t);f.frequency.exponentialRampToValueAtTime(700,t+d);g.gain.setValueAtTime(.5,t);g.gain.exponentialRampToValueAtTime(.001,t+d);src.connect(f);f.connect(g);g.connect(a.destination);src.start(t)}catch(e){}}
+ function trScratch(){return;try{if(typeof SND!=='undefined'&&!SND)return;var a=ac();if(!a)return;var t=a.currentTime,d=.28,n=Math.floor(a.sampleRate*d),bf=a.createBuffer(1,n,a.sampleRate),c=bf.getChannelData(0);for(var i=0;i<n;i++)c[i]=(Math.random()*2-1)*(1-i/n);var src=a.createBufferSource(),f=a.createBiquadFilter(),g=a.createGain();src.buffer=bf;f.type='bandpass';f.Q.value=1.2;f.frequency.setValueAtTime(2600,t);f.frequency.exponentialRampToValueAtTime(700,t+d);g.gain.setValueAtTime(.5,t);g.gain.exponentialRampToValueAtTime(.001,t+d);src.connect(f);f.connect(g);g.connect(a.destination);src.start(t)}catch(e){}}
  function trPos(r){var p=Math.min(1,r.t/r.T);return [r.x0+(r.x1-r.x0)*p,r.y0+(r.y1-r.y0)*p]}
   function trDrawRec(r){
   return;
@@ -8813,7 +8813,8 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
  }
  var _rcW=drawWhine;
  drawWhine=function(){_rcW.apply(this,arguments);try{for(var i=0;i<TRC.length;i++)trDrawRec(TRC[i])}catch(_){}};
- var _d2r=draw2;draw2=function(){_d2r.apply(this,arguments);try{for(var i=0;i<TRC.length;i++)trDrawRec(TRC[i]);trStun()}catch(_){}};
+ function trChicks(){try{if(!G||!G.al)return;var T=performance.now()/1000;G.al.forEach(function(a){if(!a||a.k!=='B'||!(a._pi>0)||a.dead)return;var cx=a.x,cy=a.y-32,L=[];for(var k=0;k<3;k++){var an=T*6+k*2.094;L.push([an,Math.cos(an)*15,Math.sin(an)*5])}L.sort(function(p,q){return p[2]-q[2]});L.forEach(function(c){var px=cx+c[1],py=cy+c[2]+Math.sin(T*14+c[0])*1.2;x.save();x.translate(px,py);x.fillStyle='#ffe45c';x.strokeStyle='#c98a00';x.lineWidth=1;x.beginPath();x.arc(0,1.5,3.6,0,7);x.fill();x.stroke();x.beginPath();x.arc(0,-2.2,2.7,0,7);x.fill();x.stroke();x.fillStyle='#ff8a1f';x.beginPath();var d=Math.sin(c[0]+1.57)>=0?1:-1;x.moveTo(2.4*d,-2.2);x.lineTo(5*d,-1.6);x.lineTo(2.4*d,-.9);x.closePath();x.fill();x.fillStyle='#3a2a00';x.beginPath();x.arc(.9*d,-2.8,.55,0,7);x.fill();x.fillStyle='#ffd23f';x.beginPath();x.ellipse(-1.8*d,1.8,1.6,1,Math.sin(T*20)*.6,0,7);x.fill();x.restore()})})}catch(_){}}
+ var _d2r=draw2;draw2=function(){_d2r.apply(this,arguments);try{for(var i=0;i<TRC.length;i++)trDrawRec(TRC[i]);trStun();trChicks()}catch(_){}};
   window.__trDraw=function(){try{for(var i=0;i<TRC.length;i++){var r=TRC[i];if(r.t<0)continue;var pp=trPos(r);x.save();x.translate(pp[0],pp[1]);x.rotate(r.t*12);x.shadowColor='rgba(255,255,255,.9)';x.shadowBlur=9;x.fillStyle='#111';x.beginPath();x.arc(0,0,15,0,7);x.fill();x.shadowBlur=0;x.strokeStyle='#fff';x.lineWidth=1.5;x.beginPath();x.arc(0,0,15,0,7);x.stroke();x.strokeStyle='#3d3d3d';x.lineWidth=.9;for(var k=0;k<5;k++){x.beginPath();x.arc(0,0,7.5+k*1.45,0,7);x.stroke()}x.strokeStyle='rgba(255,255,255,.8)';x.lineWidth=2;x.beginPath();x.arc(0,0,12.5,-2.5,-1.1);x.stroke();x.beginPath();x.arc(0,0,12.5,.64,2.04);x.stroke();x.fillStyle='#ff2e63';x.beginPath();x.arc(0,0,6,0,7);x.fill();x.fillStyle='#ffd23f';x.beginPath();x.arc(0,0,3.2,0,7);x.fill();x.fillStyle='#111';x.beginPath();x.arc(0,0,1.2,0,7);x.fill();x.restore()}}catch(_){}};
   var _djU=update;
  update=function(dt){
@@ -8849,7 +8850,7 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     /* イエロがいる間、ターゲットのないスズメはマップをランダムに飛び回る */
     if((G.en||[]).some(function(e){return e&&e.yero&&e.djOn&&!e.dead&&!e.yBye})){
      G.al.forEach(function(a){
-      if(!a||a.k!=='B'||a.dead||a.tg)return;
+      if(!a||a.k!=='B'||a.dead||a.tg||a._pi>0)return;
       a.sleep=false;a.eng=false;
       if(a._fx===undefined||Math.hypot(a._fx-a.x,a._fy-a.y)<8||(a._ft=(a._ft||0)-dt)<=0){a._fx=25+Math.random()*310;a._fy=50+Math.random()*470;a._ft=2+Math.random()*2}
       var dx=a._fx-a.x,dy=a._fy-a.y,L=Math.hypot(dx,dy)||1,st=Math.min(L,a.sp*.8*dt);
@@ -8859,13 +8860,15 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     /* スズメ（空の味方）は近くまで来たレコードを撃ち落とす */
     G.al.forEach(function(a){
      if(!a||a.k!=='B'||!(a.hp>0))return;
-     a._rc=(a._rc||0)-dt;
-     if(a._rc>0)return;
+     if(a._pi>0){a._pi-=dt;return}
+     /* 利奈に飛んでくるレコードは、スズメが生きている限り全力で必ず即座に撃ち落とす（未亜行きは従来どおり） */
      for(var j=TRC.length-1;j>=0;j--){
       var q=trPos(TRC[j]);
-      if(TRC[j].t>=0&&!TRC[j].dummy&&TRC[j].sh){
+      if(TRC[j].t>=0&&!TRC[j].dummy&&(!TRC[j].mia||TRC[j].sh)){
+       a.dr=q[0]>=a.x?1:-1;a.x=q[0];a.y=q[1];
        G.fx.push({x:q[0],y:q[1]-16,txt:'スズメが撃ち落とした！',t:1.2,c:'#2e9e5b'});
-       TRC.splice(j,1);a._rc=.8;trScratch();cheer('流石スズメさん！');break;
+       TRC.splice(j,1);trScratch();cheer('流石スズメさん！');
+       a._pi=10;a._pt=0;a._px=a.x;a._py=a.y;a.tg=null;a.eng=false;break;
       }
      }
     });
@@ -8875,7 +8878,9 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     }
    }
   }catch(_){}
-  return _djU.apply(this,arguments);
+  var _r=_djU.apply(this,arguments);
+  try{(G&&G.al||[]).forEach(function(a){if(a&&a.k==='B'&&a._pi>0&&a._px!==undefined){a.x=a._px;a.y=a._py;a.tg=null;a.eng=false}})}catch(_){}
+  return _r;
  };
 })();
 </script>
