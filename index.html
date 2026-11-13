@@ -3515,8 +3515,11 @@ function drawHeroIcon(x,h,s0){x.save();x.translate(h.x,h.y);
   x.fillStyle='#ffd9bf';x.beginPath();x.arc(0,-72,10,0,7);x.fill();x.stroke();x.fillStyle='#3a7bff';x.beginPath();x.arc(0,-75,10.5,Math.PI,0);x.fill();x.fillRect(-11,-76,22,3);x.fillStyle='#4a2740';x.beginPath();x.arc(-3.5,-71,1.3,0,7);x.arc(3.5,-71,1.3,0,7);x.fill();x.strokeStyle='#4a2740';x.lineWidth=1.5;x.beginPath();x.arc(0,-67,3.5,.1,3);x.stroke()}
  x.restore();x.restore();
 }
+function bkAudio(){try{if(BVF)BVF()}catch(e){}try{window.__yVolNow&&window.__yVolNow()}catch(e){}try{tvol(Math.max(0,Math.min(1,BVM)))}catch(e){}}
+function bkBgm(on){try{if(on){if(window.__bkPrev==null)window.__bkPrev=BVM;BVM=0}else if(window.__bkPrev!=null){BVM=window.__bkPrev;window.__bkPrev=null}}catch(e){}bkAudio()}
 function openBook(){
  if(document.getElementById('bookov'))return;
+ bkBgm(true);
  var unlocked=guideUnlocked();
  var rd=rdGet();function rdAdd(t){if(!rd[t]){rd[t]=1;try{localStorage.setItem(GUIDE_RK,JSON.stringify(Object.keys(rd)))}catch(e){}}}
  var FAV_KEY='miarina_td_guide_fav_v1',fav=[];
@@ -3541,7 +3544,9 @@ function openBook(){
  var allyN=pages.length+1;pages.push({k:'ally'});
  var helpN=pages.length+1;pages.push({k:'helper'});
  var monN=pages.length+1;pages.push({k:'mon'});
- pages[1]={k:'toc',G:G,gStart:gStart,gIndex:gIndex,favN:favN,allyN:allyN,helpN:helpN,monN:monN,hintN:hintN};
+ var passN=pages.length+1;pages.push({k:'pass'});
+ var cheatN=pages.length+1;pages.push({k:'cheat'});
+ pages[1]={k:'toc',G:G,gStart:gStart,gIndex:gIndex,favN:favN,allyN:allyN,helpN:helpN,monN:monN,hintN:hintN,passN:passN,cheatN:cheatN};
 
  var ov=document.createElement('div');ov.id='bookov';
  ov.style.cssText='position:fixed;inset:0;z-index:90;background:rgba(60,30,50,.55);display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box';
@@ -3558,7 +3563,7 @@ function openBook(){
  var pv=navBtn('◀'),nx=navBtn('▶'),pg=para('font-size:13px;font-weight:800;color:#7a5230','');
  foot.append(pv,pg,nx);foot.style.display='none';card.style.position='relative';card.append(top,body,foot,xb);ov.appendChild(card);document.body.appendChild(ov);
  var cur=0,dir=0;
- function close(){try{localStorage.setItem(GUIDE_PK,String(cur))}catch(e){}ov.remove()}
+ function close(){try{localStorage.setItem(GUIDE_PK,String(cur))}catch(e){}ov.remove();bkBgm(false)}
  function go(n,quiet){var m=Math.max(0,Math.min(pages.length-1,n));if(m===cur&&!quiet)return;dir=m>cur?1:-1;cur=m;if(!quiet){try{sfx('tap')}catch(e){}}try{localStorage.setItem(GUIDE_PK,String(cur))}catch(e){}render()}
  xb.onclick=close;tocb.onclick=function(){go(1)};pv.onclick=function(){go(cur-1)};nx.onclick=function(){go(cur+1)};
  ov.onclick=function(e){if(e.target===ov)close()};
@@ -3615,6 +3620,10 @@ function openBook(){
     hr2.append(para('','🌟 おたすけキャラたち'),para('font-size:12px;color:#c97a1e','p.'+P.helpN));hr2.onclick=function(){go(P.helpN-1)};box.appendChild(hr2);
     var mr=para(rowCss+';cursor:pointer','');
     mr.append(para('','👾 モンスター図鑑'),para('font-size:12px;color:#c97a1e','p.'+P.monN));mr.onclick=function(){go(P.monN-1)};box.appendChild(mr);
+    var pr=para(rowCss+';cursor:pointer','');
+    pr.append(para('','🔑 パスコードのこと'),para('font-size:12px;color:#c97a1e','p.'+P.passN));pr.onclick=function(){go(P.passN-1)};box.appendChild(pr);
+    var cr=para(rowCss+';cursor:pointer','');
+    cr.append(para('','🛠 改造コード集'),para('font-size:12px;color:#c97a1e','p.'+P.cheatN));cr.onclick=function(){go(P.cheatN-1)};box.appendChild(cr);
     if(!unlocked)box.appendChild(para('margin-top:12px;font-size:11px;line-height:1.6;color:#9a7048','※ まだ見つけていないヒントは、表紙の「全部読む」で読めるようになるよ'));
    }
    inp.oninput=drawToc;drawToc();
@@ -3727,6 +3736,46 @@ function openBook(){
       b.style.left=l+'px';b.style.top=top+'px';var tl=para('position:absolute;bottom:-7px;width:10px;height:10px;background:#fffdf5;border-right:2px solid #d9962b;border-bottom:2px solid #d9962b;transform:rotate(45deg)','');tl.style.left=(cx-l-5)+'px';if(top>cell.offsetTop){tl.style.bottom='';tl.style.top='-7px';tl.style.transform='rotate(225deg)'}b.appendChild(tl)};
      cell.append(cn,para('font-size:'+(sec.k?13:9.5)+'px;font-weight:900;line-height:1.25;color:#c97a1e;text-align:center',m[1]));gr.appendChild(cell)});
     body.appendChild(gr)});
+  }else if(P.k==='pass'){
+   body.appendChild(head('🔑 パスコードのこと','18px'));
+   var pb=function(t,items,col){body.appendChild(para('margin:10px 0 4px;padding:2px 10px;font-size:13px;font-weight:900;color:#7a5230;background:'+col+';border:1px solid #e3b95a;border-radius:999px;text-align:center',t));items.forEach(function(x){body.appendChild(para('padding:4px 4px;border-bottom:1px dashed #ecd3a0;font-size:12.5px;line-height:1.5;font-weight:700;color:#4a2e14','・'+x))})};
+   pb('やりかた',['いまの機種で タイトルの「🔑 パスコード」→「発行する」','コピーして、メモアプリなどに ほぞんしておく','新しい機種で「🔑 パスコード」に はりつけて「復元する」'],'#fff0b8');
+   pb('パスコードで もっていけるもの',['称号','なまえ・プロフィール（段位・最高得点）','宝物図鑑','ルナティック・エクリプス・難易度の解放','「いちばん置いた武器」「いちばん倒した敵」の記録','つづきのセーブ（発行のとき チェックを入れた場合だけ）'],'#e4f6d8');
+   pb('もっていけないもの',['リナコイン','攻略本の購入・見つけたヒント・お気に入り','最終兵器田中の購入','町のデータ（お金・借金・プレゼント）','作ったモンスター','日記・クエスト・直線モードの記録','音量などの設定'],'#fde0e0');
+   body.appendChild(para('margin-top:10px;font-size:11.5px;line-height:1.6;color:#9a7048','※ 機種変更の前に、かならず いまの機種で発行してね'));
+  }else if(P.k==='cheat'){
+   body.appendChild(head('🛠 改造コード集','18px'));
+   body.appendChild(para('text-align:center;font-size:12px;line-height:1.6;color:#9a7048;margin-bottom:4px','「決定」を おすと、ほんとうにゲームが かいぞうされるよ'));
+   var LS=function(k,v){try{localStorage.setItem(k,v)}catch(e){}};
+   var CODES=[
+    {t:'なまえを 無理やり また変える',d:'一度きめたら変えられない なまえを、もういちど つけなおせるよ',c:['011110001110100111','0000011111001'],name:1},
+    {t:'ルナティック かいほう',d:'いちばん むずかしい ルナティックが 遊べるようになるよ',c:['110010011101001','010111000110'],run:function(){LS('miarina_td_lunatic_v1','1');return 'ルナティックが かいほうされたよ！'},reload:1}];
+   CODES.forEach(function(C){
+    var card=para('margin:10px 0;padding:10px;border:2px solid #ecd3a0;border-radius:12px;background:#fffdf5','');
+    var code=para('margin:6px 0;padding:7px 9px;border-radius:8px;background:#1f2a24;color:#7dffb0;font:12px/1.6 monospace;letter-spacing:1px;word-break:break-all','');code.innerHTML=C.c.join('<br>');
+    var msg=para('margin-top:6px;font-size:12px;font-weight:800;color:#c97a1e;min-height:16px;text-align:center','');
+    var go1=document.createElement('button');go1.textContent='決定';
+    go1.style.cssText='display:block;margin:6px auto 0;padding:8px 26px;min-height:0;height:auto;border-radius:999px;background:#ffd1e3;border:2px solid #e0568f;border-bottom-width:4px;color:#b0306a;font-size:14px;font-weight:900';
+    var nameBox=null;
+    if(C.name){
+     nameBox=para('display:none;margin-top:6px;text-align:center','');
+     var ni=document.createElement('input');ni.type='text';ni.maxLength=8;ni.placeholder='あたらしい なまえ（8もじまで）';
+     ni.style.cssText='width:100%;box-sizing:border-box;padding:8px 12px;font-size:14px;font-weight:700;border:2px solid #d9962b;border-radius:999px;background:#fffdf5;color:#4a2e14;text-align:center';
+     nameBox.appendChild(ni);
+    }
+    var armed=false;
+    go1.onclick=function(){
+     try{sfx('tap')}catch(e){}
+     if(C.name){
+      if(nameBox.style.display==='none'){nameBox.style.display='block';go1.textContent='この なまえに する';ni.focus();return}
+      var v=ni.value.trim().slice(0,8);if(!v){msg.textContent='なまえを いれてね';return}
+      LS('miarina_td_name_v1',v);try{var pn=document.getElementById('pn');if(pn){pn.value=v;pn.readOnly=true}}catch(e){}
+      msg.textContent='なまえが「'+v+'」に かいぞうされたよ！';go1.textContent='決定';nameBox.style.display='none';return}
+     if(C.reload&&!armed){armed=true;go1.textContent='ほんとうに？（画面を読みこみなおすよ）';return}
+     msg.textContent=C.run();
+     if(C.reload){go1.disabled=true;setTimeout(function(){location.reload()},1400)}};
+    card.append(para('font-size:14px;font-weight:900;color:#c97a1e',C.t),para('font-size:12px;line-height:1.5;font-weight:700;color:#7a5230;margin-top:2px',C.d),code);
+    if(nameBox)card.appendChild(nameBox);card.append(go1,msg);body.appendChild(card)});
   }else if(P.k==='index'){
    body.appendChild(head('索引','18px'));
    if(!P.items.length)body.appendChild(para('text-align:center;padding:18px 6px;font-size:13px;line-height:1.7;color:#7a5230','まだ 見つけたヒントがないよ'));
