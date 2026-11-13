@@ -3813,6 +3813,8 @@ function openBook(){
   }else if(P.k==='cheat'){
    body.appendChild(head('🛠 改造コード集','18px'));
    body.appendChild(para('text-align:center;font-size:12px;line-height:1.6;color:#9a7048;margin-bottom:4px','「決定」を おすと、ほんとうにゲームが かいぞうされるよ'));
+    body.appendChild(para('margin:6px 4px 8px;padding:8px 10px;border:2px solid #e0568f;border-radius:12px;background:#fff0f0;color:#c0283f;font-size:13px;font-weight:900;line-height:1.5;text-align:center','⚠️ ゲームが 壊れる恐れあり ⚠️\nつかうときは 自分のせきにんで ね！'));
+    body.lastChild.style.whiteSpace='pre-line';
    var LS=function(k,v){try{localStorage.setItem(k,v)}catch(e){}};
    var CODES=[
     {t:'なまえを 無理やり また変える',d:'一度きめたら変えられない なまえを、もういちど つけなおせるよ',c:['011110001110100111','0000011111001'],name:1},
