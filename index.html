@@ -3541,7 +3541,8 @@ function openBook(){
  var favN=pages.length+1;pages.push({k:'fav'});
  var allyN=pages.length+1;pages.push({k:'ally'});
  var helpN=pages.length+1;pages.push({k:'helper'});
- pages[1]={k:'toc',G:G,gStart:gStart,gIndex:gIndex,favN:favN,allyN:allyN,helpN:helpN};
+ var monN=pages.length+1;pages.push({k:'mon'});
+ pages[1]={k:'toc',G:G,gStart:gStart,gIndex:gIndex,favN:favN,allyN:allyN,helpN:helpN,monN:monN};
 
  var ov=document.createElement('div');ov.id='bookov';
  ov.style.cssText='position:fixed;inset:0;z-index:90;background:rgba(60,30,50,.55);display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box';
@@ -3573,7 +3574,7 @@ function openBook(){
   pv.disabled=cur===0;nx.disabled=cur===pages.length-1;
   pv.style.opacity=pv.disabled?'.35':'';nx.style.opacity=nx.disabled?'.35':'';
   if(P.k==='cover'){
-   body.append(para('height:12px',''),(function(){var w=para('text-align:center;',''),k=document.querySelector('#kiri img.kimg');if(k&&k.src){var im=document.createElement('img');im.src=k.src;im.alt='キリン';im.style.cssText='height:170px;width:auto;max-width:100%;display:block;margin:0 auto;filter:drop-shadow(0 3px 4px rgba(110,70,20,.35))';w.appendChild(im)}else w.innerHTML=SVGG;return w})(),head('キリンさん監修🦒攻略本','22px'),
+   body.append(para('height:12px',''),(function(){var w=para('text-align:center;',''),k=document.querySelector('#kiri img.kimg');if(k&&k.src){var im=document.createElement('img');im.src=k.src;im.alt='キリン';im.style.cssText='height:170px;width:auto;max-width:100%;display:block;margin:0 auto;filter:drop-shadow(0 3px 4px rgba(110,70,20,.35))';w.appendChild(im)}else w.innerHTML=SVGG;return w})(),head('攻略本','22px'),
     para('text-align:center;margin-top:10px;font-size:12px;color:#7a5230;line-height:1.6','みありなタワーディフェンス ウルトラDX'),
     para('text-align:center;margin-top:20px;font-size:13px;font-weight:800;color:#7a5230','見つけたヒント '+seen.length+' / '+TIPS.length),
     para('text-align:center;margin-top:8px;font-size:11px;color:#9a7048','ページは ◀ ▶ か 指でスワイプ'));
@@ -3618,6 +3619,8 @@ function openBook(){
     ar.append(para('','🦸 味方キャラたち'),para('font-size:12px;color:#c97a1e','p.'+P.allyN));ar.onclick=function(){go(P.allyN-1)};box.appendChild(ar);
     var hr2=para(rowCss+';cursor:pointer','');
     hr2.append(para('','🌟 おたすけキャラたち'),para('font-size:12px;color:#c97a1e','p.'+P.helpN));hr2.onclick=function(){go(P.helpN-1)};box.appendChild(hr2);
+    var mr=para(rowCss+';cursor:pointer','');
+    mr.append(para('','👾 モンスター図鑑'),para('font-size:12px;color:#c97a1e','p.'+P.monN));mr.onclick=function(){go(P.monN-1)};box.appendChild(mr);
     if(!unlocked)box.appendChild(para('margin-top:12px;font-size:11px;line-height:1.6;color:#9a7048','※ まだ見つけていないヒントは、表紙の「全部読む」で読めるようになるよ'));
    }
    inp.oninput=drawToc;drawToc();
@@ -3647,7 +3650,7 @@ function openBook(){
    body.appendChild(para('text-align:center;font-size:12px;color:#9a7048;margin-bottom:6px','利奈（ゴール）のお店で買える味方キャラだよ'));
    var ALx=null;try{ALx=AL}catch(e){}
    if(!ALx){body.appendChild(para('text-align:center;padding:18px 6px;font-size:13px;color:#7a5230','いまは 見られないよ'));return}
-   var aOrd=['S','H','D','P','C','B','X','L','N'].filter(function(k){return ALx[k]}),mh=1,md=1,ms=1;
+   var aOrd=['S','H','D','P','C','B','X','L'].filter(function(k){return ALx[k]}),mh=1,md=1,ms=1;
    aOrd.forEach(function(k){if(k==='N')return;var d=ALx[k];mh=Math.max(mh,d.hp);md=Math.max(md,d.dps);ms=Math.max(ms,d.sp)});
    var abar=function(lb,v,m,col){var r=para('display:flex;align-items:center;gap:6px;margin-top:3px','');var tr=para('flex:1;height:7px;border-radius:4px;background:#f1e2bd;overflow:hidden','');var f=para('height:100%;border-radius:4px;background:'+col+';width:'+Math.max(6,Math.min(100,Math.round(v/m*100)))+'%','');tr.appendChild(f);r.append(para('flex:none;width:58px;font-size:11px;color:#7a5230;font-weight:800',lb),tr);return r};
    aOrd.forEach(function(k){
@@ -3689,6 +3692,31 @@ function openBook(){
     tx.appendChild(tw);
     if(h.warn)tx.appendChild(para('font-size:12px;line-height:1.5;font-weight:800;color:#d0344f;margin-top:5px',h.warn));
     row.append(ic,tx);body.appendChild(row)});
+  }else if(P.k==='mon'){
+   body.appendChild(head('👾 モンスター図鑑','18px'));
+   body.appendChild(para('text-align:center;font-size:12px;line-height:1.6;color:#9a7048;margin-bottom:4px','バトルに出てくる敵キャラの一部だよ'));
+   var MONS=[
+    {h:'ザコキャラ',l:[['P','ぷるりん'],['M','ぐるまきミーちゃん'],['K','ほわキノ'],['C','ほのかちゃん'],['T','ちゅうすけ'],['A','ぴかぴかナイト'],['F','めらめらひーくん'],['Y','すいすいぴぃ'],['O','もふもふホーホー'],['J','ぴゅーんロケくん'],['G','ふわりん'],['W','ぽたぽたしずくん']]},
+    {h:'ボスキャラ',l:[['B','ヴァンぴー伯爵',1],['R','ドラぷに',1],['L','まじょっこメルル',1],['N','ごろごろゴーレムくん',1],['U','ハートのあくまみみ',1],['I','ブルーデビるる',1]]},
+    {h:'ラスボス四天王',l:[['suika','巨大スイカメ'],['rafu','ラフレシアバニー'],['neko','まねきねこロボ'],['dadan','大魔王ダダン']],k:1}];
+   function monDraw(cn,m,king){
+    if(!king){pfEnDraw(cn,m[0],!!m[2]);return}
+    var sc=cv.width/360,BOX=150,X=x,e={x:180,y:220,d:0,hp:1,mx:1,slow:0,pois:0,stun:0,ci:0,age:1,w:0,dr:1,ph:1,t:0,tc:0,lx:180,ly:220,hx:180,hy:220,fly:0,boss:true};e[m[0]]=1;
+    var clr=function(){X.save();X.setTransform(sc,0,0,sc,0,0);X.clearRect(180-BOX,220-BOX,BOX*2,BOX*2);X.restore()};
+    clr();X.save();X.setTransform(sc,0,0,sc,0,0);
+    var FR=X.fillRect,FT=X.fillText,ST=X.strokeText;X.fillRect=function(a,b,w,h){if(h>=3&&h<=6&&w>=20&&w<=70)return;FR.call(this,a,b,w,h)};X.fillText=function(){};X.strokeText=function(){};
+    try{drawEn2(e,1000)}catch(er){}
+    delete X.fillRect;delete X.fillText;delete X.strokeText;X.restore();
+    cn.getContext('2d').drawImage(cv,(180-BOX/2+8)*sc,(220-BOX/2-12)*sc,BOX*sc,BOX*sc,0,0,cn.width,cn.height);clr()}
+   MONS.forEach(function(sec){
+    body.appendChild(para('margin:12px 0 6px;padding:3px 10px;font-size:13px;font-weight:900;color:#7a5230;background:#fff0b8;border:1px solid #e3b95a;border-radius:999px;text-align:center',sec.h));
+    var gr=para('display:grid;grid-template-columns:repeat('+(sec.k?2:3)+',1fr);gap:8px 4px','');
+    sec.l.forEach(function(m){
+     var cell=para('display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0','');
+     var cn=document.createElement('canvas');cn.width=cn.height=sec.k?240:96;cn.style.cssText='width:'+(sec.k?116:72)+'px;height:'+(sec.k?116:72)+'px;border:0;box-shadow:none;border-radius:0;background:#fff8ea;border-radius:12px;border:2px solid #ecd3a0';
+     try{monDraw(cn,m,sec.k)}catch(er){}
+     cell.append(cn,para('font-size:'+(sec.k?13:10)+'px;font-weight:900;line-height:1.3;color:#c97a1e;text-align:center',m[1]));gr.appendChild(cell)});
+    body.appendChild(gr)});
   }else if(P.k==='index'){
    body.appendChild(head('索引','18px'));
    if(!P.items.length)body.appendChild(para('text-align:center;padding:18px 6px;font-size:13px;line-height:1.7;color:#7a5230','まだ 見つけたヒントがないよ'));
