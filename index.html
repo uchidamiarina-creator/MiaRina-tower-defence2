@@ -3699,6 +3699,12 @@ function openBook(){
     {h:'ボスキャラ',l:bl},
     {h:'ラスボス四天王',l:[['suika','巨大スイカメ'],['rafu','ラフレシアバニー'],['neko','まねきねこロボ'],['dadan','大魔王ダダン']],k:1},
     {h:'最強ボス',l:[['yero','イエロ']],k:1}];
+   var MD={P:'たおすと 3ぴきの ちびぷるりんに わかれるよ',p:'ぷるりんが わかれた 小さい子。足がはやいよ',m:'たおすと お金がたくさん もらえるレア敵！',M:'ほうたいぐるぐるの ミイラの子',K:'キノコのかさを かぶった敵',C:'あたまに火がついた ろうそくのおばけ',T:'ちょこまか歩く 小さなネズミ',A:'よろいを着た 騎士の敵',F:'ほのおの 空とぶ敵',Y:'すいすい とぶ 鳥の敵（空）',O:'もふもふの フクロウ（空）',J:'ロケットみたいに とぶ敵（空）',Q:'ミサイル。空をとんでくるよ',G:'ふわふわ とぶ おばけ（空）',W:'しずくが まわる 敵（空）',a:'ほしの かたちの敵',b:'ころころ ころがる サッカーボール',c:'ブタの ヒーロー',d:'ほっぺが ふくらんだ ハムスター',e:'たおすと ドカン！と 爆発するよ',f:'のんびり歩く カタツムリ',g:'コーヒーカップの おばけ',h:'たおすと ぴゅんいちごに へんしんするよ',i:'足がとても はやい いちご',j:'8ばんボールの タコ',k:'こそこそ来る どろぼう',l:'ムキムキの プロレスラー',V:'空をただよう 大きなイカ',E:'空をとんで ゴールに ぶつかりに来るよ',Z:'空からおりてきて ゴールをねらい撃ち！',PIEN:'ぴえんな顔の 泣き虫',DV:'レア敵。空をとぶ こうもりデビ',DR:'超レア！にじいろの デビ（空）',H:'空をとぶ 大てんぐ。60秒でかえるよ',
+    Z01:'とけかけの ソーダバー',Z02:'こわい顔の ハンバーガー',Z03:'ひとりで しょんぼりの ピン芸人',Z04:'ほねだけの メカマグロ',Z05:'とんがり頭の タケノコミサイル',Z06:'ギターになった 敵',Z07:'おこった顔の 肉まん',Z08:'首の長い ダチョウ',Z09:'目が赤い うさぎ',Z10:'ほのおを せおった カメ',Z11:'ばくはつしそうな だるま',Z12:'ピカチュウに にせた敵',Z13:'マリオに にせた敵',Z14:'ヨッシーに にせた敵',Z15:'昭和の ヤンキー',Z16:'こわい顔の 忍者',Z17:'ピンクのリボンの くノ一',Z18:'くさった ドーナツのおばけ',Z19:'空から来る 飛行艇',
+    B:'コウモリマントの 伯爵ボス',R:'小さな ドラゴンのボス（空）',L:'ほうきに乗った 魔女のボス（空）',N:'ダメージが 4割へる かたいボス',U:'ハートで タワーを3秒止める ボス（空）',I:'ブルーの あくまのボス（空）',
+    suika:'弱点：ロケットはなび',rafu:'弱点：ピンクアロー・こたつレーザー。体力がへると ねむるよ',neko:'弱点：いかずち・ドカンほう',dadan:'弱点：サイコロマシン・にじビーム',yero:'ダンスで 武器を止める 最強ボス。味方の攻撃だけ当たるよ'};
+   var bub=null;function bubOff(){if(bub){bub.remove();bub=null}}
+   body.style.position='relative';body.addEventListener('click',bubOff);
    function monDraw(cn,m,king){
     var big=m[0]==='V'||m[0]==='DR';if(!king&&!big){pfEnDraw(cn,m[0],!!m[2]);return}
     var sc=cv.width/360,BOX=big?120:150,X=x,e={ty:m[0],x:180,y:220,d:0,hp:1,mx:1,slow:0,pois:0,stun:0,ci:0,age:1,w:0,dr:1,ph:1,t:0,tc:0,lx:180,ly:220,hx:180,hy:220,fly:big?1:0,xt:big?1:0,boss:!big};if(!big)e[m[0]]=1;
@@ -3715,6 +3721,10 @@ function openBook(){
      var cell=para('display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0','');
      var cn=document.createElement('canvas');cn.width=cn.height=sec.k?240:96;cn.style.cssText='width:'+(sec.k?116:64)+'px;height:'+(sec.k?116:64)+'px;border:0;box-shadow:none;border-radius:0;background:#fff8ea;border-radius:12px;border:2px solid #ecd3a0';
      try{monDraw(cn,m,sec.k)}catch(er){}
+     cell.style.cursor='pointer';cell.onclick=function(ev){ev.stopPropagation();var same=bub&&bub._c===cell;bubOff();if(same)return;try{sfx('tap')}catch(e){}
+      var b=para('position:absolute;z-index:5;max-width:200px;box-sizing:border-box;padding:7px 11px;border-radius:14px;background:#fffdf5;border:2px solid #d9962b;color:#4a2e14;font-size:12.5px;font-weight:800;line-height:1.5;box-shadow:0 4px 10px rgba(110,70,20,.3);text-align:center',m[1]+'\n'+(MD[m[0]]||''));b.firstChild&&0;b.style.whiteSpace='pre-line';b._c=cell;body.appendChild(b);bub=b;
+      var cx=cell.offsetLeft+cell.offsetWidth/2,bw=b.offsetWidth,l=Math.max(2,Math.min(body.clientWidth-bw-2,cx-bw/2)),top=cell.offsetTop-b.offsetHeight-8;if(top<0)top=cell.offsetTop+cell.offsetHeight+6;
+      b.style.left=l+'px';b.style.top=top+'px';var tl=para('position:absolute;bottom:-7px;width:10px;height:10px;background:#fffdf5;border-right:2px solid #d9962b;border-bottom:2px solid #d9962b;transform:rotate(45deg)','');tl.style.left=(cx-l-5)+'px';if(top>cell.offsetTop){tl.style.bottom='';tl.style.top='-7px';tl.style.transform='rotate(225deg)'}b.appendChild(tl)};
      cell.append(cn,para('font-size:'+(sec.k?13:9.5)+'px;font-weight:900;line-height:1.25;color:#c97a1e;text-align:center',m[1]));gr.appendChild(cell)});
     body.appendChild(gr)});
   }else if(P.k==='index'){
