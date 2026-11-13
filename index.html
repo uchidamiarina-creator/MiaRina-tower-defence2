@@ -257,10 +257,10 @@ function ecOK(){try{if(localStorage.getItem(EC_KEY)==='1')return true;
  for(var u in g)for(var d in g[u]){var r=g[u][d];if(r&&r.wins>0&&r.maxWave>=100){localStorage.setItem(EC_KEY,'1');return true}}}catch(e){}return false}
 const SR_KEY='miarina_td_straight_v1';
 function srOK(){try{return localStorage.getItem(SR_KEY)==='1'}catch(e){return false}}
-function ecShow(){var e=document.getElementById('ecTm');if(!e){e=document.createElement('div');e.id='ecTm';e.style.cssText='flex:none;align-self:center;padding:4px 9px;border-radius:12px;background:rgba(30,20,50,.82);color:#ffe9a8;font:bold 12px sans-serif;white-space:nowrap;pointer-events:none'}
+function ecShow(){var e=document.getElementById('ecTm');if(!e){e=document.createElement('div');e.id='ecTm';e.style.cssText='flex:none;align-self:center;display:block;width:fit-content;margin:2px auto;padding:1px 8px;line-height:1.3;border-radius:10px;background:rgba(30,20,50,.82);color:#ffe9a8;font:bold 11px sans-serif;white-space:nowrap;text-align:center;pointer-events:none'}
  /* 残り時間は全自動バトルボタンの右側に表示する */
- var ab=document.getElementById('autoBtn');if(ab&&ab.parentNode&&e.previousSibling!==ab)ab.parentNode.insertBefore(e,ab.nextSibling);
- var t='🌑 エクリプス 残り '+tfmt(Math.max(0,EC_SEC-(G.ecT||0)));if(e.textContent!==t)e.textContent=t}
+ var ab=document.getElementById('cw');if(ab&&ab.parentNode&&e.nextSibling!==ab)ab.parentNode.insertBefore(e,ab);
+ var t='🌑 残り '+tfmt(Math.max(0,EC_SEC-(G.ecT||0)));if(e.textContent!==t)e.textContent=t}
 function ecHide(){var e=document.getElementById('ecTm');if(e)e.remove()}
 function ecUp(dt){
  if(G.setup||G.over)return;
@@ -282,7 +282,9 @@ function ecRefill(){const w=ecLv(),hp=ecHp(w);G.hpb=hp;for(let i=0;i<10;i++){con
 /* フェーズ100のラスボス（巨大スイカメ・ラフレシアバニー・まねきねこロボ・大魔王ダダン）のうち、ランダムな1体だけを出す */
 /* ラスボス四天王の調子：絶好調〜絶不調（体力と歩く速さが変わる） */
 window.BOSS_COND=[['絶好調',1.5,1.25,'#ff1744'],['好調',1.25,1.1,'#ff9100'],['ふつう',1,1,'#78909c'],['不調',.8,.9,'#42a5f5'],['絶不調',.6,.8,'#5c6bc0']];
-window.bossCond=function(o){const c=BOSS_COND[Math.random()*BOSS_COND.length|0];o.hp*=c[1];o.sp*=c[2];o.cn=c[0];return o};
+window.NEKO_SZ=[{n:'小',k:.62,hp:.4,sp:1.4,rw:777},{n:'中',k:.8,hp:.7,sp:1.15,rw:7777},{n:'大',k:1,hp:1,sp:1,rw:77777}];
+window.bossCond=function(o){const c=BOSS_COND[Math.random()*BOSS_COND.length|0];o.hp*=c[1];o.sp*=c[2];o.cn=c[0];
+ if(o.neko&&o.nsz==null){{const r=Math.random();o.nsz=r<.1?2:r<.55?0:1}const z=NEKO_SZ[o.nsz];o.hp*=z.hp;o.sp*=z.sp;o.rw=z.rw}return o};
 window.bossNm=function(e,n){return e&&e.cn?e.cn+' '+n:n};
 window.bossTag=function(x,e,px,py){if(!e||!e.cn)return;x.save();x.textAlign='center';x.textBaseline='middle';x.font='bold 10px "Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif';x.lineWidth=3;x.strokeStyle='rgba(20,5,40,.85)';x.strokeText(e.cn,px,py);x.fillStyle=bossCc(e.cn);x.fillText(e.cn,px,py);x.restore()};
 window.bossCc=function(cn){const c=BOSS_COND.find(function(x){return x[0]===cn});return c?c[3]:'#fff'};
@@ -984,13 +986,13 @@ function fpos(e){const o=e.fro,d=Math.min(e.d,o.tot);let seg=o.segs[o.segs.lengt
  if(e.pat==0)w=Math.sin(e.d/20+e.ph)*26;else if(e.pat==1)w=Math.sin(e.d/41+e.ph)*22+Math.sin(e.d/13+e.ph*2.3)*12;else w=(Math.abs((((e.d/38+e.ph)%2)+2)%2-1)*2-1)*22;
  w=e.ty=='Q'?0:w*k;return[bx+nx*w,by+ny*w]}
 const AL={S:{n:'侍',hp:3,dps:1.2,sp:38,reach:12,r:11,fly:0,price:300,max:3,ds:'強い・近距離で戦う'},H:{n:'ヒーロー',hp:2,dps:.8,sp:85,reach:40,r:11,fly:1,price:200,max:5,ds:'ふつうの強さ・空を飛べる'},D:{n:'犬',hp:1.5,dps:.7,sp:115,reach:14,r:10,fly:0,boss:1,price:120,max:6,ds:'ボスにも戦いに行く'},P:{n:'パトカー',hp:5,dps:.5,sp:100,reach:22,r:14,fly:0,price:260,max:4,ds:'とても硬い'},C:{n:'猫',hp:.6,dps:.3,sp:150,reach:12,r:9,fly:0,price:60,max:10,ds:'弱いけど素早い'},B:{n:'スズメ',hp:2,dps:.8,sp:120,reach:16,r:9,fly:1,air:1,price:90,max:10,ds:'空の敵にだけ襲いかかる'},X:{n:'横綱',hp:12,dps:.5,sp:44,reach:20,r:17,fly:0,boss:1,only:1,price:600,max:1,ds:'ボスを止める・張り手と上手投げ（1体だけ）'},L:{n:'くちびる',hp:3,dps:1,sp:22,reach:130,r:12,fly:1,price:300,max:1,ds:'宝箱・キャンディを取りに行く・投げキスで攻撃（1体だけ）'}};
-const AD={S:'じっくり歩いて近づき、刀でバッサリ戦う接近戦タイプ。体力もこうげきも高くて頼もしいよ。足はおそいけど、地上の敵ならまかせて！空の敵やボスとは戦えないよ',H:'空を飛んで、地上の敵も空の敵もこうげきできる万能タイプ。少し離れた所から戦えて、足も速め。ボスとは戦えないよ',D:'足が速くて、ボスにも戦いに行ける勇かんなワンちゃん。体力は少なめだからやられやすいよ。空の敵とは戦えないよ',P:'とても硬くて、なかなかやられない頼もしいパトカー。こうげきは弱めだよ。ボスや空の敵とは戦えないよ',C:'とても素早いけど、体力もこうげきも弱いネコ。安いからたくさんそろえられるよ。毛の色は4種類！ボスや空の敵とは戦えないよ',B:'空を飛ぶ敵（ボス以外）にだけ襲いかかる空専用のスズメ。地上の敵とは戦わないよ。足が速くて安いから、たくさん持てるよ',X:'ボスにだけ立ち向かう力持ち。ふだんはゴロンとお昼寝（Zzz）、ボスが出てくると起きて、張り手と上手投げでボスを止めるよ。体力はすごく高いけど足はおそいよ（1体だけ）',L:'空を飛ぶくちびる。ふだんは遠くの敵に投げキスでゆっくりこうげきして、宝箱やキャンディが出たら急いで取りに行くよ（1体だけ）'};
+const AD={S:'じっくり歩いて近づき、刀でバッサリ戦う接近戦タイプ。体力もこうげきも高くて頼もしいよ。足はおそいけど、地上の敵ならまかせて！空の敵やボスとは戦えないよ',H:'空を飛んで、地上の敵も空の敵もこうげきできる万能タイプ。少し離れた所から戦えて、足も速め。ボスとは戦えないよ',D:'足が速くて、ボスにも戦いに行ける勇かんなワンちゃん。体力は少なめだからやられやすいよ。空の敵とは戦えないよ',P:'とても硬くて、なかなかやられない頼もしいパトカー。こうげきは弱めだよ。ボスや空の敵とは戦えないよ（ただしイエロだけは、道の中央に来る前に体を張って止めてくれるよ）',C:'とても素早いけど、体力もこうげきも弱いネコ。安いからたくさんそろえられるよ。毛の色は4種類！ボスや空の敵とは戦えないよ',B:'空を飛ぶ敵（ボス以外）にだけ襲いかかる空専用のスズメ。地上の敵とは戦わないよ。足が速くて安いから、たくさん持てるよ',X:'ボスにだけ立ち向かう力持ち。ふだんはゴロンとお昼寝（Zzz）、ボスが出てくると起きて、張り手と上手投げでボスを止めるよ。体力はすごく高いけど足はおそいよ（1体だけ）',L:'空を飛ぶくちびる。ふだんは遠くの敵に投げキスでゆっくりこうげきして、宝箱やキャンディが出たら急いで取りに行くよ（1体だけ）'};
 const CATN=['黒猫','三毛猫','虎猫','白猫'];
 function callAlly(){if(G.over||G.allyUsed)return;if(!G.active){G.fx.push({x:180,y:300,txt:'敵が来たときに呼べるよ',t:1.4,c:'#7a5cff'});return}
  G.allyUsed=true;const k=Object.keys(AL)[Math.random()*5|0],d=AL[k],b=G.hpb||20,g=R[0].P[R[0].P.length-1],cv=k=='C'?Math.random()*4|0:0;
  G.al.push({k,cv,x:g[0],y:g[1],hp:b*d.hp,mhp:b*d.hp,dps:b*d.dps,sp:d.sp,reach:d.reach,r:d.r,fly:d.fly,boss:d.boss,dr:-1,tg:null,eng:false,ro:null,d:0});
  G.fx.push({x:g[0],y:g[1]-44,txt:(k=='C'?CATN[cv]:d.n)+'が助けに来た！',t:1.8,c:'#7a5cff'});sfx('wave')}
-function okT(a,e){if(e.dead||(e.fight&&e.fight!==a))return false;if(a.only&&!e.boss)return false;if(e.boss)return !!a.boss;if(a.air)return AIR(e);if(a.fly)return true;return !AIR(e)}
+function okT(a,e){if(e.dead||(e.fight&&e.fight!==a))return false;if(a.only&&!e.boss)return false;if(e.yero&&a.k==='P')return !e.djOn&&!e.yBye;if(e.boss)return !!a.boss;if(a.air)return AIR(e);if(a.fly)return true;return !AIR(e)}
 function nearestD(o,px,py){let best=1e9,bd=0;for(const s of o.segs){const vx=s.b[0]-s.a[0],vy=s.b[1]-s.a[1],L=vx*vx+vy*vy,u=L?Math.max(0,Math.min(1,((px-s.a[0])*vx+(py-s.a[1])*vy)/L)):0,d=Math.hypot(px-(s.a[0]+vx*u),py-(s.a[1]+vy*u));if(d<best){best=d;bd=s.s+u*s.l}}return bd}
 function restCell(){const gl=cellOf(R[0].P[R[0].P.length-1]),dist={},q=[gl];dist[gl.join(',')]=0;let pick=gl;while(q.length){const c=q.shift(),dk=dist[c.join(',')];pick=c;if(dk==3)break;for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const n=[c[0]+dx,c[1]+dy],nk=n.join(',');if(road.has(nk)&&!(nk in dist)){dist[nk]=dk+1;q.push(n)}}}return pick}
 function yokoRest(a,dt){if(!a.rc)a.rc=restCell();const tx=a.rc[0]*C+20,ty=a.rc[1]*C+20;if(Math.hypot(a.x-tx,a.y-ty)<2){a.sleep=true;return}a.sleep=false;
@@ -1009,7 +1011,7 @@ function allyUp(dt){if(!G.al||!G.al.length)return;for(const a of G.al){if(a.dead
    let step=a.sp*dt,guard=0;while(step>0&&!a.eng&&guard++<400){let tx,ty;if(a.wp.length){tx=a.wp[0][0];ty=a.wp[0][1]}else{tx=t.x;ty=t.y}const dx=tx-a.x,dy=ty-a.y,L=Math.hypot(dx,dy),m=Math.min(step,6);if(L<=m){if(a.wp.length){a.x=tx;a.y=ty;a.wp.shift();step-=Math.max(L,.01)}else step=0}else{a.x+=dx/L*m;a.y+=dy/L*m;step-=m}
     if(Math.hypot(t.x-a.x,t.y-a.y)<=a.reach)a.eng=true}}
    if(a.eng)t.fight=a}
-  else{if(a.k=='X'&&Math.hypot(t.x-a.x,t.y-a.y)>a.reach*2.2){a.eng=false;if(t.fight===a)t.fight=null;continue}t.fight=a;const atk=G.hpb*(t.boss?1.5:t.ty=='A'?.8:.5);hit(t,a.dps*dt,{});if(a.k=='X')yoko(a,t,dt);a.hp-=atk*dt;if(a.hp<=0){a.dead=true;t.fight=null;G.fx.push({x:a.x,y:a.y-10,txt:'やられた〜',t:1,c:'#ff4d6d'});G.fx.push({x:a.x,y:a.y,r:16,t:.35,c:'#ffd166'})}}}
+  else{if(a.k=='X'&&Math.hypot(t.x-a.x,t.y-a.y)>a.reach*2.2){a.eng=false;if(t.fight===a)t.fight=null;continue}t.fight=a;const atk=G.hpb*(t.boss?1.5:t.ty=='A'?.8:.5);hit(t,a.dps*dt,{});if(a.k=='X')yoko(a,t,dt);if(!(a.k==='P'&&t.yero))a.hp-=atk*dt;if(a.hp<=0){a.dead=true;t.fight=null;G.fx.push({x:a.x,y:a.y-10,txt:'やられた〜',t:1,c:'#ff4d6d'});G.fx.push({x:a.x,y:a.y,r:16,t:.35,c:'#ffd166'})}}}
  G.al=G.al.filter(a=>!a.dead)}
 const GX=x;
 function drawLips(a,t,x){const r=a.r||12,fl=a.fly,py=a.y+(fl?-8+Math.sin(t/220+a.x)*2.5:0),pk=a.pk&&t>0?(performance.now()-a.pk<320):false,rush=a.rush;
@@ -2373,6 +2375,22 @@ var cs=null;var _p=panel;panel=function(){
   wp.appendChild(tl);
  }catch(e){console.error(e)}
 };
+})();
+</script>
+<script>
+/* 武器の強化ウインドが出ている時、ウインド以外をタップしたらウインドを閉じる */
+(function(){
+ document.addEventListener('pointerdown',function(e){
+  try{
+   if(!G||!G.sel)return;
+   var wp=document.getElementById('wpop');
+   if(!wp||wp.style.display==='none')return;
+   if(wp.contains(e.target))return;
+   G.sel=null;hud();panel();
+   var cw=document.getElementById('cw');
+   if(cw&&cw.contains(e.target))e.stopPropagation();
+  }catch(err){console.error(err)}
+ },true);
 })();
 </script>
 <script>
@@ -3844,7 +3862,7 @@ window.__DV={spawn:spawnDevil,S};
 <script>
 (function(){
 /* ===== 半月ボール：当たった敵のHPを必ず半分にする武器 ===== */
-TD.S='半月ボールを投げて、当たった敵の今のHPを必ず半分にする（四天王や最終兵器田中を含むボスにも効く）。強化すると投げるのが速くなって、射程ものびる';
+TD.S='半月ボールを投げて、当たった敵の今のHPを必ず半分にする（ラスボス四天王だけは効きにくくて、半分の10分の1＝5%しか減らないうえ、6割はミスして当たらない。最終兵器田中にはふつうに効く）。強化すると投げるのが速くなって、射程ものびる';
 SFX.smile=function(){bp(880,.06,'square',.05,0,0);bp(1175,.08,'square',.05,0,.05)};
 SFX.smileHit=function(){bp(523,.07,'square',.06,0,0);bp(784,.09,'square',.06,0,.06);bp(1047,.12,'square',.05,0,.12)};
 function face(c,r){c.save();c.lineJoin='round';c.lineCap='round';
@@ -3872,8 +3890,8 @@ const _up=update;update=function(dt){_up(dt);
   for(const m of G.sm){m.t+=sd;m.rot+=sd*14;
    if(m.tg&&m.tg.dead){let n=null,nd=90;for(const e of G.en){if(e.dead||e.x==null)continue;const q=Math.hypot(e.x-m.x,e.y-m.y);if(q<nd){nd=q;n=e}}m.tg=n;if(!n){m.rm=1;continue}}
    const tx=m.tg.x,ty=m.tg.y,dx=tx-m.x,dy=ty-m.y,L=Math.hypot(dx,dy),st=280*sd;
-   if(L<=st+8){m.rm=1;const e=m.tg;if(!e.dead&&!e.yero){e.hp=e.hp/2;try{window.__pienAnger&&window.__pienAnger(e)}catch(_){}
-     G.fx.push({x:e.x,y:e.y-22,txt:'½',t:1,c:'#ff9a00'});G.fx.push({x:e.x,y:e.y,r:20,t:.3,c:'#ffe98a'});fsfx('smileHit');
+   if(L<=st+8){m.rm=1;const e=m.tg;if(!e.dead&&!e.yero&&(e.suika||e.rafu||e.neko||e.dadan)&&Math.random()<.6){G.fx.push({x:e.x,y:e.y-22,txt:'ミス！',t:.9,c:'#9aa0b5'})}else if(!e.dead&&!e.yero){e.hp=(e.suika||e.rafu||e.neko||e.dadan)?e.hp*.95:e.hp/2;try{window.__pienAnger&&window.__pienAnger(e)}catch(_){}
+     G.fx.push({x:e.x,y:e.y-22,txt:(e.suika||e.rafu||e.neko||e.dadan)?'5%':'½',t:1,c:'#ff9a00'});G.fx.push({x:e.x,y:e.y,r:20,t:.3,c:'#ffe98a'});fsfx('smileHit');
      for(let i=0;i<7;i++){const a=i/7*6.283;G.smp.push({x:e.x,y:e.y,vx:Math.cos(a)*70,vy:Math.sin(a)*70-20,t:0,T:.5})}}}
    else{m.x+=dx/L*st;m.y+=dy/L*st}}
   G.sm=G.sm.filter(m=>!m.rm);
@@ -7316,7 +7334,7 @@ window.__wx={load:load,stop:stop};
   /* 名前とHPバー */
   const hy=y0-3.7*bu-10,W=62;
   x.save();x.textAlign='center';x.textBaseline='middle';x.font='bold 11px "Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif';
-  x.lineWidth=3;x.strokeStyle='#c2185b';x.strokeText('まねきねこロボ',x0,hy-9);x.fillStyle='#fff';x.fillText('まねきねこロボ',x0,hy-9);bossTag(x,e,x0,hy-9-12);
+  x.lineWidth=3;x.strokeStyle='#c2185b';x.strokeText('まねきねこロボ'+((window.NEKO_SZ&&e.nsz!=null)?'（'+NEKO_SZ[e.nsz].n+'）':''),x0,hy-9);x.fillStyle='#fff';x.fillText('まねきねこロボ'+((window.NEKO_SZ&&e.nsz!=null)?'（'+NEKO_SZ[e.nsz].n+'）':''),x0,hy-9);bossTag(x,e,x0,hy-9-12);
   x.fillStyle='rgba(20,5,40,.5)';x.fillRect(x0-W/2,hy,W,6);x.fillStyle='#3ddc84';x.fillRect(x0-W/2,hy,W*Math.max(0,e.hp/e.mx),6);
   x.restore()}
 
@@ -7668,7 +7686,7 @@ window.__wx={load:load,stop:stop};
   c.restore();
  }
  const _de=drawEn2;
- drawEn2=function(e,t){if(e&&e.suika&&e.x!=null){try{drawSuika(e,t)}catch(err){console.error(err)}return}if(e&&e.rafu&&e.x!=null){try{drawRafu(e,t)}catch(err){console.error(err)}return}if(e&&e.neko&&e.x!=null){try{drawNeko(e,t)}catch(err){console.error(err)}return}if(e&&e.dadan&&e.x!=null){try{drawDadan(e,t)}catch(err){console.error(err)}return}if(e&&e.tanaka&&e.x!=null){try{drawTanaka(e,t)}catch(err){console.error(err)}return}_de(e,t)};
+ drawEn2=function(e,t){if(e&&e.suika&&e.x!=null){try{drawSuika(e,t)}catch(err){console.error(err)}return}if(e&&e.rafu&&e.x!=null){try{drawRafu(e,t)}catch(err){console.error(err)}return}if(e&&e.neko&&e.x!=null){try{const _k=(window.NEKO_SZ&&e.nsz!=null)?NEKO_SZ[e.nsz].k:1;if(_k!==1){x.save();x.translate(e.x,e.y);x.scale(_k,_k);x.translate(-e.x,-e.y);try{drawNeko(e,t)}finally{x.restore()}}else drawNeko(e,t)}catch(err){console.error(err)}return}if(e&&e.dadan&&e.x!=null){try{drawDadan(e,t)}catch(err){console.error(err)}return}if(e&&e.tanaka&&e.x!=null){try{drawTanaka(e,t)}catch(err){console.error(err)}return}_de(e,t)};
 })();
 </script>
 <style id="pc-ui-css">
