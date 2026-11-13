@@ -3757,29 +3757,120 @@ var TIPS=[
 '質問箱は40個の質問に答えると、おしまいになるよ'
 ];
 
-/* ===== 攻略本：キリンさんのヒント（豆知識はのぞく）を、見つけたぶん何度でも読める ===== */
+/* ===== 攻略本（表紙・もくじ・ジャンル別のページ・索引つき。見つけたヒントだけ載る） ===== */
+var SVGG='<svg viewBox="0 0 120 130" width="110" height="118" aria-hidden="true"><rect x="50" y="8" width="6" height="24" rx="3" fill="#8a5a2a"/><circle cx="53" cy="8" r="5" fill="#8a5a2a"/><rect x="66" y="8" width="6" height="24" rx="3" fill="#8a5a2a"/><circle cx="69" cy="8" r="5" fill="#8a5a2a"/><path d="M28 62 Q26 30 60 26 Q94 24 98 60 Q102 94 80 112 Q60 126 40 114 Q26 100 28 62Z" fill="#f4c25b" stroke="#8a5a2a" stroke-width="3"/><g fill="#b8651b"><circle cx="42" cy="48" r="7"/><circle cx="70" cy="40" r="6"/><circle cx="86" cy="66" r="8"/><circle cx="56" cy="72" r="6"/><circle cx="36" cy="88" r="6"/><circle cx="66" cy="98" r="7"/><circle cx="90" cy="94" r="4"/></g><circle cx="50" cy="66" r="5" fill="#3a2410"/><circle cx="82" cy="64" r="5" fill="#3a2410"/><circle cx="51.5" cy="64.5" r="1.6" fill="#fff"/><circle cx="83.5" cy="62.5" r="1.6" fill="#fff"/><ellipse cx="62" cy="110" rx="9" ry="6" fill="#8a5a2a"/><path d="M40 106 Q46 118 56 116" fill="none" stroke="#8a5a2a" stroke-width="2.5" stroke-linecap="round"/></svg>';
 var SEEN_KEY='miarina_td_tips_seen_v1';
 function seenGet(){try{var a=JSON.parse(localStorage.getItem(SEEN_KEY)||'[]');return Array.isArray(a)?a:[]}catch(e){return []}}
 function seenAdd(t){try{var a=seenGet();if(a.indexOf(t)<0){a.push(t);localStorage.setItem(SEEN_KEY,JSON.stringify(a))}}catch(e){}}
-function bookStyle(el,size){el.style.color='#ff7b8a';el.style.webkitTextStroke='3px #ffffff';el.style.paintOrder='stroke fill';el.style.textShadow='0 2px 0 #ffffff,0 -1px 0 #ffffff,1px 0 0 #ffffff,-1px 0 0 #ffffff,0 3px 6px rgba(255,123,138,.35)';el.style.fontSize=size;el.style.fontWeight='900';return el}
+function bookStyle(el,size){el.style.color='#c97a1e';el.style.webkitTextStroke='3px #fff8ea';el.style.paintOrder='stroke fill';el.style.textShadow='0 2px 0 #fff8ea,0 -1px 0 #fff8ea,1px 0 0 #fff8ea,-1px 0 0 #fff8ea,0 3px 6px rgba(160,90,20,.35)';el.style.fontSize=size;el.style.fontWeight='900';return el}
+var BK_GENRES=[
+ {n:'キリンさんから',re:/キリン|ヒント/},
+ {n:'街と住民',re:/住民|街|質問箱|天気|ねどこ/},
+ {n:'全自動バトル',re:/全自動/},
+ {n:'仙人と武器',re:/仙人|オリジナル武器/},
+ {n:'特別モード',re:/ブチアゲ|エクリプス|ルナティック|イエロ|四天王|スイカメ/},
+ {n:'難易度とクリア',re:/超かんたん|かんたん|むずかしい|難しい|クリア|ふつうの難易度|ふつうは|ふつうでは|ふつうより/},
+ {n:'ボスと横綱',re:/ボス|横綱/},
+ {n:'ひみつ道具',re:/キャンディ|ロリポップ|宝箱|ひみつ道具|むちむち|金色スプレー|たこ焼き/},
+ {n:'未亜と利奈',re:/未亜|利奈/},
+ {n:'味方',re:/味方|侍|ヒーロー|犬|パトカー|猫|スズメ|くちびる/},
+ {n:'タワーの種類',re:/ピンクアロー|ドカンほう|こおり|いかずち|どくタワー|にじビーム|かざん|たつまきほう|ロケットはなび|かいてんムチ|こたつレーザー|サイコロマシン|スロット|ぎんこう|ラブハート|おとしあな|SOS/},
+ {n:'お金と強化',re:/強化|お金|売|値段|借金|借り|💰/},
+ {n:'タワーの置き方',re:/タワー|置く|置いて|置き|置ける|置こう/},
+ {n:'敵',re:/敵|モンスター|穴|ぷるりん|ぐるまき|ぴかぴか|すいすい|どっかん|モグラ|コアラ|ペンギン|カニ|ラッコ|悪魔|ぷちロケ/},
+ {n:'道と基本',re:/道|ゴール|スタート|フェーズ|▶|⏸|⏩|セーブ|💾|🎵|🗺|準備中|ボタン/},
+ {n:'その他',re:/./}
+];
+function bkClass(t){for(var i=0;i<BK_GENRES.length;i++)if(BK_GENRES[i].re.test(t))return i;return BK_GENRES.length-1}
+function kanaKey(t){var code=t.charCodeAt(0);if(code>=0x30A1&&code<=0x30F6)code-=0x60;var S=[0x3042,0x304B,0x3055,0x305F,0x306A,0x306F,0x307E,0x3084,0x3089,0x308F],N=['あ行','か行','さ行','た行','な行','は行','ま行','や行','ら行','わ行'],r=99,nm='その他';if(code>=0x3041&&code<=0x3093){r=0;for(var k=0;k<S.length;k++)if(code>=S[k]){r=k;nm=N[k]}}return {r:r,c:code,n:nm}}
+var GUIDE_UK='miarina_td_guide_unlock_v1',RC_KEY2='miarina_td_rinacoin_v1',GUIDE_PRICE=2000;
+function guideUnlocked(){try{return localStorage.getItem(GUIDE_UK)==='1'}catch(e){return false}}
+function rcCoins(){try{return Math.max(0,parseInt(localStorage.getItem(RC_KEY2)||'0',10)||0)}catch(e){return 0}}
+function rcSpend(n){try{localStorage.setItem(RC_KEY2,String(Math.max(0,rcCoins()-n)))}catch(e){}}
 function openBook(){
  if(document.getElementById('bookov'))return;
- var seen=seenGet(),ov=document.createElement('div');ov.id='bookov';
+ var unlocked=guideUnlocked();
+ var seen=unlocked?TIPS.slice():seenGet(),G=BK_GENRES.map(function(g,i){return {n:g.n,i:i,list:[],all:0}});
+ TIPS.forEach(function(t){var gi=bkClass(t);G[gi].all++;if(seen.indexOf(t)>=0)G[gi].list.push(t)});
+ var pages=[{k:'cover'},{k:'toc'}],gStart={},pageOf={};
+ G.forEach(function(g){if(!g.list.length)return;gStart[g.i]=pages.length+1;
+  for(var s=0;s<g.list.length;s+=6){var items=g.list.slice(s,s+6);items.forEach(function(t){pageOf[t]=pages.length+1});pages.push({k:'genre',g:g,items:items,off:s})}});
+ var ent=seen.map(function(t){return {t:t,k:kanaKey(t)}}).sort(function(a,b){return (a.k.r-b.k.r)||(a.k.c-b.k.c)||(a.t<b.t?-1:(a.t>b.t?1:0))});
+ var rows=[],last='';
+ ent.forEach(function(e){if(e.k.n!==last){rows.push({h:e.k.n});last=e.k.n}rows.push({t:e.t,p:pageOf[e.t]})});
+ var gIndex=pages.length+1;
+ if(!rows.length)pages.push({k:'index',items:[]});
+ for(var s2=0;s2<rows.length;s2+=10)pages.push({k:'index',items:rows.slice(s2,s2+10)});
+ pages[1]={k:'toc',G:G,gStart:gStart,gIndex:gIndex};
+
+ var ov=document.createElement('div');ov.id='bookov';
  ov.style.cssText='position:fixed;inset:0;z-index:90;background:rgba(60,30,50,.55);display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box';
  var card=document.createElement('div');
- card.style.cssText='width:min(100%,360px);max-height:88vh;display:flex;flex-direction:column;background:#fff0f7;border:3px solid #ff8fb8;border-radius:18px;padding:14px;box-sizing:border-box;box-shadow:0 6px 20px rgba(120,60,100,.35)';
- var h=bookStyle(document.createElement('div'),'17px');h.textContent='キリンさん監修🦒攻略本';h.style.textAlign='center';h.style.marginBottom='4px';
- var p=bookStyle(document.createElement('div'),'12px');p.textContent='見つけたヒント '+seen.length+' / '+TIPS.length;p.style.textAlign='center';p.style.marginBottom='10px';
- var list=document.createElement('div');list.style.cssText='flex:1;overflow:auto;min-height:0;padding:0 4px';
- var n=0;
- TIPS.forEach(function(t){if(seen.indexOf(t)<0)return;n++;
-  var it=bookStyle(document.createElement('div'),'14px');it.style.fontWeight='800';it.style.lineHeight='1.6';it.style.padding='8px 2px';it.style.borderBottom='2px dashed #ffc2d9';it.textContent=n+'. '+t;list.appendChild(it)});
- if(!n){var e=bookStyle(document.createElement('div'),'13px');e.style.textAlign='center';e.style.padding='18px 6px';e.style.lineHeight='1.7';e.textContent='まだ ヒントは ないよ。遊んでいると、キリンさんが教えてくれるよ';list.appendChild(e)}
- var cl=document.createElement('button');cl.textContent='とじる';
- cl.style.cssText='margin-top:10px;width:100%;min-height:0;height:auto;padding:10px 6px;background:#ffffff;border:2px solid #ff8fb8;border-bottom-width:4px;border-radius:999px;font-size:16px;font-weight:900;color:#ff7b8a;text-shadow:0 1px 0 #fff,0 -1px 0 #fff,1px 0 0 #fff,-1px 0 0 #fff;-webkit-text-stroke:2px #fff;paint-order:stroke fill';
- cl.onclick=function(){try{sfx('tap')}catch(e){}ov.remove()};
- ov.onclick=function(e){if(e.target===ov)ov.remove()};
- card.append(h,p,list,cl);ov.appendChild(card);document.body.appendChild(ov);
+ card.style.cssText='width:min(100%,360px);height:min(82vh,580px);display:flex;flex-direction:column;background-color:#fff6e0;background-image:radial-gradient(circle at 18% 22%,rgba(160,90,20,.13) 0 9px,transparent 10px),radial-gradient(circle at 78% 35%,rgba(160,90,20,.11) 0 12px,transparent 13px),radial-gradient(circle at 36% 74%,rgba(160,90,20,.12) 0 10px,transparent 11px),radial-gradient(circle at 88% 88%,rgba(160,90,20,.10) 0 8px,transparent 9px);border:3px solid #d9962b;border-radius:10px 18px 18px 10px;padding:10px 14px;box-sizing:border-box;box-shadow:inset 8px 0 0 -4px #f3dca8,0 8px 24px rgba(110,70,20,.4)';
+ function navBtn(t){var b=document.createElement('button');b.textContent=t;b.style.cssText='width:40px;height:40px;min-height:0;padding:0;border-radius:999px;background:#fff8ea;border:2px solid #d9962b;color:#c97a1e;font-size:16px;font-weight:900;line-height:1;text-shadow:0 1px 0 #fff8ea,0 -1px 0 #fff8ea,1px 0 0 #fff8ea,-1px 0 0 #fff8ea';return b}
+ function para(css,text){var d=document.createElement('div');d.style.cssText=css;d.textContent=text;return d}
+ function head(text,size){return bookStyle(para('margin:4px 0 8px;text-align:center',text),size)}
+ var top=document.createElement('div');top.style.cssText='display:flex;justify-content:flex-end';
+ var xb=navBtn('✕');top.appendChild(xb);
+ var body=document.createElement('div');body.style.cssText='flex:1;overflow:auto;min-height:0;padding:2px 4px';
+ var foot=document.createElement('div');foot.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-top:8px';
+ var pv=navBtn('◀'),nx=navBtn('▶'),pg=para('font-size:13px;font-weight:800;color:#7a5230','');
+ foot.append(pv,pg,nx);card.append(top,body,foot);ov.appendChild(card);document.body.appendChild(ov);
+ var cur=0;
+ function close(){ov.remove()}
+ function go(n){cur=Math.max(0,Math.min(pages.length-1,n));render()}
+ xb.onclick=close;pv.onclick=function(){go(cur-1)};nx.onclick=function(){go(cur+1)};
+ ov.onclick=function(e){if(e.target===ov)close()};
+ var sx=null;
+ card.addEventListener('pointerdown',function(e){sx=e.clientX});
+ card.addEventListener('pointerup',function(e){if(sx===null)return;var dx=e.clientX-sx;sx=null;if(dx>50)go(cur-1);else if(dx<-50)go(cur+1)});
+ function render(){
+  var P=pages[cur];body.innerHTML='';body.scrollTop=0;
+  pg.textContent=(cur+1)+' / '+pages.length;
+  pv.disabled=cur===0;nx.disabled=cur===pages.length-1;
+  pv.style.opacity=pv.disabled?'.35':'';nx.style.opacity=nx.disabled?'.35':'';
+  if(P.k==='cover'){
+   body.append(para('height:12px',''),(function(){var w=para('text-align:center;',''); w.innerHTML=SVGG; return w})(),head('キリンさん監修🦒攻略本','22px'),
+    para('text-align:center;margin-top:10px;font-size:12px;color:#7a5230;line-height:1.6','みありなタワーディフェンス ウルトラDX'),
+    para('text-align:center;margin-top:20px;font-size:13px;font-weight:800;color:#7a5230','見つけたヒント '+seen.length+' / '+TIPS.length),
+    para('text-align:center;margin-top:8px;font-size:11px;color:#9a7048','ページは ◀ ▶ か 指でスワイプ'));
+   if(!unlocked){
+    var msg=para('text-align:center;margin-top:8px;font-size:12px;font-weight:800;color:#7a5230;min-height:16px','');
+    var buy=document.createElement('button');buy.textContent='🪙 '+GUIDE_PRICE+'リナコインで全部読む';
+    buy.style.cssText='display:block;margin:16px auto 0;padding:10px 14px;min-height:0;height:auto;border-radius:999px;background:#fff8ea;border:2px solid #d9962b;border-bottom-width:4px;color:#c97a1e;font-size:14px;font-weight:900;text-shadow:0 1px 0 #fff8ea,0 -1px 0 #fff8ea,1px 0 0 #fff8ea,-1px 0 0 #fff8ea;-webkit-text-stroke:2px #fff8ea;paint-order:stroke fill';
+    buy.onclick=function(){
+     if(rcCoins()<GUIDE_PRICE){msg.textContent='リナコインが たりないよ（あと '+(GUIDE_PRICE-rcCoins())+' 枚）';return}
+     rcSpend(GUIDE_PRICE);try{localStorage.setItem(GUIDE_UK,'1')}catch(e){}
+     ov.remove();openBook();
+    };
+    body.append(buy,msg,para('text-align:center;margin-top:6px;font-size:11px;color:#9a7048','いまのリナコイン：'+rcCoins()+' 枚'));
+   }
+  }else if(P.k==='toc'){
+   body.appendChild(head('もくじ','18px'));
+   P.G.forEach(function(g){
+    var row=para('display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:8px 2px;border-bottom:2px dashed #ecd3a0;font-size:14px;font-weight:800;color:#5a3a1a','');
+    row.append(para('',g.n),para('font-size:12px;color:#c97a1e;white-space:nowrap',g.list.length?'p.'+P.gStart[g.i]+'　'+g.list.length+'/'+g.all:'まだ（'+g.all+'）'));
+    if(g.list.length){row.style.cursor='pointer';row.onclick=function(){go(P.gStart[g.i]-1)}}
+    body.appendChild(row)});
+   var ir=para('display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:8px 2px;border-bottom:2px dashed #ecd3a0;font-size:14px;font-weight:800;color:#5a3a1a;cursor:pointer','');
+   ir.append(para('','索引'),para('font-size:12px;color:#c97a1e','p.'+P.gIndex));ir.onclick=function(){go(P.gIndex-1)};body.appendChild(ir);
+   if(!unlocked)body.appendChild(para('margin-top:12px;font-size:11px;line-height:1.6;color:#9a7048','※ まだ見つけていないヒントは、表紙の「全部読む」で読めるようになるよ'));
+  }else if(P.k==='genre'){
+   body.append(head(P.g.n,'18px'),para('text-align:center;font-size:12px;color:#9a7048;margin-bottom:6px','見つけた '+P.g.list.length+' / '+P.g.all));
+   P.items.forEach(function(t,i){
+    var r=para('display:flex;gap:8px;padding:9px 2px;border-bottom:2px dashed #ecd3a0;font-size:14px;line-height:1.7;color:#4a2e14;font-weight:700','');
+    r.append(para('flex:none;width:26px;text-align:right;color:#c97a1e;font-weight:900',(P.off+i+1)+'.'),para('flex:1',t));body.appendChild(r)});
+  }else if(P.k==='index'){
+   body.appendChild(head('索引','18px'));
+   if(!P.items.length)body.appendChild(para('text-align:center;padding:18px 6px;font-size:13px;line-height:1.7;color:#7a5230','まだ 見つけたヒントがないよ'));
+   P.items.forEach(function(e){
+    if(e.h){body.appendChild(para('font-size:13px;font-weight:900;color:#c97a1e;margin:10px 0 2px',e.h));return}
+    var r=para('display:flex;justify-content:space-between;gap:8px;padding:7px 2px;border-bottom:2px dashed #ecd3a0;font-size:13px;line-height:1.5;color:#4a2e14;cursor:pointer','');
+    r.append(para('flex:1',e.t.length>18?e.t.slice(0,18)+'…':e.t),para('flex:none;color:#c97a1e;font-weight:900;white-space:nowrap','p.'+e.p));
+    r.onclick=function(){go(e.p-1)};body.appendChild(r)});
+  }
+ }
+ render();
 }
 var bkb=document.getElementById('bkb');if(bkb)bkb.onclick=function(){try{sfx('tap')}catch(e){}openBook()};
 var host=document.getElementById('kiri');if(!host)return;
