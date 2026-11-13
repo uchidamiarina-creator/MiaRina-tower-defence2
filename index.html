@@ -3591,7 +3591,14 @@ function openBook(){
      rcSpend(GUIDE_PRICE);try{localStorage.setItem(GUIDE_UK,'1')}catch(e){}
      try{localStorage.setItem(GUIDE_PK,'0')}catch(e){}ov.remove();openBook();
     };
-    body.append(buy,msg,para('text-align:center;margin-top:6px;font-size:11px;color:#9a7048','いまのリナコイン：'+rcCoins()+' 枚'));
+    var GPRICE=10000,gGet=function(){try{var n=parseInt(localStorage.getItem('miarina_td_gold_v1')||'0',10);return n>0?n:0}catch(e){return 0}};
+    var buy2=document.createElement('button');buy2.textContent='💰 '+GPRICE+'ゴールドで全部読む';buy2.style.cssText=buy.style.cssText;buy2.style.marginTop='8px';
+    buy2.onclick=function(){
+     if(gGet()<GPRICE){msg.textContent='ゴールドが たりないよ（あと '+(GPRICE-gGet())+' G）';return}
+     try{localStorage.setItem('miarina_td_gold_v1',String(gGet()-GPRICE));localStorage.setItem(GUIDE_UK,'1');localStorage.setItem(GUIDE_PK,'0')}catch(e){}
+     ov.remove();openBook();
+    };
+    body.append(buy,buy2,msg,para('text-align:center;margin-top:6px;font-size:11px;color:#9a7048','いまのリナコイン：'+rcCoins()+' 枚　ゴールド：'+gGet()+' G'));
    }
   }else if(P.k==='toc'){
    body.appendChild(head('もくじ','18px'));
