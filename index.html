@@ -2394,6 +2394,40 @@ var cs=null;var _p=panel;panel=function(){
 })();
 </script>
 <script>
+/* DJイエロの音声（スペイン語・スペイン本国のなまり。端末の読み上げ機能を使用。効果音オフ・ミュート時は喋らない） */
+(function(){
+ var ss=window.speechSynthesis;if(!ss||typeof SpeechSynthesisUtterance==='undefined')return;
+ /* YERO_LINES と同じ順番 */
+ var ES=['¡Arriba esas manos!','¡Yo, yo!','¡Vamos a subirlo!','¿Estáis bailando, o qué?','¡El ritmo no para!','¡Sube más el volumen!','¡Vamos, nena!','¿A que esta canción es la mejor?','¡Uuh! ¡Uuh!','¡El DJ Yero ha llegado!','¡La pista está temblando!','¡Manos arriba!'];
+ var BYE='¡Adiós!';
+ var voice=null;
+ function pick(){
+  var vs=ss.getVoices()||[],es=vs.filter(function(v){return /^es[-_]ES/i.test(v.lang)});
+  if(!es.length)es=vs.filter(function(v){return /^es/i.test(v.lang)});
+  voice=es.filter(function(v){return /jorge|diego|enrique|pablo|male|hombre/i.test(v.name)})[0]||es[0]||null;
+ }
+ pick();if(ss.addEventListener)ss.addEventListener('voiceschanged',pick);
+ /* iPhone対策：最初のタップで読み上げを解禁しておく */
+ document.addEventListener('pointerdown',function f(){
+  document.removeEventListener('pointerdown',f,true);
+  try{var u=new SpeechSynthesisUtterance(' ');u.volume=0;ss.speak(u)}catch(e){}
+ },true);
+ /* k: 数字＝YERO_LINESの番号 / 'bye'＝退場のひとこと */
+ window.yeroSpeak=function(k){
+  try{
+   if(typeof SEOFF!=='undefined'&&SEOFF)return;
+   if(typeof PZ!=='undefined'&&PZ)return;
+   if(typeof G!=='undefined'&&G&&G.over)return;
+   var s=k==='bye'?BYE:ES[k];if(!s)return;
+   var u=new SpeechSynthesisUtterance(s);
+   u.lang='es-ES';if(voice)u.voice=voice;
+   u.pitch=1.5;u.rate=1.3;u.volume=1;
+   ss.cancel();ss.speak(u);
+  }catch(e){console.error(e)}
+ };
+})();
+</script>
+<script>
 /* 電光掲示板を見やすく */
 (function(){
 var st=document.createElement('style');
@@ -8750,7 +8784,8 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
    if(!y2){finish()}else{
     y2.yByeT=(y2.yByeT||0)+dt;
     if(y2.yByeT>=.8)y2.d=Math.max(0,y2.d-150*dt);
-    if(!y2.said&&(y2.x<=90||y2.yByeT>=3)){y2.said=1;y2.bubT=2.2}
+    if(!y2.said&&(y2.x<=90||y2.yByeT>=3)){y2.said=1;y2.bubT=2.2
+;try{window.yeroSpeak&&window.yeroSpeak('bye')}catch(_){}}
     if(y2.bubT>0)y2.bubT-=dt;
     if((y2.d<=0||y2.x<-60)&&!(y2.bubT>0)){y2.dead=true;y2.gone=true;finish()}
    }
@@ -9004,7 +9039,7 @@ function trByeCar(e,X,Y){
     if(e.say){e.say.T-=dt}
     e.sayCd=(e.sayCd==null?3+Math.random()*4:e.sayCd)-dt;
     if(e.sayCd<=0){
-     e.say={t:YERO_LINES[Math.random()*YERO_LINES.length|0],T:2.2};
+     var _yi=Math.random()*YERO_LINES.length|0;e.say={t:YERO_LINES[_yi],T:2.2};try{window.yeroSpeak&&window.yeroSpeak(_yi)}catch(_){}
      e.sayCd=9+Math.random()*6;
     }
    });
