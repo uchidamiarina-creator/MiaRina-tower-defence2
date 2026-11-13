@@ -3569,8 +3569,29 @@ function openBook(){
  xb.onclick=close;tocb.onclick=function(){go(1)};pv.onclick=function(){go(cur-1)};nx.onclick=function(){go(cur+1)};
  ov.onclick=function(e){if(e.target===ov)close()};
  var sx=null;
- card.addEventListener('pointerdown',function(e){sx=e.clientX});
+ var sy=null;
+  function swStart(x,y,t){sx=(t&&/^(INPUT|TEXTAREA|BUTTON)$/.test(t.tagName))?null:x;sy=y}
+  function swEnd(x,y){if(sx==null)return;var dx=x-sx,dy=y-sy;sx=null;if(Math.abs(dx)>=50&&Math.abs(dx)>Math.abs(dy)*1.5){go(cur+(dx<0?1:-1))}}
+  card.addEventListener('touchstart',function(e){var t=e.touches[0];swStart(t.clientX,t.clientY,e.target)},{passive:true});
+  card.addEventListener('touchend',function(e){var t=e.changedTouches[0];swEnd(t.clientX,t.clientY)},{passive:true});
+  card.addEventListener('pointerdown',function(e){if(e.pointerType==='mouse')swStart(e.clientX,e.clientY,e.target)});
+  card.addEventListener('pointerup',function(e){if(e.pointerType==='mouse')swEnd(e.clientX,e.clientY)});
  
+ function coverFx(){
+   if(!document.getElementById('bkfx-css')){var st=document.createElement('style');st.id='bkfx-css';
+    st.textContent='@keyframes bkHeart{0%{opacity:0;transform:translateY(22px) scale(.4) rotate(-12deg)}25%{opacity:1;transform:translateY(8px) scale(1.1) rotate(6deg)}50%{opacity:.85;transform:translateY(-8px) scale(.85) rotate(-6deg)}75%{opacity:1;transform:translateY(-22px) scale(1.15) rotate(8deg)}100%{opacity:0;transform:translateY(-44px) scale(.5) rotate(0)}}@media (prefers-reduced-motion:reduce){.bkfx span{animation:none!important;opacity:.8!important}}';
+    document.head.appendChild(st)}
+   body.style.position='relative';
+   var lay=document.createElement('div');lay.className='bkfx';lay.setAttribute('aria-hidden','true');
+   lay.style.cssText='position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;overflow:hidden;z-index:0';
+   var cols=['#ff6fa5','#ff8fbd','#ffb3d1','#ffd166'];
+   [0,1].forEach(function(side){for(var i=0;i<7;i++){
+    var sp=document.createElement('span'),h=i%3!==2;
+    sp.textContent=h?'♥':'✦';
+    var c=h?cols[i%3]:'#ffd166',sz=h?(15+Math.random()*13):(10+Math.random()*8);
+    sp.style.cssText='position:absolute;'+(side?'right':'left')+':'+(1+Math.random()*11)+'%;top:'+(6+i*12+Math.random()*6)+'%;font-size:'+sz+'px;line-height:1;color:'+c+';text-shadow:0 0 6px '+c+',0 0 12px rgba(255,255,255,.9);opacity:0;animation:bkHeart '+(3+Math.random()*2.5)+'s ease-in-out '+(-Math.random()*5)+'s infinite';
+    lay.appendChild(sp)}});
+   body.appendChild(lay)}
  function render(){
   var P=pages[cur];body.innerHTML='';body.scrollTop=0;
   if(dir){body.style.transition='none';body.style.opacity='0';body.style.transform='translateX('+(dir*28)+'px)';requestAnimationFrame(function(){requestAnimationFrame(function(){body.style.transition='transform .22s ease,opacity .22s ease';body.style.opacity='1';body.style.transform='none'})})}
@@ -3579,6 +3600,7 @@ function openBook(){
   pv.disabled=cur===0;nx.disabled=cur===pages.length-1;
   pv.style.opacity=pv.disabled?'.35':'';nx.style.opacity=nx.disabled?'.35':'';
   if(P.k==='cover'){
+    coverFx();
    body.append(para('height:12px',''),(function(){var w=para('text-align:center;',''),k=document.querySelector('#kiri img.kimg');if(k&&k.src){var im=document.createElement('img');im.src=k.src;im.alt='キリン';im.style.cssText='height:170px;width:auto;max-width:100%;display:block;margin:0 auto;filter:drop-shadow(0 3px 4px rgba(110,70,20,.35))';w.appendChild(im)}else w.innerHTML=SVGG;return w})(),(function(){var h=head('みありなタワーディフェンス\n🎀 攻略法 🎀','21px');h.style.whiteSpace='pre-line';h.style.lineHeight='1.35';h.style.margin='8px 0 4px';return h})(),
     para('text-align:center;margin-top:10px;font-size:12px;color:#7a5230;line-height:1.6','～ ウルトラDX ～'),
     para('text-align:center;margin-top:20px;font-size:13px;font-weight:800;color:#7a5230','見つけたヒント '+seen.length+' / '+TIPS.length),
