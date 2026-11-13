@@ -180,7 +180,7 @@ body{width:100%;margin:0;overflow:hidden;
 </style>
 
 <script>(function(){function f(){document.body.classList.add("ld")}if(document.body)f();else document.addEventListener("DOMContentLoaded",f)})()</script><div id="ld" style="position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:#fff1f5;color:#ff6fa5;font:bold 18px sans-serif">読み込み中…</div>
-<div id="tt"><div id="tcr" style="position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 6px);text-align:center;font-size:10px;line-height:1.3;color:#ff8a00;letter-spacing:.02em;pointer-events:none;z-index:2">©2026 MiaRina, Karaage Records, All rights reserved.</div><div class="tin"><div id="thd"><img id="tmia" alt="未亜" width="60" height="60"><h2>みありな<br>タワーディフェンス<br>ウルトラDX</h2><img id="trin" alt="利奈" width="60" height="56"></div><div style="font-size:10px;color:var(--mute);text-align:center;margin:-2px 0 8px;letter-spacing:.04em">- 最終完全ちょっとバグってるファイナル Ultimate Version -</div><input id="pn" maxlength="8" placeholder="なまえ（8文字まで）" style="font:inherit;font-size:15px;text-align:center;padding:9px;border-radius:14px;border:3px solid var(--line);background:var(--card);color:var(--ink);width:70%;margin:0 0 6px"><div id="dan" style="font-size:13px;color:var(--accent2);min-height:18px;margin:0 0 8px;text-align:center"></div><div id="df"></div><div id="dsc" style="display:none"></div><button class="go" id="cnb" style="display:none;margin:0 auto 8px;line-height:1.35"></button><button class="go" id="stb">はじめる</button><div style="margin-top:10px"><button id="rkb" hidden style="padding:8px 22px;font-size:14px">🏆 ランキング</button> <button id="pcb" style="padding:8px 22px;font-size:14px">🔑 パスコード</button></div><div style="margin-top:8px"><button id="pfb" style="padding:8px 22px;font-size:14px">👤 プロフィール</button> <button id="vtb" style="padding:8px 22px;font-size:14px">🔐 金庫</button></div><div id="crTap" style="margin-top:12px;font-size:11px;color:var(--mute);letter-spacing:.04em">📱 iPhone / Android 対応</div><ul style="display:none">強化・売却</li><li id="cli">30フェーズ守りきればクリア</li></ul></div></div>
+<div id="tt"><button id="bkb" aria-label="攻略本" title="攻略本" style="position:fixed;right:12px;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:5;width:44px;height:44px;padding:0;font-size:26px;line-height:1;background:transparent;border:none;box-shadow:none;cursor:pointer">📖</button><div id="tcr" style="position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 6px);text-align:center;font-size:10px;line-height:1.3;color:#ff8a00;letter-spacing:.02em;pointer-events:none;z-index:2">©2026 MiaRina, Karaage Records, All rights reserved.</div><div class="tin"><div id="thd"><img id="tmia" alt="未亜" width="60" height="60"><h2>みありな<br>タワーディフェンス<br>ウルトラDX</h2><img id="trin" alt="利奈" width="60" height="56"></div><div style="font-size:10px;color:var(--mute);text-align:center;margin:-2px 0 8px;letter-spacing:.04em">- 最終完全ちょっとバグってるファイナル Ultimate Version -</div><input id="pn" maxlength="8" placeholder="なまえ（8文字まで）" style="font:inherit;font-size:15px;text-align:center;padding:9px;border-radius:14px;border:3px solid var(--line);background:var(--card);color:var(--ink);width:70%;margin:0 0 6px"><div id="dan" style="font-size:13px;color:var(--accent2);min-height:18px;margin:0 0 8px;text-align:center"></div><div id="df"></div><div id="dsc" style="display:none"></div><button class="go" id="cnb" style="display:none;margin:0 auto 8px;line-height:1.35"></button><button class="go" id="stb">はじめる</button><div style="margin-top:10px"><button id="rkb" hidden style="padding:8px 22px;font-size:14px">🏆 ランキング</button> <button id="pcb" style="padding:8px 22px;font-size:14px">🔑 パスコード</button></div><div style="margin-top:8px"><button id="pfb" style="padding:8px 22px;font-size:14px">👤 プロフィール</button> <button id="vtb" style="padding:8px 22px;font-size:14px">🔐 金庫</button></div><div id="crTap" style="margin-top:12px;font-size:11px;color:var(--mute);letter-spacing:.04em">📱 iPhone / Android 対応</div><ul style="display:none">強化・売却</li><li id="cli">30フェーズ守りきればクリア</li></ul></div></div>
 <h1>みありなタワーディフェンス ウルトラDX</h1>
 <div id="wrap">
 <div id="stats"><span id="sg"></span><span id="sl"></span><span id="sw" style="display:none"></span><span id="stm" style="display:none"></span></div>
@@ -2396,39 +2396,6 @@ var cs=null;var _p=panel;panel=function(){
  },true);
 })();
 </script>
-<script>
-/* DJイエロの音声（スペイン語・スペイン本国のなまり。端末の読み上げ機能を使用。効果音オフ・ミュート時は喋らない） */
-(function(){
- var ss=window.speechSynthesis;if(!ss||typeof SpeechSynthesisUtterance==='undefined')return;
- /* YERO_LINES と同じ順番 */
- var ES=['¡Arriba esas manos!','¡Yo, yo!','¡Vamos a subirlo!','¿Estáis bailando, o qué?','¡El ritmo no para!','¡Sube más el volumen!','¡Vamos, nena!','¿A que esta canción es la mejor?','¡Uuh! ¡Uuh!','¡El DJ Yero ha llegado!','¡La pista está temblando!','¡Manos arriba!'];
- var BYE='¡Adiós!';
- var voice=null;
- function pick(){
-  var vs=ss.getVoices()||[],es=vs.filter(function(v){return /^es[-_]ES/i.test(v.lang)});
-  if(!es.length)es=vs.filter(function(v){return /^es/i.test(v.lang)});
-  voice=es.filter(function(v){return /jorge|diego|enrique|pablo|male|hombre/i.test(v.name)})[0]||es[0]||null;
- }
- pick();if(ss.addEventListener)ss.addEventListener('voiceschanged',pick);
- /* iPhone対策：最初のタップで読み上げを解禁しておく */
- document.addEventListener('pointerdown',function f(){
-  document.removeEventListener('pointerdown',f,true);
-  try{var u=new SpeechSynthesisUtterance(' ');u.volume=0;ss.speak(u)}catch(e){}
- },true);
- /* k: 数字＝YERO_LINESの番号 / 'bye'＝退場のひとこと */
- window.yeroSpeak=function(k){
-  try{
-   if(typeof SEOFF!=='undefined'&&SEOFF)return;
-   if(typeof PZ!=='undefined'&&PZ)return;
-   if(typeof G!=='undefined'&&G&&G.over)return;
-   var s=k==='bye'?BYE:ES[k];if(!s)return;
-   var u=new SpeechSynthesisUtterance(s);
-   u.lang='es-ES';if(voice)u.voice=voice;
-   u.pitch=1.5;u.rate=1.3;u.volume=1;
-   ss.cancel();ss.speak(u);
-  }catch(e){console.error(e)}
- };
-})();
 </script>
 <script>
 /* 電光掲示板を見やすく */
@@ -3771,23 +3738,80 @@ var TIPS=[
 'ルナティックのフェーズ100は、ラスボスだけが出てくるよ',
 'スイカメをたおすために、強化を集中させよう',
 'ルナティックは、ほかの難易度より何倍もきびしいよ',
-'ルナティックをクリアすると、すごい達成感があるよ'
+'ルナティックをクリアすると、すごい達成感があるよ',
+'フェーズが始まる前に、ゴールまでの道をひと目見ておこう',
+'敵がゴールに着く前に倒せると、ライフを守れるよ',
+'フェーズの合間に次の準備をしておくと、あわてなくてすむよ',
+'住民をタップすると、ときどきプレゼントをくれることがあるよ',
+'街の質問箱に答えると、住民がその話題で話しかけてくれるよ',
+'住んでいる地域を決めると、その地域の天気が街にもとどくよ',
+'街の空のようすは、その日の天気によって変わるよ',
+'夜になると、住民はねどこでぐっすり眠るよ',
+'サイコロマシンの一撃必殺は、ボスには効かないから注意しよう',
+'ブチアゲは道が決まっている一本道。タワーの置く場所をよく考えよう',
+'ブチアゲでは、ラスボス四天王がフェーズ1〜4に1体ずつ出てくるよ',
+'ブチアゲのフェーズ6は、最強ボスのイエロが待っているよ',
+'エクリプスは、10分たえぬけばクリアだよ',
+'エクリプスでは、味方はやられても2秒後にゴールから蘇るよ',
+'セーブしておくと、タワーや敵のようすをそのまま続きから遊べるよ',
+'質問箱は40個の質問に答えると、おしまいになるよ'
 ];
 
+/* ===== 攻略本：キリンさんのヒント（豆知識はのぞく）を、見つけたぶん何度でも読める ===== */
+var SEEN_KEY='miarina_td_tips_seen_v1';
+function seenGet(){try{var a=JSON.parse(localStorage.getItem(SEEN_KEY)||'[]');return Array.isArray(a)?a:[]}catch(e){return []}}
+function seenAdd(t){try{var a=seenGet();if(a.indexOf(t)<0){a.push(t);localStorage.setItem(SEEN_KEY,JSON.stringify(a))}}catch(e){}}
+function bookStyle(el,size){el.style.color='#ff7b8a';el.style.webkitTextStroke='3px #ffffff';el.style.paintOrder='stroke fill';el.style.textShadow='0 2px 0 #ffffff,0 -1px 0 #ffffff,1px 0 0 #ffffff,-1px 0 0 #ffffff,0 3px 6px rgba(255,123,138,.35)';el.style.fontSize=size;el.style.fontWeight='900';return el}
+function openBook(){
+ if(document.getElementById('bookov'))return;
+ var seen=seenGet(),ov=document.createElement('div');ov.id='bookov';
+ ov.style.cssText='position:fixed;inset:0;z-index:90;background:rgba(60,30,50,.55);display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box';
+ var card=document.createElement('div');
+ card.style.cssText='width:min(100%,360px);max-height:88vh;display:flex;flex-direction:column;background:#fff0f7;border:3px solid #ff8fb8;border-radius:18px;padding:14px;box-sizing:border-box;box-shadow:0 6px 20px rgba(120,60,100,.35)';
+ var h=bookStyle(document.createElement('div'),'17px');h.textContent='キリンさん監修🦒攻略本';h.style.textAlign='center';h.style.marginBottom='4px';
+ var p=bookStyle(document.createElement('div'),'12px');p.textContent='見つけたヒント '+seen.length+' / '+TIPS.length;p.style.textAlign='center';p.style.marginBottom='10px';
+ var list=document.createElement('div');list.style.cssText='flex:1;overflow:auto;min-height:0;padding:0 4px';
+ var n=0;
+ TIPS.forEach(function(t){if(seen.indexOf(t)<0)return;n++;
+  var it=bookStyle(document.createElement('div'),'14px');it.style.fontWeight='800';it.style.lineHeight='1.6';it.style.padding='8px 2px';it.style.borderBottom='2px dashed #ffc2d9';it.textContent=n+'. '+t;list.appendChild(it)});
+ if(!n){var e=bookStyle(document.createElement('div'),'13px');e.style.textAlign='center';e.style.padding='18px 6px';e.style.lineHeight='1.7';e.textContent='まだ ヒントは ないよ。遊んでいると、キリンさんが教えてくれるよ';list.appendChild(e)}
+ var cl=document.createElement('button');cl.textContent='とじる';
+ cl.style.cssText='margin-top:10px;width:100%;min-height:0;height:auto;padding:10px 6px;background:#ffffff;border:2px solid #ff8fb8;border-bottom-width:4px;border-radius:999px;font-size:16px;font-weight:900;color:#ff7b8a;text-shadow:0 1px 0 #fff,0 -1px 0 #fff,1px 0 0 #fff,-1px 0 0 #fff;-webkit-text-stroke:2px #fff;paint-order:stroke fill';
+ cl.onclick=function(){try{sfx('tap')}catch(e){}ov.remove()};
+ ov.onclick=function(e){if(e.target===ov)ov.remove()};
+ card.append(h,p,list,cl);ov.appendChild(card);document.body.appendChild(ov);
+}
+var bkb=document.getElementById('bkb');if(bkb)bkb.onclick=function(){try{sfx('tap')}catch(e){}openBook()};
 var host=document.getElementById('kiri');if(!host)return;
 var bubbleT=host.querySelector('.kt'),bubbleN=host.querySelector('.kn');
 var tok=0,bag=[],busy=false,nextAt=0,wasPlaying=false,shown=0;
+var KT=['キリンのくびの骨は、人間と同じ7本だよ。とても長いだけなんだ',
+'キリンの舌は、45〜50cmくらいもあるんだって。色は黒っぽい青むらさき色だよ',
+'キリンの心臓は、約11kgもあるんだよ。高いところまで血を送るために大きいんだって',
+'キリンのもようは、一頭ずつちがうんだよ。人の指紋みたいだね',
+'キリンは、1日に30分〜2時間くらいしか眠らないんだって',
+'キリンの赤ちゃんは、生まれたときから身長が約2mもあるんだよ',
+'キリンは、ほとんど声を出さないけど、低い声でハミングすることがあるんだって',
+'キリンは、とき速50kmくらいで走ることができるよ',
+'キリンのおなかには、胃が4つに分かれているんだよ',
+'キリンは、立ったまま眠ることもできるんだって',
+'キリンのオスは、くびをぶつけ合ってなわばりを争うことがあるよ'];
+var kbag=[];
+function pickK(){if(!kbag.length){kbag=KT.map(function(_,i){return i});for(var i=kbag.length-1;i>0;i--){var j=Math.random()*(i+1)|0,t=kbag[i];kbag[i]=kbag[j];kbag[j]=t}}return KT[kbag.pop()]}
 function pick(){if(!bag.length){bag=TIPS.map(function(_,i){return i});for(var i=bag.length-1;i>0;i--){var j=Math.random()*(i+1)|0,t=bag[i];bag[i]=bag[j];bag[j]=t}}return bag.pop()}
 function vis(id){var e=document.getElementById(id);return !!e&&getComputedStyle(e).display!=='none'}
 function playing(){var tt=document.getElementById('tt');return !!tt&&tt.style.display==='none'&&typeof G!=='undefined'&&G&&!G.over&&typeof D!=='undefined'&&D&&D.n!=='ルナティック'&&!D.ec&&D.n!=='ブチアゲ'&&!PZ}
 function blocked(){return ['ov','pz','ap','mp','pf','pc','rk'].some(vis)||document.hidden}
 function show(){
   if(busy)return;busy=true;var my=++tok;
-  var i=pick();bubbleN.textContent='💡 ヒント';bubbleT.textContent=TIPS[i];
+  /* 豆知識は激レア（3%）。ふつうはゲームのヒント */
+  var isT=Math.random()<.03,txt=isT?pickK():TIPS[pick()];
+  bubbleN.textContent=isT?'🦒 キリンの豆知識':'💡 ヒント';bubbleT.textContent=txt;
+  if(!isT)seenAdd(txt);
   host.style.display='block';host.classList.remove('down','talk');
   void host.offsetWidth;host.classList.add('up');
   setTimeout(function(){host.classList.add('talk')},550);
-  var hold=Math.max(6000,TIPS[i].length*170);
+  var hold=Math.max(6000,txt.length*170);
   setTimeout(function(){if(my!==tok)return;host.classList.remove('talk');host.classList.add('down');host.classList.remove('up');
     setTimeout(function(){if(my!==tok)return;host.style.display='none';host.classList.remove('down');busy=false;nextAt=Date.now()+(45+Math.random()*45)*1000},700)},hold+700);
 }
@@ -8820,7 +8844,7 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     y2.yByeT=(y2.yByeT||0)+dt;
     if(y2.yByeT>=.8)y2.d=Math.max(0,y2.d-150*dt);
     if(!y2.said&&(y2.x<=90||y2.yByeT>=3)){y2.said=1;y2.bubT=2.2
-;try{window.yeroSpeak&&window.yeroSpeak('bye')}catch(_){}}
+;}
     if(y2.bubT>0)y2.bubT-=dt;
     if((y2.d<=0||y2.x<-60)&&!(y2.bubT>0)){y2.dead=true;y2.gone=true;finish()}
    }
@@ -9074,7 +9098,7 @@ function trByeCar(e,X,Y){
     if(e.say){e.say.T-=dt}
     e.sayCd=(e.sayCd==null?3+Math.random()*4:e.sayCd)-dt;
     if(e.sayCd<=0){
-     var _yi=Math.random()*YERO_LINES.length|0;e.say={t:YERO_LINES[_yi],T:2.2};try{window.yeroSpeak&&window.yeroSpeak(_yi)}catch(_){}
+     var _yi=Math.random()*YERO_LINES.length|0;e.say={t:YERO_LINES[_yi],T:2.2};
      e.sayCd=9+Math.random()*6;
     }
    });
