@@ -2231,9 +2231,12 @@ if(pfb){var prev=pfb.onclick;pfb.onclick=function(){if(prev)prev.apply(this,argu
    var b=null;for(var j=0;j<G.en.length;j++){var e=G.en[j];if(e.dead)continue;if(Math.hypot(e.x-t.x,e.y-t.y)<=t.rng&&(!b||e.d>b.d))b=e}
    if(!b)continue;
    var face=1+Math.floor(Math.random()*6);t.ang=face;t.cd=T.Q.rate;
+   /* 一撃必殺は、ボス・ラスボス四天王には効かない（6の目でも通常ダメージ×6） */
+   var big=!!(b.boss||b.suika||b.rafu||b.neko||b.dadan||b.yero);
+   var kill=face===6&&!big;
    try{fsfx('A')}catch(er){}
-   G.bl.push({x:t.x,y:t.y,t:b,d:T.Q,dmg:face===6?1e12:t.dmg*face});
-   G.fx.push({x:t.x,y:t.y-16,txt:face===6?'🎲6 一撃！':'🎲'+face,t:face===6?1.1:.7,c:face>=5?'#e53935':'#4a2740'})}};
+   G.bl.push({x:t.x,y:t.y,t:b,d:T.Q,dmg:kill?1e12:t.dmg*face});
+   G.fx.push({x:t.x,y:t.y-16,txt:kill?'🎲6 一撃！':'🎲'+face,t:kill?1.1:.7,c:face>=5?'#e53935':'#4a2740'})}};
 })();
 </script>
 
@@ -3259,9 +3262,10 @@ var QS=[
 {id:'q40',q:'なつは すき？',c:['すき','きらい','ふつう']}];
 var PREFQ={id:'pref',q:'どこに すんでいるの？'};
 var QRE=['なるほど〜！','いいね！','おぼえておくね','教えてくれてありがとう！','ふむふむ、すてき！','わあ、いいなぁ！','なかよくなれそう！'];
-function qDone(){return !!((TS.qa||{})[gToday()])}
+function qAllDone(){var seen={},d;for(d in (TS.qa||{}))if(TS.qa[d]&&TS.qa[d].id)seen[TS.qa[d].id]=1;return QS.every(function(q){return !!seen[q.id]})}
+function qDone(){return !!((TS.qa||{})[gToday()])||qAllDone()}
 function qPick(){TS.qa=TS.qa||{};var k=gToday(),dn=TS.qa[k];if(dn&&dn.id)return dn.id==='pref'?PREFQ:(QS.filter(function(q){return q.id===dn.id})[0]||PREFQ);
- if(!TS.pref)return PREFQ;var seen={},d;for(d in TS.qa)if(TS.qa[d]&&TS.qa[d].id)seen[TS.qa[d].id]=1;var pool=QS.filter(function(q){return !seen[q.id]});if(!pool.length)pool=QS;return pool[hsh('q:'+k)%pool.length]}
+ if(!TS.pref)return PREFQ;var seen={},d;for(d in TS.qa)if(TS.qa[d]&&TS.qa[d].id)seen[TS.qa[d].id]=1;var pool=QS.filter(function(q){return !seen[q.id]});if(!pool.length)return null;return pool[hsh('q:'+k)%pool.length]}
 function drawQB(g,s){var px=322,py=438;g.save();g.lineJoin='round';g.fillStyle='rgba(60,90,50,.2)';g.beginPath();g.ellipse(px,py+2,13,4,0,0,7);g.fill();
  g.fillStyle='#b98a5a';g.fillRect(px-2,py-22,4,24);
  g.fillStyle='#ffd9e8';g.strokeStyle='#e07aa5';g.lineWidth=2;g.beginPath();g.roundRect(px-14,py-48,28,28,6);g.fill();g.stroke();
@@ -3270,26 +3274,54 @@ function drawQB(g,s){var px=322,py=438;g.save();g.lineJoin='round';g.fillStyle='
  if(!qDone()){var by=py-54+Math.sin(s*4)*2.5;g.fillStyle='#ff4d6d';g.strokeStyle='#fff';g.lineWidth=1.5;g.beginPath();g.arc(px+13,by,7,0,7);g.fill();g.stroke();g.fillStyle='#fff';g.font='11px "Mochiy Pop One","Hiragino Maru Gothic ProN",sans-serif';g.fillText('!',px+13,by+.5)}
  g.restore()}
 function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;z-index:70;background:rgba(80,40,70,.45);display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box'),
- card=mk('div','width:min(100%,340px);max-height:88%;overflow:auto;background:#fff8fc;border:3px solid #f3a6c6;border-radius:20px;padding:14px;box-sizing:border-box;text-align:center;color:#8a3a6a;font-weight:bold;box-shadow:0 6px 20px rgba(120,60,100,.35)'),
+ card=mk('div','width:min(100%,340px);max-height:88%;overflow:auto;background:#fff0f7;border:3px solid #ff8fb8;border-radius:20px;padding:14px;box-sizing:border-box;text-align:center;color:#8a3a6a;font-weight:bold;box-shadow:0 6px 20px rgba(120,60,100,.35)'),
  BS='padding:10px 6px;font-size:14px;background:#ffe3f1;border:2px solid #f3a6c6;border-bottom-width:4px;border-radius:12px;color:#8a3a6a;font-weight:bold;width:100%;min-height:0;height:auto;line-height:1.3';
  back.appendChild(card);ov.appendChild(back);gm=back;back.onclick=function(e){if(e.target===back)closeGm()};
- function head(t,sub){card.innerHTML='';card.appendChild(mk('div','font-size:12px;color:#d05a8a;margin-bottom:6px','📮 質問箱'));card.appendChild(mk('div','font-size:17px;line-height:1.5;margin-bottom:'+(sub?4:10)+'px',t));if(sub)card.appendChild(mk('div','font-size:11px;color:#8a5a7a;margin-bottom:10px;line-height:1.5',sub))}
- function btn(t,fn){var b=mk('button',BS,t);b.onclick=function(){try{sfx('tap')}catch(e){}fn()};return b}
+ function hcs(el,size){el.style.color='#ff7b8a';el.style.webkitTextStroke='3px #ffffff';el.style.paintOrder='stroke fill';el.style.textShadow='0 2px 0 #ffffff,0 -1px 0 #ffffff,1px 0 0 #ffffff,-1px 0 0 #ffffff,0 3px 6px rgba(255,123,138,.35)';if(size)el.style.fontSize=size;return el}
+ function head(t,sub){card.innerHTML='';card.appendChild(hcs(mk('div','font-size:12px;margin-bottom:6px','📮 質問箱'),'12px'));card.appendChild(hcs(mk('div','font-size:17px;line-height:1.5;margin-bottom:'+(sub?4:10)+'px',t),'18px'));if(sub)card.appendChild(hcs(mk('div','font-size:11px;margin-bottom:10px;line-height:1.5',sub),'13px'))}
+ function btn(t,fn){var b=mk('button',BS,t);b.style.background='#ffffff';b.style.borderColor='#ff8fb8';b.style.borderRadius='999px';hcs(b,'15px');b.style.fontWeight='900';b.style.textShadow='0 1px 0 #fff,0 -1px 0 #fff,1px 0 0 #fff,-1px 0 0 #fff';b.onclick=function(){try{sfx('tap')}catch(e){}fn()};return b}
  function grid(n){return mk('div','display:grid;grid-template-columns:repeat('+n+',1fr);gap:8px')}
- function closeB(t){var b=btn(t||'とじる',closeGm);b.style.marginTop='10px';b.style.background='#fff';return b}
- function thanks(q,a,extra){head(q.id==='pref'?a+' なんだね！':QRE[hsh(k+q.id)%QRE.length],extra||'');card.appendChild(mk('div','font-size:13px;color:#8a5a7a;margin-bottom:6px','きょうの答え：'+a));card.appendChild(closeB('とじる'));hearts.push({x:322,y:392,t:0});hearts.push({x:312,y:398,t:-.3})}
+ function closeB(t){var b=btn(t||'とじる',closeGm);b.style.marginTop='10px';b.style.background='#ffffff';return b}
+ function thanks(q,a,extra){head(q.id==='pref'?a+' なんだね！':QRE[hsh(k+q.id)%QRE.length],extra||'');card.appendChild(hcs(mk('div','font-size:13px;margin-bottom:6px','きょうの答え：'+a),'13px'));card.appendChild(closeB('とじる'));hearts.push({x:322,y:392,t:0});hearts.push({x:312,y:398,t:-.3})}
  function mkPref(n){var p=null;for(var i=0;i<PF.length;i++)if(PF[i][0]===n)p=PF[i];TS.pref=p?{n:p[0],lat:p[1],lon:p[2],since:today0()}:{n:'ひみつ',since:today0()};saveT(TS);realWx(TS);return p}
- function answer(q,a){TS.qa=TS.qa||{};TS.qa[k]={id:q.id,a:a};saveT(TS);
+ function answer(q,a){TS.qa=TS.qa||{};TS.qa[k]={id:q.id,a:a};saveT(TS);try{qChat(q,a)}catch(e){}
   if(q.id==='pref'){var p=mkPref(a);thanks(q,a,p?'あしたから、'+a+'の天気が この街にもふってくるよ！':'ひみつなんだね。街の天気は いつもどおりだよ')}
   else thanks(q,a,'あしたも あたらしい質問がとどくよ')}
- function showPref(change){head('どこに すんでいるの？','住んでいる地域の天気が、あしたから街とつながるよ');var gr=grid(3);PF.forEach(function(p){gr.appendChild(btn(p[0],function(){change?setPref(p[0]):answer(PREFQ,p[0])}))});gr.appendChild(btn('ひみつ',function(){change?setPref('ひみつ'):answer(PREFQ,'ひみつ')}));card.appendChild(gr);card.appendChild(closeB('あとで'))}
+ function showPref(change){head('どこに すんでいるの？','住んでいる地域の天気が、あしたから街とつながるよ');
+  /* 見やすさ：タイトルと説明文を大きく・濃く、地域ボタンの文字も大きく */
+  /* 淡い赤の文字に白いふち取り */
+  var HC='#ff7b8a',HS='#ffffff',HSH='0 2px 0 #ffffff,0 -1px 0 #ffffff,1px 0 0 #ffffff,-1px 0 0 #ffffff,0 3px 6px rgba(255,123,138,.35)';
+  function hc(el,size){el.style.color=HC;el.style.webkitTextStroke='3px '+HS;el.style.paintOrder='stroke fill';el.style.textShadow=HSH;el.style.fontSize=size}
+  card.style.background='#fff0f7';card.style.borderColor='#ff8fb8';
+  var tt=card.children[1];if(tt){hc(tt,'22px');tt.style.fontWeight='900';tt.style.marginBottom='6px'}
+  var st=card.children[2];if(st){hc(st,'14px');st.style.fontWeight='800';st.style.webkitTextStroke='2.5px '+HS;st.style.marginBottom='12px'}
+  var gr=grid(3);PF.forEach(function(p){gr.appendChild(btn(p[0],function(){change?setPref(p[0]):answer(PREFQ,p[0])}))});gr.appendChild(btn('ひみつ',function(){change?setPref('ひみつ'):answer(PREFQ,'ひみつ')}));
+  Array.prototype.forEach.call(gr.children,function(b){b.style.background='#ffffff';b.style.borderColor='#ff8fb8';b.style.borderBottomWidth='4px';b.style.borderRadius='999px';hc(b,'16px');b.style.fontWeight='900';b.style.padding='12px 4px';b.style.textShadow='0 1px 0 #fff,0 -1px 0 #fff,1px 0 0 #fff,-1px 0 0 #fff'});
+  card.appendChild(gr);var cl=closeB('あとで');cl.style.background='#ffffff';cl.style.borderRadius='999px';hc(cl,'16px');cl.style.fontWeight='900';cl.style.textShadow='0 1px 0 #fff,0 -1px 0 #fff,1px 0 0 #fff,-1px 0 0 #fff';card.appendChild(cl)}
  function setPref(n){var p=mkPref(n);head(n+' に かえたよ！',p?'あしたから '+n+' の天気が街とつながるよ':'街の天気は いつもどおりになるよ');card.appendChild(closeB('とじる'))}
  var q=qPick(),dn=(TS.qa||{})[k];
- if(dn){head('きょうの質問は もう答えたよ！','またあした、あたらしい質問がとどくよ');card.appendChild(mk('div','font-size:13px;margin-bottom:4px',q.q));card.appendChild(mk('div','font-size:14px;color:#d05a8a;margin-bottom:8px','→ '+dn.a));
+ if(!q&&!dn){head('質問は ぜんぶ おしまい！','街の質問箱は もう とどかないよ。たくさん答えてくれてありがとう');card.appendChild(closeB('とじる'))}
+ else if(dn){head('きょうの質問は もう答えたよ！','またあした、あたらしい質問がとどくよ');card.appendChild(hcs(mk('div','font-size:13px;margin-bottom:4px',q.q),'13px'));card.appendChild(hcs(mk('div','font-size:14px;margin-bottom:8px','→ '+dn.a),'15px'));
   if(TS.pref&&TS.pref.lat!=null)card.appendChild(mk('div','font-size:11px;color:#8a5a7a;margin-bottom:8px;line-height:1.5','街の天気は '+TS.pref.n+' の天気とつながっているよ'+(today0()<=TS.pref.since?'（あしたから）':'')));
   var cb=btn('住んでいる地域をかえる',function(){showPref(true)});cb.style.fontSize='12px';cb.style.padding='7px 6px';card.appendChild(cb);card.appendChild(closeB('とじる'))}
  else if(q.id==='pref')showPref(false);
  else{head(q.q);var gr=grid(q.c.length>2?2:1);q.c.forEach(function(c){gr.appendChild(btn(c,function(){answer(q,c)}))});card.appendChild(gr);card.appendChild(closeB('あとで'))}}
+ /* 質問箱の答えを、住民どうしがおしゃべりのネタにする */
+ function qSay(r,t,d){if(!r)return;r.bub=t;r.bt=d||3.2;r.jmp=.4}
+ function qPickR(ex){var c=res.filter(function(r){return r&&r!==ex&&r.st!='sleep'&&r.st!='tobed'});return c.length?c[Math.random()*c.length|0]:null}
+ function qPickT(a){return a[Math.random()*a.length|0]}
+ function qChat(q,a){
+  var isP=q.id==='pref'&&a!=='ひみつ',r1=qPickR(null);if(!r1)return;
+  qSay(r1,isP?qPickT([a+'の天気がとどくんだね！','そっか、'+a+'に すんでるんだね']):qPickT(['「'+a+'」なんだね！ へぇ〜','そっか、「'+a+'」なんだね。おしえてくれてありがとう']),3.2);
+  setTimeout(function(){if(!alive)return;var r2=qPickR(r1);if(!r2)return;
+   qSay(r2,isP?qPickT(['「'+a+'」って、いいところだよね','きょうも、'+a+'の空はきれいかな']):qPickT(['わたしも「'+a+'」がすきだよ','さっきの「'+q.q+'」、いいね！','ふふ、おはなしたのしいね']),3)},3600)
+ }
+ function qMemTalk(){
+  if(!alive||!res.length)return;var ks=Object.keys(TS.qa||{});if(!ks.length)return;
+  var dn=TS.qa[ks[Math.random()*ks.length|0]],r=qPickR(null);if(!dn||!r)return;
+  var isP=dn.id==='pref'&&dn.a!=='ひみつ';
+  qSay(r,isP?qPickT([dn.a+'のお天気、きょうはどうかな？','この前「'+dn.a+'」って言ってたよね']):qPickT(['この前「'+dn.a+'」って言ってたよね','「'+dn.a+'」って、ステキだよね','あの質問の答え、「'+dn.a+'」だったよね。おぼえてるよ']),3.2)
+ }
  function tap(e){var rc=cn.getBoundingClientRect(),px=(e.clientX-rc.left)/rc.width*W,py=(e.clientY-rc.top)/rc.height*H,best=null,bd=1e9;
   if(MCH&&Math.abs(px-MCH.x)<30&&Math.abs(py-(MCH.sy||MCH.y))<28){var ty0=MCH.type;MCH=null;mnext=R(10,25);try{sfx('tap')}catch(er){}openGame(ty0);return}
   if(px>=294&&px<=350&&py>=382&&py<=446){try{sfx('tap')}catch(er){}openQ();return}
@@ -3299,6 +3331,7 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
   else if(best){best.jmp=1;if(best.st!='sleep'&&best.st!='tobed'){best.st='idle';best.tm=2}say(best,'',3);best.bub='💕';hearts.push({x:best.x,y:best.y-best.sh-6,t:0});if(best.spec){best.spec.f=Math.min(100,(best.spec.f||0)+2);dirty=true;selR=best;selT=3.5}try{sfx('tap')}catch(er){}try{gift(best)}catch(er){}}
   else{spk.push({x:px,y:py,t:0,c:['#ff7eb6','#ffd23f','#7fd0ff','#b388eb'][Math.random()*4|0]})}}
  cn.addEventListener('pointerdown',tap);
+ var qmT=setInterval(function(){if(!alive){clearInterval(qmT);return}if(Math.random()<.5)qMemTalk()},22000);
  function close(){closePn();closeGm();saveT(TS);alive=false;cancelAnimationFrame(raf);ov.remove();TW=null;ktEv('kt-close')}
  xb.onclick=close;
  TW=ov;raf=requestAnimationFrame(frame)}
