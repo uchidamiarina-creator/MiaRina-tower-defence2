@@ -8761,12 +8761,14 @@ var YERO_B64='SUQzBAAAAAAIEFRJVDIAAAAGAAAAeWVybzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
  function yero(){return (G.en||[]).concat(G.q||[]).find(function(e){return e&&e.yero&&!e.dead})}
  function finish(){
   _yOn=false;_yDone=true;yHalt();
-  G.q=[];G.en=[];G.active=false;D.cl=Math.max(1,G.wave);
+  G.q=[];G.en=[];G.active=false;
   end(true);
  }
  var _yU=update;
  update=function(dt){
   var isS=G&&typeof srIs==='function'&&srIs()&&!G.over&&G.active;
+  /* 前のプレイの「イエロ退場」フラグを持ち越さない（開始直後に誤クリアするのを防ぐ） */
+  if(!G||!G.active){_yBye=false}
   if(!isS){if(_yOn)yStop();return _yU.apply(this,arguments)}
   if(yAlive()){if(!_yOn&&!_yBye)yStart()}else if(_yOn)yStop();
   if(_yOn&&!_yBye){
