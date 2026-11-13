@@ -3524,40 +3524,39 @@ function openBook(){
  function favHas(t){return fav.indexOf(t)>=0}
  function favToggle(t){var i=fav.indexOf(t);if(i>=0)fav.splice(i,1);else fav.push(t);try{localStorage.setItem(FAV_KEY,JSON.stringify(fav))}catch(e){}}
  function goodBtn(t){var b=document.createElement('button');b.textContent='👍';b.setAttribute('aria-label','お気に入り');
-  b.style.cssText='flex:none;align-self:flex-start;width:34px;height:34px;min-height:0;padding:0;font-size:17px;line-height:1;border-radius:999px;border-style:solid;border-width:2px;cursor:pointer';
+  b.style.cssText='flex:none;align-self:flex-start;width:26px;height:26px;min-height:0;padding:0;font-size:13px;line-height:1;border-radius:999px;border-style:solid;border-width:2px;cursor:pointer';
   function paint(){var on=favHas(t);b.style.opacity=on?'1':'.4';b.style.filter=on?'none':'grayscale(1)';b.style.background=on?'#fff0b8':'transparent';b.style.borderColor=on?'#d9962b':'#ecd3a0';b.setAttribute('aria-pressed',on?'true':'false')}
   paint();b.onclick=function(){favToggle(t);paint();try{sfx('tap')}catch(e){}};return b}
  var seen=unlocked?TIPS.slice():seenGet(),G=BK_GENRES.map(function(g,i){return {n:g.n,i:i,list:[],all:0}});
  TIPS.forEach(function(t){var gi=bkClass(t);G[gi].all++;if(seen.indexOf(t)>=0)G[gi].list.push(t)});
  var pages=[{k:'cover'},{k:'toc'}],gStart={},pageOf={};
- G.forEach(function(g){if(!g.list.length)return;gStart[g.i]=pages.length+1;
-  for(var s=0;s<g.list.length;s+=6){var items=g.list.slice(s,s+6);items.forEach(function(t){pageOf[t]=pages.length+1});pages.push({k:'genre',g:g,items:items,off:s})}});
+ /* ヒントは「ヒント集」1ページにまとめる（ジャンルごとに見出し） */
+ var hintN=0,hs=[];G.forEach(function(g){if(g.list.length)hs.push({g:g,items:g.list,off:0,cont:false})});
+ if(hs.length){pages.push({k:'genre',secs:hs});hintN=pages.length;hs.forEach(function(S){gStart[S.g.i]=hintN;S.items.forEach(function(t){pageOf[t]=hintN})})}
  var ent=seen.map(function(t){return {t:t,k:kanaKey(t)}}).sort(function(a,b){return (a.k.r-b.k.r)||(a.k.c-b.k.c)||(a.t<b.t?-1:(a.t>b.t?1:0))});
  var rows=[],last='';
  ent.forEach(function(e){if(e.k.n!==last){rows.push({h:e.k.n});last=e.k.n}rows.push({t:e.t,p:pageOf[e.t]})});
  var gIndex=pages.length+1;
- if(!rows.length)pages.push({k:'index',items:[]});
- for(var s2=0;s2<rows.length;s2+=10)pages.push({k:'index',items:rows.slice(s2,s2+10)});
  var favN=pages.length+1;pages.push({k:'fav'});
  var allyN=pages.length+1;pages.push({k:'ally'});
  var helpN=pages.length+1;pages.push({k:'helper'});
  var monN=pages.length+1;pages.push({k:'mon'});
- pages[1]={k:'toc',G:G,gStart:gStart,gIndex:gIndex,favN:favN,allyN:allyN,helpN:helpN,monN:monN};
+ pages[1]={k:'toc',G:G,gStart:gStart,gIndex:gIndex,favN:favN,allyN:allyN,helpN:helpN,monN:monN,hintN:hintN};
 
  var ov=document.createElement('div');ov.id='bookov';
  ov.style.cssText='position:fixed;inset:0;z-index:90;background:rgba(60,30,50,.55);display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box';
  var card=document.createElement('div');
- card.style.cssText='width:min(100%,360px);height:min(82vh,580px);display:flex;flex-direction:column;background-color:#fff6e0;background-image:radial-gradient(circle at 18% 22%,rgba(160,90,20,.13) 0 9px,transparent 10px),radial-gradient(circle at 78% 35%,rgba(160,90,20,.11) 0 12px,transparent 13px),radial-gradient(circle at 36% 74%,rgba(160,90,20,.12) 0 10px,transparent 11px),radial-gradient(circle at 88% 88%,rgba(160,90,20,.10) 0 8px,transparent 9px);border:3px solid #d9962b;border-radius:10px 18px 18px 10px;padding:10px 14px;box-sizing:border-box;box-shadow:inset 8px 0 0 -4px #f3dca8,0 8px 24px rgba(110,70,20,.4)';
+ card.style.cssText='width:min(100%,360px);height:min(88vh,640px);display:flex;flex-direction:column;background-color:#fff6e0;background-image:radial-gradient(circle at 18% 22%,rgba(160,90,20,.13) 0 9px,transparent 10px),radial-gradient(circle at 78% 35%,rgba(160,90,20,.11) 0 12px,transparent 13px),radial-gradient(circle at 36% 74%,rgba(160,90,20,.12) 0 10px,transparent 11px),radial-gradient(circle at 88% 88%,rgba(160,90,20,.10) 0 8px,transparent 9px);border:3px solid #d9962b;border-radius:10px 18px 18px 10px;padding:10px 14px;box-sizing:border-box;box-shadow:inset 8px 0 0 -4px #f3dca8,0 8px 24px rgba(110,70,20,.4)';
  function navBtn(t){var b=document.createElement('button');b.textContent=t;b.style.cssText='width:40px;height:40px;min-height:0;padding:0;border-radius:999px;background:#fff8ea;border:2px solid #d9962b;color:#c97a1e;font-size:16px;font-weight:900;line-height:1;text-shadow:0 1px 0 #fff8ea,0 -1px 0 #fff8ea,1px 0 0 #fff8ea,-1px 0 0 #fff8ea';return b}
  function para(css,text){var d=document.createElement('div');d.style.cssText=css;d.textContent=text;return d}
  function head(text,size){return bookStyle(para('margin:4px 0 8px;text-align:center',text),size)}
  var top=document.createElement('div');top.style.cssText='display:flex;justify-content:flex-start;align-items:center;min-height:28px;padding-right:40px';
- var tocb=navBtn('📑 もくじ');tocb.style.width='auto';tocb.style.height='26px';tocb.style.padding='0 9px';tocb.style.fontSize='11px';tocb.style.marginRight='auto';tocb.style.visibility='hidden';
+ var tocb=navBtn('◀ もくじにもどる');tocb.style.width='auto';tocb.style.height='26px';tocb.style.padding='0 9px';tocb.style.fontSize='11px';tocb.style.marginRight='auto';tocb.style.visibility='hidden';
  var xb=navBtn('✕');xb.style.cssText+=';position:absolute;top:6px;right:8px;z-index:3;width:28px;height:28px;font-size:13px';top.append(tocb);
  var body=document.createElement('div');body.style.cssText='flex:1;overflow:auto;min-height:0;padding:2px 4px';
  var foot=document.createElement('div');foot.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-top:8px';
  var pv=navBtn('◀'),nx=navBtn('▶'),pg=para('font-size:13px;font-weight:800;color:#7a5230','');
- foot.append(pv,pg,nx);card.style.position='relative';card.append(top,body,foot,xb);ov.appendChild(card);document.body.appendChild(ov);
+ foot.append(pv,pg,nx);foot.style.display='none';card.style.position='relative';card.append(top,body,foot,xb);ov.appendChild(card);document.body.appendChild(ov);
  var cur=0,dir=0;
  function close(){try{localStorage.setItem(GUIDE_PK,String(cur))}catch(e){}ov.remove()}
  function go(n,quiet){var m=Math.max(0,Math.min(pages.length-1,n));if(m===cur&&!quiet)return;dir=m>cur?1:-1;cur=m;if(!quiet){try{sfx('tap')}catch(e){}}try{localStorage.setItem(GUIDE_PK,String(cur))}catch(e){}render()}
@@ -3565,7 +3564,7 @@ function openBook(){
  ov.onclick=function(e){if(e.target===ov)close()};
  var sx=null;
  card.addEventListener('pointerdown',function(e){sx=e.clientX});
- card.addEventListener('pointerup',function(e){if(sx===null)return;var dx=e.clientX-sx;sx=null;if(dx>50)go(cur-1);else if(dx<-50)go(cur+1)});
+ 
  function render(){
   var P=pages[cur];body.innerHTML='';body.scrollTop=0;
   if(dir){body.style.transition='none';body.style.opacity='0';body.style.transform='translateX('+(dir*28)+'px)';requestAnimationFrame(function(){requestAnimationFrame(function(){body.style.transition='transform .22s ease,opacity .22s ease';body.style.opacity='1';body.style.transform='none'})})}
@@ -3577,7 +3576,7 @@ function openBook(){
    body.append(para('height:12px',''),(function(){var w=para('text-align:center;',''),k=document.querySelector('#kiri img.kimg');if(k&&k.src){var im=document.createElement('img');im.src=k.src;im.alt='キリン';im.style.cssText='height:170px;width:auto;max-width:100%;display:block;margin:0 auto;filter:drop-shadow(0 3px 4px rgba(110,70,20,.35))';w.appendChild(im)}else w.innerHTML=SVGG;return w})(),head('攻略本','22px'),
     para('text-align:center;margin-top:10px;font-size:12px;color:#7a5230;line-height:1.6','みありなタワーディフェンス ウルトラDX'),
     para('text-align:center;margin-top:20px;font-size:13px;font-weight:800;color:#7a5230','見つけたヒント '+seen.length+' / '+TIPS.length),
-    para('text-align:center;margin-top:8px;font-size:11px;color:#9a7048','ページは ◀ ▶ か 指でスワイプ'));
+    (function(){var ob=document.createElement('button');ob.textContent='📑 もくじをひらく';ob.style.cssText='display:block;margin:14px auto 0;padding:10px 18px;min-height:0;height:auto;border-radius:999px;background:#fff8ea;border:2px solid #d9962b;border-bottom-width:4px;color:#c97a1e;font-size:14px;font-weight:900';ob.onclick=function(){go(1)};return ob})());
    if(!unlocked){
     var msg=para('text-align:center;margin-top:8px;font-size:12px;font-weight:800;color:#7a5230;min-height:16px','');
     var buy=document.createElement('button');buy.textContent='🪙 '+GUIDE_PRICE+'リナコインで全部読む';
@@ -3594,7 +3593,7 @@ function openBook(){
    var inp=document.createElement('input');inp.type='search';inp.placeholder='🔍 ヒントをさがす（例：ボス）';
    inp.style.cssText='width:100%;box-sizing:border-box;padding:8px 12px;margin:0 0 6px;font-size:14px;font-weight:700;color:#4a2e14;background:#fffdf5;border:2px solid #d9962b;border-radius:999px;outline:none';
    var box=document.createElement('div');body.append(inp,box);
-   var rowCss='display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:8px 2px;border-bottom:2px dashed #ecd3a0;font-size:14px;font-weight:800;color:#5a3a1a';
+   var rowCss='display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:5px 2px;border-bottom:1px dashed #ecd3a0;font-size:13px;font-weight:800;color:#5a3a1a';
    function drawToc(){
     box.innerHTML='';var q=inp.value.trim();
     if(q){
@@ -3605,14 +3604,9 @@ function openBook(){
       r.onclick=function(){go(pageOf[t]-1)};box.appendChild(r)});
      if(!hit)box.appendChild(para('text-align:center;padding:16px 6px;font-size:13px;color:#7a5230','見つからないよ'+(unlocked?'':'（まだ見つけていないヒントは出ないよ）')));
      return}
-    P.G.forEach(function(g){
-     var nw=g.list.filter(function(t){return !rd[t]}).length;
-     var row=para(rowCss,'');
-     row.append(para('',g.n+(nw?'  🆕'+nw:'')),para('font-size:12px;color:#c97a1e;white-space:nowrap',g.list.length?'p.'+P.gStart[g.i]+'　'+g.list.length+'/'+g.all:'まだ（'+g.all+'）'));
-     if(g.list.length){row.style.cursor='pointer';row.onclick=function(){go(P.gStart[g.i]-1)}}
-     box.appendChild(row)});
-    var ir=para(rowCss+';cursor:pointer','');
-    ir.append(para('','索引'),para('font-size:12px;color:#c97a1e','p.'+P.gIndex));ir.onclick=function(){go(P.gIndex-1)};box.appendChild(ir);
+    var nwAll=seen.filter(function(t){return !rd[t]}).length;
+    var hr0=para(rowCss+';cursor:pointer','');
+    hr0.append(para('','💡 ヒント集'+(nwAll?'  🆕'+nwAll:'')),para('font-size:12px;color:#c97a1e','p.'+P.hintN+'　'+seen.length+'/'+TIPS.length));hr0.onclick=function(){go(P.hintN-1)};box.appendChild(hr0);
     var fr=para(rowCss+';cursor:pointer','');
     fr.append(para('','👍 お気に入りヒント'),para('font-size:12px;color:#c97a1e','p.'+P.favN+'　'+fav.filter(function(t){return seen.indexOf(t)>=0}).length+'こ'));fr.onclick=function(){go(P.favN-1)};box.appendChild(fr);
     var ar=para(rowCss+';cursor:pointer','');
@@ -3625,11 +3619,13 @@ function openBook(){
    }
    inp.oninput=drawToc;drawToc();
   }else if(P.k==='genre'){
-   body.append(head(P.g.n,'18px'),para('text-align:center;font-size:12px;color:#9a7048;margin-bottom:6px','見つけた '+P.g.list.length+' / '+P.g.all));
-   P.items.forEach(function(t,i){
-    var r=para('display:flex;gap:8px;padding:9px 2px;border-bottom:2px dashed #ecd3a0;font-size:14px;line-height:1.7;color:#4a2e14;font-weight:700','');
-    r.append(para('flex:none;width:26px;text-align:right;color:#c97a1e;font-weight:900',(P.off+i+1)+'.'),para('flex:1',(rd[t]?'':'🆕 ')+t),goodBtn(t));body.appendChild(r);});
-   P.items.forEach(function(t){rdAdd(t)});
+   P.secs.forEach(function(S){
+    body.appendChild(para('margin:8px 0 2px;padding:2px 10px;font-size:13px;font-weight:900;color:#7a5230;background:#fff0b8;border:1px solid #e3b95a;border-radius:999px;display:flex;justify-content:space-between',''));
+    var hd=body.lastChild;hd.append(para('',S.g.n+(S.cont?'（つづき）':'')),para('font-size:11px;color:#9a7048',S.g.list.length+' / '+S.g.all));
+    S.items.forEach(function(t,i){
+     var r=para('display:flex;gap:6px;padding:4px 2px;border-bottom:1px dashed #ecd3a0;font-size:12.5px;line-height:1.5;color:#4a2e14;font-weight:700','');
+     r.append(para('flex:none;width:22px;text-align:right;color:#c97a1e;font-weight:900',(S.off+i+1)+'.'),para('flex:1',(rd[t]?'':'🆕 ')+t),goodBtn(t));body.appendChild(r);});
+    S.items.forEach(function(t){rdAdd(t)})});
   }else if(P.k==='fav'){
    body.appendChild(head('👍 お気に入りヒント','18px'));
    var fbox=document.createElement('div');body.appendChild(fbox);
@@ -3694,35 +3690,39 @@ function openBook(){
     row.append(ic,tx);body.appendChild(row)});
   }else if(P.k==='mon'){
    body.appendChild(head('👾 モンスター図鑑','18px'));
-   body.appendChild(para('text-align:center;font-size:12px;line-height:1.6;color:#9a7048;margin-bottom:4px','バトルに出てくる敵キャラの一部だよ'));
+   body.appendChild(para('text-align:center;font-size:12px;line-height:1.6;color:#9a7048;margin-bottom:4px','バトルに出てくる敵キャラ全員だよ'));
+   var BOSSK=['B','R','L','N','U','I'],zl=[],bl=[];
+   ZKAN.forEach(function(k){if(k==='S'||!ENAME[k])return;if(BOSSK.indexOf(k)>=0)bl.push([k,ENAME[k],1]);else zl.push([k,ENAME[k]])});
+   Object.keys(ENAME).filter(function(k){return /^Z\d+$/.test(k)}).sort().forEach(function(k){zl.push([k,ENAME[k]])});
    var MONS=[
-    {h:'ザコキャラ',l:[['P','ぷるりん'],['M','ぐるまきミーちゃん'],['K','ほわキノ'],['C','ほのかちゃん'],['T','ちゅうすけ'],['A','ぴかぴかナイト'],['F','めらめらひーくん'],['Y','すいすいぴぃ'],['O','もふもふホーホー'],['J','ぴゅーんロケくん'],['G','ふわりん'],['W','ぽたぽたしずくん']]},
-    {h:'ボスキャラ',l:[['B','ヴァンぴー伯爵',1],['R','ドラぷに',1],['L','まじょっこメルル',1],['N','ごろごろゴーレムくん',1],['U','ハートのあくまみみ',1],['I','ブルーデビるる',1]]},
-    {h:'ラスボス四天王',l:[['suika','巨大スイカメ'],['rafu','ラフレシアバニー'],['neko','まねきねこロボ'],['dadan','大魔王ダダン']],k:1}];
+    {h:'ザコキャラ',l:zl},
+    {h:'ボスキャラ',l:bl},
+    {h:'ラスボス四天王',l:[['suika','巨大スイカメ'],['rafu','ラフレシアバニー'],['neko','まねきねこロボ'],['dadan','大魔王ダダン']],k:1},
+    {h:'最強ボス',l:[['yero','イエロ']],k:1}];
    function monDraw(cn,m,king){
-    if(!king){pfEnDraw(cn,m[0],!!m[2]);return}
-    var sc=cv.width/360,BOX=150,X=x,e={x:180,y:220,d:0,hp:1,mx:1,slow:0,pois:0,stun:0,ci:0,age:1,w:0,dr:1,ph:1,t:0,tc:0,lx:180,ly:220,hx:180,hy:220,fly:0,boss:true};e[m[0]]=1;
+    var big=m[0]==='V'||m[0]==='DR';if(!king&&!big){pfEnDraw(cn,m[0],!!m[2]);return}
+    var sc=cv.width/360,BOX=big?120:150,X=x,e={ty:m[0],x:180,y:220,d:0,hp:1,mx:1,slow:0,pois:0,stun:0,ci:0,age:1,w:0,dr:1,ph:1,t:0,tc:0,lx:180,ly:220,hx:180,hy:220,fly:big?1:0,xt:big?1:0,boss:!big};if(!big)e[m[0]]=1;
     var clr=function(){X.save();X.setTransform(sc,0,0,sc,0,0);X.clearRect(180-BOX,220-BOX,BOX*2,BOX*2);X.restore()};
     clr();X.save();X.setTransform(sc,0,0,sc,0,0);
-    var FR=X.fillRect,FT=X.fillText,ST=X.strokeText;X.fillRect=function(a,b,w,h){if(h>=3&&h<=6&&w>=20&&w<=70)return;FR.call(this,a,b,w,h)};X.fillText=function(){};X.strokeText=function(){};
+    var FR=X.fillRect,FT=X.fillText,ST=X.strokeText;X.fillRect=function(a,b,w,h){if(h>=3&&h<=9&&w>=20&&w<=140)return;FR.call(this,a,b,w,h)};X.fillText=function(){};X.strokeText=function(){};X.strokeRect=function(a,b,w,h){if(h<=10&&w>=20)return;CanvasRenderingContext2D.prototype.strokeRect.call(this,a,b,w,h)};
     try{drawEn2(e,1000)}catch(er){}
-    delete X.fillRect;delete X.fillText;delete X.strokeText;X.restore();
+    delete X.fillRect;delete X.fillText;delete X.strokeText;delete X.strokeRect;X.restore();
     cn.getContext('2d').drawImage(cv,(180-BOX/2+8)*sc,(220-BOX/2-12)*sc,BOX*sc,BOX*sc,0,0,cn.width,cn.height);clr()}
    MONS.forEach(function(sec){
     body.appendChild(para('margin:12px 0 6px;padding:3px 10px;font-size:13px;font-weight:900;color:#7a5230;background:#fff0b8;border:1px solid #e3b95a;border-radius:999px;text-align:center',sec.h));
-    var gr=para('display:grid;grid-template-columns:repeat('+(sec.k?2:3)+',1fr);gap:8px 4px','');
+    var gr=para('display:grid;grid-template-columns:repeat('+(sec.k?2:4)+',1fr);gap:8px 4px','');
     sec.l.forEach(function(m){
      var cell=para('display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0','');
-     var cn=document.createElement('canvas');cn.width=cn.height=sec.k?240:96;cn.style.cssText='width:'+(sec.k?116:72)+'px;height:'+(sec.k?116:72)+'px;border:0;box-shadow:none;border-radius:0;background:#fff8ea;border-radius:12px;border:2px solid #ecd3a0';
+     var cn=document.createElement('canvas');cn.width=cn.height=sec.k?240:96;cn.style.cssText='width:'+(sec.k?116:64)+'px;height:'+(sec.k?116:64)+'px;border:0;box-shadow:none;border-radius:0;background:#fff8ea;border-radius:12px;border:2px solid #ecd3a0';
      try{monDraw(cn,m,sec.k)}catch(er){}
-     cell.append(cn,para('font-size:'+(sec.k?13:10)+'px;font-weight:900;line-height:1.3;color:#c97a1e;text-align:center',m[1]));gr.appendChild(cell)});
+     cell.append(cn,para('font-size:'+(sec.k?13:9.5)+'px;font-weight:900;line-height:1.25;color:#c97a1e;text-align:center',m[1]));gr.appendChild(cell)});
     body.appendChild(gr)});
   }else if(P.k==='index'){
    body.appendChild(head('索引','18px'));
    if(!P.items.length)body.appendChild(para('text-align:center;padding:18px 6px;font-size:13px;line-height:1.7;color:#7a5230','まだ 見つけたヒントがないよ'));
    P.items.forEach(function(e){
-    if(e.h){body.appendChild(para('font-size:13px;font-weight:900;color:#c97a1e;margin:10px 0 2px',e.h));return}
-    var r=para('display:flex;justify-content:space-between;gap:8px;padding:7px 2px;border-bottom:2px dashed #ecd3a0;font-size:13px;line-height:1.5;color:#4a2e14;cursor:pointer','');
+    if(e.h){body.appendChild(para('font-size:12px;font-weight:900;color:#c97a1e;margin:6px 0 0',e.h));return}
+    var r=para('display:flex;justify-content:space-between;gap:8px;padding:3px 2px;border-bottom:1px dashed #ecd3a0;font-size:12px;line-height:1.4;color:#4a2e14;cursor:pointer','');
     r.append(para('flex:1',e.t.length>18?e.t.slice(0,18)+'…':e.t),para('flex:none;color:#c97a1e;font-weight:900;white-space:nowrap','p.'+e.p));
     r.onclick=function(){go(e.p-1)};body.appendChild(r)});
   }
