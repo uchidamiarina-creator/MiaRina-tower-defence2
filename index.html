@@ -3408,14 +3408,14 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
     cb=sEl('button','flex:none;width:auto;min-height:0;height:auto;line-height:1;padding:2px 8px;font-size:11px;border-width:2px;border-bottom-width:3px;border-radius:10px','✕');cb.onclick=closeShp;
    hd.append(sEl('span',null,title),cb);var bd=sEl('div','overflow-y:auto;flex:1');bx.append(hd,bd);shp.appendChild(bx);shp.addEventListener('click',function(e){if(e.target===shp)closeShp()});ov.appendChild(shp);return bd}
   var BT=[{id:'sushi',name:'お寿司屋さん',ic:'🍣',ds:'ひみつ道具の「お寿司」が買えるお店だよ'},{id:'otasuke',name:'おたすけ屋さん',ic:'🎫',ds:'バトル中におたすけキャラを呼べる「おたすけ券」が買えるお店だよ'},{id:'rinacoin',name:'リナコイン屋さん',ic:'🪙',ds:'リナコインを 売ったり 買ったり できるお店だよ（相場は毎日かわるよ）'},{id:'mikata',name:'味方屋さん',ic:'🧸',ds:'オリジナルの味方キャラを つくれるお店だよ'}];
-  var BUILD_COST=100000;
+  var BUILD_COST=1000;
   function rcoin(){try{return Math.max(0,parseInt(localStorage.getItem('miarina_td_rinacoin_v1')||'0',10)||0)}catch(e){return 0}}
   function hasB(id){var b=TS.bld||{};for(var k in b)if(b[k]===id)return true;return false}
   function openBuild(i){var bd=shpBox('空き地');bd.appendChild(sEl('div','font-size:12px;color:#8a5a7a;margin-bottom:6px','ここに 建てる建物を えらんでね'));
    BT.forEach(function(b){var done=hasB(b.id),row=sEl('div','display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px dashed #f0c8dc'),tx=sEl('div','flex:1;min-width:0;line-height:1.3'),bt=sEl('button','flex:none;min-width:88px;padding:8px 12px;font-size:15px;font-weight:bold;font-family:'+SFONT+';letter-spacing:.06em;color:#e0457f;background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%);border:3px solid #fff;outline:2px solid #ffc94d;border-radius:999px;box-shadow:0 3px 0 #e8a92a,0 0 8px rgba(255,210,80,.6)',done?'建ってるよ':'建てる');
-    tx.append(sEl('b','color:#8a3a6a;font-size:14px',b.name),sEl('div','font-size:11px;color:#8a5a7a',b.ds+'（100000リナコイン）'));if(done||rcoin()<BUILD_COST)bt.disabled=true;
+    tx.append(sEl('b','color:#8a3a6a;font-size:14px',b.name),sEl('div','font-size:11px;color:#8a5a7a',b.ds+'（1000リナコイン）'));if(done||rcoin()<BUILD_COST)bt.disabled=true;
     bt.onclick=function(){try{sfx('clear')}catch(er){}build(i,b)};row.append(sEl('div','font-size:26px;flex:none',b.ic),tx,bt);bd.appendChild(row)})}
-  function build(i,b){var RKB='miarina_td_rinacoin_v1',rc=rcoin();if(rc<BUILD_COST){try{sfx('deny')}catch(er){}toast=6;tmsg='リナコインが たりないよ（1つ 100000リナコイン いるよ）';return}try{localStorage.setItem(RKB,String(rc-BUILD_COST))}catch(er){}TS.bld=TS.bld||{};TS.bld[i]=b.id;BLD=TS.bld;saveT(TS);bg=buildBG(DPR);closeShp();var L=LOTS[i];toast=6;tmsg='「'+b.name+'」が できたよ！';
+  function build(i,b){var RKB='miarina_td_rinacoin_v1',rc=rcoin();if(rc<BUILD_COST){try{sfx('deny')}catch(er){}toast=6;tmsg='リナコインが たりないよ（1つ 1000リナコイン いるよ）';return}try{localStorage.setItem(RKB,String(rc-BUILD_COST))}catch(er){}TS.bld=TS.bld||{};TS.bld[i]=b.id;BLD=TS.bld;saveT(TS);bg=buildBG(DPR);closeShp();var L=LOTS[i];toast=6;tmsg='「'+b.name+'」が できたよ！';
    for(var k=0;k<14;k++)spk.push({x:L.x+L.w/2+(Math.random()-.5)*50,y:L.y-20+(Math.random()-.5)*40,t:-k*.04,c:['#ff7eb6','#ffd23f','#7fd0ff','#b388eb'][k%4]})}
   function openCoin(msg){var RK='miarina_td_rinacoin_v1',m=msg||'いらっしゃい！ きょうの相場を チェックしてね';
    function cg(){try{return Math.max(0,parseInt(localStorage.getItem(RK)||'0',10)||0)}catch(e){return 0}}
@@ -3462,9 +3462,9 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
    d.onclick=function(){confirmDemo(i,bd)};
    bd.append(u,d)}
   function confirmDemo(i,bd){bd.innerHTML='';
-   bd.appendChild(sEl('div','text-align:center;font-size:13px;color:#8a3a6a;line-height:1.6;margin:10px 0','ほんとうに こわす？ こわすには 50000リナコイン いるよ。たてものは もどらないよ'));
+   bd.appendChild(sEl('div','text-align:center;font-size:13px;color:#8a3a6a;line-height:1.6;margin:10px 0','ほんとうに こわす？ こわすには 500リナコイン いるよ。たてものは もどらないよ'));
    var row=sEl('div','display:flex;gap:8px;'),y=sEl('button',BTN_DEMO,'はい、こわす'),n=sEl('button',BTN_DEMO,'やめる');
-   y.onclick=function(){var RKB='miarina_td_rinacoin_v1',rc=rcoin();if(rc<50000){try{sfx('deny')}catch(er){}toast=6;tmsg='リナコインが たりないよ（こわすには 50000リナコイン いるよ）';closeShp();return}try{localStorage.setItem(RKB,String(rc-50000))}catch(er){}if(TS.bld)delete TS.bld[i];BLD=TS.bld||{};saveT(TS);bg=buildBG(DPR);closeShp();toast=6;tmsg='空き地に もどったよ';};
+   y.onclick=function(){var RKB='miarina_td_rinacoin_v1',rc=rcoin();if(rc<500){try{sfx('deny')}catch(er){}toast=6;tmsg='リナコインが たりないよ（こわすには 500リナコイン いるよ）';closeShp();return}try{localStorage.setItem(RKB,String(rc-500))}catch(er){}if(TS.bld)delete TS.bld[i];BLD=TS.bld||{};saveT(TS);bg=buildBG(DPR);closeShp();toast=6;tmsg='空き地に もどったよ';};
    n.onclick=function(){openLotMenu(i)};
    row.append(n,y);bd.appendChild(row)}
   function tap(e){var rc=cn.getBoundingClientRect(),px=(e.clientX-rc.left)/rc.width*W,py=(e.clientY-rc.top)/rc.height*H,best=null,bd=1e9;
