@@ -2905,7 +2905,7 @@ function shop(g,px,py,w,h,col,txt,aw){g.fillStyle='rgba(60,90,50,.18)';g.beginPa
  g.fillStyle='#fff8e0';g.fillRect(px+w*.12,py-h*.52,w*.42,h*.36);g.fillStyle='#d98a5a';g.fillRect(px+w*.66,py-h*.5,w*.22,h*.5);
  WIN.push([px+w*.12,py-h*.52,w*.42,h*.36])}
 var NAMES=['アキバ','ブクロ','シモキタ','サンチャ','ポンバシ','エルエー','ベガス','ロス','ワイキキ'];
-var BLD={},LOTS=Object.freeze([{x:6,y:337,w:62},{x:292,y:337,w:62},{x:149,y:337,w:62}].map(Object.freeze));/* 空き地は3つで固定（増やさない） */
+var BLD={},LOTS=Object.freeze([{x:6,y:337,w:62},{x:292,y:337,w:62},{x:149,y:337,w:62},{x:282.95,y:240,w:34.1,s:.55}].map(Object.freeze));/* 空き地は手前の3つ＋右の山の上（遠近法で小さく） */
 /* お寿司屋さんの値段（もちこしゴールドではらう）／3つめは「めずらしい」＝ふだんは売っていない */
 var SUSHI=[['sushi_otoro',5000,0],['sushi_chutoro',2500,0],['sushi_uni',1200,0],['sushi_salmon',500,0],['sushi_shime',3000,0],['sushi_shima',15000,1],['sushi_nodo',12000,1]],RARE_PCT=8,OTASUKE=[['otasuke_ticket',6000,0]];
 var SGK='miarina_td_gold_v1',SFONT='"Mochiy Pop One","Hiragino Maru Gothic ProN",sans-serif';
@@ -2971,9 +2971,12 @@ function mikataShop(g,x,y,w){var i,f;
  g.fillStyle='#ffd9c2';g.beginPath();g.arc(x+19,y-17.5,2.8,0,7);g.fill();g.fillStyle='#7fb6ff';g.beginPath();g.roundRect(x+16.2,y-14.2,5.6,4.6,1.5);g.fill();
  g.fillStyle='#d98a5a';g.beginPath();g.roundRect(x+w-18,y-20,11,20,[5,5,0,0]);g.fill();g.fillStyle='#ffd23f';g.beginPath();g.arc(x+w-9,y-10,1.1,0,7);g.fill();
 }
-function drawLots(g){for(var i=0;i<LOTS.length;i++){if(BLD[i]==='sushi')sushiShop(g,LOTS[i].x,LOTS[i].y,LOTS[i].w);else if(BLD[i]==='otasuke')otasukeShop(g,LOTS[i].x,LOTS[i].y,LOTS[i].w);else if(BLD[i]==='rinacoin')coinShop(g,LOTS[i].x,LOTS[i].y,LOTS[i].w);else if(BLD[i]==='mikata')mikataShop(g,LOTS[i].x,LOTS[i].y,LOTS[i].w);else vacant(g,LOTS[i])}}
-function lotFx(g,s){for(var i=0;i<LOTS.length;i++){var L=LOTS[i],cx=L.x+L.w/2,by=Math.sin(s*3+i*1.7)*2,sh=!!BLD[i],cy=L.y-(sh?71:42)+by;g.save();g.textAlign='center';g.textBaseline='middle';g.fillStyle='rgba(255,255,255,.92)';g.strokeStyle='#f0a8c8';g.lineWidth=1.5;g.beginPath();g.arc(cx,cy,sh?8.5:7.5,0,7);g.fill();g.stroke();if(sh){g.font='11px sans-serif';g.fillText(BLD[i]==='otasuke'?'🎫':BLD[i]==='rinacoin'?'🪙':BLD[i]==='mikata'?'🧸':'🍣',cx,cy+.5)}else{g.fillStyle='#d05a8a';g.font='bold 12px sans-serif';g.fillText('＋',cx,cy)}g.restore()}}
-function lotAt(px,py){for(var i=0;i<LOTS.length;i++){var L=LOTS[i];if(px>=L.x-4&&px<=L.x+L.w+4&&py>=L.y-82&&py<=L.y+18)return i}return -1}
+function drawLots(g){for(var i=0;i<LOTS.length;i++){var L=LOTS[i],sc=L.s||1,X=L.s?-31:L.x,Y=L.s?0:L.y,W=L.s?62:L.w;
+  if(L.s){g.save();g.translate(L.x+L.w/2,L.y);g.scale(sc,sc)}
+  if(BLD[i]==='sushi')sushiShop(g,X,Y,W);else if(BLD[i]==='otasuke')otasukeShop(g,X,Y,W);else if(BLD[i]==='rinacoin')coinShop(g,X,Y,W);else if(BLD[i]==='mikata')mikataShop(g,X,Y,W);else vacant(g,{x:X,y:Y,w:W});
+  if(L.s)g.restore()}}
+function lotFx(g,s){for(var i=0;i<LOTS.length;i++){var L=LOTS[i],cx=L.x+L.w/2,by=Math.sin(s*3+i*1.7)*2,sh=!!BLD[i],cy=L.y-(sh?71:42)*(L.s||1)+by;g.save();g.textAlign='center';g.textBaseline='middle';g.fillStyle='rgba(255,255,255,.92)';g.strokeStyle='#f0a8c8';g.lineWidth=1.5;g.beginPath();g.arc(cx,cy,sh?8.5:7.5,0,7);g.fill();g.stroke();if(sh){g.font='11px sans-serif';g.fillText(BLD[i]==='otasuke'?'🎫':BLD[i]==='rinacoin'?'🪙':BLD[i]==='mikata'?'🧸':'🍣',cx,cy+.5)}else{g.fillStyle='#d05a8a';g.font='bold 12px sans-serif';g.fillText('＋',cx,cy)}g.restore()}}
+function lotAt(px,py){for(var i=0;i<LOTS.length;i++){var L=LOTS[i];if(px>=L.x-4&&px<=L.x+L.w+4&&py>=L.y-82*(L.s||1)&&py<=L.y+18*(L.s||1))return i}return -1}
 var WIN=[],LAMPS=[[118,354],[242,354],[62,458],[298,458]];
 var KS={N:{a:[34,44,110],b:[84,92,150],w:[8,14,56],wa:.45,lt:1,st:1,rb:0,sun:0,mo:1,bf:0,sc:[255,244,170],cl:[200,210,255,.6]},
 M:{a:[150,200,255],b:[255,226,214],w:[255,196,160],wa:.1,lt:.15,st:0,rb:.3,sun:1,mo:0,bf:1,sc:[255,236,170],cl:[255,236,232,.9]},
@@ -3405,12 +3408,14 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
     cb=sEl('button','flex:none;width:auto;min-height:0;height:auto;line-height:1;padding:2px 8px;font-size:11px;border-width:2px;border-bottom-width:3px;border-radius:10px','✕');cb.onclick=closeShp;
    hd.append(sEl('span',null,title),cb);var bd=sEl('div','overflow-y:auto;flex:1');bx.append(hd,bd);shp.appendChild(bx);shp.addEventListener('click',function(e){if(e.target===shp)closeShp()});ov.appendChild(shp);return bd}
   var BT=[{id:'sushi',name:'お寿司屋さん',ic:'🍣',ds:'ひみつ道具の「お寿司」が買えるお店だよ'},{id:'otasuke',name:'おたすけ屋さん',ic:'🎫',ds:'バトル中におたすけキャラを呼べる「おたすけ券」が買えるお店だよ'},{id:'rinacoin',name:'リナコイン屋さん',ic:'🪙',ds:'リナコインを 売ったり 買ったり できるお店だよ（相場は毎日かわるよ）'},{id:'mikata',name:'味方屋さん',ic:'🧸',ds:'オリジナルの味方キャラを つくれるお店だよ'}];
+  var BUILD_COST=100000;
+  function rcoin(){try{return Math.max(0,parseInt(localStorage.getItem('miarina_td_rinacoin_v1')||'0',10)||0)}catch(e){return 0}}
   function hasB(id){var b=TS.bld||{};for(var k in b)if(b[k]===id)return true;return false}
   function openBuild(i){var bd=shpBox('空き地');bd.appendChild(sEl('div','font-size:12px;color:#8a5a7a;margin-bottom:6px','ここに 建てる建物を えらんでね'));
    BT.forEach(function(b){var done=hasB(b.id),row=sEl('div','display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px dashed #f0c8dc'),tx=sEl('div','flex:1;min-width:0;line-height:1.3'),bt=sEl('button','flex:none;min-width:88px;padding:8px 12px;font-size:15px;font-weight:bold;font-family:'+SFONT+';letter-spacing:.06em;color:#e0457f;background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%);border:3px solid #fff;outline:2px solid #ffc94d;border-radius:999px;box-shadow:0 3px 0 #e8a92a,0 0 8px rgba(255,210,80,.6)',done?'建ってるよ':'建てる');
-    tx.append(sEl('b','color:#8a3a6a;font-size:14px',b.name),sEl('div','font-size:11px;color:#8a5a7a',b.ds));if(done)bt.disabled=true;
+    tx.append(sEl('b','color:#8a3a6a;font-size:14px',b.name),sEl('div','font-size:11px;color:#8a5a7a',b.ds+'（100000リナコイン）'));if(done||rcoin()<BUILD_COST)bt.disabled=true;
     bt.onclick=function(){try{sfx('clear')}catch(er){}build(i,b)};row.append(sEl('div','font-size:26px;flex:none',b.ic),tx,bt);bd.appendChild(row)})}
-  function build(i,b){TS.bld=TS.bld||{};TS.bld[i]=b.id;BLD=TS.bld;saveT(TS);bg=buildBG(DPR);closeShp();var L=LOTS[i];toast=6;tmsg='「'+b.name+'」が できたよ！';
+  function build(i,b){var RKB='miarina_td_rinacoin_v1',rc=rcoin();if(rc<BUILD_COST){try{sfx('deny')}catch(er){}toast=6;tmsg='リナコインが たりないよ（1つ 100000リナコイン いるよ）';return}try{localStorage.setItem(RKB,String(rc-BUILD_COST))}catch(er){}TS.bld=TS.bld||{};TS.bld[i]=b.id;BLD=TS.bld;saveT(TS);bg=buildBG(DPR);closeShp();var L=LOTS[i];toast=6;tmsg='「'+b.name+'」が できたよ！';
    for(var k=0;k<14;k++)spk.push({x:L.x+L.w/2+(Math.random()-.5)*50,y:L.y-20+(Math.random()-.5)*40,t:-k*.04,c:['#ff7eb6','#ffd23f','#7fd0ff','#b388eb'][k%4]})}
   function openCoin(msg){var RK='miarina_td_rinacoin_v1',m=msg||'いらっしゃい！ きょうの相場を チェックしてね';
    function cg(){try{return Math.max(0,parseInt(localStorage.getItem(RK)||'0',10)||0)}catch(e){return 0}}
@@ -3457,9 +3462,9 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
    d.onclick=function(){confirmDemo(i,bd)};
    bd.append(u,d)}
   function confirmDemo(i,bd){bd.innerHTML='';
-   bd.appendChild(sEl('div','text-align:center;font-size:13px;color:#8a3a6a;line-height:1.6;margin:10px 0','ほんとうに こわす？ たてものは もどらないよ（おかねも かえってこないよ）'));
+   bd.appendChild(sEl('div','text-align:center;font-size:13px;color:#8a3a6a;line-height:1.6;margin:10px 0','ほんとうに こわす？ こわすには 50000リナコイン いるよ。たてものは もどらないよ'));
    var row=sEl('div','display:flex;gap:8px;'),y=sEl('button',BTN_DEMO,'はい、こわす'),n=sEl('button',BTN_DEMO,'やめる');
-   y.onclick=function(){if(TS.bld)delete TS.bld[i];BLD=TS.bld||{};saveT(TS);bg=buildBG(DPR);closeShp();toast=6;tmsg='空き地に もどったよ';};
+   y.onclick=function(){var RKB='miarina_td_rinacoin_v1',rc=rcoin();if(rc<50000){try{sfx('deny')}catch(er){}toast=6;tmsg='リナコインが たりないよ（こわすには 50000リナコイン いるよ）';closeShp();return}try{localStorage.setItem(RKB,String(rc-50000))}catch(er){}if(TS.bld)delete TS.bld[i];BLD=TS.bld||{};saveT(TS);bg=buildBG(DPR);closeShp();toast=6;tmsg='空き地に もどったよ';};
    n.onclick=function(){openLotMenu(i)};
    row.append(n,y);bd.appendChild(row)}
   function tap(e){var rc=cn.getBoundingClientRect(),px=(e.clientX-rc.left)/rc.width*W,py=(e.clientY-rc.top)/rc.height*H,best=null,bd=1e9;
