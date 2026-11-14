@@ -3568,17 +3568,17 @@ function cpuNames(){
  gh='ひなた さくら ゆうと そうた めぐみ みお あおい りん はると ことは ももか いちか つむぎ ゆい あかり みなと かなで ひかり そら こはる なぎさ しずく れん ゆず もも あんず くるみ ほのか みく りの はるか ゆうき けんた まいこ なつみ'.split(' '),
  sk='サトウ スズキ タカハシ タナカ イトウ ヤマモト ナカムラ コバヤシ カトウ ヨシダ ヤマダ サクライ ホシノ ミズノ シライシ'.split(' '),
  gk='ミア ユウキ ケンタ サクラ アヤ リク ハルカ ナナ ミキ タクミ ショウ レナ カイト ココ ルナ マリ リョウ ヒロ ノア ミナト アオイ ヒナタ ユイ レン ソラ ミオ リン ハル アカリ カナタ'.split(' '),
- ff='ジョン ジェームス マイケル エミリー ソフィア オリビア リアム ノア ルーカス イザベラ ハンス クララ ピエール マリー カルロス マリア ミゲル アレクサンドル ナターシャ イワン ヴィクトル ソニア ジャスミン ムハンマド ファティマ アリ レイラ ラジ プリヤ アルジュン ウェイ メイ ジエ リン ミンホ ジウォン スヨン ヒョン タオ ニコラス エマ ハンナ オスカー イングリッド ラース ソフィー アントン エレナ ディエゴ ルイス ペドロ アナ ジョアン ファビオ ジュリア アンドレア マッテオ ヨハン カタリーナ トーマス アビゲイル ベンジャミン シャーロット ヘンリー グレース ケビン サラ デビッド ローラ ポール'.split(' '),
- fl='スミス ジョンソン ブラウン ミラー ウィルソン テイラー アンダーソン ガルシア マルティネス ロドリゲス シュミット ミュラー シュナイダー デュポン ルロワ ロッシ ルッソ ブルーノ イワノフ ペトロフ スミルノフ キム パク チェ リー ワン チャン リウ サントス シルバ オリベイラ ノヴァク コワルスキ ニールセン ヨハンソン ラーセン アルバレス ヘルナンデス パテル カーン ハッサン'.split(' '),
+ ff='John James Michael Emily Sophia Olivia Liam Noah Lucas Isabella Hans Clara Pierre Marie Carlos Maria Miguel Alexandre Natasha Ivan Victor Sonia Jasmine Muhammad Fatima Ali Leila Raj Priya Arjun Wei Mei Jie Lin Minho Jiwon Suyeon Hyun Tao Nicolas Emma Hannah Oscar Ingrid Lars Sophie Anton Elena Diego Luis Pedro Ana Joao Fabio Julia Andrea Matteo Johan Katarina Thomas Abigail Benjamin Charlotte Henry Grace Kevin Sarah David Laura Paul'.split(' '),
+ fl='Smith Johnson Brown Miller Wilson Taylor Anderson Garcia Martinez Rodriguez Schmidt Mueller Schneider Dupont Leroy Rossi Russo Bruno Ivanov Petrov Smirnov Kim Park Choi Lee Wang Chang Liu Santos Silva Oliveira Novak Kowalski Nielsen Johansson Larsen Alvarez Hernandez Patel Khan Hassan'.split(' '),
  hd='ねむねこ たわー職人 ぼっち侍 まっすー ゆうたん みーちゃん ぽてと姫 きりん推し おこじょ党 カリン塔 ラムネ王子 もちもち丸 ミルクティー好き 夜ふかし隊 ちくわ大明神 ゴリ押し部長 うさぎ屋 ひだまり 星のカケラ 月見だんご 虹色シェフ 無敵のたぬき 通りすがり ねこ缶 みかん星人 のんびり屋 ゲーム廃人 ひよこ豆 ふわもこ 午後ティー 朝活マン 防衛隊長 塔の番人 アイス大臣 ポンコツ戦士 勇者見習い 風来坊 猫舌さん 小さな賢者 コーヒー党 スイカ割り名人 ドーナツ博士 おにぎり号 ぷにぷに 炎のタワー師 青いキツネ 眠れる獅子 さすらいの民 見習い魔女 ハリネズミ君 ペンギン隊 くまのプー助 パンダ師匠 夜空のルナ 森の仙人 お昼寝部'.split(' '),
  ha='ねむい のんびり ふわふわ ぴかぴか もちもち きらきら ひみつの こっそり ちいさな ぷりぷり'.split(' '),hn='ねこ いぬ うさぎ たぬき きつね ペンギン くま ひよこ パンダ ふくろう'.split(' ');
  var set={},out=[];
- function put(n){if(!n||set[n]||n.length>14)return false;set[n]=1;out.push(n);return true}
+ function put(n){if(!n||set[n]||n.length>20)return false;set[n]=1;out.push(n);return true}
  function fill(cnt,f){var c=0,g=0;while(c<cnt&&g++<cnt*50){if(put(f()))c++}}
  fill(380,function(){return pick(sj)+pick(gj)});
  fill(120,function(){return R()<.55?pick(sh)+pick(gh):pick(gh)});
  fill(100,function(){return R()<.55?pick(sk)+pick(gk):pick(gk)});
- fill(300,function(){return R()<.8?pick(ff)+'・'+pick(fl):pick(ff)});
+ fill(300,function(){return R()<.8?pick(ff)+' '+pick(fl):pick(ff)});
  hd.forEach(put);
  fill(1000-out.length,function(){return pick(ha)+pick(hn)+(R()<.4?String(1+(R()*99|0)):'')});
  var g=0;while(out.length<1000&&g++<9999)put(pick(gh)+pick(sj));
@@ -3641,11 +3641,10 @@ function openRank(){
   var rkTabs=document.createElement('div');rkTabs.style.cssText='position:relative;z-index:1;display:flex;gap:4px;padding:4px;margin:0 14px 6px;border-radius:999px;background:rgba(255,255,255,.75);border:2px solid #f0d49a;box-shadow:inset 0 2px 4px rgba(160,110,40,.15)';
   function tabBtn(t,k){var b=document.createElement('button');b.textContent=t;b.style.cssText='flex:1;min-height:0;height:30px;padding:0;border:0;border-radius:999px;font-size:14px;font-weight:900;transition:all .2s';b.onclick=function(){rkTab=k;try{sfx('tap')}catch(e){}rkRenderB()};return b}
   var tDay=tabBtn('🌸 本日','day'),tAll=tabBtn('🌟 歴代','all');rkTabs.append(tDay,tAll);
-  var rkNote=para('position:relative;z-index:1;font-size:11px;color:#7a5230;text-align:center;font-weight:700','');
-  var rkNext=para('position:relative;z-index:1;margin:4px auto 6px;padding:3px 12px;border-radius:999px;background:linear-gradient(180deg,#fff,#ffeef6);border:1.5px solid #ffb3d1;font-size:11px;font-weight:900;color:#d9437f;box-shadow:0 1px 0 #ffc2dc','');
+  var rkNote=para('position:relative;z-index:1;font-size:11px;color:#7a5230;text-align:center;font-weight:700;margin-bottom:6px','');
   var rkList=document.createElement('div');rkList.style.cssText='position:relative;z-index:1;flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;padding:0 2px';
   var rkMe=document.createElement('div');rkMe.style.cssText='position:relative;z-index:1;margin-top:4px';
-  rkPanel.append(spk,rkRib,rkTabs,rkNote,rkNext,rkList,rkMe);ov2.appendChild(rkPanel);document.body.appendChild(ov2);
+  rkPanel.append(spk,rkRib,rkTabs,rkNote,rkList,rkMe);ov2.appendChild(rkPanel);document.body.appendChild(ov2);
   function p2(n){return String(n).padStart(2,'0')}
   function rkRow(rank,e,me,sub,isNew){
    var r=document.createElement('div');r.className='rkrow'+(rank===1?' r1':rank===2?' r2':rank===3?' r3':'')+(me?' me':'');
@@ -3665,7 +3664,6 @@ function openRank(){
    [[tDay,'day'],[tAll,'all']].forEach(function(p){var on=p[1]===tab;p[0].style.background=on?'linear-gradient(180deg,#ff9fca,#ff5c9e)':'transparent';p[0].style.color=on?'#fff':'#c97a1e';p[0].style.boxShadow=on?'0 2px 0 #d93d86,0 0 10px rgba(255,111,165,.6)':'none';p[0].style.textShadow=on?'0 1px 1px rgba(160,30,80,.6)':'none'});
    var now=new Date(),total=cpu.length+(mine?1:0);
    rkNote.textContent=tab==='day'?('本日（'+now.getFullYear()+'-'+p2(now.getMonth()+1)+'-'+p2(now.getDate())+'）　いまの参加 '+total+'人'):('歴代ベスト100　これまでの参加 '+total+'人');
-   var nx=Math.max(1,Math.round(cpuNext()));rkNext.textContent='⏰ つぎのCPUが入ってくるまで　あと '+(nx>=60?Math.floor(nx/60)+'時間':'')+(nx%60)+'分';
    var list=cpu.slice(0,100).map(function(e){return{e:e,me:0}}),myRank=0;
    if(mine){var ahead=0;for(var i=0;i<cpu.length;i++){if(cpu[i].s>=mine.s)ahead++;else break}myRank=ahead+1;if(myRank<=100){list.splice(myRank-1,0,{e:{n:mine.n,s:mine.s,t:0,d:d},me:1});list=list.slice(0,100)}}
    rkList.textContent='';
