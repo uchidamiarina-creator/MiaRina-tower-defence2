@@ -9780,7 +9780,7 @@ function trByeCar(e,X,Y){
 <script>
 /* ===== 味方屋さん：まちの空き地に建てるお店。自分だけのオリジナル味方キャラをつくれる ===== */
 (function(){
-var KEY='miarina_td_mikata_v1',GK='miarina_td_gold_v1',COST=300,MAX=12;
+var KEY='miarina_td_mikata_v1',GK='miarina_td_gold_v1',COST=300,MAX=1;
 var SFONT='"Mochiy Pop One","Hiragino Maru Gothic ProN",sans-serif';
 var PAL=[['ピンク','#ff8fb5'],['そらいろ','#7fb6ff'],['オレンジ','#ffb347'],['むらさき','#a98cff'],['みどり','#59c27a'],['あか','#ff6b6b'],['みずいろ','#4dd0c4'],['きいろ','#f2e05a']];
 var FACES=['まるがお','たまごがお','しかくがお','とがりほお','ぷにぷにほお'];
@@ -9907,7 +9907,7 @@ drawAlly=function(a,t,ctx){if(a&&a.k&&AL[a.k]&&AL[a.k].mk){mkDraw(a,t,ctx||GX);r
 function genStats(){
  var hp=Math.round((1+R()*3)*2)/2,dps=Math.round((.5+R()*1.4)*10)/10;
  return {hp:hp,dps:dps,sp:rint(35,150),reach:pick([12,12,20,30,50]),fly:R()<.2?1:0,r:rint(9,13),
-  price:Math.max(60,Math.round(hp*dps*9)*10),max:Math.max(2,Math.min(6,Math.round(6-hp*1.1)))};
+  price:Math.max(60,Math.round(hp*dps*9)*10),max:1};
 }
 function describe(s,mv){
  var a=[];
@@ -9919,7 +9919,7 @@ function describe(s,mv){
  a.push(MVN[mv]+'うごき');
  return a.join('・');
 }
-function applyRec(c){c.al.max=Math.max(2,c.al.max|0);AL[c.k]=c.al;AD[c.k]=c.al.n+'は、自分でつくったオリジナルの味方だよ。'+c.al.ds+'。'}
+function applyRec(c){c.al.max=1;AL[c.k]=c.al;AD[c.k]=c.al.n+'は、自分でつくったオリジナルの味方だよ。'+c.al.ds+'。'}
 function rebuildPanel(){try{var old=document.getElementById('ap');if(old)old.remove();for(var k in apRows)delete apRows[k];buildAp()}catch(e){}}
 function loadAll(){var L=list();if(!L.length)return;L.forEach(applyRec);rebuildPanel()}
 /* 味方パネルを開くたびに、まだ一覧にない新しい味方を追加する */
@@ -9945,12 +9945,13 @@ function finish(){
  var c=gold();
  if(c<COST){deny('ゴールドが たりないよ…（つくるのに '+COST+'G いるよ）');return}
  var L=list();
- if(L.length>=MAX){deny('味方は '+MAX+'体までだよ。いらない味方をへらしてね');return}
+ /* 新しく作ると、古い味方は消えて入れ替わる */
+ L.forEach(function(o){delete AL[o.k];delete AD[o.k]});L=[];
  var s=genStats(),mv=rint(0,2),key='MK'+Date.now().toString(36);
  var al={n:ST.name.trim(),hp:s.hp,dps:s.dps,sp:s.sp,reach:s.reach,r:s.r,fly:s.fly,price:s.price,max:s.max,
   ds:describe(s,mv),mk:{f:ST.d.f,h:ST.d.h,e:ST.d.e,b:ST.d.b,c:ST.d.c,mv:mv},custom:1};
  var rec={k:key,al:al};
- L.push(rec);saveList(L);setGold(c-COST);applyRec(rec);rebuildPanel();snd('clear');
+ L=[rec];saveList(L);setGold(c-COST);applyRec(rec);rebuildPanel();snd('clear');
  ST.result=rec;MSG='';render();
 }
 function stars(v){var n=Math.max(1,Math.min(5,Math.round(v)));return '★'.repeat(n)+'☆'.repeat(5-n)}
@@ -9962,7 +9963,7 @@ function renderResult(){
  CARD.appendChild(el('div','font-size:12px;color:#8a5a7a;line-height:1.5;margin:6px 0',al.ds));
  CARD.appendChild(el('div','font-size:11px;color:#8a5a7a;margin-bottom:6px','つよさや動きは ぜんぶ ランダムで決まったよ。味方の一覧に もう入っているよ！'));
  var nav=el('div','display:flex;gap:8px;margin-top:6px');
- var more=el('button','flex:1;padding:8px;font-size:13px;font-family:inherit;border-radius:12px;border:2px solid #f0a8c8;background:#fff;color:#d05a8a','もう1体つくる');
+ var more=el('button','flex:1;padding:8px;font-size:13px;font-family:inherit;border-radius:12px;border:2px solid #f0a8c8;background:#fff;color:#d05a8a','作りなおす');
  more.onclick=function(){ST={step:0,d:{f:0,h:0,e:0,b:0,c:0},name:'',result:null};render()};
  var cl=el('button','flex:1;padding:8px;font-size:13px;font-family:inherit;border-radius:12px;border:2px solid #ffc94d;background:#ffe27a;color:#7a3b2e;font-weight:bold','とじる');
  cl.onclick=closeMk;
@@ -10032,4 +10033,5 @@ loadAll();
 .twc button,#bookov button,#rinItemsOv button,#sgGet button,.mkbox button:disabled{opacity:.5!important}
 .twc button,#bookov button,#rinItemsOv button,#sgGet button,.mkbox button:active{transform:translateY(2px)}
 </style>
+<style id="apscroll">#ap>div{max-height:88%;overflow-y:auto;-webkit-overflow-scrolling:touch}</style>
 </body></html>
