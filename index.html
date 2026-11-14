@@ -4219,16 +4219,16 @@ function openBook(){
  ov.style.cssText='position:fixed;inset:0;z-index:90;background:rgba(60,30,50,.55);display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box';
  var card=document.createElement('div');
  card.style.cssText='width:min(100%,360px);height:min(88vh,640px);display:flex;flex-direction:column;background-color:#fff6e0;background-image:radial-gradient(circle at 18% 22%,rgba(160,90,20,.13) 0 9px,transparent 10px),radial-gradient(circle at 78% 35%,rgba(160,90,20,.11) 0 12px,transparent 13px),radial-gradient(circle at 36% 74%,rgba(160,90,20,.12) 0 10px,transparent 11px),radial-gradient(circle at 88% 88%,rgba(160,90,20,.10) 0 8px,transparent 9px);border:3px solid #d9962b;border-radius:10px 18px 18px 10px;padding:10px 14px;box-sizing:border-box;box-shadow:inset 8px 0 0 -4px #f3dca8,0 8px 24px rgba(110,70,20,.4)';
- function navBtn(t){var b=document.createElement('button');b.textContent=t;b.style.cssText='width:40px;height:40px;min-height:0;padding:0;border-radius:999px;background:#fff8ea;border:2px solid #d9962b;color:#c97a1e;font-size:16px;font-weight:900;line-height:1;text-shadow:0 1px 0 #fff8ea,0 -1px 0 #fff8ea,1px 0 0 #fff8ea,-1px 0 0 #fff8ea';return b}
+ function navBtn(t){var b=document.createElement('button');b.className='bknav';b.textContent=t;b.style.cssText='width:40px;height:40px;min-height:0;padding:0;border-radius:999px;background:#fff8ea;border:2px solid #d9962b;color:#c97a1e;font-size:16px;font-weight:900;line-height:1;text-shadow:0 1px 0 #fff8ea,0 -1px 0 #fff8ea,1px 0 0 #fff8ea,-1px 0 0 #fff8ea';return b}
  function para(css,text){var d=document.createElement('div');d.style.cssText=css;d.textContent=text;return d}
  function head(text,size){return bookStyle(para('margin:4px 0 8px;text-align:center',text),size)}
- var top=document.createElement('div');top.style.cssText='display:flex;justify-content:flex-start;align-items:center;min-height:28px;padding-right:40px';
- var tocb=navBtn('◀ もくじにもどる');tocb.style.width='auto';tocb.style.height='26px';tocb.style.padding='0 9px';tocb.style.fontSize='11px';tocb.style.marginRight='auto';tocb.style.visibility='hidden';
+ var top=document.createElement('div');top.style.cssText='display:flex;justify-content:center;align-items:center;min-height:30px;padding:0 36px';
+ var tocb=navBtn('◀ もくじにもどる');tocb.style.width='auto';tocb.style.height='28px';tocb.style.margin='0 auto';tocb.style.visibility='hidden';
  var xb=navBtn('✕');xb.style.cssText+=';position:absolute;top:6px;right:8px;z-index:3;width:28px;height:28px;display:flex;align-items:center;justify-content:center;padding:0;font-size:13px';top.append(tocb);
  var body=document.createElement('div');body.style.cssText='flex:1;overflow:auto;min-height:0;padding:2px 4px';
  var foot=document.createElement('div');foot.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-top:8px';
  var pv=navBtn('◀'),nx=navBtn('▶'),pg=para('font-size:13px;font-weight:800;color:#7a5230','');
- foot.append(pv,pg,nx);[pv,nx].forEach(function(b){b.style.setProperty('width','44px','important');b.style.setProperty('min-width','0','important');b.style.setProperty('flex','none','important');b.style.setProperty('height','36px','important')});card.style.position='relative';card.append(top,body,foot,xb);ov.appendChild(card);document.body.appendChild(ov);
+ foot.append(pv,pg,nx);[pv,nx].forEach(function(b){b.style.width='46px';b.style.height='30px';b.style.flex='none'});card.style.position='relative';card.append(top,body,foot,xb);ov.appendChild(card);document.body.appendChild(ov);
  var cur=0,dir=0;
  function close(){try{localStorage.setItem(GUIDE_PK,String(cur))}catch(e){}ov.remove();bkBgm(false)}
  function go(n,quiet){var m=Math.max(0,Math.min(pages.length-1,n));if(m===cur&&!quiet)return;dir=m>cur?1:-1;cur=m;if(!quiet){try{sfx('tap')}catch(e){}}try{localStorage.setItem(GUIDE_PK,String(cur))}catch(e){}render()}
@@ -10397,54 +10397,149 @@ window.__openMikata=openMikata;
 loadAll();
 })();
 </script>
-<style id="twbtn">
-.twc button,#bookov button,#rinItemsOv button,#sgGet button,.mkbox button{font-family:"Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif!important;font-size:16px!important;font-weight:bold!important;line-height:1.35!important;letter-spacing:.04em!important;color:#5a2a4a!important;min-height:44px;padding:10px 12px!important;border-radius:16px!important;cursor:pointer;text-shadow:0 1px 0 #fff}
-.twc button,#bookov button,#rinItemsOv button,#sgGet button,.mkbox button:not([style*="background"]){background:#fff!important;border:3px solid #f0a8c8!important;box-shadow:0 3px 0 #f0a8c8}
-.twc button,#bookov button,#rinItemsOv button,#sgGet button,.mkbox button.on{background:#ff8fb5!important;border-color:#ff7eb6!important;color:#fff!important;text-shadow:0 1px 0 #d05a8a}
-.twc button,#bookov button,#rinItemsOv button,#sgGet button,.mkbox button.go{background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%)!important;border:3px solid #fff!important;outline:2px solid #ffc94d;color:#e0457f!important;box-shadow:0 3px 0 #e8a92a}
-.twc button,#bookov button,#rinItemsOv button,#sgGet button,.mkbox button:disabled{opacity:.5!important}
-.twc button,#bookov button,#rinItemsOv button,#sgGet button,.mkbox button:active{transform:translateY(2px)}
-</style>
-<style id="apscroll">#ap>div{max-height:88%;overflow-y:auto;-webkit-overflow-scrolling:touch}</style>
-<style id="twtext">
-/* 街の文字を読みやすく：小さすぎる文字は大きく、色は濃く、白い縁取りで見やすく */
-.twc [style*="font-size:9px"],.twc [style*="font-size:10px"],.twc [style*="font-size:11px"],.twc [style*="font-size:12px"]{font-size:14px!important}
-.twc [style*="font-size:13px"]{font-size:15px!important}
-.twc div:not(#lbx):not(#lbx *):not(.keepcol),.twc span:not(#lbx):not(#lbx *):not(.keepcol),.twc p,.twc label,.twc b{color:#3d1f35!important;text-shadow:0 0 3px #fff,0 0 2px #fff;font-weight:bold}
-.twc button{color:#3d1f35!important}
-.twc button.go,.twc button.on{color:#fff!important}
-.twc button.go{color:#e0457f!important}
-</style>
-<style id="twwin">
-/* ウインドウ：薄い木目調・ふちは桃色・文字はかわいいオレンジ（紫は使わない） */
-.twc [style*="background:#fff8fb"],.mkbox [style*="background:#fff8fb"],#bookov [style*="background"],#rinItemsOv [style*="background"],#sgGet [style*="background"]{background:repeating-linear-gradient(92deg,#f5e2c2 0px,#efd4a6 9px,#f8e9cf 15px,#ecd0a0 22px,#f5e2c2 30px)!important;border-color:#ff9ec4!important;color:#e9772e!important}
-.twc [style*="rgba(36,20,38"],.mkbox,.twc [style*="rgba(60,30,50"],#bookov,#rinItemsOv{background:rgba(120,80,40,.4)!important}
-.twc div:not(#lbx):not(#lbx *),.twc span:not(#lbx):not(#lbx *),.twc p,.twc label,.twc b,.mkbox div,.mkbox span,.mkbox b,.mkbox label{color:#e9772e!important;text-shadow:0 0 2px #fff,0 0 3px #fff8f0;font-weight:bold}
-.twc button,.mkbox button,#bookov button,#rinItemsOv button,#sgGet button{color:#e9772e!important;border-color:#ff9ec4!important;text-shadow:0 0 2px #fff}
-.twc button.go,.mkbox button.go{color:#e9772e!important}
-.twc button.on,.mkbox button.on{background:#ffb3d1!important;border-color:#ff7eb6!important;color:#fff!important}
-.twc [style*="border:2px solid #f0c8dc"],.mkbox [style*="border:2px solid #f0c8dc"],.twc [style*="border:2px solid #f0a8c8"],.mkbox [style*="border:2px solid #f0a8c8"]{border-color:#ff9ec4!important}
-</style>
-<style id="twbtncolor">
-/* 街のボタン：はっきりした黄色とオレンジの色、文字は濃いオレンジで読みやすく */
-.twc button:not([style*="background"]),.mkbox button:not([style*="background"]),#bookov button:not([style*="background"]),#rinItemsOv button:not([style*="background"]),#sgGet button:not([style*="background"]){background:linear-gradient(180deg,#fff6b0 0%,#ffd64a 100%)!important;border:3px solid #ff8c42!important;box-shadow:0 3px 0 #e8711a!important;color:#b93a0a!important;text-shadow:0 1px 0 #fff8d0}
-.twc button.on,.mkbox button.on{background:linear-gradient(180deg,#ffb3d1 0%,#ff7eb6 100%)!important;border-color:#ff5fa0!important;color:#fff!important;box-shadow:0 3px 0 #d94a86!important}
-.twc button:disabled,.mkbox button:disabled{opacity:.6!important}
-</style>
-<style id="twreadable">
-/* 文字：濃いオレンジ茶色で白いふちつき。買えるボタンは黄色、買えないボタンは灰色の点線で区別 */
-.twc div:not(#lbx):not(#lbx *):not(.keepcol),.twc span:not(#lbx):not(#lbx *):not(.keepcol),.twc p,.twc label,.twc b,.mkbox div,.mkbox span,.mkbox b,.mkbox label,#bookov div,#bookov span,#rinItemsOv div,#rinItemsOv span,#sgGet div,#sgGet span{color:#8a3305!important;font-weight:bold!important;text-shadow:0 0 2px #fff,0 0 3px #fff,0 0 4px #fff!important}
-.twc button,.mkbox button,#bookov button,#rinItemsOv button,#sgGet button{color:#7a2a04!important;font-weight:bold!important;text-shadow:0 1px 0 #fff!important}
-.twc button:disabled,.mkbox button:disabled,#bookov button:disabled,#rinItemsOv button:disabled,#sgGet button:disabled{background:#e2e2e2!important;color:#8e8e8e!important;border:3px dashed #a8a8a8!important;box-shadow:none!important;text-shadow:none!important;opacity:1!important;cursor:not-allowed}
-</style>
-<style id="glowedge">
-/* 縁が光る：ウインドウは桃色の光、買えるボタンは黄色の光（ゆっくり明るさが変わる） */
+<style id="ui-common">
+/* 共通（アニメの定義など）：ここだけを直せば、ほかの画面には影響しません */
 @keyframes twGlowWin{0%,100%{box-shadow:0 0 6px #ff9ec4,0 0 14px rgba(255,158,196,.55)}50%{box-shadow:0 0 12px #ff7eb6,0 0 24px rgba(255,126,182,.8)}}
 @keyframes twGlowBtn{0%,100%{box-shadow:0 0 6px #ffd64a,0 0 12px rgba(255,214,74,.6),0 3px 0 #e8711a}50%{box-shadow:0 0 12px #fff3a0,0 0 22px rgba(255,214,74,.9),0 3px 0 #e8711a}}
-.twc [style*="background:#fff8fb"],.mkbox [style*="background:#fff8fb"],#bookov [style*="background"],#rinItemsOv [style*="background"],#sgGet [style*="background"]{animation:twGlowWin 2.4s ease-in-out infinite}
-.twc button:not([style*="background"]):not(:disabled),.mkbox button:not([style*="background"]):not(:disabled),#bookov button:not([style*="background"]):not(:disabled),#rinItemsOv button:not([style*="background"]):not(:disabled),#sgGet button:not([style*="background"]):not(:disabled){animation:twGlowBtn 2s ease-in-out infinite}
-.twc button.on,.mkbox button.on{box-shadow:0 0 10px #ff9ec4,0 0 18px rgba(255,126,182,.7),0 3px 0 #d94a86!important}
 </style>
+<style id="ui-town">
+/* 街：ここだけを直せば、ほかの画面には影響しません */
+.twc button{font-family:"Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif!important;font-size:16px!important;font-weight:bold!important;line-height:1.35!important;letter-spacing:.04em!important;color:#5a2a4a!important;min-height:44px;padding:10px 12px!important;border-radius:16px!important;cursor:pointer;text-shadow:0 1px 0 #fff}
+.twc button{background:#fff!important;border:3px solid #f0a8c8!important;box-shadow:0 3px 0 #f0a8c8}
+.twc button{background:#ff8fb5!important;border-color:#ff7eb6!important;color:#fff!important;text-shadow:0 1px 0 #d05a8a}
+.twc button{background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%)!important;border:3px solid #fff!important;outline:2px solid #ffc94d;color:#e0457f!important;box-shadow:0 3px 0 #e8a92a}
+.twc button{opacity:.5!important}
+.twc button{transform:translateY(2px)}
+.twc [style*="font-size:9px"],
+.twc [style*="font-size:10px"],
+.twc [style*="font-size:11px"],
+.twc [style*="font-size:12px"]{font-size:14px!important}
+.twc [style*="font-size:13px"]{font-size:15px!important}
+.twc div:not(#lbx):not(#lbx *):not(.keepcol),
+.twc span:not(#lbx):not(#lbx *):not(.keepcol),
+.twc p,
+.twc label,
+.twc b{color:#3d1f35!important;text-shadow:0 0 3px #fff,0 0 2px #fff;font-weight:bold}
+.twc button{color:#3d1f35!important}
+.twc button.go,
+.twc button.on{color:#fff!important}
+.twc button.go{color:#e0457f!important}
+.twc [style*="background:#fff8fb"]{background:repeating-linear-gradient(92deg,#f5e2c2 0px,#efd4a6 9px,#f8e9cf 15px,#ecd0a0 22px,#f5e2c2 30px)!important;border-color:#ff9ec4!important;color:#e9772e!important}
+.twc [style*="rgba(36,20,38"],
+.twc [style*="rgba(60,30,50"]{background:rgba(120,80,40,.4)!important}
+.twc div:not(#lbx):not(#lbx *),
+.twc span:not(#lbx):not(#lbx *),
+.twc p,
+.twc label,
+.twc b{color:#e9772e!important;text-shadow:0 0 2px #fff,0 0 3px #fff8f0;font-weight:bold}
+.twc button{color:#e9772e!important;border-color:#ff9ec4!important;text-shadow:0 0 2px #fff}
+.twc button.go{color:#e9772e!important}
+.twc button.on{background:#ffb3d1!important;border-color:#ff7eb6!important;color:#fff!important}
+.twc [style*="border:2px solid #f0c8dc"],
+.twc [style*="border:2px solid #f0a8c8"]{border-color:#ff9ec4!important}
+.twc button:not([style*="background"]){background:linear-gradient(180deg,#fff6b0 0%,#ffd64a 100%)!important;border:3px solid #ff8c42!important;box-shadow:0 3px 0 #e8711a!important;color:#b93a0a!important;text-shadow:0 1px 0 #fff8d0}
+.twc button.on{background:linear-gradient(180deg,#ffb3d1 0%,#ff7eb6 100%)!important;border-color:#ff5fa0!important;color:#fff!important;box-shadow:0 3px 0 #d94a86!important}
+.twc button:disabled{opacity:.6!important}
+.twc div:not(#lbx):not(#lbx *):not(.keepcol),
+.twc span:not(#lbx):not(#lbx *):not(.keepcol),
+.twc p,
+.twc label,
+.twc b{color:#8a3305!important;font-weight:bold!important;text-shadow:0 0 2px #fff,0 0 3px #fff,0 0 4px #fff!important}
+.twc button{color:#7a2a04!important;font-weight:bold!important;text-shadow:0 1px 0 #fff!important}
+.twc button:disabled{background:#e2e2e2!important;color:#8e8e8e!important;border:3px dashed #a8a8a8!important;box-shadow:none!important;text-shadow:none!important;opacity:1!important;cursor:not-allowed}
+.twc [style*="background:#fff8fb"]{animation:twGlowWin 2.4s ease-in-out infinite}
+.twc button:not([style*="background"]):not(:disabled){animation:twGlowBtn 2s ease-in-out infinite}
+.twc button.on{box-shadow:0 0 10px #ff9ec4,0 0 18px rgba(255,126,182,.7),0 3px 0 #d94a86!important}
+</style>
+<style id="ui-book">
+/* キリン図鑑：ここだけを直せば、ほかの画面には影響しません */
+#bookov button{font-family:"Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif!important;font-size:16px!important;font-weight:bold!important;line-height:1.35!important;letter-spacing:.04em!important;color:#5a2a4a!important;min-height:44px;padding:10px 12px!important;border-radius:16px!important;cursor:pointer;text-shadow:0 1px 0 #fff}
+#bookov button{background:#fff!important;border:3px solid #f0a8c8!important;box-shadow:0 3px 0 #f0a8c8}
+#bookov button{background:#ff8fb5!important;border-color:#ff7eb6!important;color:#fff!important;text-shadow:0 1px 0 #d05a8a}
+#bookov button{background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%)!important;border:3px solid #fff!important;outline:2px solid #ffc94d;color:#e0457f!important;box-shadow:0 3px 0 #e8a92a}
+#bookov button{opacity:.5!important}
+#bookov button{transform:translateY(2px)}
+#bookov [style*="background"]{background:repeating-linear-gradient(92deg,#f5e2c2 0px,#efd4a6 9px,#f8e9cf 15px,#ecd0a0 22px,#f5e2c2 30px)!important;border-color:#ff9ec4!important;color:#e9772e!important}
+#bookov{background:rgba(120,80,40,.4)!important}
+#bookov button{color:#e9772e!important;border-color:#ff9ec4!important;text-shadow:0 0 2px #fff}
+#bookov button:not([style*="background"]){background:linear-gradient(180deg,#fff6b0 0%,#ffd64a 100%)!important;border:3px solid #ff8c42!important;box-shadow:0 3px 0 #e8711a!important;color:#b93a0a!important;text-shadow:0 1px 0 #fff8d0}
+#bookov div,
+#bookov span{color:#8a3305!important;font-weight:bold!important;text-shadow:0 0 2px #fff,0 0 3px #fff,0 0 4px #fff!important}
+#bookov button{color:#7a2a04!important;font-weight:bold!important;text-shadow:0 1px 0 #fff!important}
+#bookov button:disabled{background:#e2e2e2!important;color:#8e8e8e!important;border:3px dashed #a8a8a8!important;box-shadow:none!important;text-shadow:none!important;opacity:1!important;cursor:not-allowed}
+#bookov [style*="background"]{animation:twGlowWin 2.4s ease-in-out infinite}
+#bookov button:not([style*="background"]):not(:disabled){animation:twGlowBtn 2s ease-in-out infinite}
+</style>
+<style id="ui-rin">
+/* リナコイン屋の持ち物：ここだけを直せば、ほかの画面には影響しません */
+#rinItemsOv button{font-family:"Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif!important;font-size:16px!important;font-weight:bold!important;line-height:1.35!important;letter-spacing:.04em!important;color:#5a2a4a!important;min-height:44px;padding:10px 12px!important;border-radius:16px!important;cursor:pointer;text-shadow:0 1px 0 #fff}
+#rinItemsOv button{background:#fff!important;border:3px solid #f0a8c8!important;box-shadow:0 3px 0 #f0a8c8}
+#rinItemsOv button{background:#ff8fb5!important;border-color:#ff7eb6!important;color:#fff!important;text-shadow:0 1px 0 #d05a8a}
+#rinItemsOv button{background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%)!important;border:3px solid #fff!important;outline:2px solid #ffc94d;color:#e0457f!important;box-shadow:0 3px 0 #e8a92a}
+#rinItemsOv button{opacity:.5!important}
+#rinItemsOv button{transform:translateY(2px)}
+#rinItemsOv [style*="background"]{background:repeating-linear-gradient(92deg,#f5e2c2 0px,#efd4a6 9px,#f8e9cf 15px,#ecd0a0 22px,#f5e2c2 30px)!important;border-color:#ff9ec4!important;color:#e9772e!important}
+#rinItemsOv{background:rgba(120,80,40,.4)!important}
+#rinItemsOv button{color:#e9772e!important;border-color:#ff9ec4!important;text-shadow:0 0 2px #fff}
+#rinItemsOv button:not([style*="background"]){background:linear-gradient(180deg,#fff6b0 0%,#ffd64a 100%)!important;border:3px solid #ff8c42!important;box-shadow:0 3px 0 #e8711a!important;color:#b93a0a!important;text-shadow:0 1px 0 #fff8d0}
+#rinItemsOv div,
+#rinItemsOv span{color:#8a3305!important;font-weight:bold!important;text-shadow:0 0 2px #fff,0 0 3px #fff,0 0 4px #fff!important}
+#rinItemsOv button{color:#7a2a04!important;font-weight:bold!important;text-shadow:0 1px 0 #fff!important}
+#rinItemsOv button:disabled{background:#e2e2e2!important;color:#8e8e8e!important;border:3px dashed #a8a8a8!important;box-shadow:none!important;text-shadow:none!important;opacity:1!important;cursor:not-allowed}
+#rinItemsOv [style*="background"]{animation:twGlowWin 2.4s ease-in-out infinite}
+#rinItemsOv button:not([style*="background"]):not(:disabled){animation:twGlowBtn 2s ease-in-out infinite}
+</style>
+<style id="ui-sg">
+/* スターゲット：ここだけを直せば、ほかの画面には影響しません */
+#sgGet button{font-family:"Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif!important;font-size:16px!important;font-weight:bold!important;line-height:1.35!important;letter-spacing:.04em!important;color:#5a2a4a!important;min-height:44px;padding:10px 12px!important;border-radius:16px!important;cursor:pointer;text-shadow:0 1px 0 #fff}
+#sgGet button{background:#fff!important;border:3px solid #f0a8c8!important;box-shadow:0 3px 0 #f0a8c8}
+#sgGet button{background:#ff8fb5!important;border-color:#ff7eb6!important;color:#fff!important;text-shadow:0 1px 0 #d05a8a}
+#sgGet button{background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%)!important;border:3px solid #fff!important;outline:2px solid #ffc94d;color:#e0457f!important;box-shadow:0 3px 0 #e8a92a}
+#sgGet button{opacity:.5!important}
+#sgGet button{transform:translateY(2px)}
+#sgGet [style*="background"]{background:repeating-linear-gradient(92deg,#f5e2c2 0px,#efd4a6 9px,#f8e9cf 15px,#ecd0a0 22px,#f5e2c2 30px)!important;border-color:#ff9ec4!important;color:#e9772e!important}
+#sgGet button{color:#e9772e!important;border-color:#ff9ec4!important;text-shadow:0 0 2px #fff}
+#sgGet button:not([style*="background"]){background:linear-gradient(180deg,#fff6b0 0%,#ffd64a 100%)!important;border:3px solid #ff8c42!important;box-shadow:0 3px 0 #e8711a!important;color:#b93a0a!important;text-shadow:0 1px 0 #fff8d0}
+#sgGet div,
+#sgGet span{color:#8a3305!important;font-weight:bold!important;text-shadow:0 0 2px #fff,0 0 3px #fff,0 0 4px #fff!important}
+#sgGet button{color:#7a2a04!important;font-weight:bold!important;text-shadow:0 1px 0 #fff!important}
+#sgGet button:disabled{background:#e2e2e2!important;color:#8e8e8e!important;border:3px dashed #a8a8a8!important;box-shadow:none!important;text-shadow:none!important;opacity:1!important;cursor:not-allowed}
+#sgGet [style*="background"]{animation:twGlowWin 2.4s ease-in-out infinite}
+#sgGet button:not([style*="background"]):not(:disabled){animation:twGlowBtn 2s ease-in-out infinite}
+</style>
+<style id="ui-mk">
+/* 味方屋さん：ここだけを直せば、ほかの画面には影響しません */
+.mkbox button{font-family:"Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif!important;font-size:16px!important;font-weight:bold!important;line-height:1.35!important;letter-spacing:.04em!important;color:#5a2a4a!important;min-height:44px;padding:10px 12px!important;border-radius:16px!important;cursor:pointer;text-shadow:0 1px 0 #fff}
+.mkbox button:not([style*="background"]){background:#fff!important;border:3px solid #f0a8c8!important;box-shadow:0 3px 0 #f0a8c8}
+.mkbox button.on{background:#ff8fb5!important;border-color:#ff7eb6!important;color:#fff!important;text-shadow:0 1px 0 #d05a8a}
+.mkbox button.go{background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%)!important;border:3px solid #fff!important;outline:2px solid #ffc94d;color:#e0457f!important;box-shadow:0 3px 0 #e8a92a}
+.mkbox button:disabled{opacity:.5!important}
+.mkbox button:active{transform:translateY(2px)}
+.mkbox [style*="background:#fff8fb"]{background:repeating-linear-gradient(92deg,#f5e2c2 0px,#efd4a6 9px,#f8e9cf 15px,#ecd0a0 22px,#f5e2c2 30px)!important;border-color:#ff9ec4!important;color:#e9772e!important}
+.mkbox{background:rgba(120,80,40,.4)!important}
+.mkbox div,
+.mkbox span,
+.mkbox b,
+.mkbox label{color:#e9772e!important;text-shadow:0 0 2px #fff,0 0 3px #fff8f0;font-weight:bold}
+.mkbox button{color:#e9772e!important;border-color:#ff9ec4!important;text-shadow:0 0 2px #fff}
+.mkbox button.go{color:#e9772e!important}
+.mkbox button.on{background:#ffb3d1!important;border-color:#ff7eb6!important;color:#fff!important}
+.mkbox [style*="border:2px solid #f0c8dc"],
+.mkbox [style*="border:2px solid #f0a8c8"]{border-color:#ff9ec4!important}
+.mkbox button:not([style*="background"]){background:linear-gradient(180deg,#fff6b0 0%,#ffd64a 100%)!important;border:3px solid #ff8c42!important;box-shadow:0 3px 0 #e8711a!important;color:#b93a0a!important;text-shadow:0 1px 0 #fff8d0}
+.mkbox button.on{background:linear-gradient(180deg,#ffb3d1 0%,#ff7eb6 100%)!important;border-color:#ff5fa0!important;color:#fff!important;box-shadow:0 3px 0 #d94a86!important}
+.mkbox button:disabled{opacity:.6!important}
+.mkbox div,
+.mkbox span,
+.mkbox b,
+.mkbox label{color:#8a3305!important;font-weight:bold!important;text-shadow:0 0 2px #fff,0 0 3px #fff,0 0 4px #fff!important}
+.mkbox button{color:#7a2a04!important;font-weight:bold!important;text-shadow:0 1px 0 #fff!important}
+.mkbox button:disabled{background:#e2e2e2!important;color:#8e8e8e!important;border:3px dashed #a8a8a8!important;box-shadow:none!important;text-shadow:none!important;opacity:1!important;cursor:not-allowed}
+.mkbox [style*="background:#fff8fb"]{animation:twGlowWin 2.4s ease-in-out infinite}
+.mkbox button:not([style*="background"]):not(:disabled){animation:twGlowBtn 2s ease-in-out infinite}
+.mkbox button.on{box-shadow:0 0 10px #ff9ec4,0 0 18px rgba(255,126,182,.7),0 3px 0 #d94a86!important}
+</style>
+<style id="apscroll">#ap>div{max-height:88%;overflow-y:auto;-webkit-overflow-scrolling:touch}</style>
 <style id="mkbtncompact">
 /* 味方屋さん：ボタンをコンパクトに＆文字をくっきり（白いぼかしをやめて、濃い茶色の文字に） */
 .mkbox button{font-size:13px!important;line-height:1.2!important;letter-spacing:0!important;min-height:0!important;height:auto!important;padding:4px 10px!important;border-width:2px!important;border-radius:999px!important;box-shadow:0 2px 0 #e8711a!important;color:#4a1a00!important;text-shadow:none!important;animation:none!important;font-weight:bold!important;-webkit-font-smoothing:antialiased}
@@ -10455,5 +10550,22 @@ loadAll();
 .mkbox div[style*="flex-wrap:wrap"]{gap:4px!important;margin:5px 0!important}
 .mkbox div[style*="display:flex;gap:8px"]{gap:6px!important;margin-top:5px!important}
 .mkbox input{font-size:15px!important;padding:5px 8px!important;margin:5px 0!important}
+</style>
+<style id="czbtnfix">
+/* カジノのボタン：黄色いボタンの文字（説明文も）を濃い茶色にして、くっきり読めるように */
+.czg button[style*="background"]{background:linear-gradient(180deg,#fff6b0 0%,#ffd64a 100%)!important;border:2px solid #ff8c42!important;outline:none!important;box-shadow:0 2px 0 #c45a10!important;color:#4a1a00!important;text-shadow:none!important;opacity:1!important}
+.czg button[style*="background"] div,.czg button[style*="background"] span{color:#5a2a0a!important;text-shadow:none!important;font-weight:bold!important;font-size:11px!important;opacity:1!important}
+.czg button:not([style*="background"]){background:linear-gradient(180deg,#e03a4d,#9a1428)!important;color:#fff!important;text-shadow:0 1px 2px rgba(0,0,0,.8)!important;border:2px solid #ffd23f!important;opacity:1!important}
+.czg button:not([style*="background"]) div{color:#fff!important;text-shadow:0 1px 2px rgba(0,0,0,.8)!important}
+.czg button:disabled{background:#d8d8d8!important;color:#555!important;border:2px dashed #888!important;text-shadow:none!important;opacity:1!important}
+.czg button:disabled div{color:#555!important;text-shadow:none!important}
+.czg button::after{display:none!important}
+</style>
+<style id="bknavfix">
+/* キリン図鑑のボタン：ふちはピンク・背景はあわいキリン柄・文字は黒。中央ぞろえでコンパクト */
+#bookov button.bknav{background-color:#fffaf0!important;background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='44'%20height='44'%3E%3Crect%20width='44'%20height='44'%20fill='%23fffaf0'/%3E%3Cg%20fill='%23f3dcae'%20stroke='%23e6c48a'%20stroke-width='1'%3E%3Cpolygon%20points='4,6%2015,3%2019,12%2012,19%203,15'/%3E%3Cpolygon%20points='26,2%2038,6%2040,17%2030,21%2023,12'/%3E%3Cpolygon%20points='2,28%2012,24%2018,33%2011,41%201,38'/%3E%3Cpolygon%20points='25,30%2036,26%2043,35%2035,43%2026,41'/%3E%3C/g%3E%3C/svg%3E")!important;background-size:22px 22px!important;border:2px solid #ff8fb5!important;border-radius:999px!important;color:#000!important;text-shadow:none!important;font-family:"Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif!important;font-size:12px!important;font-weight:bold!important;line-height:1!important;letter-spacing:0!important;min-height:0!important;padding:0 10px!important;box-shadow:0 2px 0 #ff8fb5!important;opacity:1!important;animation:none!important;outline:none!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;white-space:nowrap!important;cursor:pointer}
+#bookov button.bknav:disabled{background-image:none!important;background-color:#e4dccb!important;color:#555!important;border:2px solid #ff8fb5!important;box-shadow:none!important;opacity:1!important}
+#bookov button.bknav[style*="position:absolute"]{padding:0!important}
+#bookov button.bknav:active{transform:translateY(1px)}
 </style>
 </body></html>
