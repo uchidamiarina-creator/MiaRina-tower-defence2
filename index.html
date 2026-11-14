@@ -4158,7 +4158,7 @@ function openRank(){
    if(mine)rkMe.appendChild(rkRow(myRank,{n:mine.n,s:mine.s},1,myRank+'位',false));
    rkList.scrollTop=keep}
   var rkTimer=0;
-  var xb2=document.createElement('button');xb2.textContent='✕';xb2.style.cssText='position:absolute;top:8px;right:8px;z-index:4;width:28px;height:28px;min-height:0;padding:0;border-radius:999px;background:#fff8ea;border:2px solid #d9962b;color:#c97a1e;font-size:13px;font-weight:900;line-height:1';
+  var xb2=document.createElement('button');xb2.innerHTML='<svg width="12" height="12" viewBox="0 0 12 12" style="position:absolute;left:9px;top:9px;margin:0"><path d="M2 2L10 10M10 2L2 10" stroke="#c97a1e" stroke-width="2.4" stroke-linecap="round"/></svg>';xb2.style.cssText='position:absolute;top:8px;right:8px;z-index:4;width:30px!important;height:30px!important;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:0;margin:0;box-shadow:none;outline:none;transform:none;min-height:0;padding:0;display:flex;align-items:center;justify-content:center;font-family:sans-serif;border-radius:999px;background:#fff8ea;border:2px solid #d9962b;color:#c97a1e;font-size:13px;font-weight:900;line-height:1';
   rkPanel.appendChild(xb2);
   function rkClose(){clearInterval(rkTimer);ov2.remove()}
   xb2.onclick=function(){try{sfx('tap')}catch(e){}rkClose()};ov2.onclick=function(e){if(e.target===ov2)rkClose()};
@@ -4205,7 +4205,7 @@ function openBook(){
  function head(text,size){return bookStyle(para('margin:4px 0 8px;text-align:center',text),size)}
  var top=document.createElement('div');top.style.cssText='display:flex;justify-content:flex-start;align-items:center;min-height:28px;padding-right:40px';
  var tocb=navBtn('◀ もくじにもどる');tocb.style.width='auto';tocb.style.height='26px';tocb.style.padding='0 9px';tocb.style.fontSize='11px';tocb.style.marginRight='auto';tocb.style.visibility='hidden';
- var xb=navBtn('✕');xb.style.cssText+=';position:absolute;top:6px;right:8px;z-index:3;width:28px;height:28px;font-size:13px';top.append(tocb);
+ var xb=navBtn('✕');xb.style.cssText+=';position:absolute;top:6px;right:8px;z-index:3;width:28px;height:28px;display:flex;align-items:center;justify-content:center;padding:0;font-size:13px';top.append(tocb);
  var body=document.createElement('div');body.style.cssText='flex:1;overflow:auto;min-height:0;padding:2px 4px';
  var foot=document.createElement('div');foot.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-top:8px';
  var pv=navBtn('◀'),nx=navBtn('▶'),pg=para('font-size:13px;font-weight:800;color:#7a5230','');
@@ -4227,7 +4227,7 @@ function openBook(){
  
  function coverFx(){
    if(!document.getElementById('bkfx-css')){var st=document.createElement('style');st.id='bkfx-css';
-    st.textContent='@keyframes bkHeart{0%{opacity:0;transform:translateY(22px) scale(.4) rotate(-12deg)}25%{opacity:1;transform:translateY(8px) scale(1.1) rotate(6deg)}50%{opacity:.85;transform:translateY(-8px) scale(.85) rotate(-6deg)}75%{opacity:1;transform:translateY(-22px) scale(1.15) rotate(8deg)}100%{opacity:0;transform:translateY(-44px) scale(.5) rotate(0)}}@media (prefers-reduced-motion:reduce){.bkfx span{animation:none!important;opacity:.8!important}}';
+    st.textContent='#bookov button:not(:disabled){opacity:1 !important}@keyframes bkHeart{0%{opacity:0;transform:translateY(22px) scale(.4) rotate(-12deg)}25%{opacity:.55;transform:translateY(8px) scale(1.1) rotate(6deg)}50%{opacity:.85;transform:translateY(-8px) scale(.85) rotate(-6deg)}75%{opacity:.55;transform:translateY(-22px) scale(1.15) rotate(8deg)}100%{opacity:0;transform:translateY(-44px) scale(.5) rotate(0)}}@media (prefers-reduced-motion:reduce){.bkfx span{animation:none!important;opacity:.8!important}}';
     document.head.appendChild(st)}
    body.style.position='relative';
    var lay=document.createElement('div');lay.className='bkfx';lay.setAttribute('aria-hidden','true');
@@ -4249,14 +4249,14 @@ function openBook(){
   pv.style.opacity=pv.disabled?'.35':'';nx.style.opacity=nx.disabled?'.35':'';
   if(P.k==='cover'){
     coverFx();
-   body.append(para('height:12px',''),(function(){var w=para('text-align:center;',''),k=document.querySelector('#kiri img.kimg');if(k&&k.src){var im=document.createElement('img');im.src=k.src;im.alt='キリン';im.style.cssText='height:170px;width:auto;max-width:100%;display:block;margin:0 auto;filter:drop-shadow(0 3px 4px rgba(110,70,20,.35))';w.appendChild(im)}else w.innerHTML=SVGG;return w})(),(function(){var h=head('みありなタワーディフェンス\n🎀 攻略法 🎀','21px');h.style.whiteSpace='pre-line';h.style.lineHeight='1.35';h.style.margin='8px 0 4px';return h})(),
+   body.append(para('height:12px',''),(function(){var w=para('text-align:center;',''),k=document.querySelector('#kiri img.kimg');if(k&&k.src){var im=document.createElement('img');im.src=k.src;im.alt='キリン';im.style.cssText='height:170px;width:auto;max-width:100%;display:block;margin:0 auto;-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent);filter:drop-shadow(0 3px 4px rgba(110,70,20,.35))';w.appendChild(im)}else w.innerHTML=SVGG;return w})(),(function(){var h=head('みありなタワーディフェンス\n🎀 攻略法 🎀','21px');h.style.whiteSpace='pre-line';h.style.lineHeight='1.35';h.style.margin='8px 0 4px';return h})(),
     para('text-align:center;margin-top:10px;font-size:12px;color:#7a5230;line-height:1.6','～ ウルトラDX ～'),
     para('text-align:center;margin-top:20px;font-size:13px;font-weight:800;color:#7a5230','見つけたヒント '+seen.length+' / '+TIPS.length),
-    (function(){var ob=document.createElement('button');ob.textContent='📑 もくじをひらく';ob.style.cssText='display:block;margin:14px auto 0;padding:10px 18px;min-height:0;height:auto;border-radius:999px;background:#fff8ea;border:2px solid #d9962b;border-bottom-width:4px;color:#c97a1e;font-size:14px;font-weight:900';ob.onclick=function(){go(1)};return ob})());
+    (function(){var ob=document.createElement('button');ob.textContent='📑 もくじをひらく';ob.style.cssText='display:block;margin:14px auto 0;padding:10px 18px;min-height:0;height:auto;border-radius:999px;background:#fff;border:2px solid #d9962b;border-bottom-width:4px;color:#5c3000;font-size:14px;font-weight:900;opacity:1';ob.onclick=function(){go(1)};return ob})());
    if(!unlocked){
     var msg=para('text-align:center;margin-top:8px;font-size:12px;font-weight:800;color:#7a5230;min-height:16px','');
     var buy=document.createElement('button');buy.textContent='🪙 '+GUIDE_PRICE+'リナコインで全部読む';
-    buy.style.cssText='display:block;margin:16px auto 0;padding:10px 14px;min-height:0;height:auto;border-radius:999px;background:#fff8ea;border:2px solid #d9962b;border-bottom-width:4px;color:#c97a1e;font-size:14px;font-weight:900;text-shadow:0 1px 0 #fff8ea,0 -1px 0 #fff8ea,1px 0 0 #fff8ea,-1px 0 0 #fff8ea;-webkit-text-stroke:2px #fff8ea;paint-order:stroke fill';
+    buy.style.cssText='display:block;margin:16px auto 0;padding:10px 14px;min-height:0;height:auto;border-radius:999px;background:#fff;border:2px solid #d9962b;border-bottom-width:4px;color:#5c3000;font-size:14px;font-weight:900;opacity:1';
     buy.onclick=function(){
      if(rcCoins()<GUIDE_PRICE){msg.textContent='リナコインが たりないよ（あと '+(GUIDE_PRICE-rcCoins())+' 枚）';return}
      rcSpend(GUIDE_PRICE);try{localStorage.setItem(GUIDE_UK,'1')}catch(e){}
