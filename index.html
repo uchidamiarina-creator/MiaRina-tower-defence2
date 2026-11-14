@@ -2988,7 +2988,7 @@ function drawLots(g){for(var i=0;i<LOTS.length;i++){var L=LOTS[i],sc=L.s||1,X=L.
   if(L.s){g.save();g.translate(L.x+L.w/2,L.y);g.scale(sc,sc)}
   if(BLD[i]==='sushi')sushiShop(g,X,Y,W);else if(BLD[i]==='otasuke')otasukeShop(g,X,Y,W);else if(BLD[i]==='rinacoin')coinShop(g,X,Y,W);else if(BLD[i]==='mikata')mikataShop(g,X,Y,W);else if(BLD[i]==='casino')casinoShop(g,X,Y,W);else vacant(g,{x:X,y:Y,w:W});
   if(L.s)g.restore()}}
-function lotFx(g,s){for(var i=0;i<LOTS.length;i++){var L=LOTS[i],cx=L.x+L.w/2,by=Math.sin(s*3+i*1.7)*2,sh=!!BLD[i],cy=L.y-(sh?71:42)*(L.s||1)+by;g.save();g.textAlign='center';g.textBaseline='middle';g.fillStyle='rgba(255,255,255,.92)';g.strokeStyle='#f0a8c8';g.lineWidth=1.5;g.beginPath();g.arc(cx,cy,sh?8.5:7.5,0,7);g.fill();g.stroke();if(sh){g.font='11px sans-serif';g.fillText(BLD[i]==='otasuke'?'🎫':BLD[i]==='rinacoin'?'🪙':BLD[i]==='mikata'?'🧸':BLD[i]==='casino'?'🎰':'🍣',cx,cy+.5)}else{g.fillStyle='#d05a8a';g.font='bold 12px sans-serif';g.fillText('＋',cx,cy)}g.restore()}}
+function lotFx(g,s){for(var i=0;i<LOTS.length;i++){var L=LOTS[i],cx=L.x+L.w/2,by=Math.sin(s*3+i*1.7)*2,sh=!!BLD[i],cy=L.y-(sh?71:42)*(L.s||1)+by;g.save();g.textAlign='center';g.textBaseline='middle';g.fillStyle='rgba(255,255,255,.92)';g.strokeStyle='#f0a8c8';g.lineWidth=1.5;g.beginPath();g.arc(cx,cy,sh?8.5:7.5,0,7);g.fill();g.stroke();if(sh){g.font='11px sans-serif';g.fillText(BLD[i]==='otasuke'?'🎫':BLD[i]==='rinacoin'?'🪙':BLD[i]==='mikata'?'🧸':BLD[i]==='casino'?'🃁':'🍣',cx,cy+.5)}else{g.fillStyle='#d05a8a';g.font='bold 12px sans-serif';g.fillText('＋',cx,cy)}g.restore()}}
 function lotAt(px,py){for(var i=0;i<LOTS.length;i++){var L=LOTS[i];if(px>=L.x-4&&px<=L.x+L.w+4&&py>=L.y-82*(L.s||1)&&py<=L.y+18*(L.s||1))return i}return -1}
 var WIN=[],LAMPS=[[118,354],[242,354],[62,458],[298,458]];
 var KS={N:{a:[34,44,110],b:[84,92,150],w:[8,14,56],wa:.45,lt:1,st:1,rb:0,sun:0,mo:1,bf:0,sc:[255,244,170],cl:[200,210,255,.6]},
@@ -3114,6 +3114,7 @@ function openTown2(TN){
   if(toast>0){toast-=dt;UI.push(function(){g.globalAlpha=Math.min(1,toast);g.font='13px "Mochiy Pop One","Hiragino Maru Gothic ProN",sans-serif';var maxW=304,lines=[],cur='';for(var ch of String(tmsg)){if(cur&&g.measureText(cur+ch).width>maxW){lines.push(cur);cur=ch}else cur+=ch}if(cur||!lines.length)lines.push(cur);var lh=17,bw=Math.min(330,Math.max.apply(null,lines.map(function(l){return g.measureText(l).width}))+26),bh=lines.length*lh+8,bx=180-bw/2,by=190-bh/2;g.fillStyle='rgba(255,255,255,.92)';g.strokeStyle='#f0a8c8';g.lineWidth=2;g.beginPath();g.roundRect(bx,by,bw,bh,Math.min(12,bh/2));g.fill();g.stroke();g.fillStyle='#d05a8a';g.textAlign='center';g.textBaseline='middle';lines.forEach(function(l,i){g.fillText(l,180,by+4+lh*i+lh/2)});g.globalAlpha=1})}
   if(false)UI.push(function(){g.fillStyle='rgba(255,255,255,.9)';g.strokeStyle='#f0a8c8';g.lineWidth=2;g.beginPath();g.roundRect(40,452,280,64,16);g.fill();g.stroke();g.fillStyle='#8a3a6a';g.font='14px "Mochiy Pop One","Hiragino Maru Gothic ProN",sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('まだ だれも すんでいないよ…',180,474);g.font='12px "Mochiy Pop One","Hiragino Maru Gothic ProN",sans-serif';g.fillText('あしたから まいにち ひとり見学にくるよ。',180,492);g.fillText('相性と仲良し度がたかいと ひっこしてくるよ！',180,506)});
   drawQB(g,s);
+  UI.push(function(){var n=0;try{n=Math.max(0,parseInt(localStorage.getItem('miarina_td_rinacoin_v1')||'0',10)||0)}catch(e){}g.save();g.font='10px '+SFONT;g.textAlign='right';g.textBaseline='bottom';g.lineJoin='round';g.lineWidth=3;g.strokeStyle='#fff';g.fillStyle='#2f6fd0';var tx='リナコイン '+n;g.strokeText(tx,352,H-6);g.fillText(tx,352,H-6);g.restore()});
   var gray=0;
   /* 住人 */
   for(i=0;i<res.length;i++){var r=res[i];r.ph+=dt;
@@ -3420,11 +3421,11 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
     hd=sEl('div','display:flex;align-items:center;justify-content:space-between;margin:0 0 8px;font-weight:bold;color:#d05a8a;font-size:15px'),
     cb=sEl('button','flex:none;width:auto;min-height:0;height:auto;line-height:1;padding:2px 8px;font-size:11px;border-width:2px;border-bottom-width:3px;border-radius:10px','✕');cb.onclick=closeShp;
    hd.append(sEl('span',null,title),cb);var bd=sEl('div','overflow-y:auto;flex:1');bx.append(hd,bd);shp.appendChild(bx);shp.addEventListener('click',function(e){if(e.target===shp)closeShp()});ov.appendChild(shp);return bd}
-  var BT=[{id:'sushi',name:'お寿司屋さん',ic:'🍣',ds:'ひみつ道具の「お寿司」が買えるお店だよ'},{id:'otasuke',name:'おたすけ屋さん',ic:'🎫',ds:'バトル中におたすけキャラを呼べる「おたすけ券」が買えるお店だよ'},{id:'rinacoin',name:'リナコイン屋さん',ic:'🪙',ds:'リナコインを 売ったり 買ったり できるお店だよ（相場は毎日かわるよ）'},{id:'mikata',name:'味方屋さん',ic:'🧸',ds:'オリジナルの味方キャラを つくれるお店だよ'},{id:'casino',name:'カジノ',ic:'🎰',ds:'リナコインで バカラ・ブラックジャック・ポーカーが あそべるお店だよ'}];
+  var BT=[{id:'sushi',name:'お寿司屋さん',ic:'🍣',ds:'ひみつ道具の「お寿司」が買えるお店だよ'},{id:'otasuke',name:'おたすけ屋さん',ic:'🎫',ds:'バトル中におたすけキャラを呼べる「おたすけ券」が買えるお店だよ'},{id:'rinacoin',name:'リナコイン屋さん',ic:'🪙',ds:'リナコインを 売ったり 買ったり できるお店だよ（相場は毎日かわるよ）'},{id:'mikata',name:'味方屋さん',ic:'🧸',ds:'オリジナルの味方キャラを つくれるお店だよ'},{id:'casino',name:'カジノ',ic:'🃁',ds:'リナコインで バカラ・ブラックジャック・ポーカーが あそべるお店だよ'}];
   var BUILD_COST=1000;
   function rcoin(){try{return Math.max(0,parseInt(localStorage.getItem('miarina_td_rinacoin_v1')||'0',10)||0)}catch(e){return 0}}
   function hasB(id){var b=TS.bld||{};for(var k in b)if(b[k]===id)return true;return false}
-  function openBuild(i){var bd=shpBox('空き地');bd.appendChild(sEl('div','text-align:center;font-size:14px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:4px 10px;margin-bottom:6px','🪙 もってるリナコイン：'+rcoin()+'リナコイン'));bd.appendChild(sEl('div','font-size:12px;color:#8a5a7a;margin-bottom:6px','ここに 建てる建物を えらんでね'));
+  function openBuild(i){var bd=shpBox('空き地');bd.appendChild(sEl('div','display:table;margin:0 0 4px auto;font-size:11px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:1px 8px','🪙 '+rcoin()+' リナコイン'));bd.appendChild(sEl('div','font-size:12px;color:#8a5a7a;margin-bottom:6px','ここに 建てる建物を えらんでね'));
    BT.forEach(function(b){var done=hasB(b.id),row=sEl('div','display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px dashed #f0c8dc'),tx=sEl('div','flex:1;min-width:0;line-height:1.3'),bt=sEl('button','flex:none;min-width:88px;padding:8px 12px;font-size:15px;font-weight:bold;font-family:'+SFONT+';letter-spacing:.06em;color:#e0457f;background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%);border:3px solid #fff;outline:2px solid #ffc94d;border-radius:999px;box-shadow:0 3px 0 #e8a92a,0 0 8px rgba(255,210,80,.6)',done?'建ってるよ':'建てる');
     tx.append(sEl('b','color:#8a3a6a;font-size:14px',b.name),sEl('div','font-size:11px;color:#8a5a7a',b.ds+'（1000リナコイン）'));if(done||rcoin()<BUILD_COST)bt.disabled=true;
     bt.onclick=function(){try{sfx('clear')}catch(er){}build(i,b)};row.append(sEl('div','font-size:26px;flex:none',b.ic),tx,bt);bd.appendChild(row)})}
@@ -3442,7 +3443,7 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
     bd.appendChild(sEl('div','font-size:12px;color:#8a3a6a;background:#ffeef6;border-radius:10px;padding:6px 8px;margin-bottom:6px;line-height:1.4',m));
     bd.appendChild(sEl('div','text-align:center;font-size:14px;font-weight:bold;color:#7a3b2e;background:linear-gradient(180deg,#fff6c8 0%,#ffe27a 100%);border:2px solid #fff;outline:2px solid #ffc94d;border-radius:999px;padding:5px 12px;margin:0 0 6px','💰 もちこしゴールド '+sgGet()+'G'));
     bd.appendChild(sEl('div','text-align:center;font-size:13px;color:#8a3a6a;line-height:1.6','🪙 今日の相場 '+p+'G（きのう '+y+'G '+(df>0?'▲'+df:df<0?'▼'+(-df):'→')+'）'));
-    bd.appendChild(sEl('div','text-align:center;font-size:13px;color:#8a5a7a','もってるリナコイン '+cg()+' 枚（相場は毎日かわるよ 1〜199G）'));
+    bd.appendChild(sEl('div','text-align:center;font-size:11px;color:#8a5a7a','🪙 '+cg()+' 枚（相場は毎日かわるよ 1〜199G）'));
     [['買う ×1',1,1],['買う ×10',1,10],['売る ×1',0,1],['ぜんぶ売る',0,1e9]].forEach(function(b){var bt=sEl('button','flex:none;min-width:88px;padding:8px 12px;font-size:15px;font-weight:bold;font-family:'+SFONT+';letter-spacing:.06em;color:#e0457f;background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%);border:3px solid #fff;outline:2px solid #ffc94d;border-radius:999px;box-shadow:0 3px 0 #e8a92a,0 0 8px rgba(255,210,80,.6)',b[0]);bt.onclick=function(){trade(!!b[1],b[2])};row.appendChild(bt)});
     bd.appendChild(row)}
    rd()}
@@ -3469,9 +3470,9 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
    function chips(bd){var cr=sEl('div','display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px');
     [1,5,10,50,100].forEach(function(n){var b=gbtn('+'+n);b.onclick=function(){try{sfx('tap')}catch(er){}bet=Math.min(cg(),bet+n);bt()};cr.appendChild(b)});
     var al=gbtn('ぜんぶ');al.onclick=function(){try{sfx('tap')}catch(er){}bet=cg();bt()};var cl=gbtn('クリア','color:#8a5a7a;background:#fff;outline-color:#f0c8dc;box-shadow:0 3px 0 #f0c8dc');cl.onclick=function(){bet=0;bt()};cr.append(al,cl);bd.appendChild(cr)}
-   function bt(){var bd=shpBox('🎰 カジノ（バカラ）'),have=cg();if(bet>have)bet=have;
+   function bt(){var bd=shpBox('🃁 カジノ（バカラ）'),have=cg();if(bet>have)bet=have;
     bd.appendChild(sEl('div','font-size:12px;color:#8a3a6a;background:#ffeef6;border-radius:10px;padding:6px 8px;margin-bottom:6px;line-height:1.4',have<=0?'リナコインが ないよ… リナコイン屋さんで 買ってきてね':m));
-    bd.appendChild(sEl('div','text-align:center;font-size:14px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:4px 10px;margin-bottom:6px','🪙 もってるリナコイン：'+have+'リナコイン'));
+    bd.appendChild(sEl('div','display:table;margin:0 0 4px auto;font-size:11px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:1px 8px','🪙 '+have+' リナコイン'));
     var sr=sEl('div','display:flex;gap:6px;justify-content:center;margin:6px 0 4px');
     SD.forEach(function(n,i){var on=side===i,b=sEl('button','flex:1;min-width:0;width:auto;min-height:0;height:auto;padding:7px 4px;font-size:13px;font-weight:bold;font-family:'+SFONT+';line-height:1.3;border-radius:12px;border:3px solid '+(on?SC[i]:'#f0c8dc')+';background:'+(on?SC[i]:'#fff')+';color:'+(on?'#fff':SC[i]),n);b.append(sEl('div','font-size:11px;font-weight:normal','当たると '+PO[i]));b.onclick=function(){try{sfx('tap')}catch(er){}side=i;bt()};sr.appendChild(b)});
     bd.appendChild(sr);
@@ -3483,7 +3484,7 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
     bd.lastChild.style.whiteSpace='pre-line'}
    function deal(){var have=cg();if(bet<1||bet>have){try{sfx('deny')}catch(er){}m='かけるリナコインが たりないよ';bt();return}
     var sd=side,b0=bet,r=play(),o=settle(r,sd,b0);cs(have-b0+o.ret);
-    var bd=shpBox('🎰 カジノ（バカラ）'),pc=sEl('div','display:flex;gap:4px;justify-content:center;min-height:50px;flex-wrap:wrap'),bc=sEl('div','display:flex;gap:4px;justify-content:center;min-height:50px;flex-wrap:wrap'),pe=sEl('div','text-align:center;font-weight:bold;font-size:16px;color:#3a7bd5;min-height:22px','　'),be=sEl('div','text-align:center;font-weight:bold;font-size:16px;color:#d9327c;min-height:22px','　'),
+    var bd=shpBox('🃁 カジノ（バカラ）'),pc=sEl('div','display:flex;gap:4px;justify-content:center;min-height:50px;flex-wrap:wrap'),bc=sEl('div','display:flex;gap:4px;justify-content:center;min-height:50px;flex-wrap:wrap'),pe=sEl('div','text-align:center;font-weight:bold;font-size:16px;color:#3a7bd5;min-height:22px','　'),be=sEl('div','text-align:center;font-weight:bold;font-size:16px;color:#d9327c;min-height:22px','　'),
      rs=sEl('div','text-align:center;font-weight:bold;font-size:15px;line-height:1.5;margin-top:8px;min-height:46px','　'),bx=sEl('div','display:flex;gap:8px;margin-top:8px');
     var cp=sEl('div','flex:1;background:#eaf2ff;border-radius:12px;padding:6px 4px'),cb=sEl('div','flex:1;background:#ffeaf3;border-radius:12px;padding:6px 4px');
     cp.append(sEl('div','text-align:center;font-size:12px;font-weight:bold;color:#3a7bd5;margin-bottom:4px','プレイヤー'+(sd===0?' 👈':'')),pc,pe);cb.append(sEl('div','text-align:center;font-size:12px;font-weight:bold;color:#d9327c;margin-bottom:4px','バンカー'+(sd===1?' 👈':'')),bc,be);bx.append(cp,cb);
@@ -3497,7 +3498,7 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
     var tm=function(){return 'プレイヤー '+o.pt+' てん ／ バンカー '+o.bk+' てん'};
     function done(){rs.textContent='';rs.append(sEl('div','font-size:13px;color:#8a3a6a',tm()),sEl('div','font-size:16px;color:'+(net>0?'#d9327c':net<0?'#6a7a9a':'#2fa86a'),fin));
      try{sfx(net>0?(o.w===2?'star':'clear'):net<0?'lose':'pop')}catch(er){}
-     bd.appendChild(sEl('div','text-align:center;font-size:14px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:4px 10px;margin-top:8px','🪙 もってるリナコイン：'+cg()+'リナコイン'));
+     bd.appendChild(sEl('div','display:table;margin:4px 0 0 auto;font-size:11px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:1px 8px','🪙 '+cg()+' リナコイン'));
      var ar=sEl('div','display:flex;gap:8px;margin-top:8px'),ag=gbtn('もういっかい','flex:1;font-size:14px'),en=gbtn('おしまい','flex:1;font-size:14px;color:#8a5a7a;background:#fff;outline-color:#f0c8dc;box-shadow:0 3px 0 #f0c8dc');
      ag.onclick=function(){m=net>0?'ナイス！ もういっかい いってみる？':'つぎは どうかな？ もういっかい あそぶ？';if(bet>cg())bet=cg();bt()};en.onclick=closeShp;ar.append(ag,en);bd.appendChild(ar)}
     function step(k){if(!bd.isConnected){toast=6;tmsg=fin;return}
@@ -3522,7 +3523,7 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
     if(hide)e.textContent='?';else e.append(sEl('div',null,rn(c)),sEl('div',null,SU[c.s]));return e}
    function bt(){var bd=shpBox('🃏 ブラックジャック'),have=cg();if(bet>have)bet=have;
     bd.appendChild(sEl('div','font-size:12px;color:#8a3a6a;background:#ffeef6;border-radius:10px;padding:6px 8px;margin-bottom:6px;line-height:1.4',have<=0?'リナコインが ないよ… リナコイン屋さんで 買ってきてね':m));
-    bd.appendChild(sEl('div','text-align:center;font-size:14px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:4px 10px;margin-bottom:6px','🪙 もってるリナコイン：'+have+'リナコイン'));
+    bd.appendChild(sEl('div','display:table;margin:0 0 4px auto;font-size:11px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:1px 8px','🪙 '+have+' リナコイン'));
     bd.appendChild(sEl('div','text-align:center;font-size:15px;font-weight:bold;color:#7a3b2e;margin:6px 0 0','かける数：'+bet+' リナコイン'));
     var cr=sEl('div','display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px');
     [1,5,10,50,100].forEach(function(n){var b=gbtn('+'+n);b.onclick=function(){try{sfx('tap')}catch(er){}bet=Math.min(cg(),bet+n);bt()};cr.appendChild(b)});
@@ -3556,7 +3557,7 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
     else{ret=0;msg2='ディーラーの勝ち…'}
     cs(cg()+ret);var net=ret-cur;table(false,bd);
     bd.appendChild(sEl('div','text-align:center;font-weight:bold;font-size:15px;line-height:1.5;margin-top:4px;color:'+(net>0?'#d9327c':net<0?'#6a7a9a':'#2fa86a'),msg2+'（'+(net>0?'+':'')+net+' リナコイン）'));
-    bd.appendChild(sEl('div','text-align:center;font-size:14px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:4px 10px;margin-top:8px','🪙 もってるリナコイン：'+cg()+'リナコイン'));
+    bd.appendChild(sEl('div','display:table;margin:4px 0 0 auto;font-size:11px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:1px 8px','🪙 '+cg()+' リナコイン'));
     try{sfx(net>0?'clear':net<0?'lose':'pop')}catch(er){}
     var ar=sEl('div','display:flex;gap:8px;margin-top:8px'),ag=gbtn('もういっかい','flex:1;font-size:14px'),en=gbtn('おしまい','flex:1;font-size:14px;color:#8a5a7a;background:#fff;outline-color:#f0c8dc;box-shadow:0 3px 0 #f0c8dc');
     bet=Math.min(bet,cg());ag.onclick=function(){m='つぎは どうかな？';bt()};en.onclick=closeShp;ar.append(ag,en);bd.appendChild(ar)}
@@ -3574,7 +3575,7 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
    function sm(t,f){var b=sEl('button','display:block;margin:6px auto 0;width:auto;min-height:0;height:auto;padding:4px 10px;font-size:12px;font-family:'+SFONT+';border-radius:999px;border:2px solid #f0a8c8;background:#fff;color:#c0456f',t);b.onclick=f;return b}
    function bt(){var bd=shpBox('♠ ポーカー'),have=cg();if(bet>have)bet=have;
     bd.appendChild(sEl('div','font-size:12px;color:#8a3a6a;background:#ffeef6;border-radius:10px;padding:6px 8px;margin-bottom:6px;line-height:1.4',have<=0?'リナコインが ないよ… リナコイン屋さんで 買ってきてね':m));
-    bd.appendChild(sEl('div','text-align:center;font-size:14px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:4px 10px;margin-bottom:6px','🪙 もってるリナコイン：'+have+'リナコイン'));
+    bd.appendChild(sEl('div','display:table;margin:0 0 4px auto;font-size:11px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:1px 8px','🪙 '+have+' リナコイン'));
     bd.appendChild(sEl('div','text-align:center;font-size:15px;font-weight:bold;color:#7a3b2e;margin:6px 0 0','かける数：'+bet+' リナコイン'));
     var cr=sEl('div','display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px');
     [1,5,10,50,100].forEach(function(n){var b=gbtn('+'+n);b.onclick=function(){try{sfx('tap')}catch(er){}bet=Math.min(cg(),bet+n);bt()};cr.appendChild(b)});
@@ -3594,13 +3595,13 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
      var b=gbtn('🔄 チェンジ！','display:block;width:100%;margin-top:8px;font-size:16px;padding:9px 12px');b.onclick=function(){hold.forEach(function(h,i){if(!h)H[i]=deck.pop()});try{sfx('place')}catch(er){}show(true);settle()};bd.appendChild(b);return}
     var ret=r>=0?bet*PT[r][1]:0,net=ret-bet;
     bd.appendChild(sEl('div','text-align:center;font-weight:bold;font-size:15px;line-height:1.5;margin-top:8px;color:'+(net>0?'#d9327c':net<0?'#6a7a9a':'#2fa86a'),(r>=0?(r<=3?'🎉 ':'')+PT[r][0]+'！ '+PT[r][1]+'倍':'やくなし…')+'（'+(net>0?'+':'')+net+' リナコイン）'));
-    bd.appendChild(sEl('div','text-align:center;font-size:14px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:4px 10px;margin-top:8px','🪙 もってるリナコイン：'+cg()+'リナコイン'));
+    bd.appendChild(sEl('div','display:table;margin:4px 0 0 auto;font-size:11px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:1px 8px','🪙 '+cg()+' リナコイン'));
     var ar=sEl('div','display:flex;gap:8px;margin-top:8px'),ag=gbtn('もういっかい','flex:1;font-size:14px'),en=gbtn('おしまい','flex:1;font-size:14px;color:#8a5a7a;background:#fff;outline-color:#f0c8dc;box-shadow:0 3px 0 #f0c8dc');
     ag.onclick=function(){m='つぎは どうかな？';bt()};en.onclick=closeShp;ar.append(ag,en);bd.appendChild(ar)}
    function settle(){var r=ev(H),ret=r>=0?bet*PT[r][1]:0;cs(cg()+ret);try{sfx(ret>bet?(r<=3?'star':'clear'):ret===bet?'pop':'lose')}catch(er){}show(true)}
    bt()}
-  function openCasino(msg){var bd=shpBox('🎰 カジノ');bd.appendChild(sEl('div','font-size:12px;color:#8a3a6a;background:#ffeef6;border-radius:10px;padding:6px 8px;margin-bottom:6px;line-height:1.4',msg||'いらっしゃい！ どのゲームで あそぶ？'));
-   bd.appendChild(sEl('div','text-align:center;font-size:14px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:4px 10px;margin-bottom:8px','🪙 もってるリナコイン：'+rcoin()+'リナコイン'));
+  function openCasino(msg){var bd=shpBox('🃁 カジノ');bd.appendChild(sEl('div','font-size:12px;color:#8a3a6a;background:#ffeef6;border-radius:10px;padding:6px 8px;margin-bottom:6px;line-height:1.4',msg||'いらっしゃい！ どのゲームで あそぶ？'));
+   bd.appendChild(sEl('div','display:table;margin:0 0 4px auto;font-size:11px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:1px 8px','🪙 '+rcoin()+' リナコイン'));
    [['🎴 バカラ','プレイヤーか バンカーか タイを よそう',openBaccarat],['🃏 ブラックジャック','21に ちかづけて ディーラーに 勝とう',openBlackjack],['♠ ポーカー','カードを のこして やくを つくろう',openPoker]].forEach(function(g){var b=sEl('button','display:block;width:100%;margin-top:8px;min-height:0;height:auto;padding:9px 12px;font-size:16px;font-weight:bold;font-family:'+SFONT+';color:#e0457f;background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%);border:3px solid #fff;outline:2px solid #ffc94d;border-radius:999px;box-shadow:0 3px 0 #e8a92a,0 0 8px rgba(255,210,80,.6)',g[0]);b.append(sEl('div','font-size:11px;font-weight:normal;color:#8a5a7a',g[1]));b.onclick=function(){g[2]()};bd.appendChild(b)})}
   function openShop(i){if(BLD[i]==='casino'){openCasino();return}if(BLD[i]==='mikata'){if(window.__openMikata)window.__openMikata();return}if(BLD[i]==='rinacoin'){openCoin();return}var ty=BLD[i],LST=ty==='otasuke'?OTASUKE:SUSHI,TTL=ty==='otasuke'?'🎫 おたすけ屋さん':'🍣 お寿司屋さん',msg=ty==='otasuke'?'いらっしゃい！ おたすけ券は いかが？':'いらっしゃい！ きょうも いいネタ入ってるよ',k;
    for(k=0;k<LST.length;k++)if(LST[k][2]&&sgStock(LST[k][0],1)){msg='きょうは めずらしいネタが 入ってるよ！';break}
@@ -3624,7 +3625,7 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
   function openLot(i){if(BLD[i])openLotMenu(i);else openBuild(i)}
   var BTN_DEMO="margin-top:8px;width:100%;padding:8px 12px;font-size:14px;font-family:"+SFONT+";border-radius:999px;border:2px solid #f0a8c8;background:#fff;color:#c0456f";
   function openLotMenu(i){var b=BT.filter(function(x){return x.id===BLD[i]})[0]||{name:'お店',ic:'🏠'},bd=shpBox(b.ic+' '+b.name);
-   bd.appendChild(sEl('div','text-align:center;font-size:14px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:4px 10px;margin-bottom:6px','🪙 もってるリナコイン：'+rcoin()+'リナコイン'));bd.appendChild(sEl('div','font-size:12px;color:#8a5a7a;margin-bottom:8px;text-align:center','どうする？'));
+   bd.appendChild(sEl('div','display:table;margin:0 0 4px auto;font-size:11px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:1px 8px','🪙 '+rcoin()+' リナコイン'));bd.appendChild(sEl('div','font-size:12px;color:#8a5a7a;margin-bottom:8px;text-align:center','どうする？'));
    var u=sEl('button',"flex:none;width:100%;min-width:88px;padding:8px 12px;font-size:15px;font-weight:bold;font-family:"+SFONT+";letter-spacing:.06em;color:#e0457f;background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%);border:3px solid #fff;outline:2px solid #ffc94d;border-radius:999px;box-shadow:0 3px 0 #e8a92a,0 0 8px rgba(255,210,80,.6)",'🛒 おみせを つかう');
    u.onclick=function(){openShop(i)};
    var d=sEl('button',BTN_DEMO,'🏚️ こわして空き地にもどす');
@@ -4888,6 +4889,7 @@ Object.assign(I,{
 '🌈':sv('<path fill="none" stroke-width="4" stroke="#ff4d6d" d="M3 26 A13 13 0 0 1 29 26"/><path fill="none" stroke-width="4" stroke="#ffd23f" d="M7 26 A9 9 0 0 1 25 26"/><path fill="none" stroke-width="4" stroke="#4cc9f0" d="M11 26 A5 5 0 0 1 21 26"/>'),
 '💧':sv('<path fill="#4cc9f0" d="M16 3 Q26 15 26 20 A10 10 0 0 1 6 20 Q6 15 16 3Z"/><path d="M11 19 Q11 23 14.5 24.5" stroke="#fff" stroke-width="2" fill="none"/>'),
 });
+I['🃁']=sv('<g transform="rotate(-7 16 16)"><rect x="5" y="3" width="22" height="26" rx="3" fill="#fffdf7"/><text x="7.5" y="11.5" font-family="sans-serif" font-weight="bold" font-size="8" fill="#e0245e" stroke="none">A</text><path fill="#e0245e" stroke-width="0.8" d="M9.6 12.6 L11.6 15 L9.6 17.4 L7.6 15Z"/><path fill="#e0245e" stroke-width="1.3" d="M18 11.5 L23.5 19.5 L18 27.5 L12.5 19.5Z"/></g>');
 const OL='rgba(74,39,64,.7)',gs=(b)=>'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" stroke-linejoin="round" stroke-linecap="round">'+b+'</svg>';
 const q=c=>String(c).replace(/["<>&]/g,'');
 const GL={
