@@ -2859,7 +2859,7 @@ function loadT(){try{var o=JSON.parse(localStorage.getItem(TK)||'null');if(o&&o.
 function saveT(o){try{localStorage.setItem(TK,JSON.stringify(o))}catch(e){}}
 function skey(s){return s.t+':'+(s.t=='m'?s.n+'/'+s.p.join(','):s.k!=null?s.k:s.i)}
 function poolOf(o){var used={},i,L=[];if(o.gone)used[o.gone]=1;for(i=0;i<o.res.length;i++)used[skey(o.res[i])]=1;
- for(i=0;i<ALN.length;i++)L.push({t:'a',k:ALN[i]});for(i=0;i<EN.length;i++)L.push({t:'e',k:EN[i]});
+ for(i=0;i<ALN.length;i++)L.push({t:'a',k:ALN[i]});try{var __mk=JSON.parse(localStorage.getItem('miarina_td_mikata_v1')||'[]');for(var __j=0;__j<__mk.length;__j++)if(__mk[__j]&&__mk[__j].k)L.push({t:'a',k:__mk[__j].k})}catch(e){}for(i=0;i<EN.length;i++)L.push({t:'e',k:EN[i]});
  var cb=window.__CB||[];for(i=0;i<cb.length;i++)L.push({t:'c',i:i});
  if(window.drawOrigMon){var ms=monList();for(i=0;i<ms.length;i++)L.push({t:'m',n:ms[i].n||'オリジナル',p:ms[i].p})}
  return L.filter(function(s){return !used[skey(s)]})}
@@ -2960,8 +2960,19 @@ function vacant(g,L){var cx=L.x+L.w/2,y=L.y;
  g.fillStyle='#a8744a';g.fillRect(cx-1,y-18,2,17);g.fillStyle='#f6dfae';g.beginPath();g.roundRect(cx-17,y-31,34,15,3);g.fill();g.strokeStyle='#a8744a';g.lineWidth=1.3;g.stroke();
  g.fillStyle='#7a5a3a';g.font='bold 10px '+SFONT;g.textAlign='center';g.textBaseline='middle';g.fillText('空き地',cx,y-23.2);
  g.fillStyle='#6fc860';[-24,-14,14,24].forEach(function(dx){g.beginPath();g.moveTo(cx+dx-2,y-1);g.lineTo(cx+dx,y-7);g.lineTo(cx+dx+2,y-1);g.fill()})}
-function drawLots(g){for(var i=0;i<LOTS.length;i++){if(BLD[i]==='sushi')sushiShop(g,LOTS[i].x,LOTS[i].y,LOTS[i].w);else if(BLD[i]==='otasuke')otasukeShop(g,LOTS[i].x,LOTS[i].y,LOTS[i].w);else if(BLD[i]==='rinacoin')coinShop(g,LOTS[i].x,LOTS[i].y,LOTS[i].w);else vacant(g,LOTS[i])}}
-function lotFx(g,s){for(var i=0;i<LOTS.length;i++){var L=LOTS[i],cx=L.x+L.w/2,by=Math.sin(s*3+i*1.7)*2,sh=!!BLD[i],cy=L.y-(sh?71:42)+by;g.save();g.textAlign='center';g.textBaseline='middle';g.fillStyle='rgba(255,255,255,.92)';g.strokeStyle='#f0a8c8';g.lineWidth=1.5;g.beginPath();g.arc(cx,cy,sh?8.5:7.5,0,7);g.fill();g.stroke();if(sh){g.font='11px sans-serif';g.fillText(BLD[i]==='otasuke'?'🎫':BLD[i]==='rinacoin'?'🪙':'🍣',cx,cy+.5)}else{g.fillStyle='#d05a8a';g.font='bold 12px sans-serif';g.fillText('＋',cx,cy)}g.restore()}}
+function mikataShop(g,x,y,w){var i,f;
+ g.fillStyle='rgba(60,90,50,.18)';g.beginPath();g.ellipse(x+w/2,y+1,w*.62,4,0,0,7);g.fill();
+ g.fillStyle='#fff0f7';g.beginPath();g.roundRect(x+2,y-34,w-4,34,3);g.fill();g.strokeStyle='rgba(120,80,100,.35)';g.lineWidth=1.2;g.stroke();
+ g.fillStyle='#9be7d8';g.beginPath();g.moveTo(x-5,y-32);g.lineTo(x+w+5,y-32);g.lineTo(x+w-6,y-47);g.lineTo(x+6,y-47);g.closePath();g.fill();g.stroke();
+ g.strokeStyle='rgba(255,255,255,.55)';g.lineWidth=1;for(i=1;i<=3;i++){f=i*3.6/15;g.beginPath();g.moveTo(x-5+f*11,y-32-i*3.6);g.lineTo(x+w+5-f*11,y-32-i*3.6);g.stroke()}
+ g.fillStyle='#ff8fb5';g.beginPath();g.roundRect(x+9,y-31,w-18,9,2);g.fill();g.strokeStyle='#fff';g.lineWidth=1;g.stroke();
+ g.font='bold 8px '+SFONT;g.textAlign='center';g.textBaseline='middle';g.lineJoin='round';g.lineWidth=1.6;g.strokeStyle='#8a2f57';g.strokeText('味方屋',x+w/2,y-26.3);g.fillStyle='#fff';g.fillText('味方屋',x+w/2,y-26.3);g.lineJoin='miter';g.lineWidth=1;
+ g.fillStyle='#fff8e0';g.fillRect(x+8,y-22,22,13);g.strokeStyle='#a8744a';g.strokeRect(x+8,y-22,22,13);WIN.push([x+8,y-22,22,13]);
+ g.fillStyle='#ffd9c2';g.beginPath();g.arc(x+19,y-17.5,2.8,0,7);g.fill();g.fillStyle='#7fb6ff';g.beginPath();g.roundRect(x+16.2,y-14.2,5.6,4.6,1.5);g.fill();
+ g.fillStyle='#d98a5a';g.beginPath();g.roundRect(x+w-18,y-20,11,20,[5,5,0,0]);g.fill();g.fillStyle='#ffd23f';g.beginPath();g.arc(x+w-9,y-10,1.1,0,7);g.fill();
+}
+function drawLots(g){for(var i=0;i<LOTS.length;i++){if(BLD[i]==='sushi')sushiShop(g,LOTS[i].x,LOTS[i].y,LOTS[i].w);else if(BLD[i]==='otasuke')otasukeShop(g,LOTS[i].x,LOTS[i].y,LOTS[i].w);else if(BLD[i]==='rinacoin')coinShop(g,LOTS[i].x,LOTS[i].y,LOTS[i].w);else if(BLD[i]==='mikata')mikataShop(g,LOTS[i].x,LOTS[i].y,LOTS[i].w);else vacant(g,LOTS[i])}}
+function lotFx(g,s){for(var i=0;i<LOTS.length;i++){var L=LOTS[i],cx=L.x+L.w/2,by=Math.sin(s*3+i*1.7)*2,sh=!!BLD[i],cy=L.y-(sh?71:42)+by;g.save();g.textAlign='center';g.textBaseline='middle';g.fillStyle='rgba(255,255,255,.92)';g.strokeStyle='#f0a8c8';g.lineWidth=1.5;g.beginPath();g.arc(cx,cy,sh?8.5:7.5,0,7);g.fill();g.stroke();if(sh){g.font='11px sans-serif';g.fillText(BLD[i]==='otasuke'?'🎫':BLD[i]==='rinacoin'?'🪙':BLD[i]==='mikata'?'🧸':'🍣',cx,cy+.5)}else{g.fillStyle='#d05a8a';g.font='bold 12px sans-serif';g.fillText('＋',cx,cy)}g.restore()}}
 function lotAt(px,py){for(var i=0;i<LOTS.length;i++){var L=LOTS[i];if(px>=L.x-4&&px<=L.x+L.w+4&&py>=L.y-82&&py<=L.y+18)return i}return -1}
 var WIN=[],LAMPS=[[118,354],[242,354],[62,458],[298,458]];
 var KS={N:{a:[34,44,110],b:[84,92,150],w:[8,14,56],wa:.45,lt:1,st:1,rb:0,sun:0,mo:1,bf:0,sc:[255,244,170],cl:[200,210,255,.6]},
@@ -3388,15 +3399,15 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
  var shp=null;
   function closeShp(){if(shp){shp.remove();shp=null}}
   function sEl(t,css,txt){var e=document.createElement(t);if(css)e.style.cssText=css;if(txt!=null)e.textContent=txt;return e}
-  function shpBox(title){closeShp();shp=sEl('div','position:absolute;inset:0;z-index:5;background:rgba(36,20,38,.55);display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box');
+  function shpBox(title){closeShp();shp=sEl('div','position:absolute;inset:0;z-index:5;background:rgba(36,20,38,.55);display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box;font-family:'+SFONT+'');
    var bx=sEl('div','width:min(100%,340px);max-height:86%;display:flex;flex-direction:column;background:#fff8fb;border:3px solid #f0a8c8;border-radius:16px;padding:10px;box-sizing:border-box'),
     hd=sEl('div','display:flex;align-items:center;justify-content:space-between;margin:0 0 8px;font-weight:bold;color:#d05a8a;font-size:15px'),
     cb=sEl('button','flex:none;width:auto;min-height:0;height:auto;line-height:1;padding:2px 8px;font-size:11px;border-width:2px;border-bottom-width:3px;border-radius:10px','✕');cb.onclick=closeShp;
    hd.append(sEl('span',null,title),cb);var bd=sEl('div','overflow-y:auto;flex:1');bx.append(hd,bd);shp.appendChild(bx);shp.addEventListener('click',function(e){if(e.target===shp)closeShp()});ov.appendChild(shp);return bd}
-  var BT=[{id:'sushi',name:'お寿司屋さん',ic:'🍣',ds:'ひみつ道具の「お寿司」が買えるお店だよ'},{id:'otasuke',name:'おたすけ屋さん',ic:'🎫',ds:'バトル中におたすけキャラを呼べる「おたすけ券」が買えるお店だよ'},{id:'rinacoin',name:'リナコイン屋さん',ic:'🪙',ds:'リナコインを 売ったり 買ったり できるお店だよ（相場は毎日かわるよ）'}];
+  var BT=[{id:'sushi',name:'お寿司屋さん',ic:'🍣',ds:'ひみつ道具の「お寿司」が買えるお店だよ'},{id:'otasuke',name:'おたすけ屋さん',ic:'🎫',ds:'バトル中におたすけキャラを呼べる「おたすけ券」が買えるお店だよ'},{id:'rinacoin',name:'リナコイン屋さん',ic:'🪙',ds:'リナコインを 売ったり 買ったり できるお店だよ（相場は毎日かわるよ）'},{id:'mikata',name:'味方屋さん',ic:'🧸',ds:'オリジナルの味方キャラを つくれるお店だよ'}];
   function hasB(id){var b=TS.bld||{};for(var k in b)if(b[k]===id)return true;return false}
   function openBuild(i){var bd=shpBox('空き地');bd.appendChild(sEl('div','font-size:12px;color:#8a5a7a;margin-bottom:6px','ここに 建てる建物を えらんでね'));
-   BT.forEach(function(b){var done=hasB(b.id),row=sEl('div','display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px dashed #f0c8dc'),tx=sEl('div','flex:1;min-width:0;line-height:1.3'),bt=sEl('button','flex:none;padding:8px 12px;font-size:14px',done?'建ってるよ':'建てる');
+   BT.forEach(function(b){var done=hasB(b.id),row=sEl('div','display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px dashed #f0c8dc'),tx=sEl('div','flex:1;min-width:0;line-height:1.3'),bt=sEl('button','flex:none;min-width:88px;padding:8px 12px;font-size:15px;font-weight:bold;font-family:'+SFONT+';letter-spacing:.06em;color:#e0457f;background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%);border:3px solid #fff;outline:2px solid #ffc94d;border-radius:999px;box-shadow:0 3px 0 #e8a92a,0 0 8px rgba(255,210,80,.6)',done?'建ってるよ':'建てる');
     tx.append(sEl('b','color:#8a3a6a;font-size:14px',b.name),sEl('div','font-size:11px;color:#8a5a7a',b.ds));if(done)bt.disabled=true;
     bt.onclick=function(){try{sfx('clear')}catch(er){}build(i,b)};row.append(sEl('div','font-size:26px;flex:none',b.ic),tx,bt);bd.appendChild(row)})}
   function build(i,b){TS.bld=TS.bld||{};TS.bld[i]=b.id;BLD=TS.bld;saveT(TS);bg=buildBG(DPR);closeShp();var L=LOTS[i];toast=6;tmsg='「'+b.name+'」が できたよ！';
@@ -3414,10 +3425,10 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
     bd.appendChild(sEl('div','text-align:center;font-size:14px;font-weight:bold;color:#7a3b2e;background:linear-gradient(180deg,#fff6c8 0%,#ffe27a 100%);border:2px solid #fff;outline:2px solid #ffc94d;border-radius:999px;padding:5px 12px;margin:0 0 6px','💰 もちこしゴールド '+sgGet()+'G'));
     bd.appendChild(sEl('div','text-align:center;font-size:13px;color:#8a3a6a;line-height:1.6','🪙 今日の相場 '+p+'G（きのう '+y+'G '+(df>0?'▲'+df:df<0?'▼'+(-df):'→')+'）'));
     bd.appendChild(sEl('div','text-align:center;font-size:13px;color:#8a5a7a','もってるリナコイン '+cg()+' 枚（相場は毎日かわるよ 1〜199G）'));
-    [['買う ×1',1,1],['買う ×10',1,10],['売る ×1',0,1],['ぜんぶ売る',0,1e9]].forEach(function(b){var bt=sEl('button','flex:none;padding:8px 12px;font-size:14px',b[0]);bt.onclick=function(){trade(!!b[1],b[2])};row.appendChild(bt)});
+    [['買う ×1',1,1],['買う ×10',1,10],['売る ×1',0,1],['ぜんぶ売る',0,1e9]].forEach(function(b){var bt=sEl('button','flex:none;min-width:88px;padding:8px 12px;font-size:15px;font-weight:bold;font-family:'+SFONT+';letter-spacing:.06em;color:#e0457f;background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%);border:3px solid #fff;outline:2px solid #ffc94d;border-radius:999px;box-shadow:0 3px 0 #e8a92a,0 0 8px rgba(255,210,80,.6)',b[0]);bt.onclick=function(){trade(!!b[1],b[2])};row.appendChild(bt)});
     bd.appendChild(row)}
    rd()}
-  function openShop(i){if(BLD[i]==='rinacoin'){openCoin();return}var ty=BLD[i],LST=ty==='otasuke'?OTASUKE:SUSHI,TTL=ty==='otasuke'?'🎫 おたすけ屋さん':'🍣 お寿司屋さん',msg=ty==='otasuke'?'いらっしゃい！ おたすけ券は いかが？':'いらっしゃい！ きょうも いいネタ入ってるよ',k;
+  function openShop(i){if(BLD[i]==='mikata'){if(window.__openMikata)window.__openMikata();return}if(BLD[i]==='rinacoin'){openCoin();return}var ty=BLD[i],LST=ty==='otasuke'?OTASUKE:SUSHI,TTL=ty==='otasuke'?'🎫 おたすけ屋さん':'🍣 お寿司屋さん',msg=ty==='otasuke'?'いらっしゃい！ おたすけ券は いかが？':'いらっしゃい！ きょうも いいネタ入ってるよ',k;
    for(k=0;k<LST.length;k++)if(LST[k][2]&&sgStock(LST[k][0],1)){msg='きょうは めずらしいネタが 入ってるよ！';break}
    function buy(s){var it=null,ids=window.rinIds?window.rinIds():[],inf=window.rinInv?window.rinInv():[],ix=ids.indexOf(s[0]);if(ix>=0)it=inf[ix];var g0=sgGet();
     if(!it){try{sfx('deny')}catch(er){}msg='ごめんね、いまは 売れないよ'}
@@ -3436,7 +3447,21 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
      tx.append(sEl('b','color:#8a3a6a;font-size:14px',it.name+(s[2]?' ✨':'')),sEl('div','font-size:11px;color:#8a5a7a',it.ds));
      if(it.n>0)bt.disabled=true;bt.onclick=function(){buy(s)};row.append(tx,bt);bd.appendChild(row)})}
    rd()}
-  function openLot(i){if(BLD[i])openShop(i);else openBuild(i)}
+  function openLot(i){if(BLD[i])openLotMenu(i);else openBuild(i)}
+  var BTN_DEMO="margin-top:8px;width:100%;padding:8px 12px;font-size:14px;font-family:"+SFONT+";border-radius:999px;border:2px solid #f0a8c8;background:#fff;color:#c0456f";
+  function openLotMenu(i){var b=BT.filter(function(x){return x.id===BLD[i]})[0]||{name:'お店',ic:'🏠'},bd=shpBox(b.ic+' '+b.name);
+   bd.appendChild(sEl('div','font-size:12px;color:#8a5a7a;margin-bottom:8px;text-align:center','どうする？'));
+   var u=sEl('button',"flex:none;width:100%;min-width:88px;padding:8px 12px;font-size:15px;font-weight:bold;font-family:"+SFONT+";letter-spacing:.06em;color:#e0457f;background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%);border:3px solid #fff;outline:2px solid #ffc94d;border-radius:999px;box-shadow:0 3px 0 #e8a92a,0 0 8px rgba(255,210,80,.6)",'🛒 おみせを つかう');
+   u.onclick=function(){openShop(i)};
+   var d=sEl('button',BTN_DEMO,'🏚️ こわして空き地にもどす');
+   d.onclick=function(){confirmDemo(i,bd)};
+   bd.append(u,d)}
+  function confirmDemo(i,bd){bd.innerHTML='';
+   bd.appendChild(sEl('div','text-align:center;font-size:13px;color:#8a3a6a;line-height:1.6;margin:10px 0','ほんとうに こわす？ たてものは もどらないよ（おかねも かえってこないよ）'));
+   var row=sEl('div','display:flex;gap:8px;'),y=sEl('button',BTN_DEMO,'はい、こわす'),n=sEl('button',BTN_DEMO,'やめる');
+   y.onclick=function(){if(TS.bld)delete TS.bld[i];BLD=TS.bld||{};saveT(TS);bg=buildBG(DPR);closeShp();toast=6;tmsg='空き地に もどったよ';};
+   n.onclick=function(){openLotMenu(i)};
+   row.append(n,y);bd.appendChild(row)}
   function tap(e){var rc=cn.getBoundingClientRect(),px=(e.clientX-rc.left)/rc.width*W,py=(e.clientY-rc.top)/rc.height*H,best=null,bd=1e9;
   if(MCH&&Math.abs(px-MCH.x)<30&&Math.abs(py-(MCH.sy||MCH.y))<28){var ty0=MCH.type;MCH=null;mnext=R(10,25);try{sfx('tap')}catch(er){}openGame(ty0);return}
   if(px>=294&&px<=350&&py>=382&&py<=446){try{sfx('tap')}catch(er){}openQ();return}
@@ -9750,6 +9775,247 @@ function trByeCar(e,X,Y){
    if(window.__trDraw)window.__trDraw();
   }catch(_){}
  };
+})();
+</script>
+<script>
+/* ===== 味方屋さん：まちの空き地に建てるお店。自分だけのオリジナル味方キャラをつくれる ===== */
+(function(){
+var KEY='miarina_td_mikata_v1',GK='miarina_td_gold_v1',COST=300,MAX=12;
+var SFONT='"Mochiy Pop One","Hiragino Maru Gothic ProN",sans-serif';
+var PAL=[['ピンク','#ff8fb5'],['そらいろ','#7fb6ff'],['オレンジ','#ffb347'],['むらさき','#a98cff'],['みどり','#59c27a'],['あか','#ff6b6b'],['みずいろ','#4dd0c4'],['きいろ','#f2e05a']];
+var FACES=['まるがお','たまごがお','しかくがお','とがりほお','ぷにぷにほお'];
+var HEADS=['ショートヘア','ロングヘア','ぼうし','ツノ','ねじれツノ','アンテナ','はっぱ'];
+var EYES=['まるめ','キラキラ','ねむそう','ジト目','三つ目'];
+var BODIES=['ふつう','ずんぐり','ほっそり','もふもふ'];
+var MVN=['はずむ','ふわふわ','ちょこちょこ'];
+var NAMES=['ぴょんた','もふのすけ','ぷるりん','ころすけ','ハニーちゃん','ツノマル','ぽよ丸','モフリン','キララ','ゴンタ','ふわりん','ミミ'];
+var STEPS=[
+ {t:'顔の形',k:'f',o:FACES},
+ {t:'頭（かみ・ぼうし・モンスターっぽいの）',k:'h',o:HEADS},
+ {t:'目',k:'e',o:EYES},
+ {t:'からだ（手と足つき）',k:'b',o:BODIES},
+ {t:'全体の色',k:'c',o:PAL.map(function(p){return p[0]})},
+ {t:'名前',k:null,o:null}
+];
+var R=Math.random;
+var OV=null,CARD=null,PV=null,ST=null,MSG='',animOn=false;
+
+function pick(a){return a[Math.floor(R()*a.length)]}
+function rint(a,b){return a+Math.floor(R()*(b-a+1))}
+function el(tag,css,txt){var e=document.createElement(tag);if(css)e.style.cssText=css;if(txt!=null)e.textContent=txt;return e}
+function snd(n){try{if(typeof sfx==='function')sfx(n)}catch(e){}}
+function gold(){try{return Math.max(0,parseInt(localStorage.getItem(GK)||'0',10)||0)}catch(e){return 0}}
+function setGold(n){try{localStorage.setItem(GK,String(Math.max(0,Math.floor(n))))}catch(e){}}
+function list(){try{var a=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(a)?a.filter(function(c){return c&&c.k&&c.al}):[]}catch(e){return[]}}
+function saveList(a){try{localStorage.setItem(KEY,JSON.stringify(a))}catch(e){}}
+function mix(hex,t){var n=parseInt(hex.slice(1),16),r=n>>16&255,g=n>>8&255,b=n&255;function m(c){return Math.round(c+(255-c)*t)}return 'rgb('+m(r)+','+m(g)+','+m(b)+')'}
+function dk(hex,t){var n=parseInt(hex.slice(1),16),r=n>>16&255,g=n>>8&255,b=n&255;function m(c){return Math.round(c*(1-t))}return 'rgb('+m(r)+','+m(g)+','+m(b)+')'}
+
+/* ---------- 絵を描く（顔・頭・目・からだ・手足） ---------- */
+function faceP(x,f,hy){
+ x.beginPath();
+ if(f===0)x.arc(0,hy,8,0,7);
+ else if(f===1)x.ellipse(0,hy,7,8.6,0,0,7);
+ else if(f===2)x.roundRect(-7.6,hy-7.6,15.2,15.4,5);
+ else if(f===3){x.moveTo(-7,hy-7);x.lineTo(7,hy-7);x.quadraticCurveTo(9.2,hy+1,0,hy+9);x.quadraticCurveTo(-9.2,hy+1,-7,hy-7);x.closePath()}
+ else x.ellipse(0,hy,9.6,7,0,0,7);
+}
+function eyesP(x,e,hy){
+ var ex=[-3.2,3.2],y=hy-.5,p,i;
+ x.fillStyle='#4a2740';x.strokeStyle='#4a2740';x.lineWidth=1.3;
+ if(e===0){for(i=0;i<2;i++){x.beginPath();x.arc(ex[i],y,1.5,0,7);x.fill()}}
+ else if(e===1){for(i=0;i<2;i++){p=ex[i];x.beginPath();x.arc(p,y,2.1,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(p+.7,y-.8,.8,0,7);x.fill();x.fillStyle='#4a2740'}}
+ else if(e===2){for(i=0;i<2;i++){p=ex[i];x.beginPath();x.moveTo(p-1.8,y+.3);x.lineTo(p+1.8,y+.3);x.stroke()}}
+ else if(e===3){for(i=0;i<2;i++){p=ex[i];x.beginPath();x.arc(p,y+.4,1.5,0,7);x.fill();x.beginPath();x.rect(p-2.2,y-2.1,4.4,1.5);x.fill()}}
+ else {for(i=0;i<2;i++){x.beginPath();x.arc(ex[i],y,1.4,0,7);x.fill()}
+   x.fillStyle='#ff4d6d';x.beginPath();x.arc(0,hy-4.6,1.7,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(.6,hy-5.2,.5,0,7);x.fill();}
+}
+function headFront(x,h,col,hy,t,line){
+ var dark=dk(col,.35),lt='#fff3c4',s,i;
+ x.lineWidth=1.5;x.strokeStyle=line;x.fillStyle=dark;
+ if(h===0||h===1){ /* ショート・ロングヘア（前がみ） */
+  x.beginPath();x.ellipse(0,hy-1.5,8.6,6.4,0,Math.PI,2*Math.PI);x.lineTo(8.6,hy-1.5);x.fill();x.stroke();
+  if(h===1){x.beginPath();x.roundRect(-10,hy-3,4,12,2);x.fill();x.stroke();x.beginPath();x.roundRect(6,hy-3,4,12,2);x.fill();x.stroke()}
+ }
+ else if(h===2){ /* ぼうし */
+  x.beginPath();x.ellipse(0,hy-6.5,10.5,2.6,0,0,7);x.fill();x.stroke();
+  x.fillStyle=col;x.beginPath();x.roundRect(-6.2,hy-17,12.4,11,4);x.fill();x.stroke();
+  x.fillStyle='#fff';x.fillRect(-6.2,hy-8,12.4,2);
+ }
+ else if(h===3||h===4){ /* ツノ・ねじれツノ */
+  x.fillStyle=lt;
+  for(s=-1;s<=1;s+=2){x.beginPath();
+   if(h===3){x.moveTo(s*5,hy-5);x.lineTo(s*8,hy-17);x.lineTo(s*1.5,hy-8)}
+   else{x.moveTo(s*5,hy-5);x.quadraticCurveTo(s*14,hy-8,s*9,hy-19);x.quadraticCurveTo(s*9,hy-12,s*2,hy-7)}
+   x.closePath();x.fill();x.stroke()}
+ }
+ else if(h===5){ /* アンテナ */
+  var sw=Math.sin(t/160)*1.2;
+  x.strokeStyle=line;x.lineWidth=1.3;x.beginPath();x.moveTo(0,hy-7);x.quadraticCurveTo(2,hy-14,4+sw,hy-19);x.stroke();
+  x.fillStyle='#ffd23f';x.beginPath();x.arc(4+sw,hy-19.5,2.4,0,7);x.fill();x.strokeStyle=line;x.lineWidth=1.2;x.stroke();
+ }
+ else { /* はっぱ */
+  x.strokeStyle=line;x.lineWidth=1.2;x.beginPath();x.moveTo(0,hy-7);x.lineTo(1.5,hy-10);x.stroke();
+  x.fillStyle='#59c27a';x.beginPath();x.ellipse(4,hy-11,5,2.6,-.5,0,7);x.fill();x.stroke();
+ }
+}
+function drawBody(x,t,d,o){
+ var col=PAL[d.c][1],line='rgba(40,30,70,.75)',skin=mix(col,.6),b=o.b,sw=o.sw,lg=o.eng?Math.sin(t/70)*1.6:0,hy=-6+b;
+ x.lineCap='round';x.lineJoin='round';x.strokeStyle=line;x.lineWidth=1.8;
+ /* あし */
+ x.fillStyle=dk(col,.2);
+ x.beginPath();x.roundRect(-5.4,10.5+b+lg,4.8,5.8,2.2);x.fill();x.stroke();
+ x.beginPath();x.roundRect(.6,10.5+b-lg,4.8,5.8,2.2);x.fill();x.stroke();
+ /* からだ */
+ x.fillStyle=col;x.beginPath();
+ if(d.b===1)x.ellipse(0,6.5+b,8.6,6.2,0,0,7);
+ else if(d.b===2)x.roundRect(-5.2,b,10.4,13,4);
+ else x.roundRect(-6.5,1+b,13,11.5,4.5);
+ x.fill();x.stroke();
+ if(d.b===3){x.fillStyle=col;[-5.5,-2.5,.5,3.5,6].forEach(function(q){x.beginPath();x.arc(q,12+b,1.8,0,7);x.fill()})}
+ x.fillStyle='rgba(255,255,255,.55)';x.fillRect(-5.5,5.5+b,11,1.6);
+ /* 手 */
+ [[-1,sw],[1,-sw]].forEach(function(p){var ax=p[0]*6,ex=p[0]*11,ey=9+b+p[1]*2;
+  x.strokeStyle=line;x.lineWidth=3.6;x.beginPath();x.moveTo(ax,3+b);x.lineTo(ex,ey);x.stroke();
+  x.strokeStyle=col;x.lineWidth=1.8;x.beginPath();x.moveTo(ax,3+b);x.lineTo(ex,ey);x.stroke();
+  x.fillStyle=skin;x.strokeStyle=line;x.lineWidth=1.4;x.beginPath();x.arc(ex,ey,2.4,0,7);x.fill();x.stroke()});
+ /* 頭 */
+ x.strokeStyle=line;x.lineWidth=1.8;
+ if(d.h===1){x.fillStyle=dk(col,.35);x.beginPath();x.roundRect(-10,hy-4,20,15,7);x.fill();x.stroke()}
+ faceP(x,d.f,hy);x.fillStyle=skin;x.strokeStyle=line;x.lineWidth=1.8;x.fill();x.stroke();
+ x.fillStyle='rgba(255,90,140,.4)';x.beginPath();x.arc(-5.3,hy+3,1.5,0,7);x.arc(5.3,hy+3,1.5,0,7);x.fill();
+ eyesP(x,d.e,hy);
+ x.strokeStyle='#4a2740';x.lineWidth=1.2;x.beginPath();x.arc(0,hy+3.6,1.8,.25,2.9);x.stroke();
+ headFront(x,d.h,col,hy,t,line);
+}
+/* 味方（バトル・町）での描き方 */
+function mkDraw(a,t,x){
+ var d=AL[a.k].mk,fl=a.fly,mv=d.mv,r=a.r||11;
+ var amp=mv===2?.9:mv===1?1.8:1.4,per=mv===2?50:mv===1?200:90;
+ var bob=a.eng?0:Math.sin(t/(a.sleep?500:per)+a.x)*(a.sleep?.8:amp),sw=a.eng?Math.sin(t/70):0;
+ x.save();x.translate(a.x,a.y+(fl?-8+Math.sin(t/180)*2:0));x.scale(a.dr||1,1);
+ x.fillStyle='rgba(20,5,40,.3)';x.beginPath();x.ellipse(0,r+(fl?9:0),r*.9,3,0,0,7);x.fill();
+ drawBody(x,t,d,{b:bob,sw:sw,eng:!!a.eng});
+ x.restore();
+}
+var _dA=drawAlly;
+drawAlly=function(a,t,ctx){if(a&&a.k&&AL[a.k]&&AL[a.k].mk){mkDraw(a,t,ctx||GX);return}return _dA.apply(this,arguments)};
+
+/* ---------- 能力はランダム ---------- */
+function genStats(){
+ var hp=Math.round((1+R()*3)*2)/2,dps=Math.round((.5+R()*1.4)*10)/10;
+ return {hp:hp,dps:dps,sp:rint(35,150),reach:pick([12,12,20,30,50]),fly:R()<.2?1:0,r:rint(9,13),
+  price:Math.max(60,Math.round(hp*dps*9)*10),max:Math.max(1,Math.min(6,Math.round(6-hp*1.1)))};
+}
+function describe(s,mv){
+ var a=[];
+ if(s.sp>=110)a.push('はやい');else if(s.sp<=60)a.push('のんびり');
+ if(s.hp>=3)a.push('かたい');
+ if(s.dps>=1.4)a.push('こうげきがつよい');
+ if(s.fly)a.push('空を飛べる');
+ if(s.reach>=40)a.push('とおくから戦える');
+ a.push(MVN[mv]+'うごき');
+ return a.join('・');
+}
+function applyRec(c){AL[c.k]=c.al;AD[c.k]=c.al.n+'は、自分でつくったオリジナルの味方だよ。'+c.al.ds+'。'}
+function rebuildPanel(){try{var old=document.getElementById('ap');if(old)old.remove();for(var k in apRows)delete apRows[k];buildAp()}catch(e){}}
+function loadAll(){var L=list();if(!L.length)return;L.forEach(applyRec);rebuildPanel()}
+
+/* ---------- お店のUI ---------- */
+function closeMk(){if(OV)OV.remove();OV=null;CARD=null;PV=null}
+function deny(m){MSG=m;snd('deny');render()}
+function drawPrev(){
+ if(!PV)return;var c=PV.getContext('2d'),t=performance.now();
+ c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,160,160);c.save();c.translate(80,100);c.scale(3,3);
+ c.fillStyle='rgba(20,5,40,.22)';c.beginPath();c.ellipse(0,17,10,3.2,0,0,7);c.fill();
+ drawBody(c,t,ST.d,{b:Math.sin(t/200)*1.2,sw:0,eng:false});
+ c.restore();
+}
+function startAnim(){
+ if(animOn)return;animOn=true;
+ (function tick(){drawPrev();if(OV)requestAnimationFrame(tick);else animOn=false})();
+}
+function finish(){
+ var c=gold();
+ if(c<COST){deny('ゴールドが たりないよ…（つくるのに '+COST+'G いるよ）');return}
+ var L=list();
+ if(L.length>=MAX){deny('味方は '+MAX+'体までだよ。いらない味方をへらしてね');return}
+ var s=genStats(),mv=rint(0,2),key='MK'+Date.now().toString(36);
+ var al={n:ST.name.trim(),hp:s.hp,dps:s.dps,sp:s.sp,reach:s.reach,r:s.r,fly:s.fly,price:s.price,max:s.max,
+  ds:describe(s,mv),mk:{f:ST.d.f,h:ST.d.h,e:ST.d.e,b:ST.d.b,c:ST.d.c,mv:mv},custom:1};
+ var rec={k:key,al:al};
+ L.push(rec);saveList(L);setGold(c-COST);applyRec(rec);rebuildPanel();snd('clear');
+ ST.result=rec;MSG='';render();
+}
+function stars(v){var n=Math.max(1,Math.min(5,Math.round(v)));return '★'.repeat(n)+'☆'.repeat(5-n)}
+function renderResult(){
+ var rec=ST.result,al=rec.al;
+ CARD.appendChild(el('div','text-align:center;font-weight:bold;font-size:16px;color:#d05a8a;margin:4px 0 6px','「'+al.n+'」が なかまに くわわったよ！'));
+ var rows=[['たいりょく',stars(al.hp)],['こうげき',stars(al.dps*2.5)],['はやさ',stars(al.sp/30)],['とどく長さ',al.reach>=40?'とおく':'ちかく'],['空を飛ぶ',al.fly?'とべる':'とべない'],['うごき',MVN[al.mk.mv]],['もてる数',al.max+'体']];
+ rows.forEach(function(r){CARD.appendChild(el('div','display:flex;justify-content:space-between;align-items:center;padding:4px 6px;border-bottom:1px dashed #f0c8dc;font-size:13px;color:#8a3a6a',null)).append(el('span',null,r[0]),el('b','color:#d05a8a',r[1]))});
+ CARD.appendChild(el('div','font-size:12px;color:#8a5a7a;line-height:1.5;margin:6px 0',al.ds));
+ CARD.appendChild(el('div','font-size:11px;color:#8a5a7a;margin-bottom:6px','つよさや動きは ぜんぶ ランダムで決まったよ。味方の一覧に もう入っているよ！'));
+ var nav=el('div','display:flex;gap:8px;margin-top:6px');
+ var more=el('button','flex:1;padding:8px;font-size:13px;font-family:inherit;border-radius:12px;border:2px solid #f0a8c8;background:#fff;color:#d05a8a','もう1体つくる');
+ more.onclick=function(){ST={step:0,d:{f:0,h:0,e:0,b:0,c:0},name:'',result:null};render()};
+ var cl=el('button','flex:1;padding:8px;font-size:13px;font-family:inherit;border-radius:12px;border:2px solid #ffc94d;background:#ffe27a;color:#7a3b2e;font-weight:bold','とじる');
+ cl.onclick=closeMk;
+ nav.append(more,cl);CARD.appendChild(nav);
+}
+function render(){
+ if(!CARD)return;
+ CARD.innerHTML='';
+ var hd=el('div','display:flex;align-items:center;justify-content:space-between;margin:0 0 6px;font-weight:bold;color:#d05a8a;font-size:15px');
+ var xb=el('button','flex:none;width:auto;min-height:0;height:auto;line-height:1;padding:3px 9px;font-size:12px;border:2px solid #f0a8c8;border-radius:10px;background:#fff;color:#d05a8a;font-family:inherit','✕');
+ xb.onclick=closeMk;
+ hd.append(el('span',null,'🧸 味方屋さん'),xb);CARD.appendChild(hd);
+ CARD.appendChild(el('div','text-align:center;font-size:12px;color:#8a3a6a;background:#fff;border-radius:999px;padding:4px 10px;margin-bottom:6px','💰 もちこしゴールド '+gold()+'G（つくるのに '+COST+'G）'));
+ if(ST.result){renderResult();return}
+ PV=el('canvas','display:block;margin:0 auto;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,#ffffff 0%,#ffe6f1 80%)');
+ PV.width=160;PV.height=160;CARD.appendChild(PV);
+ var S=STEPS[ST.step],last=ST.step===STEPS.length-1;
+ CARD.appendChild(el('div','text-align:center;font-size:12px;color:#8a5a7a;margin-top:2px','ステップ '+(ST.step+1)+' / '+STEPS.length+'　'+S.t));
+ if(S.k){
+  var grid=el('div','display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0');
+  S.o.forEach(function(lb,i){
+   var sel=ST.d[S.k]===i;
+   var bt=el('button','display:inline-flex;align-items:center;min-width:0;padding:7px 11px;font-size:13px;font-family:inherit;border-radius:999px;border:2px solid '+(sel?'#ff7eb6':'#f0c8dc')+';background:'+(sel?'#ffd6e8':'#fff')+';color:#8a3a6a;font-weight:'+(sel?'bold':'normal'),lb);
+   if(S.k==='c'){bt.prepend(el('span','display:inline-block;width:13px;height:13px;border-radius:50%;margin-right:6px;background:'+PAL[i][1]+';border:1px solid #fff;box-shadow:0 0 0 1px rgba(120,80,100,.3)'))}
+   bt.onclick=function(){ST.d[S.k]=i;render()};
+   grid.appendChild(bt);
+  });
+  CARD.appendChild(grid);
+ } else {
+  var inp=el('input','width:100%;box-sizing:border-box;font-size:16px;padding:8px 10px;border:2px solid #f0c8dc;border-radius:12px;font-family:inherit;text-align:center;margin:8px 0;background:#fff;color:#7a3b5a');
+  inp.maxLength=8;inp.placeholder='なまえを いれてね（8もじまで）';inp.value=ST.name;
+  inp.oninput=function(){ST.name=inp.value};
+  CARD.appendChild(inp);
+  var rb=el('button','display:block;margin:0 auto 4px;padding:6px 12px;font-size:13px;font-family:inherit;border-radius:999px;border:2px solid #b8e6dc;background:#effcf9;color:#2f7a6a','🎲 おまかせ名前');
+  rb.onclick=function(){ST.name=pick(NAMES);render()};
+  CARD.appendChild(rb);
+ }
+ if(MSG){CARD.appendChild(el('div','min-height:18px;text-align:center;font-size:12px;color:#d0457f;margin-top:4px',MSG));MSG=''}
+ var nav=el('div','display:flex;gap:8px;margin-top:8px');
+ var bk=el('button','flex:1;padding:9px;font-size:14px;font-family:inherit;border-radius:12px;border:2px solid #f0c8dc;background:#fff;color:#8a3a6a',"◀ もどる");
+ bk.disabled=ST.step===0;bk.onclick=function(){ST.step--;render()};
+ var nx=el('button','flex:1;padding:9px;font-size:14px;font-family:inherit;font-weight:bold;border-radius:12px;border:2px solid #ffc94d;background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%);color:#e0457f',last?'🎉 かんせい！':'つぎへ ▶');
+ nx.onclick=function(){
+  if(last){if(!ST.name.trim()){deny('なまえを いれてね');return}finish()}
+  else{ST.step++;render()}
+ };
+ nav.append(bk,nx);CARD.appendChild(nav);
+}
+function openMikata(){
+ closeMk();
+ ST={step:0,d:{f:0,h:0,e:0,b:0,c:0},name:'',result:null};MSG='';
+ OV=el('div','position:fixed;inset:0;z-index:9000;background:rgba(36,20,38,.55);display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box;font-family:'+SFONT);
+ OV.addEventListener('click',function(e){if(e.target===OV)closeMk()});
+ CARD=el('div','width:min(100%,340px);max-height:92%;overflow-y:auto;background:#fff8fb;border:3px solid #f0a8c8;border-radius:16px;padding:10px;box-sizing:border-box;color:#7a3b5a');
+ OV.appendChild(CARD);document.body.appendChild(OV);
+ render();startAnim();
+}
+window.__openMikata=openMikata;
+loadAll();
 })();
 </script>
 </body></html>
