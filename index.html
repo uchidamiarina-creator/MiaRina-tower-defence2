@@ -9785,7 +9785,7 @@ var SFONT='"Mochiy Pop One","Hiragino Maru Gothic ProN",sans-serif';
 var PAL=[['ピンク','#ff8fb5'],['そらいろ','#7fb6ff'],['オレンジ','#ffb347'],['むらさき','#a98cff'],['みどり','#59c27a'],['あか','#ff6b6b'],['みずいろ','#4dd0c4'],['きいろ','#f2e05a']];
 var FACES=['まるがお','たまごがお','しかくがお','とがりほお','ぷにぷにほお'];
 var HEADS=['ショートヘア','ロングヘア','ぼうし','ツノ','ねじれツノ','アンテナ','はっぱ'];
-var EYES=['まるめ','キラキラ','ねむそう','ジト目','三つ目'];
+var EYES=['まるめ','キラキラ','ねむそう','ジト目','ツリ目'];
 var BODIES=['ふつう','ずんぐり','ほっそり','もふもふ'];
 var MVN=['はずむ','ふわふわ','ちょこちょこ'];
 var NAMES=['ぴょんた','もふのすけ','ぷるりん','ころすけ','ハニーちゃん','ツノマル','ぽよ丸','モフリン','キララ','ゴンタ','ふわりん','ミミ'];
@@ -9827,8 +9827,10 @@ function eyesP(x,e,hy){
  else if(e===1){for(i=0;i<2;i++){p=ex[i];x.beginPath();x.arc(p,y,2.1,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(p+.7,y-.8,.8,0,7);x.fill();x.fillStyle='#4a2740'}}
  else if(e===2){for(i=0;i<2;i++){p=ex[i];x.beginPath();x.moveTo(p-1.8,y+.3);x.lineTo(p+1.8,y+.3);x.stroke()}}
  else if(e===3){for(i=0;i<2;i++){p=ex[i];x.beginPath();x.arc(p,y+.4,1.5,0,7);x.fill();x.beginPath();x.rect(p-2.2,y-2.1,4.4,1.5);x.fill()}}
- else {for(i=0;i<2;i++){x.beginPath();x.arc(ex[i],y,1.4,0,7);x.fill()}
-   x.fillStyle='#ff4d6d';x.beginPath();x.arc(0,hy-4.6,1.7,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(.6,hy-5.2,.5,0,7);x.fill();}
+ else {/* ツリ目：目じりが上がったつり上がりの目 */
+   for(i=0;i<2;i++){p=ex[i];var sg=p<0?-1:1;x.beginPath();x.arc(p,y+.6,1.5,0,7);x.fill();
+    x.strokeStyle='#4a2740';x.lineWidth=1.5;x.beginPath();x.moveTo(p-sg*1.6,y-.2);x.lineTo(p+sg*2.8,y-2.8);x.stroke()}
+  }
 }
 function headFront(x,h,col,hy,t,line){
  var dark=dk(col,.35),lt='#fff3c4',s,i;
@@ -9905,7 +9907,7 @@ drawAlly=function(a,t,ctx){if(a&&a.k&&AL[a.k]&&AL[a.k].mk){mkDraw(a,t,ctx||GX);r
 function genStats(){
  var hp=Math.round((1+R()*3)*2)/2,dps=Math.round((.5+R()*1.4)*10)/10;
  return {hp:hp,dps:dps,sp:rint(35,150),reach:pick([12,12,20,30,50]),fly:R()<.2?1:0,r:rint(9,13),
-  price:Math.max(60,Math.round(hp*dps*9)*10),max:Math.max(1,Math.min(6,Math.round(6-hp*1.1)))};
+  price:Math.max(60,Math.round(hp*dps*9)*10),max:Math.max(2,Math.min(6,Math.round(6-hp*1.1)))};
 }
 function describe(s,mv){
  var a=[];
@@ -9917,9 +9919,13 @@ function describe(s,mv){
  a.push(MVN[mv]+'うごき');
  return a.join('・');
 }
-function applyRec(c){AL[c.k]=c.al;AD[c.k]=c.al.n+'は、自分でつくったオリジナルの味方だよ。'+c.al.ds+'。'}
+function applyRec(c){c.al.max=Math.max(2,c.al.max|0);AL[c.k]=c.al;AD[c.k]=c.al.n+'は、自分でつくったオリジナルの味方だよ。'+c.al.ds+'。'}
 function rebuildPanel(){try{var old=document.getElementById('ap');if(old)old.remove();for(var k in apRows)delete apRows[k];buildAp()}catch(e){}}
 function loadAll(){var L=list();if(!L.length)return;L.forEach(applyRec);rebuildPanel()}
+/* 味方パネルを開くたびに、まだ一覧にない新しい味方を追加する */
+function syncPanel(){var n=0;list().forEach(function(c){if(!AL[c.k]){applyRec(c);n++}});if(n)rebuildPanel()}
+var _oap=openAp;
+openAp=function(){syncPanel();return _oap.apply(this,arguments)};
 
 /* ---------- お店のUI ---------- */
 function closeMk(){if(OV)OV.remove();OV=null;CARD=null;PV=null}
@@ -10009,7 +10015,7 @@ function openMikata(){
  closeMk();
  ST={step:0,d:{f:0,h:0,e:0,b:0,c:0},name:'',result:null};MSG='';
  OV=el('div','position:fixed;inset:0;z-index:9000;background:rgba(36,20,38,.55);display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box;font-family:'+SFONT);
- OV.addEventListener('click',function(e){if(e.target===OV)closeMk()});
+ OV.className='mkbox';OV.addEventListener('click',function(e){if(e.target===OV)closeMk()});
  CARD=el('div','width:min(100%,340px);max-height:92%;overflow-y:auto;background:#fff8fb;border:3px solid #f0a8c8;border-radius:16px;padding:10px;box-sizing:border-box;color:#7a3b5a');
  OV.appendChild(CARD);document.body.appendChild(OV);
  render();startAnim();
@@ -10018,4 +10024,12 @@ window.__openMikata=openMikata;
 loadAll();
 })();
 </script>
+<style id="twbtn">
+.twc button,#bookov button,#rinItemsOv button,#sgGet button,.mkbox button{font-family:"Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif!important;font-size:16px!important;font-weight:bold!important;line-height:1.35!important;letter-spacing:.04em!important;color:#5a2a4a!important;min-height:44px;padding:10px 12px!important;border-radius:16px!important;cursor:pointer;text-shadow:0 1px 0 #fff}
+.twc button,#bookov button,#rinItemsOv button,#sgGet button,.mkbox button:not([style*="background"]){background:#fff!important;border:3px solid #f0a8c8!important;box-shadow:0 3px 0 #f0a8c8}
+.twc button,#bookov button,#rinItemsOv button,#sgGet button,.mkbox button.on{background:#ff8fb5!important;border-color:#ff7eb6!important;color:#fff!important;text-shadow:0 1px 0 #d05a8a}
+.twc button,#bookov button,#rinItemsOv button,#sgGet button,.mkbox button.go{background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%)!important;border:3px solid #fff!important;outline:2px solid #ffc94d;color:#e0457f!important;box-shadow:0 3px 0 #e8a92a}
+.twc button,#bookov button,#rinItemsOv button,#sgGet button,.mkbox button:disabled{opacity:.5!important}
+.twc button,#bookov button,#rinItemsOv button,#sgGet button,.mkbox button:active{transform:translateY(2px)}
+</style>
 </body></html>
