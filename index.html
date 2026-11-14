@@ -10445,4 +10445,15 @@ loadAll();
 .twc button:not([style*="background"]):not(:disabled),.mkbox button:not([style*="background"]):not(:disabled),#bookov button:not([style*="background"]):not(:disabled),#rinItemsOv button:not([style*="background"]):not(:disabled),#sgGet button:not([style*="background"]):not(:disabled){animation:twGlowBtn 2s ease-in-out infinite}
 .twc button.on,.mkbox button.on{box-shadow:0 0 10px #ff9ec4,0 0 18px rgba(255,126,182,.7),0 3px 0 #d94a86!important}
 </style>
+<style id="mkbtncompact">
+/* 味方屋さん：ボタンをコンパクトに＆文字をくっきり（白いぼかしをやめて、濃い茶色の文字に） */
+.mkbox button{font-size:13px!important;line-height:1.2!important;letter-spacing:0!important;min-height:0!important;height:auto!important;padding:4px 10px!important;border-width:2px!important;border-radius:999px!important;box-shadow:0 2px 0 #e8711a!important;color:#4a1a00!important;text-shadow:none!important;animation:none!important;font-weight:bold!important;-webkit-font-smoothing:antialiased}
+.mkbox button[style*="#ffd6e8"]{background:#ffb3d1!important;border-color:#e0457f!important;color:#4a1a00!important;box-shadow:0 2px 0 #c23a75!important}
+.mkbox button[style*="flex:1"]{padding:5px 8px!important;font-size:13px!important;border-radius:12px!important}
+.mkbox button:disabled{background:#e2e2e2!important;color:#777!important;border:2px dashed #aaa!important;box-shadow:none!important}
+.mkbox button:active{transform:translateY(1px)}
+.mkbox div[style*="flex-wrap:wrap"]{gap:4px!important;margin:5px 0!important}
+.mkbox div[style*="display:flex;gap:8px"]{gap:6px!important;margin-top:5px!important}
+.mkbox input{font-size:15px!important;padding:5px 8px!important;margin:5px 0!important}
+</style>
 </body></html>
