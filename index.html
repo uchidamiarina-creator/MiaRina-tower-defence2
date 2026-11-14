@@ -2905,7 +2905,7 @@ function shop(g,px,py,w,h,col,txt,aw){g.fillStyle='rgba(60,90,50,.18)';g.beginPa
  g.fillStyle='#fff8e0';g.fillRect(px+w*.12,py-h*.52,w*.42,h*.36);g.fillStyle='#d98a5a';g.fillRect(px+w*.66,py-h*.5,w*.22,h*.5);
  WIN.push([px+w*.12,py-h*.52,w*.42,h*.36])}
 var NAMES=['アキバ','ブクロ','シモキタ','サンチャ','ポンバシ','エルエー','ベガス','ロス','ワイキキ'];
-var BLD={},LOTS=Object.freeze([{x:6,y:337,w:62},{x:292,y:337,w:62},{x:149,y:337,w:62},{x:282.95,y:240,w:34.1,s:.55}].map(Object.freeze));/* 空き地は手前の3つ＋右の山の上（遠近法で小さく） */
+var BLD={},LOTS=Object.freeze([{x:6,y:337,w:62},{x:292,y:337,w:62},{x:149,y:337,w:62},{x:282.95,y:248,w:34.1,s:.55}].map(Object.freeze));/* 空き地は手前の3つ＋右の山の上（遠近法で小さく） */
 /* お寿司屋さんの値段（もちこしゴールドではらう）／3つめは「めずらしい」＝ふだんは売っていない */
 var SUSHI=[['sushi_otoro',5000,0],['sushi_chutoro',2500,0],['sushi_uni',1200,0],['sushi_salmon',500,0],['sushi_shime',3000,0],['sushi_shima',15000,1],['sushi_nodo',12000,1]],RARE_PCT=8,OTASUKE=[['otasuke_ticket',6000,0]];
 var SGK='miarina_td_gold_v1',SFONT='"Mochiy Pop One","Hiragino Maru Gothic ProN",sans-serif';
@@ -10039,4 +10039,23 @@ loadAll();
 .twc button,#bookov button,#rinItemsOv button,#sgGet button,.mkbox button:active{transform:translateY(2px)}
 </style>
 <style id="apscroll">#ap>div{max-height:88%;overflow-y:auto;-webkit-overflow-scrolling:touch}</style>
+<style id="twtext">
+/* 街の文字を読みやすく：小さすぎる文字は大きく、色は濃く、白い縁取りで見やすく */
+.twc [style*="font-size:9px"],.twc [style*="font-size:10px"],.twc [style*="font-size:11px"],.twc [style*="font-size:12px"]{font-size:14px!important}
+.twc [style*="font-size:13px"]{font-size:15px!important}
+.twc div:not(#lbx):not(#lbx *):not(.keepcol),.twc span:not(#lbx):not(#lbx *):not(.keepcol),.twc p,.twc label,.twc b{color:#3d1f35!important;text-shadow:0 0 3px #fff,0 0 2px #fff;font-weight:bold}
+.twc button{color:#3d1f35!important}
+.twc button.go,.twc button.on{color:#fff!important}
+.twc button.go{color:#e0457f!important}
+</style>
+<style id="twwin">
+/* ウインドウ：薄い木目調・ふちは桃色・文字はかわいいオレンジ（紫は使わない） */
+.twc [style*="background:#fff8fb"],.mkbox [style*="background:#fff8fb"],#bookov [style*="background"],#rinItemsOv [style*="background"],#sgGet [style*="background"]{background:repeating-linear-gradient(92deg,#f5e2c2 0px,#efd4a6 9px,#f8e9cf 15px,#ecd0a0 22px,#f5e2c2 30px)!important;border-color:#ff9ec4!important;color:#e9772e!important}
+.twc [style*="rgba(36,20,38"],.mkbox,.twc [style*="rgba(60,30,50"],#bookov,#rinItemsOv{background:rgba(120,80,40,.4)!important}
+.twc div:not(#lbx):not(#lbx *),.twc span:not(#lbx):not(#lbx *),.twc p,.twc label,.twc b,.mkbox div,.mkbox span,.mkbox b,.mkbox label{color:#e9772e!important;text-shadow:0 0 2px #fff,0 0 3px #fff8f0;font-weight:bold}
+.twc button,.mkbox button,#bookov button,#rinItemsOv button,#sgGet button{color:#e9772e!important;border-color:#ff9ec4!important;text-shadow:0 0 2px #fff}
+.twc button.go,.mkbox button.go{color:#e9772e!important}
+.twc button.on,.mkbox button.on{background:#ffb3d1!important;border-color:#ff7eb6!important;color:#fff!important}
+.twc [style*="border:2px solid #f0c8dc"],.mkbox [style*="border:2px solid #f0c8dc"],.twc [style*="border:2px solid #f0a8c8"],.mkbox [style*="border:2px solid #f0a8c8"]{border-color:#ff9ec4!important}
+</style>
 </body></html>
