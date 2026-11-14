@@ -7516,7 +7516,7 @@ function goldP(){try{var k='miarina_td_firstplay_v1',t=parseInt(localStorage.get
 window.rinGoldP=goldP;(function(){try{goldP()}catch(e){}})();
 function SELLP(m){var r=rar(m);return r==='UR'?100000:r==='SR'?5000:r==='R'?500:250}
 function openList(){
- stop();var a=mons();
+ stop();var a=mons();var favOnly=false;
  ov=document.createElement('div');
  ov.style.cssText='position:fixed;inset:0;z-index:99990;background:rgba(36,20,38,.7);display:flex;align-items:center;justify-content:center;font-family:inherit';
  var box=document.createElement('div');
@@ -7525,8 +7525,9 @@ function openList(){
  function listView(){
   cancelAnimationFrame(raf);box.innerHTML='';
   var h=document.createElement('div');h.textContent='👾 オリジナルモンスター図鑑（'+a.length+'/'+MAX+'）';h.style.cssText='font-weight:bold;margin-bottom:6px';box.appendChild(h);
+  if(a.length){var fvc=a.filter(function(m){return m.fav}).length;var fb=document.createElement('button');fb.textContent=favOnly?'📖 ぜんぶ見る':'⭐ お気に入り（'+fvc+'）';fb.style.cssText='margin:0 0 6px;padding:6px 14px;font-size:13px;font-weight:bold';fb.onclick=function(){try{sfx('tap')}catch(e){}favOnly=!favOnly;sel=-1;listView()};box.appendChild(fb)}
   if(!a.length){var em=document.createElement('div');em.textContent='まだ登録していないよ。🎲ガチャでつくろう！';em.style.cssText='font-size:12px;opacity:.8;padding:14px 0';box.appendChild(em)}
-  var gs=[[],[],[],[],[],[],[],[],[],[],[]];a.forEach(function(m){gs[rowOf(m)].push(m)});
+  var src=favOnly?a.filter(function(m){return m.fav}):a;var gs=[[],[],[],[],[],[],[],[],[],[],[]];src.forEach(function(m){gs[rowOf(m)].push(m)});
   gs.forEach(function(g){g.sort(function(p,q){return yomi(p.n).localeCompare(yomi(q.n),'ja')})});
   if(sel<0||sel>10||(!gs[sel].length&&a.length)){sel=0;for(var k=0;k<11;k++)if(gs[k].length){sel=k;break}}
   if(a.length){
@@ -7539,7 +7540,7 @@ function openList(){
    var gh=document.createElement('div');gh.textContent=(sel<10?ROWS[sel][0]+'行':'ほか（かな以外）')+'　'+gs[sel].length+'匹';gh.style.cssText='font-size:12px;opacity:.75;margin-bottom:2px';box.appendChild(gh);
    if(!gs[sel].length){var e2=document.createElement('div');e2.textContent='この行はまだいないよ';e2.style.cssText='font-size:12px;opacity:.8;padding:10px 0';box.appendChild(e2)}
    gs[sel].forEach(function(m){
-    var row=document.createElement('button');row.textContent='['+rar(m)+'] '+((isGd(m)||isSv(m))?'✨ ':'')+m.n;row.style.cssText='display:block;width:100%;margin:3px 0;padding:8px 10px;text-align:left;font-size:14px;font-weight:bold';
+    var row=document.createElement('button');row.textContent='['+rar(m)+'] '+(m.fav?'⭐':'')+((isGd(m)||isSv(m))?'✨ ':'')+m.n;row.style.cssText='display:block;width:100%;margin:3px 0;padding:8px 10px;text-align:left;font-size:14px;font-weight:bold';
     row.onclick=function(){try{sfx('tap')}catch(e){}detail(m)};box.appendChild(row)})}
   var cl=document.createElement('button');cl.textContent='とじる';cl.style.cssText='padding:7px 18px;margin-top:8px';cl.onclick=stop;box.appendChild(cl)}
  function detail(m){
@@ -7549,9 +7550,10 @@ function openList(){
   var inf=document.createElement('div');inf.style.cssText='font-size:13px;line-height:1.7;margin:4px 0;white-space:pre-line';
   inf.textContent=rinfo(m);
   box.appendChild(inf);
+  var fv=document.createElement('button');fv.textContent=m.fav?'⭐ お気に入り解除':'☆ お気に入りに登録';fv.style.cssText='padding:7px 14px;margin:4px 0 0 6px';fv.onclick=function(){try{sfx('tap')}catch(e){}m.fav=!m.fav;saveMons(a);detail(m)};box.appendChild(fv);
    var ds=document.createElement('div');var d0=JSON.stringify(m.d||null);ds.textContent=dcDesc(m,a);if(JSON.stringify(m.d)!==d0)saveMons(a);ds.style.cssText='font-size:13px;line-height:1.7;margin:6px 0;padding:6px 10px;border-radius:10px;background:rgba(255,111,165,.12);white-space:pre-line;text-align:left';box.appendChild(ds);
   var bk=document.createElement('button');bk.textContent='もどる';bk.style.cssText='padding:7px 18px;margin-top:4px';bk.onclick=listView;box.appendChild(bk);
-   var dl=document.createElement('button'),dlA=0;dl.textContent='💰 売る（'+SELLP(m)+'G）';dl.style.cssText='padding:7px 18px;margin:4px 0 0 6px';dl.onclick=function(){try{sfx('tap')}catch(e){}if(!dlA){dlA=1;dl.textContent='ほんとに売る？ もう一回タップ';setTimeout(function(){if(dl.isConnected){dlA=0;dl.textContent='💰 売る（'+SELLP(m)+'G）'}},3000);return}var ix=a.indexOf(m);if(ix>=0){a.splice(ix,1);saveMons(a);setGold(gold()+SELLP(m))}listView()};box.appendChild(dl);
+   var dl=document.createElement('button'),dlA=0;dl.textContent='💰 売る（'+SELLP(m)+'G）';dl.style.cssText='padding:7px 18px;margin:4px 0 0 6px';dl.onclick=function(){try{sfx('tap')}catch(e){}if(m.fav){sfx('deny');return}if(!dlA){dlA=1;dl.textContent='ほんとに売る？ もう一回タップ';setTimeout(function(){if(dl.isConnected){dlA=0;dl.textContent='💰 売る（'+SELLP(m)+'G）'}},3000);return}var ix=a.indexOf(m);if(ix>=0){a.splice(ix,1);saveMons(a);setGold(gold()+SELLP(m))}listView()};box.appendChild(dl);if(m.fav){dl.textContent='⭐ お気に入りは売れない';dl.disabled=true;dl.style.opacity='.6'}
   var c=cv.getContext('2d');cancelAnimationFrame(raf);
   (function f(n){if(!ov)return;c.clearRect(0,0,170,170);c.save();c.translate(85,85-monCY(m.p)*2.2);drawMon(c,m.p,n,2.2);c.restore();raf=requestAnimationFrame(f)})(performance.now())}
  listView()}
