@@ -3656,7 +3656,7 @@ function openRank(){
    mid.append(n,sb);
    var c=document.createElement('div');c.className='rksc';c.style.fontSize=rank===1?'18px':'15px';c.textContent=e.s.toLocaleString()+'点';
    r.append(b,mid,c);return r}
-  function subOf(e,tab){var h=Math.floor(e.t/60),m=Math.floor(e.t%60),t=p2(h)+':'+p2(m)+' に入ってきたよ';if(tab==='day')return t;var dt=new Date(e.d*86400000);return (dt.getUTCMonth()+1)+'/'+dt.getUTCDate()+' '+p2(h)+':'+p2(m)+' に記録'}
+  function subOf(e,tab){var h=Math.floor(e.t/60),m=Math.floor(e.t%60),t=p2(h)+':'+p2(m);if(tab==='day')return t;var dt=new Date(e.d*86400000);return (dt.getUTCMonth()+1)+'/'+dt.getUTCDate()+' '+p2(h)+':'+p2(m)}
   function rkRenderB(){
    var tab=rkTab,cpu=cpuBoard(tab),mine=null,o=null,nm=nowMin(),d=todayNum(),keep=rkList.scrollTop;
    try{o=rkLoad()}catch(e){o=null}
