@@ -3213,7 +3213,7 @@ function fin(msg,d,box,r0,extra){var r=aff(d,r0),up=d>0;msg.innerHTML='';msg.sty
  cd.appendChild(tx);msg.appendChild(cd);
  tgBurst(box,up?['💖','✨','🌸','⭐','🎀']:['💧','☁️','💧'],up?18:10,!up);
  var c=tgBtn('とじる','padding:7px 24px;font-size:13px;margin-top:10px','linear-gradient(#ff9cc8,#ff6fa5)');c.onclick=closeGm;msg.appendChild(c)}
-function openGame(ty){if(gm)return;tgSty();
+function openTownGame(ty){if(gm)return;tgSty();
  gm=mk('div','position:absolute;inset:0;z-index:6;background:radial-gradient(circle at 50% 35%,rgba(255,190,225,.4),rgba(36,20,38,.62));display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box');
  var IC={j:['#ff8fb5','#ff5f9b'],a:['#7fd0ff','#4aa8ee'],o:['#ffd23f','#ffa31a']},DS={j:'かてば なかよしに！まけると…',a:'あみだを えらぼう！当たりで なかよし♪',o:'ひいた おみくじで なかよし度が かわるよ'};
  var bx=mk('div','position:relative;overflow:hidden;width:min(100%,310px);background:linear-gradient(180deg,#fffafc 0%,#ffeaf5 100%);border:3px solid #fff;outline:3px solid #f6a9cb;border-radius:24px;padding:14px 12px 12px;box-sizing:border-box;text-align:center;color:#8a3a6a;font-size:13px;box-shadow:0 8px 0 #e58fb6,0 16px 30px rgba(60,20,60,.4);animation:tgPop .35s ease-out');
@@ -3574,7 +3574,7 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
     var ar=sEl('div','display:flex;gap:8px;margin-top:8px'),ag=gbtn('もういっかい','flex:1;font-size:14px'),en=gbtn('おしまい','flex:1;font-size:14px;color:#8a5a7a;background:#fff;outline-color:#f0c8dc;box-shadow:0 3px 0 #f0c8dc');
     bet=Math.min(bet,cg());ag.onclick=function(){m='つぎは どうかな？';bt()};en.onclick=closeShp;ar.append(ag,en);bd.appendChild(ar)}
    bt()}
-  function openPoker(msg){var RK='miarina_td_rinacoin_v1',bet=0,m=msg||'いらっしゃい！ カードを のこして チェンジしよう',deck,H,hold,rules=false,SU=['\u2660','\u2665','\u2666','\u2663'],PT=[['ロイヤルフラッシュ',250],['ストレートフラッシュ',50],['フォーカード',25],['フルハウス',9],['フラッシュ',6],['ストレート',4],['スリーカード',3],['ツーペア',2],['ジャックスいじょうのワンペア',1]];
+  function openPoker(msg){var RK='miarina_td_rinacoin_v1',bet=0,m=msg||'いらっしゃい！ カードを のこして チェンジしよう',deck,H,hold,rules=false,SU=['\u2660','\u2665','\u2666','\u2663'],PT=[['ロイヤルフラッシュ',250],['ストレートフラッシュ',50],['フォーカード',25],['フルハウス',9],['フラッシュ',6],['ストレート',4],['スリーカード',3],['ツーペア',2],['ワンペア',1]];
    function cg(){try{return Math.max(0,parseInt(localStorage.getItem(RK)||'0',10)||0)}catch(e){return 0}}
    function cs(n){try{localStorage.setItem(RK,String(Math.max(0,n|0)))}catch(e){}}
    function rn(c){return c.r===1?'A':c.r===11?'J':c.r===12?'Q':c.r===13?'K':String(c.r)}
@@ -3582,7 +3582,7 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
    function ev(h){var rs=h.map(function(c){return c.r}).sort(function(a,b){return a-b}),cn={},k,fl=h.every(function(c){return c.s===h[0].s}),st=false,mx=0,pr=[],tr=false,q=false;
     rs.forEach(function(r){cn[r]=(cn[r]||0)+1});for(k in cn){if(cn[k]===2)pr.push(+k);if(cn[k]===3)tr=true;if(cn[k]===4)q=true}
     if(pr.length+(tr?1:0)+(q?1:0)>=0&&Object.keys(cn).length===5){st=rs[4]-rs[0]===4||rs.join()==='1,10,11,12,13'}
-    if(st&&fl)return rs.join()==='1,10,11,12,13'?0:1;if(q)return 2;if(tr&&pr.length===1)return 3;if(fl)return 4;if(st)return 5;if(tr)return 6;if(pr.length===2)return 7;if(pr.length===1&&(pr[0]>=11||pr[0]===1))return 8;return -1}
+    if(st&&fl)return rs.join()==='1,10,11,12,13'?0:1;if(q)return 2;if(tr&&pr.length===1)return 3;if(fl)return 4;if(st)return 5;if(tr)return 6;if(pr.length===2)return 7;if(pr.length===1)return 8;return -1}
    function gbtn(txt,css){return sEl('button','flex:none;width:auto;min-height:0;height:auto;min-width:0;padding:7px 11px;font-size:13px;font-weight:bold;font-family:'+SFONT+';letter-spacing:.04em;color:#e0457f;background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%);border:3px solid #fff;outline:2px solid #ffc94d;border-radius:999px;box-shadow:0 3px 0 #e8a92a,0 0 8px rgba(255,210,80,.6);'+(css||''),txt)}
    function sm(t,f){var b=sEl('button','display:block;margin:6px auto 0;width:auto;min-height:0;height:auto;padding:4px 10px;font-size:12px;font-family:'+SFONT+';border-radius:999px;border:2px solid #f0a8c8;background:#fff;color:#c0456f',t);b.onclick=f;return b}
    function bt(){var bd=shpBox('♠ ポーカー'),have=cg();if(bet>have)bet=have;
@@ -3604,12 +3604,17 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
      if(!end)e.onclick=function(){hold[i]=hold[i]?0:1;try{sfx('tap')}catch(er){}show(false)};cr.appendChild(w)});
     bd.appendChild(cr);
     if(!end){bd.appendChild(sEl('div','text-align:center;font-size:13px;color:#8a5a7a;min-height:18px',r>=0?'いまの やく：'+PT[r][0]:'いまは やくなし'));
-     var b=gbtn('🔄 チェンジ！','display:block;width:100%;margin-top:8px;font-size:16px;padding:9px 12px');b.onclick=function(){hold.forEach(function(h,i){if(!h)H[i]=deck.pop()});try{sfx('place')}catch(er){}show(true);settle()};bd.appendChild(b);return}
+     var b=gbtn('🔄 チェンジ！','display:block;width:100%;margin-top:8px;font-size:16px;padding:9px 12px');b.onclick=function(){smartDraw();try{sfx('place')}catch(er){}show(true);settle()};bd.appendChild(b);return}
     var ret=r>=0?bet*PT[r][1]:0,net=ret-bet;
     bd.appendChild(sEl('div','text-align:center;font-weight:bold;font-size:15px;line-height:1.5;margin-top:8px;color:'+(net>0?'#d9327c':net<0?'#6a7a9a':'#2fa86a'),(r>=0?(r<=3?'🎉 ':'')+PT[r][0]+'！ '+PT[r][1]+'倍':'やくなし…')+'（'+(net>0?'+':'')+net+' リナコイン）'));
     bd.appendChild(sEl('div','display:table;margin:4px 0 0 auto;font-size:11px;font-weight:bold;color:#b93a0a;background:#fff3c4;border-radius:999px;padding:1px 8px','🪙 '+cg()+' リナコイン'));
     var ar=sEl('div','display:flex;gap:8px;margin-top:8px'),ag=gbtn('もういっかい','flex:1;font-size:14px'),en=gbtn('おしまい','flex:1;font-size:14px;color:#8a5a7a;background:#fff;outline-color:#f0c8dc;box-shadow:0 3px 0 #f0c8dc');
     ag.onclick=function(){m='つぎは どうかな？';bt()};en.onclick=closeShp;ar.append(ag,en);bd.appendChild(ar)}
+   /* あたりやすく：チェンジで2通りの引き方をためして、強いほうの手を選ぶ */
+   function smartDraw(){var idx=[],best=null,bs=99,t,q,j,x,d,h2,sc;hold.forEach(function(h,i){if(!h)idx.push(i)});if(!idx.length)return;
+    for(t=0;t<2;t++){d=deck.slice();for(q=d.length-1;q>0;q--){j=Math.floor(Math.random()*(q+1));x=d[q];d[q]=d[j];d[j]=x}
+     h2=H.slice();idx.forEach(function(i,k){h2[i]=d[k]});sc=ev(h2);if(sc<0)sc=99;if(sc<bs||!best){bs=sc;best=h2}}
+    H=best}
    function settle(){var r=ev(H),ret=r>=0?bet*PT[r][1]:0;cs(cg()+ret);try{sfx(ret>bet?(r<=3?'star':'clear'):ret===bet?'pop':'lose')}catch(er){}show(true)}
    bt()}
   function openHiLo(msg){var RK='miarina_td_rinacoin_v1',bet=0,orig=0,pot=0,cur=null,last=null,st='bet',m=msg||'いらっしゃい！ つぎのカードが 上か 下か あててね',TT='🃏 ハイ＆ロー';
@@ -3832,7 +3837,7 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
    n.onclick=function(){openLotMenu(i)};
    row.append(n,y);bd.appendChild(row)}
   function tap(e){var rc=cn.getBoundingClientRect(),px=(e.clientX-rc.left)/rc.width*W,py=(e.clientY-rc.top)/rc.height*H,best=null,bd=1e9;
-  if(MCH&&Math.abs(px-MCH.x)<30&&Math.abs(py-(MCH.sy||MCH.y))<28){var ty0=MCH.type;MCH=null;mnext=R(10,25);try{sfx('tap')}catch(er){}openGame(ty0);return}
+  if(MCH&&Math.abs(px-MCH.x)<30&&Math.abs(py-(MCH.sy||MCH.y))<28){var ty0=MCH.type;MCH=null;mnext=R(10,25);try{sfx('tap')}catch(er){}openTownGame(ty0);return}
   if(px>=294&&px<=350&&py>=382&&py<=446){try{sfx('tap')}catch(er){}openQ();return}
   if(px>=266&&px<=350&&py>=38&&py<=62){try{sfx('tap')}catch(er){}openPn();return}
   for(var i=0;i<res.length;i++){var r=res[i],ww=r.sw||30,hh=r.sh||30;if(Math.abs(px-r.x)<ww/2+6&&py<r.y+8&&py>r.y-hh-(r.lift||0)-8){var d=Math.abs(r.y-py);if(d<bd){bd=d;best=r}}}
@@ -4184,6 +4189,77 @@ function openRank(){
   rkRenderB();rkTimer=setInterval(function(){if(!ov2.isConnected){clearInterval(rkTimer);return}rkRenderB()},30000);
 }
 (function(){var b=document.getElementById('rkb4');if(b)b.onclick=function(){try{sfx('tap')}catch(e){}openRank()}})();
+/* ===== 遊び方チュートリアル（攻略本のもくじ「遊び方」から開く） ===== */
+function openTutorial(){
+ if(document.getElementById('tutov'))return;
+ var KIMG='';try{var kk=document.querySelector('#kiri img.kimg');if(kk&&kk.src)KIMG=kk.src}catch(e){}
+ var calm=false;try{calm=window.matchMedia('(prefers-reduced-motion:reduce)').matches}catch(e){}
+ var PATH='M20 25H150V60H40V95H150';
+ function mapSvg(st){
+  var s='<svg viewBox="0 0 180 120" width="100%" style="max-width:300px;display:block;margin:0 auto" role="img" aria-label="マップのイメージ図"><rect x="2" y="2" width="176" height="116" rx="12" fill="#c6ecb0" stroke="#8fc276" stroke-width="3"/>';
+  if(st>=3)s+='<path d="'+PATH+'" fill="none" stroke="#b98a4a" stroke-width="17" stroke-linecap="round" stroke-linejoin="round" opacity=".45"/><path d="'+PATH+'" fill="none" stroke="#f6dca6" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>';
+  if(st>=4)s+='<circle cx="95" cy="42" r="34" fill="rgba(255,111,165,.16)" stroke="#ff6fa5" stroke-width="2" stroke-dasharray="5 4"/><circle cx="95" cy="42" r="11" fill="#fff" stroke="#ff6fa5" stroke-width="3"/><text x="95" y="47" text-anchor="middle" font-size="13" font-weight="900" fill="#e0245e">矢</text>';
+  if(st>=5){for(var i=0;i<3;i++){s+='<circle r="7" fill="#b388eb" stroke="#fff" stroke-width="2">'+(calm?'':'<animateMotion dur="9s" begin="'+(-i*2.2)+'s" repeatCount="indefinite" path="'+PATH+'"/>')+'</circle>'}}
+  if(st>=1)s+='<circle cx="150" cy="95" r="13" fill="#ff6fa5" stroke="#fff" stroke-width="3"/><text x="150" y="100" text-anchor="middle" font-size="13" font-weight="900" fill="#fff">利</text>';
+  if(st>=2)s+='<circle cx="20" cy="25" r="13" fill="#7a5cff" stroke="#fff" stroke-width="3"/><text x="20" y="30" text-anchor="middle" font-size="12" font-weight="900" fill="#fff">ス</text>';
+  return s+'</svg>'}
+ var STEPS=[
+  {t:'ようこそ！',k:'ぼくは キリン。いっしょに あそびかたを おぼえよう！',f:5,l:['敵が ゴールの利奈（りな）に たどりつくと ライフが へるよ','タワーを置いて、敵を やっつけよう！','ライフが 0 になると まけ。きめられた数の フェーズを まもりきれば クリア🎉']},
+  {t:'ゲームのはじめかた',k:'さいしょは かんたんな むずかしさが おすすめだよ',f:'🎮',l:['① 「なまえ」を 入れる（8文字まで）','② むずかしさを えらぶ。はじめては「超かんたん」（10フェーズでクリア）がおすすめ','③ 「はじめる」を タップ！']},
+  {t:'① 利奈のゴールを置こう',cap:'「利」＝利奈のゴール',k:'まずは まもりたい場所を きめるんだ',f:1,l:['マップを タップして、利奈の ゴールを 置くよ','未亜の近くには 置けないから、すこし はなれた場所を えらんでね','🗺️ボタンを おすと、ゴール・スタート・道を ぜんぶ おまかせで 作ってくれるよ']},
+  {t:'② スタートを置こう',cap:'「ス」＝敵のスタート',k:'敵は ここから やってくるよ',f:2,l:['敵が 出てくる スタートの場所を タップして 置くよ','こんどは 利奈から はなれた場所が いいよ']},
+  {t:'③ 道をつなごう',cap:'スタートから 利奈まで 道がつながったよ',k:'道が つながったら じゅんびOK！',f:3,l:['スタートから 利奈まで 道を つなごう（ぜんぶ 無料！）','道が つながると ▶ボタンが おせるようになるよ','道を ぐねぐね 長くすると、敵が歩く時間が ふえて 有利だよ','準備中は なんどでも 作りなおせるよ']},
+  {t:'④ タワーを置こう',cap:'「矢」＝ピンクアロー（円は こうげきはんい）',k:'道のそばに 置くのが コツだよ',f:4,l:['画面の下の ボタンから タワーを えらんで、マップの 道のそばを タップ！','さいしょは 50Gの「ピンクアロー」が おすすめ','お金（G）が たりないと 置けないよ','ほかの武器は、仙人に 教えてもらうと 使えるようになるよ']},
+  {t:'⑤ ▶で バトルかいし！',cap:'紫の敵が 道を 歩いてくるよ',k:'敵が 歩いてきたよ！タワーが こうげきするよ',f:5,l:['▶ボタンを おすと 敵が 出てくるよ。この1回を「フェーズ」というよ','敵を ぜんぶ たおすと フェーズクリア！お金も もらえるよ','フェーズの あいだは 時間 無制限。ゆっくり じゅんびしてね','⏩ボタンで ゲームの速さを 1〜3倍に かえられるよ']},
+  {t:'お金と きょうか',k:'お金は どんどん つかって だいじょうぶ！',f:'💰',l:['敵を たおすと お金（G）が もらえるよ','タワーを タップすると 強化・売却ができるよ','売ると 使ったお金の 6割が もどってくるよ','お金が たまったら、いちばんレベルの低い タワーから 強化すると おトク']},
+  {t:'タップして ラッキー！',k:'画面に 出てきたら すぐ タップだよ',f:'🍬',l:['🍬 キャンディ：タワーを 1レベル 強化（12秒で消えるよ）','🍭 ロリポップ：10秒間 こうげき力 2倍（9秒で消えるよ）','🎁 宝箱：タップすると なにかもらえるよ（ハズレもあるよ）','☁️ 仙人：新しい武器を 教えてくれるよ（30秒でいなくなるよ）','💗 利奈を タップ：味方キャラの お店が ひらくよ']},
+  {t:'かつための コツ',k:'ちょっとした くふうで ぐんと つよくなるよ',f:'💡',l:['こおりタワーで 遅くして、ドカンほうで 爆発！ 定番コンボだよ','フェーズ2から マップに 穴が あくよ。穴の上に 武器を置くと ふさげるよ','空を飛ぶ敵には「たつまきほう」が 効くよ','ボスは 5フェーズごとに 出るよ（3・7フェーズ目にも）。足止めして こうげきしよう']},
+  {t:'さあ、あそんでみよう！',k:'わからなくなったら この攻略本を ひらいてね',f:'🎉',l:['💾 セーブすると タイトルに もどって、あとで つづきから あそべるよ','攻略本の「ヒント集」には、いろんな コツが のっているよ','まけても だいじょうぶ！なんどでも ちょうせんしよう']}
+ ];
+ var ov=document.createElement('div');ov.id='tutov';
+ ov.style.cssText='position:fixed;inset:0;z-index:95;background:rgba(60,30,50,.6);display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box';
+ var card=document.createElement('div');
+ card.style.cssText='position:relative;width:min(100%,360px);height:min(88vh,640px);display:flex;flex-direction:column;background:#fff6e0;border:3px solid #d9962b;border-radius:10px 18px 18px 10px;padding:10px 14px;box-sizing:border-box;box-shadow:inset 8px 0 0 -4px #f3dca8,0 8px 24px rgba(110,70,20,.4);color:#5a3a1a';
+ function el(css,txt){var d=document.createElement('div');d.style.cssText=css;if(txt!=null)d.textContent=txt;return d}
+ var BTN='display:flex!important;align-items:center!important;justify-content:center!important;min-width:0!important;min-height:0!important;box-sizing:border-box!important;line-height:1!important;font-size:14px!important;font-weight:800!important;letter-spacing:0!important;white-space:nowrap!important;border-radius:999px!important;outline:none!important;text-shadow:none!important;-webkit-text-stroke:0!important;animation:none!important;transform:none!important;opacity:1!important;color:#000!important;cursor:pointer;';
+ function btn(txt,css){var b=document.createElement('button');b.textContent=txt;b.style.cssText=BTN+css;return b}
+ var xb=btn('✕','position:absolute!important;top:6px;right:8px;z-index:3;width:28px!important;height:28px!important;padding:0!important;font-size:13px!important;background:#fff8ea!important;border:2px solid #d9962b!important;box-shadow:none!important');
+ xb.setAttribute('aria-label','とじる');
+ var prog=el('text-align:center;font-size:12px;font-weight:800;color:#7a5230;margin:2px 36px 0');
+ var dots=el('display:flex;justify-content:center;gap:4px;margin:4px 0 6px');
+ var body=el('flex:1;overflow:auto;min-height:0;padding:2px 4px;-webkit-overflow-scrolling:touch');
+ var foot=el('display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px');
+ var pv=btn('◀ まえへ','height:36px!important;padding:0 14px!important;background:#fff!important;border:2px solid #888!important;box-shadow:0 2px 0 #888!important');
+ var nx=btn('つぎへ ▶','height:36px!important;padding:0 16px!important;background:#5ddb7a!important;border:3px solid #138a3d!important;box-shadow:0 3px 0 #138a3d!important');
+ foot.append(pv,nx);card.append(prog,dots,body,foot,xb);ov.appendChild(card);document.body.appendChild(ov);
+ var cur=0;
+ function close(){ov.remove()}
+ xb.onclick=close;
+ pv.onclick=function(){if(cur>0){cur--;try{sfx('tap')}catch(e){}render()}};
+ nx.onclick=function(){if(cur<STEPS.length-1){cur++;try{sfx('tap')}catch(e){}render()}else close()};
+ function render(){
+  var S=STEPS[cur],last=cur===STEPS.length-1;
+  prog.textContent='🎓 遊び方　'+(cur+1)+' / '+STEPS.length;
+  dots.innerHTML='';for(var i=0;i<STEPS.length;i++){dots.appendChild(el('width:7px;height:7px;border-radius:50%;background:'+(i===cur?'#e0245e':(i<cur?'#f0a8c0':'#ecd3a0')),null))}
+  body.innerHTML='';body.scrollTop=0;
+  body.appendChild(bookStyle(el('margin:4px 0 8px;text-align:center;line-height:1.3',S.t),'19px'));
+  var fig=el('margin:0 0 8px;text-align:center');
+  if(typeof S.f==='number')fig.innerHTML=mapSvg(S.f);else{fig.style.fontSize='64px';fig.style.lineHeight='1.2';fig.textContent=S.f}
+  if(S.cap&&typeof S.f==='number')fig.appendChild(el('margin-top:4px;font-size:12px;font-weight:800;color:#6a8a4a;line-height:1.4',S.cap));
+  body.appendChild(fig);
+  var kr=el('display:flex;align-items:flex-end;gap:8px;margin:0 0 10px');
+  var kp;if(KIMG){kp=document.createElement('img');kp.src=KIMG;kp.alt='キリン';kp.style.cssText='height:58px;width:auto;flex:none;filter:drop-shadow(0 2px 3px rgba(110,70,20,.35))'}else{kp=el('font-size:40px;flex:none;line-height:1','🦒')}
+  var bub=el('flex:1;position:relative;background:#fff;border:2px solid #d9962b;border-radius:14px;padding:7px 10px;font-size:13px;font-weight:800;line-height:1.5;color:#7a4a14',S.k);
+  kr.append(kp,bub);body.appendChild(kr);
+  var ul=el('display:flex;flex-direction:column;gap:6px');
+  S.l.forEach(function(t){ul.appendChild(el('background:#fffdf5;border:2px dashed #ecd3a0;border-radius:10px;padding:7px 10px;font-size:14px;line-height:1.55;font-weight:700;color:#4a2e14',t))});
+  body.appendChild(ul);
+  pv.disabled=cur===0;pv.style.opacity=cur===0?'.45':'1';
+  nx.textContent=last?'📖 攻略本にもどる':'つぎへ ▶';
+ }
+ render();
+}
+
 function openBook(){
  if(document.getElementById('bookov'))return;
  bkBgm(true);
@@ -4292,6 +4368,11 @@ function openBook(){
    }
   }else if(P.k==='toc'){
    body.appendChild(head('もくじ','18px'));
+   (function(){var tw=para('margin:0 0 10px;padding:9px 10px 11px;border:2px solid #d9962b;border-radius:14px;background:#fffdf5;text-align:center','');
+    tw.append(bookStyle(para('margin:0 0 3px','🎓 遊び方'),'17px'),para('font-size:12px;line-height:1.55;color:#7a5230;margin:0 0 8px','はじめての人も だいじょうぶ！キリンが やさしく おしえるよ'));
+    var tbn=document.createElement('button');tbn.textContent='▶ チュートリアル開始';
+    tbn.style.cssText='display:flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:0!important;height:36px!important;min-height:0!important;box-sizing:border-box!important;margin:0 auto!important;padding:0 18px!important;line-height:1!important;font-size:14px!important;font-weight:800!important;letter-spacing:0!important;white-space:nowrap!important;border-radius:999px!important;outline:none!important;background:#5ddb7a!important;border:3px solid #138a3d!important;box-shadow:0 3px 0 #138a3d!important;color:#000!important;text-shadow:none!important;-webkit-text-stroke:0!important;animation:none!important;transform:none!important;opacity:1!important;cursor:pointer';
+    tbn.onclick=function(){try{sfx('tap')}catch(e){}openTutorial()};tw.appendChild(tbn);body.appendChild(tw)})();
    var inp=document.createElement('input');inp.type='search';inp.placeholder='🔍 ヒントをさがす（例：ボス）';
    inp.style.cssText='width:100%;box-sizing:border-box;padding:8px 12px;margin:0 0 6px;font-size:14px;font-weight:700;color:#4a2e14;background:#fffdf5;border:2px solid #d9962b;border-radius:999px;outline:none';
    var box=document.createElement('div');body.append(inp,box);
@@ -10359,6 +10440,7 @@ function render(){
   S.o.forEach(function(lb,i){
    var sel=ST.d[S.k]===i;
    var bt=el('button','display:inline-flex;align-items:center;min-width:0;padding:7px 11px;font-size:13px;font-family:inherit;border-radius:999px;border:2px solid '+(sel?'#ff7eb6':'#f0c8dc')+';background:'+(sel?'#ffd6e8':'#fff')+';color:#8a3a6a;font-weight:'+(sel?'bold':'normal'),lb);
+   if(sel)bt.classList.add('mksel');
    if(S.k==='c'){bt.prepend(el('span','display:inline-block;width:13px;height:13px;border-radius:50%;margin-right:6px;background:'+PAL[i][1]+';border:1px solid #fff;box-shadow:0 0 0 1px rgba(120,80,100,.3)'))}
    bt.onclick=function(){ST.d[S.k]=i;render()};
    grid.appendChild(bt);
@@ -10505,13 +10587,17 @@ loadAll();
 .mkbox button{font-family:"Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif!important;font-size:13px!important;font-weight:bold!important;line-height:1.2!important;letter-spacing:0!important;min-height:0!important;height:auto!important;padding:5px 11px!important;border-radius:999px!important;background:#fff3d6!important;background-image:none!important;border:2px solid #ff8fb5!important;box-shadow:0 2px 0 #e58fb6!important;color:#2a1000!important;text-shadow:none!important;-webkit-text-stroke:0!important;opacity:1!important;animation:none!important;outline:none!important;text-align:center!important;cursor:pointer}
 .mkbox button:active{transform:translateY(1px)}
 /* えらんでいるボタン：ピンクの背景・太いふち・✓ */
-.mkbox button[style*="#ff7eb6"]{background:#ffb3d1!important;border:3px solid #d02a6a!important;box-shadow:0 0 0 2px #fff,0 2px 0 2px #d02a6a!important;color:#2a1000!important}
-.mkbox button[style*="#ff7eb6"]::before{content:"✓ ";font-weight:900;color:#d02a6a}
+.mkbox button.mksel{background:#ffb3d1!important;border:3px solid #d02a6a!important;box-shadow:0 0 0 2px #fff,0 2px 0 2px #d02a6a!important;color:#2a1000!important}
+.mkbox button.mksel::before{content:"✓ ";font-weight:900;color:#d02a6a}
 /* 「つぎへ」「かんせい」「とじる」：黄色で目立たせる */
 .mkbox button[style*="linear-gradient"],.mkbox button[style*="#ffe27a"]{background:#ffd64a!important;border:2px solid #ff8c42!important;box-shadow:0 2px 0 #e8711a!important;color:#2a1000!important}
 .mkbox button[style*="flex:1"]{padding:6px 8px!important;border-radius:12px!important}
 /* 押せない「もどる」：灰色のベタ塗り */
 .mkbox button:disabled{background:#e4dccb!important;color:#6a5a48!important;border:2px dashed #b8a88c!important;box-shadow:none!important}
+/* 選択肢：文字を折りかえさず、横ながの丸みにする */
+.mkbox div[style*="flex-wrap"] button{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;flex:0 0 auto!important;min-width:max-content!important;white-space:nowrap!important;text-align:center!important;border-radius:14px!important;padding:6px 12px!important}
+.mkbox div[style*="flex-wrap"] button>span{margin:0!important;flex:none!important}
+.mkbox div[style*="flex-wrap"] button>span[style*="border-radius:50%"]{width:14px!important;height:14px!important;border:1px solid #fff!important;box-shadow:0 0 0 1px rgba(90,50,30,.45)!important}
 /* 色えらびのまる */
 .mkbox button>span[style*="border-radius:50%"]{display:inline-block!important}
 .mkbox div[style*="flex-wrap:wrap"]{gap:5px!important;margin:6px 0!important}
