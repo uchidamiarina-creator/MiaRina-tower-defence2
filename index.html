@@ -2907,7 +2907,7 @@ function shop(g,px,py,w,h,col,txt,aw){g.fillStyle='rgba(60,90,50,.18)';g.beginPa
 var NAMES=['アキバ','ブクロ','シモキタ','サンチャ','ポンバシ','エルエー','ベガス','ロス','ワイキキ'];
 var BLD={},LOTS=[{x:6,y:337,w:62},{x:292,y:337,w:62}];
 /* お寿司屋さんの値段（もちこしゴールドではらう）／3つめは「めずらしい」＝ふだんは売っていない */
-var SUSHI=[['sushi_otoro',5000,0],['sushi_chutoro',2500,0],['sushi_uni',1200,0],['sushi_salmon',500,0],['sushi_shime',3000,0],['sushi_shima',15000,1],['sushi_nodo',12000,1]],RARE_PCT=8;
+var SUSHI=[['sushi_otoro',5000,0],['sushi_chutoro',2500,0],['sushi_uni',1200,0],['sushi_salmon',500,0],['sushi_shime',3000,0],['sushi_shima',15000,1],['sushi_nodo',12000,1]],RARE_PCT=8,OTASUKE=[['otasuke_ticket',6000,0]];
 var SGK='miarina_td_gold_v1',SFONT='"Mochiy Pop One","Hiragino Maru Gothic ProN",sans-serif';
 function sgGet(){try{var n=parseInt(localStorage.getItem(SGK)||'0',10);return n>0?n:0}catch(e){return 0}}
 function sgSet(n){try{localStorage.setItem(SGK,String(Math.max(0,Math.floor(n))))}catch(e){}}
@@ -2928,14 +2928,27 @@ function sushiShop(g,x,y,w){var i,f;
  g.fillStyle='#fff8e0';g.fillRect(x+41,y-22,16,13);g.strokeStyle='#a8744a';g.lineWidth=1;g.strokeRect(x+41,y-22,16,13);WIN.push([x+41,y-22,16,13]);nigiri(g,x+49,y-12.5,.55,'#ff8da1');
  g.strokeStyle='#6b4a2b';g.lineWidth=1;g.beginPath();g.moveTo(x+4,y-23);g.lineTo(x+4,y-19.5);g.stroke();g.fillStyle='#e8413f';g.beginPath();g.ellipse(x+4,y-15,3.6,4.6,0,0,7);g.fill();g.strokeStyle='#8a2a2a';g.lineWidth=.8;g.stroke();g.fillStyle='#ffe9a8';g.fillRect(x+1.8,y-19.8,4.4,1.2);g.fillRect(x+1.8,y-10.9,4.4,1.2);
  nigiri(g,x+w/2,y-49,1.15,'#ff8da1')}
+function otasukeShop(g,x,y,w){var i;
+ g.fillStyle='rgba(60,90,50,.18)';g.beginPath();g.ellipse(x+w/2,y+1,w*.62,4,0,0,7);g.fill();
+ g.fillStyle='#e8f4ff';g.beginPath();g.roundRect(x+2,y-34,w-4,34,3);g.fill();g.strokeStyle='rgba(120,80,100,.35)';g.lineWidth=1.2;g.stroke();
+ g.fillStyle='#7fb6ff';g.fillRect(x+3,y-6,w-6,5.5);
+ g.fillStyle='#ff7eb6';g.beginPath();g.moveTo(x-5,y-32);g.lineTo(x+w+5,y-32);g.lineTo(x+w-8,y-46);g.lineTo(x+8,y-46);g.closePath();g.fill();g.strokeStyle='rgba(120,80,100,.35)';g.stroke();
+ g.fillStyle='rgba(255,255,255,.7)';for(i=0;i<5;i++){g.beginPath();g.arc(x+10+i*(w-20)/4,y-39,1.3,0,7);g.fill()}
+ g.fillStyle='#ffd23f';g.beginPath();g.roundRect(x+9,y-31,w-18,9,2);g.fill();g.strokeStyle='#e0a800';g.lineWidth=1;g.stroke();
+ g.fillStyle='#d9327c';g.font='bold 7px '+SFONT;g.textAlign='center';g.textBaseline='middle';g.fillText('おたすけ',x+w/2,y-26.3);
+ for(i=0;i<6;i++){g.fillStyle=i%2?'#fff':'#ff5f9b';g.fillRect(x+5+i*(w-10)/6,y-21,(w-10)/6,6)}
+ g.fillStyle='#d98a5a';g.beginPath();g.roundRect(x+9,y-14,13,14,[4,4,0,0]);g.fill();g.fillStyle='#ffd23f';g.beginPath();g.arc(x+19,y-6,1.2,0,7);g.fill();
+ g.fillStyle='#fff8e0';g.fillRect(x+30,y-14,22,9);g.strokeStyle='#a8744a';g.lineWidth=1;g.strokeRect(x+30,y-14,22,9);WIN.push([x+30,y-14,22,9]);
+ g.fillStyle='#ffd23f';g.beginPath();g.roundRect(x+35,y-12.5,12,6,1.5);g.fill();g.fillStyle='#ff5f9b';g.beginPath();g.arc(x+41,y-9.5,1.5,0,7);g.fill();
+ g.save();g.translate(x+w/2,y-53);g.rotate(-.12);g.fillStyle='#ffd23f';g.strokeStyle='#e0a800';g.lineWidth=1.2;g.beginPath();g.roundRect(-14,-8,28,16,3);g.fill();g.stroke();g.strokeStyle='rgba(224,168,0,.8)';g.setLineDash([2,2]);g.beginPath();g.moveTo(-7,-7);g.lineTo(-7,7);g.stroke();g.setLineDash([]);g.fillStyle='#ff5f9b';g.font='bold 11px sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('★',3,.5);g.restore()}
 function vacant(g,L){var cx=L.x+L.w/2,y=L.y;
  g.fillStyle='#e4cc9c';g.beginPath();g.ellipse(cx,y-2,L.w*.5,6.5,0,0,7);g.fill();g.strokeStyle='rgba(150,110,70,.35)';g.lineWidth=1;g.stroke();
  g.fillStyle='rgba(150,110,70,.4)';[[-18,-3],[-8,0],[10,-4],[20,-1],[2,-5]].forEach(function(p){g.beginPath();g.arc(cx+p[0],y+p[1],1.2,0,7);g.fill()});
  g.fillStyle='#a8744a';g.fillRect(cx-1,y-18,2,17);g.fillStyle='#f6dfae';g.beginPath();g.roundRect(cx-17,y-31,34,15,3);g.fill();g.strokeStyle='#a8744a';g.lineWidth=1.3;g.stroke();
  g.fillStyle='#7a5a3a';g.font='bold 10px '+SFONT;g.textAlign='center';g.textBaseline='middle';g.fillText('空き地',cx,y-23.2);
  g.fillStyle='#6fc860';[-24,-14,14,24].forEach(function(dx){g.beginPath();g.moveTo(cx+dx-2,y-1);g.lineTo(cx+dx,y-7);g.lineTo(cx+dx+2,y-1);g.fill()})}
-function drawLots(g){for(var i=0;i<LOTS.length;i++){if(BLD[i]==='sushi')sushiShop(g,LOTS[i].x,LOTS[i].y,LOTS[i].w);else vacant(g,LOTS[i])}}
-function lotFx(g,s){for(var i=0;i<LOTS.length;i++){var L=LOTS[i],cx=L.x+L.w/2,by=Math.sin(s*3+i*1.7)*2,sh=BLD[i]==='sushi',cy=L.y-(sh?71:42)+by;g.save();g.textAlign='center';g.textBaseline='middle';g.fillStyle='rgba(255,255,255,.92)';g.strokeStyle='#f0a8c8';g.lineWidth=1.5;g.beginPath();g.arc(cx,cy,sh?8.5:7.5,0,7);g.fill();g.stroke();if(sh){g.font='11px sans-serif';g.fillText('🍣',cx,cy+.5)}else{g.fillStyle='#d05a8a';g.font='bold 12px sans-serif';g.fillText('＋',cx,cy)}g.restore()}}
+function drawLots(g){for(var i=0;i<LOTS.length;i++){if(BLD[i]==='sushi')sushiShop(g,LOTS[i].x,LOTS[i].y,LOTS[i].w);else if(BLD[i]==='otasuke')otasukeShop(g,LOTS[i].x,LOTS[i].y,LOTS[i].w);else vacant(g,LOTS[i])}}
+function lotFx(g,s){for(var i=0;i<LOTS.length;i++){var L=LOTS[i],cx=L.x+L.w/2,by=Math.sin(s*3+i*1.7)*2,sh=!!BLD[i],cy=L.y-(sh?71:42)+by;g.save();g.textAlign='center';g.textBaseline='middle';g.fillStyle='rgba(255,255,255,.92)';g.strokeStyle='#f0a8c8';g.lineWidth=1.5;g.beginPath();g.arc(cx,cy,sh?8.5:7.5,0,7);g.fill();g.stroke();if(sh){g.font='11px sans-serif';g.fillText(BLD[i]==='otasuke'?'🎫':'🍣',cx,cy+.5)}else{g.fillStyle='#d05a8a';g.font='bold 12px sans-serif';g.fillText('＋',cx,cy)}g.restore()}}
 function lotAt(px,py){for(var i=0;i<LOTS.length;i++){var L=LOTS[i];if(px>=L.x-4&&px<=L.x+L.w+4&&py>=L.y-82&&py<=L.y+18)return i}return -1}
 var WIN=[],LAMPS=[[118,354],[242,354],[62,458],[298,458]];
 var KS={N:{a:[34,44,110],b:[84,92,150],w:[8,14,56],wa:.45,lt:1,st:1,rb:0,sun:0,mo:1,bf:0,sc:[255,244,170],cl:[200,210,255,.6]},
@@ -3367,7 +3380,7 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
     hd=sEl('div','display:flex;align-items:center;justify-content:space-between;margin:0 0 8px;font-weight:bold;color:#d05a8a;font-size:15px'),
     cb=sEl('button','flex:none;width:auto;min-height:0;height:auto;line-height:1;padding:2px 8px;font-size:11px;border-width:2px;border-bottom-width:3px;border-radius:10px','✕');cb.onclick=closeShp;
    hd.append(sEl('span',null,title),cb);var bd=sEl('div','overflow-y:auto;flex:1');bx.append(hd,bd);shp.appendChild(bx);shp.addEventListener('click',function(e){if(e.target===shp)closeShp()});ov.appendChild(shp);return bd}
-  var BT=[{id:'sushi',name:'お寿司屋さん',ic:'🍣',ds:'ひみつ道具の「お寿司」が買えるお店だよ'}];
+  var BT=[{id:'sushi',name:'お寿司屋さん',ic:'🍣',ds:'ひみつ道具の「お寿司」が買えるお店だよ'},{id:'otasuke',name:'おたすけ屋さん',ic:'🎫',ds:'バトル中におたすけキャラを呼べる「おたすけ券」が買えるお店だよ'}];
   function hasB(id){var b=TS.bld||{};for(var k in b)if(b[k]===id)return true;return false}
   function openBuild(i){var bd=shpBox('空き地');bd.appendChild(sEl('div','font-size:12px;color:#8a5a7a;margin-bottom:6px','ここに 建てる建物を えらんでね'));
    BT.forEach(function(b){var done=hasB(b.id),row=sEl('div','display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px dashed #f0c8dc'),tx=sEl('div','flex:1;min-width:0;line-height:1.3'),bt=sEl('button','flex:none;padding:8px 12px;font-size:14px',done?'建ってるよ':'建てる');
@@ -3375,8 +3388,8 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
     bt.onclick=function(){try{sfx('clear')}catch(er){}build(i,b)};row.append(sEl('div','font-size:26px;flex:none',b.ic),tx,bt);bd.appendChild(row)})}
   function build(i,b){TS.bld=TS.bld||{};TS.bld[i]=b.id;BLD=TS.bld;saveT(TS);bg=buildBG(DPR);closeShp();var L=LOTS[i];toast=6;tmsg='「'+b.name+'」が できたよ！';
    for(var k=0;k<14;k++)spk.push({x:L.x+L.w/2+(Math.random()-.5)*50,y:L.y-20+(Math.random()-.5)*40,t:-k*.04,c:['#ff7eb6','#ffd23f','#7fd0ff','#b388eb'][k%4]})}
-  function openShop(i){var msg='いらっしゃい！ きょうも いいネタ入ってるよ',k;
-   for(k=0;k<SUSHI.length;k++)if(SUSHI[k][2]&&sgStock(SUSHI[k][0],1)){msg='きょうは めずらしいネタが 入ってるよ！';break}
+  function openShop(i){var ty=BLD[i],LST=ty==='otasuke'?OTASUKE:SUSHI,TTL=ty==='otasuke'?'🎫 おたすけ屋さん':'🍣 お寿司屋さん',msg=ty==='otasuke'?'いらっしゃい！ おたすけ券は いかが？':'いらっしゃい！ きょうも いいネタ入ってるよ',k;
+   for(k=0;k<LST.length;k++)if(LST[k][2]&&sgStock(LST[k][0],1)){msg='きょうは めずらしいネタが 入ってるよ！';break}
    function buy(s){var it=null,ids=window.rinIds?window.rinIds():[],inf=window.rinInv?window.rinInv():[],ix=ids.indexOf(s[0]);if(ix>=0)it=inf[ix];var g0=sgGet();
     if(!it){try{sfx('deny')}catch(er){}msg='ごめんね、いまは 売れないよ'}
     else if(it.n>0){try{sfx('deny')}catch(er){}msg='それは もう もってるよ（1つまで）'}
@@ -3384,17 +3397,17 @@ function openQ(){closeGm();var k=gToday(),back=mk('div','position:fixed;inset:0;
     else if(!window.rinGrant(s[0],1)){try{sfx('deny')}catch(er){}msg='ごめんね、いまは 売れないよ'}
     else{sgSet(g0-s[1]);try{sfx('coin')}catch(er){}msg='まいど！「'+it.name+'」を ひみつ道具に いれたよ'}
     rd()}
-   function rd(){var bd=shpBox('🍣 お寿司屋さん'),ids=window.rinIds?window.rinIds():[],inf=window.rinInv?window.rinInv():[];
+   function rd(){var bd=shpBox(TTL),ids=window.rinIds?window.rinIds():[],inf=window.rinInv?window.rinInv():[];
     bd.appendChild(sEl('div','font-size:12px;color:#8a3a6a;background:#ffeef6;border-radius:10px;padding:6px 8px;margin-bottom:6px;line-height:1.4',msg));
     bd.appendChild(sEl('div','font-size:13px;font-weight:bold;color:#8a3a6a;margin-bottom:2px','💰 もちこしゴールド '+sgGet()+'G'));
     bd.appendChild(sEl('div','font-size:11px;color:#8a5a7a;margin-bottom:4px','買うと ひみつ道具に なるよ（それぞれ1つまで）'));
-    SUSHI.forEach(function(s){if(!sgStock(s[0],s[2]))return;var ix=ids.indexOf(s[0]),it=inf[ix];if(!it)return;
+    LST.forEach(function(s){if(!sgStock(s[0],s[2]))return;var ix=ids.indexOf(s[0]),it=inf[ix];if(!it)return;
      var row=sEl('div','display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px dashed #f0c8dc'),tx=sEl('div','flex:1;min-width:0;line-height:1.3'),bt=sEl('button','flex:none;padding:8px 10px;font-size:13px',it.n>0?'もってる':s[1]+'G');
      if(it.art){var im=document.createElement('img');im.src=it.art;im.alt='';im.style.cssText='width:34px;height:34px;flex:none;border:0;box-shadow:none;background:none;padding:0;border-radius:0';row.appendChild(im)}
      tx.append(sEl('b','color:#8a3a6a;font-size:14px',it.name+(s[2]?' ✨':'')),sEl('div','font-size:11px;color:#8a5a7a',it.ds));
      if(it.n>0)bt.disabled=true;bt.onclick=function(){buy(s)};row.append(tx,bt);bd.appendChild(row)})}
    rd()}
-  function openLot(i){if(BLD[i]==='sushi')openShop(i);else openBuild(i)}
+  function openLot(i){if(BLD[i])openShop(i);else openBuild(i)}
   function tap(e){var rc=cn.getBoundingClientRect(),px=(e.clientX-rc.left)/rc.width*W,py=(e.clientY-rc.top)/rc.height*H,best=null,bd=1e9;
   if(MCH&&Math.abs(px-MCH.x)<30&&Math.abs(py-(MCH.sy||MCH.y))<28){var ty0=MCH.type;MCH=null;mnext=R(10,25);try{sfx('tap')}catch(er){}openGame(ty0);return}
   if(px>=294&&px<=350&&py>=382&&py<=446){try{sfx('tap')}catch(er){}openQ();return}
@@ -5872,6 +5885,9 @@ sv('sushi_shima','シマアジ','sushi_shima','ライフがMAX（99）まで回�
 sv('sushi_nodo','ノドグロ','sushi_nodo','最終クリアーしたときの得点が 1.5 倍になる（1回のゲームで1回だけ）。めったに売ってないよ！','ごちそうさま〜！',
  function(){if(!live())return 0;var h=G.hi||(G.hi={});if(h.nd)return 0;h.nd=1;G.fx.push({x:180,y:250,txt:'🍣 クリアー得点 ×1.5！',t:1.8,c:'#e0107a'});return 1},
  function(){return live()&&!(G.hi&&G.hi.nd)});
+sv('otasuke_ticket','おたすけ券','otasuke_ticket','バトル中に使うと、マップの中央に巨大なおたすけキャラがランダムで1体やってくる（8〜9秒あばれてかえるよ）。敵がいて、おたすけキャラがいないときだけ使えるよ','おたすけキャラ、きてー！',
+ function(){if(!live()||G.hero||!G.active||!G.en.length)return 0;var k=['M','K','B','U','C'][Math.random()*5|0];G.hero={k:k,ph:0,t:0,x:180,y:-80,dr:1,sl:0,pins:[],balls:[],ba:0};try{sfx('hero')}catch(e){}G.fx.push({x:180,y:110,txt:({M:'モビルスーツ降臨！',K:'怪獣出現！敵も味方も燃やすぞ！',B:'プロボウラー参上！',U:'梅おむすびマン参上！タネをくらえ〜！',C:'カレーナマステ登場！火を吹くぞ〜！'})[k],t:2.4,c:'#ff4d6d'});return 1},
+ function(){return live()&&!!G.active&&!G.hero&&G.en.length>0});
 })();
 </script>
 
@@ -5966,6 +5982,7 @@ const ART=(function(){
   A['bsY']=sv('<circle cx="15" cy="15" r="12" fill="#dff3ff"/><circle cx="15" cy="15" r="12" fill="none" stroke="#8fb4ff" stroke-width="2"/><path d="M15 8 V15 L20 18" fill="none" stroke="#6a8fe8" stroke-width="2.2"/>'+star(24,6,4.5,1.9,'#ffd23f')+'<path d="M8 10 Q9 8 11 7" fill="none" stroke="#fff" stroke-width="1.6"/>'+bdg('Y','#3b6fd8'));
   A['bsZ']=sv('<circle cx="15" cy="15" r="11" fill="#fff4d6"/><circle cx="15" cy="15" r="11" fill="none" stroke="#ffb703" stroke-width="2"/><path d="M15 1.5 V6.5 M15 23.5 V28.5 M1.5 15 H6.5 M23.5 15 H28.5" stroke="#ff7eb6" stroke-width="2"/>'+heart('#ff7eb6',9,9,.4)+star(24,6,4.2,1.8,'#ffd23f')+bdg('Z','#d77a00'));
   const nig=(top,ex)=>'<path fill="#fffaf0" d="M4 19 H28 C28 25 24 27.5 16 27.5 C8 27.5 4 25 4 19Z"/><path fill="'+top+'" d="M2.5 18.5 C2.5 8.5 29.5 8.5 29.5 18.5 C29.5 21 25 21.5 16 21.5 C7 21.5 2.5 21 2.5 18.5Z"/>'+(ex||'');
+  A['otasuke_ticket']=sv('<path fill="#ffd23f" d="M3 8 H29 V13.5 A2.5 2.5 0 0 0 29 18.5 V24 H3 V18.5 A2.5 2.5 0 0 0 3 13.5Z"/><path d="M10 9 V23" fill="none" stroke-dasharray="2 2" stroke-width="1.2"/>'+star(20,16,5.8,2.5,'#ff7eb6')+star(27,5,3.5,1.5,'#fff2a8'));
   A['sushi_otoro']=sv(nig('#ff8da1','<path d="M7 15 Q10 18.5 13 14 M15 14.5 Q18 18.5 21 14 M22 15 Q24.5 17.5 27 14.5" fill="none" stroke="#fff" stroke-width="1.5"/>')+star(27,6,4.2,1.8,'#ffd23f'));
   A['sushi_chutoro']=sv(nig('#ff9f8f','<path d="M8 15 Q11 17.5 14 14.5 M18 15 Q21 17.5 24 14.5" fill="none" stroke="#fff" stroke-width="1.4"/>'));
   A['sushi_uni']=sv('<path fill="#fffaf0" d="M5 19 H27 C27 25 23 27.5 16 27.5 C9 27.5 5 25 5 19Z"/><rect x="11.5" y="14.5" width="9" height="13" rx="2" fill="#27382c"/><path fill="#ffb02e" d="M6.5 18.5 C5.5 10 12 7.5 16 9.5 C20 7.5 26.5 10 25.5 18.5 C22 20.5 10 20.5 6.5 18.5Z"/><path d="M10 13 Q12 11 14 12 M18 12 Q21 10.5 23 13" fill="none" stroke="#ffe08a" stroke-width="1.5"/>');
@@ -7587,7 +7604,7 @@ function load(){var o=null;try{o=JSON.parse(localStorage.getItem(QK)||'null')}ca
 function save(o){try{localStorage.setItem(QK,JSON.stringify(o))}catch(e){}}
 var S=load(),tq=[],tbusy=false;
 /* ごほうび：ひみつ道具59種からばらばらに */
-function rwOf(i){var all=window.rinIds?window.rinIds():['z'],ids=all.filter(function(x){return x.indexOf('sushi_')!==0}),id=ids[(i*7+3+Math.floor(i/11))%ids.length],c=i%10,amt=1+Math.floor(c/3);
+function rwOf(i){var all=window.rinIds?window.rinIds():['z'],ids=all.filter(function(x){return x.indexOf('sushi_')!==0&&x.indexOf('otasuke_')!==0}),id=ids[(i*7+3+Math.floor(i/11))%ids.length],c=i%10,amt=1+Math.floor(c/3);
  var inf=(window.rinInv?window.rinInv():[]);var idx=all.indexOf(id),it=inf[idx]||{icon:'🎁',name:id};
  if(id==='zz'||id==='g'||id==='x07'||id==='x12'||id==='x17')amt=Math.max(1,Math.ceil(amt/2));
  if(id==='l')amt=1+c;
