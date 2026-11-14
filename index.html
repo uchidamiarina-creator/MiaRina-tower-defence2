@@ -4265,24 +4265,24 @@ function openBook(){
   pg.textContent=(cur+1)+' / '+pages.length;
   tocb.style.visibility=cur>=2?'visible':'hidden';
   pv.disabled=cur===0;nx.disabled=cur===pages.length-1;
-  pv.style.opacity=pv.disabled?'.35':'';nx.style.opacity=nx.disabled?'.35':'';
+  pv.style.opacity='';nx.style.opacity='';
   if(P.k==='cover'){
     coverFx();
    body.append(para('height:12px',''),(function(){var w=para('text-align:center;',''),k=document.querySelector('#kiri img.kimg');if(k&&k.src){var im=document.createElement('img');im.src=k.src;im.alt='キリン';im.style.cssText='height:170px;width:auto;max-width:100%;display:block;margin:0 auto;-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent);filter:drop-shadow(0 3px 4px rgba(110,70,20,.35))';w.appendChild(im)}else w.innerHTML=SVGG;return w})(),(function(){var h=head('みありなタワーディフェンス\n🎀 攻略法 🎀','21px');h.style.whiteSpace='pre-line';h.style.lineHeight='1.35';h.style.margin='8px 0 4px';return h})(),
     para('text-align:center;margin-top:10px;font-size:12px;color:#7a5230;line-height:1.6','～ ウルトラDX ～'),
     para('text-align:center;margin-top:20px;font-size:13px;font-weight:800;color:#7a5230','見つけたヒント '+seen.length+' / '+TIPS.length),
-    (function(){var ob=document.createElement('button');ob.textContent='📑 もくじをひらく';ob.style.cssText='display:flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:0!important;height:32px!important;min-height:0!important;box-sizing:border-box!important;margin:8px auto 0!important;padding:0 16px!important;line-height:1!important;font-size:13px!important;font-weight:800!important;letter-spacing:0!important;white-space:nowrap!important;border-radius:999px!important;outline:none!important;box-shadow:none!important;text-shadow:none!important;-webkit-text-stroke:0!important;animation:none!important;transform:none!important;opacity:1!important;background:#fff!important;border:2px solid #d9962b!important;color:#5c3000!important;';ob.onclick=function(){go(1)};return ob})());
+    (function(){var ob=document.createElement('button');ob.textContent='📑 もくじをひらく';ob.style.cssText='display:flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:0!important;height:32px!important;min-height:0!important;box-sizing:border-box!important;margin:8px auto 0!important;padding:0 16px!important;line-height:1!important;font-size:13px!important;font-weight:800!important;letter-spacing:0!important;white-space:nowrap!important;border-radius:999px!important;outline:none!important;box-shadow:none!important;text-shadow:none!important;-webkit-text-stroke:0!important;animation:none!important;transform:none!important;opacity:1!important;';ob.onclick=function(){go(1)};return ob})());
    if(!unlocked){
     var msg=para('text-align:center;margin-top:8px;font-size:12px;font-weight:800;color:#7a5230;min-height:16px','');
     var buy=document.createElement('button');buy.textContent='🪙 '+GUIDE_PRICE+'リナコインで全部読む';
-    buy.style.cssText='display:flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:0!important;height:32px!important;min-height:0!important;box-sizing:border-box!important;margin:8px auto 0!important;padding:0 16px!important;line-height:1!important;font-size:13px!important;font-weight:800!important;letter-spacing:0!important;white-space:nowrap!important;border-radius:999px!important;outline:none!important;box-shadow:none!important;text-shadow:none!important;-webkit-text-stroke:0!important;animation:none!important;transform:none!important;opacity:1!important;background:#fff!important;border:2px solid #d9962b!important;color:#5c3000!important;';
+    buy.style.cssText='display:flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:0!important;height:32px!important;min-height:0!important;box-sizing:border-box!important;margin:8px auto 0!important;padding:0 16px!important;line-height:1!important;font-size:13px!important;font-weight:800!important;letter-spacing:0!important;white-space:nowrap!important;border-radius:999px!important;outline:none!important;box-shadow:none!important;text-shadow:none!important;-webkit-text-stroke:0!important;animation:none!important;transform:none!important;opacity:1!important;';
     buy.onclick=function(){
      if(rcCoins()<GUIDE_PRICE){msg.textContent='リナコインが たりないよ（あと '+(GUIDE_PRICE-rcCoins())+' 枚）';return}
      rcSpend(GUIDE_PRICE);try{localStorage.setItem(GUIDE_UK,'1')}catch(e){}
      try{localStorage.setItem(GUIDE_PK,'0')}catch(e){}ov.remove();openBook();
     };
     var GPRICE=10000,gGet=function(){try{var n=parseInt(localStorage.getItem('miarina_td_gold_v1')||'0',10);return n>0?n:0}catch(e){return 0}};
-    var buy2=document.createElement('button');buy2.textContent='💰 '+GPRICE+'ゴールドで全部読む';buy2.style.cssText='display:flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:0!important;height:32px!important;min-height:0!important;box-sizing:border-box!important;margin:8px auto 0!important;padding:0 16px!important;line-height:1!important;font-size:13px!important;font-weight:800!important;letter-spacing:0!important;white-space:nowrap!important;border-radius:999px!important;outline:none!important;box-shadow:none!important;text-shadow:none!important;-webkit-text-stroke:0!important;animation:none!important;transform:none!important;opacity:1!important;background:#ffe9a8!important;border:2px solid #d9962b!important;color:#5c3000!important;';
+    var buy2=document.createElement('button');buy2.textContent='💰 '+GPRICE+'ゴールドで全部読む';buy2.style.cssText='display:flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:0!important;height:32px!important;min-height:0!important;box-sizing:border-box!important;margin:8px auto 0!important;padding:0 16px!important;line-height:1!important;font-size:13px!important;font-weight:800!important;letter-spacing:0!important;white-space:nowrap!important;border-radius:999px!important;outline:none!important;box-shadow:none!important;text-shadow:none!important;-webkit-text-stroke:0!important;animation:none!important;transform:none!important;opacity:1!important;';
     buy2.onclick=function(){
      if(gGet()<GPRICE){msg.textContent='ゴールドが たりないよ（あと '+(GPRICE-gGet())+' G）';return}
      try{localStorage.setItem('miarina_td_gold_v1',String(gGet()-GPRICE));localStorage.setItem(GUIDE_UK,'1');localStorage.setItem(GUIDE_PK,'0')}catch(e){}
@@ -10403,13 +10403,7 @@ loadAll();
 @keyframes twGlowBtn{0%,100%{box-shadow:0 0 6px #ffd64a,0 0 12px rgba(255,214,74,.6),0 3px 0 #e8711a}50%{box-shadow:0 0 12px #fff3a0,0 0 22px rgba(255,214,74,.9),0 3px 0 #e8711a}}
 </style>
 <style id="ui-town">
-/* 街：ここだけを直せば、ほかの画面には影響しません */
-.twc button{font-family:"Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif!important;font-size:16px!important;font-weight:bold!important;line-height:1.35!important;letter-spacing:.04em!important;color:#5a2a4a!important;min-height:44px;padding:10px 12px!important;border-radius:16px!important;cursor:pointer;text-shadow:0 1px 0 #fff}
-.twc button{background:#fff!important;border:3px solid #f0a8c8!important;box-shadow:0 3px 0 #f0a8c8}
-.twc button{background:#ff8fb5!important;border-color:#ff7eb6!important;color:#fff!important;text-shadow:0 1px 0 #d05a8a}
-.twc button{background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%)!important;border:3px solid #fff!important;outline:2px solid #ffc94d;color:#e0457f!important;box-shadow:0 3px 0 #e8a92a}
-.twc button{opacity:.5!important}
-.twc button{transform:translateY(2px)}
+/* 街：ウインドウや文字の設定（ボタンは下の「ui-town-btn」で作り直し） */
 .twc [style*="font-size:9px"],
 .twc [style*="font-size:10px"],
 .twc [style*="font-size:11px"],
@@ -10420,10 +10414,6 @@ loadAll();
 .twc p,
 .twc label,
 .twc b{color:#3d1f35!important;text-shadow:0 0 3px #fff,0 0 2px #fff;font-weight:bold}
-.twc button{color:#3d1f35!important}
-.twc button.go,
-.twc button.on{color:#fff!important}
-.twc button.go{color:#e0457f!important}
 .twc [style*="background:#fff8fb"]{background:repeating-linear-gradient(92deg,#f5e2c2 0px,#efd4a6 9px,#f8e9cf 15px,#ecd0a0 22px,#f5e2c2 30px)!important;border-color:#ff9ec4!important;color:#e9772e!important}
 .twc [style*="rgba(36,20,38"],
 .twc [style*="rgba(60,30,50"]{background:rgba(120,80,40,.4)!important}
@@ -10432,43 +10422,40 @@ loadAll();
 .twc p,
 .twc label,
 .twc b{color:#e9772e!important;text-shadow:0 0 2px #fff,0 0 3px #fff8f0;font-weight:bold}
-.twc button{color:#e9772e!important;border-color:#ff9ec4!important;text-shadow:0 0 2px #fff}
-.twc button.go{color:#e9772e!important}
-.twc button.on{background:#ffb3d1!important;border-color:#ff7eb6!important;color:#fff!important}
 .twc [style*="border:2px solid #f0c8dc"],
 .twc [style*="border:2px solid #f0a8c8"]{border-color:#ff9ec4!important}
-.twc button:not([style*="background"]){background:linear-gradient(180deg,#fff6b0 0%,#ffd64a 100%)!important;border:3px solid #ff8c42!important;box-shadow:0 3px 0 #e8711a!important;color:#b93a0a!important;text-shadow:0 1px 0 #fff8d0}
-.twc button.on{background:linear-gradient(180deg,#ffb3d1 0%,#ff7eb6 100%)!important;border-color:#ff5fa0!important;color:#fff!important;box-shadow:0 3px 0 #d94a86!important}
-.twc button:disabled{opacity:.6!important}
 .twc div:not(#lbx):not(#lbx *):not(.keepcol),
 .twc span:not(#lbx):not(#lbx *):not(.keepcol),
 .twc p,
 .twc label,
 .twc b{color:#8a3305!important;font-weight:bold!important;text-shadow:0 0 2px #fff,0 0 3px #fff,0 0 4px #fff!important}
-.twc button{color:#7a2a04!important;font-weight:bold!important;text-shadow:0 1px 0 #fff!important}
-.twc button:disabled{background:#e2e2e2!important;color:#8e8e8e!important;border:3px dashed #a8a8a8!important;box-shadow:none!important;text-shadow:none!important;opacity:1!important;cursor:not-allowed}
 .twc [style*="background:#fff8fb"]{animation:twGlowWin 2.4s ease-in-out infinite}
-.twc button:not([style*="background"]):not(:disabled){animation:twGlowBtn 2s ease-in-out infinite}
-.twc button.on{box-shadow:0 0 10px #ff9ec4,0 0 18px rgba(255,126,182,.7),0 3px 0 #d94a86!important}
+</style>
+<style id="ui-town-btn">
+/* 街のボタン（コンパクト版）：黄色いボタン・ピンクのふち・黒に近い茶色の文字 */
+.twc button:not(.sb-card){font-family:"Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif!important;font-size:13px!important;font-weight:bold!important;line-height:1.2!important;letter-spacing:0!important;min-height:0!important;padding:4px 10px!important;border-radius:12px!important;border:2px solid #ff8fb5!important;background:linear-gradient(180deg,#fff6b0 0%,#ffd64a 100%)!important;color:#3d1500!important;text-shadow:none!important;box-shadow:0 2px 0 #e8711a!important;outline:none!important;animation:none!important;opacity:1!important;text-align:center!important;cursor:pointer}
+.twc button.on,.twc button.sb-on{background:linear-gradient(180deg,#ffc4dc 0%,#ff9ec4 100%)!important;border-color:#e0457f!important;color:#3d1500!important;box-shadow:0 2px 0 #c23a75!important}
+.twc button.go,.twc button.sb-go{background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%)!important;border-color:#ff8c42!important;color:#3d1500!important}
+.twc button:disabled{background:#e2e2e2!important;color:#666!important;border:2px dashed #aaa!important;box-shadow:none!important;opacity:1!important;cursor:not-allowed}
+.twc #tb button{font-size:11px!important;padding:6px 2px!important}
+.twc button:active{transform:translateY(1px)!important}
 </style>
 <style id="ui-book">
-/* キリン図鑑：ここだけを直せば、ほかの画面には影響しません */
-#bookov button{font-family:"Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif!important;font-size:16px!important;font-weight:bold!important;line-height:1.35!important;letter-spacing:.04em!important;color:#5a2a4a!important;min-height:44px;padding:10px 12px!important;border-radius:16px!important;cursor:pointer;text-shadow:0 1px 0 #fff}
-#bookov button{background:#fff!important;border:3px solid #f0a8c8!important;box-shadow:0 3px 0 #f0a8c8}
-#bookov button{background:#ff8fb5!important;border-color:#ff7eb6!important;color:#fff!important;text-shadow:0 1px 0 #d05a8a}
-#bookov button{background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%)!important;border:3px solid #fff!important;outline:2px solid #ffc94d;color:#e0457f!important;box-shadow:0 3px 0 #e8a92a}
-#bookov button{opacity:.5!important}
-#bookov button{transform:translateY(2px)}
-#bookov [style*="background"]{background:repeating-linear-gradient(92deg,#f5e2c2 0px,#efd4a6 9px,#f8e9cf 15px,#ecd0a0 22px,#f5e2c2 30px)!important;border-color:#ff9ec4!important;color:#e9772e!important}
+/* キリン図鑑：ウインドウ本体は単色（木目なし）。中のゲージ・タグ・ふきだしには適用しない（中のゲージ・タグ・ふきだしには適用しない） */
 #bookov{background:rgba(120,80,40,.4)!important}
-#bookov button{color:#e9772e!important;border-color:#ff9ec4!important;text-shadow:0 0 2px #fff}
-#bookov button:not([style*="background"]){background:linear-gradient(180deg,#fff6b0 0%,#ffd64a 100%)!important;border:3px solid #ff8c42!important;box-shadow:0 3px 0 #e8711a!important;color:#b93a0a!important;text-shadow:0 1px 0 #fff8d0}
-#bookov div,
-#bookov span{color:#8a3305!important;font-weight:bold!important;text-shadow:0 0 2px #fff,0 0 3px #fff,0 0 4px #fff!important}
-#bookov button{color:#7a2a04!important;font-weight:bold!important;text-shadow:0 1px 0 #fff!important}
-#bookov button:disabled{background:#e2e2e2!important;color:#8e8e8e!important;border:3px dashed #a8a8a8!important;box-shadow:none!important;text-shadow:none!important;opacity:1!important;cursor:not-allowed}
-#bookov [style*="background"]{animation:twGlowWin 2.4s ease-in-out infinite}
-#bookov button:not([style*="background"]):not(:disabled){animation:twGlowBtn 2s ease-in-out infinite}
+#bookov>div{background:#fff6e0!important;border-color:#ff9ec4!important;animation:none!important}
+/* 文字：ページごとに決めた色をそのまま使い、白いぼかしの縁取りはやめる */
+#bookov div,#bookov span{text-shadow:none!important}
+/* 味方キャラたちのステータスゲージ：色つきの棒がきちんと見えるように */
+#bookov [style*="height:7px"]{background:#f1e2bd!important;box-shadow:inset 0 0 0 1px #d9b872;animation:none!important}
+</style>
+<style id="ui-book-btn">
+/* キリン図鑑のボタン（コンパクト版）：ピンクのふち・あわいキリン柄・黒い文字・中央ぞろえ */
+#bookov button{background-color:#fffaf0!important;background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='44'%20height='44'%3E%3Crect%20width='44'%20height='44'%20fill='%23fffaf0'/%3E%3Cg%20fill='%23f3dcae'%20stroke='%23e6c48a'%20stroke-width='1'%3E%3Cpolygon%20points='4,6%2015,3%2019,12%2012,19%203,15'/%3E%3Cpolygon%20points='26,2%2038,6%2040,17%2030,21%2023,12'/%3E%3Cpolygon%20points='2,28%2012,24%2018,33%2011,41%201,38'/%3E%3Cpolygon%20points='25,30%2036,26%2043,35%2035,43%2026,41'/%3E%3C/g%3E%3C/svg%3E")!important;background-size:22px 22px!important;border:2px solid #ff8fb5!important;border-radius:999px!important;color:#000!important;text-shadow:none!important;font-family:"Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif!important;font-size:12px!important;font-weight:bold!important;line-height:1.2!important;letter-spacing:0!important;min-height:0!important;padding:3px 10px!important;box-shadow:0 2px 0 #ff8fb5!important;opacity:1!important;animation:none!important;outline:none!important;text-align:center!important;cursor:pointer}
+#bookov button.bknav{display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;line-height:1!important;padding:0 10px!important}
+#bookov button.bknav[style*="position:absolute"],#bookov button[aria-label]{padding:0!important}
+#bookov button:disabled{background-image:none!important;background-color:#e4dccb!important;color:#555!important;box-shadow:none!important}
+#bookov button:active{transform:translateY(1px)}
 </style>
 <style id="ui-rin">
 /* リナコイン屋の持ち物：ここだけを直せば、ほかの画面には影響しません */
@@ -10508,49 +10495,30 @@ loadAll();
 #sgGet button:not([style*="background"]):not(:disabled){animation:twGlowBtn 2s ease-in-out infinite}
 </style>
 <style id="ui-mk">
-/* 味方屋さん：ここだけを直せば、ほかの画面には影響しません */
-.mkbox button{font-family:"Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif!important;font-size:16px!important;font-weight:bold!important;line-height:1.35!important;letter-spacing:.04em!important;color:#5a2a4a!important;min-height:44px;padding:10px 12px!important;border-radius:16px!important;cursor:pointer;text-shadow:0 1px 0 #fff}
-.mkbox button:not([style*="background"]){background:#fff!important;border:3px solid #f0a8c8!important;box-shadow:0 3px 0 #f0a8c8}
-.mkbox button.on{background:#ff8fb5!important;border-color:#ff7eb6!important;color:#fff!important;text-shadow:0 1px 0 #d05a8a}
-.mkbox button.go{background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 100%)!important;border:3px solid #fff!important;outline:2px solid #ffc94d;color:#e0457f!important;box-shadow:0 3px 0 #e8a92a}
-.mkbox button:disabled{opacity:.5!important}
-.mkbox button:active{transform:translateY(2px)}
-.mkbox [style*="background:#fff8fb"]{background:repeating-linear-gradient(92deg,#f5e2c2 0px,#efd4a6 9px,#f8e9cf 15px,#ecd0a0 22px,#f5e2c2 30px)!important;border-color:#ff9ec4!important;color:#e9772e!important}
-.mkbox{background:rgba(120,80,40,.4)!important}
-.mkbox div,
-.mkbox span,
-.mkbox b,
-.mkbox label{color:#e9772e!important;text-shadow:0 0 2px #fff,0 0 3px #fff8f0;font-weight:bold}
-.mkbox button{color:#e9772e!important;border-color:#ff9ec4!important;text-shadow:0 0 2px #fff}
-.mkbox button.go{color:#e9772e!important}
-.mkbox button.on{background:#ffb3d1!important;border-color:#ff7eb6!important;color:#fff!important}
-.mkbox [style*="border:2px solid #f0c8dc"],
-.mkbox [style*="border:2px solid #f0a8c8"]{border-color:#ff9ec4!important}
-.mkbox button:not([style*="background"]){background:linear-gradient(180deg,#fff6b0 0%,#ffd64a 100%)!important;border:3px solid #ff8c42!important;box-shadow:0 3px 0 #e8711a!important;color:#b93a0a!important;text-shadow:0 1px 0 #fff8d0}
-.mkbox button.on{background:linear-gradient(180deg,#ffb3d1 0%,#ff7eb6 100%)!important;border-color:#ff5fa0!important;color:#fff!important;box-shadow:0 3px 0 #d94a86!important}
-.mkbox button:disabled{opacity:.6!important}
-.mkbox div,
-.mkbox span,
-.mkbox b,
-.mkbox label{color:#8a3305!important;font-weight:bold!important;text-shadow:0 0 2px #fff,0 0 3px #fff,0 0 4px #fff!important}
-.mkbox button{color:#7a2a04!important;font-weight:bold!important;text-shadow:0 1px 0 #fff!important}
-.mkbox button:disabled{background:#e2e2e2!important;color:#8e8e8e!important;border:3px dashed #a8a8a8!important;box-shadow:none!important;text-shadow:none!important;opacity:1!important;cursor:not-allowed}
-.mkbox [style*="background:#fff8fb"]{animation:twGlowWin 2.4s ease-in-out infinite}
-.mkbox button:not([style*="background"]):not(:disabled){animation:twGlowBtn 2s ease-in-out infinite}
-.mkbox button.on{box-shadow:0 0 10px #ff9ec4,0 0 18px rgba(255,126,182,.7),0 3px 0 #d94a86!important}
+/* 味方屋さん（作り直し）：背景は単色・ボタンはクリーム色・選んだものは ✓ とピンクでハッキリ */
+.mkbox{background:rgba(60,30,40,.55)!important}
+.mkbox>div{background:#fff6e0!important;border:3px solid #ff9ec4!important;animation:none!important}
+.mkbox div,.mkbox span,.mkbox b,.mkbox label{color:#4a1a00!important;font-weight:bold!important;text-shadow:none!important}
+.mkbox>div>div:first-child span{color:#c23a75!important}
+.mkbox div[style*="border-radius:999px"]{background:#fff!important;border:1px solid #f0c8a8}
+/* ボタン共通 */
+.mkbox button{font-family:"Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif!important;font-size:13px!important;font-weight:bold!important;line-height:1.2!important;letter-spacing:0!important;min-height:0!important;height:auto!important;padding:5px 11px!important;border-radius:999px!important;background:#fff3d6!important;background-image:none!important;border:2px solid #ff8fb5!important;box-shadow:0 2px 0 #e58fb6!important;color:#2a1000!important;text-shadow:none!important;-webkit-text-stroke:0!important;opacity:1!important;animation:none!important;outline:none!important;text-align:center!important;cursor:pointer}
+.mkbox button:active{transform:translateY(1px)}
+/* えらんでいるボタン：ピンクの背景・太いふち・✓ */
+.mkbox button[style*="#ff7eb6"]{background:#ffb3d1!important;border:3px solid #d02a6a!important;box-shadow:0 0 0 2px #fff,0 2px 0 2px #d02a6a!important;color:#2a1000!important}
+.mkbox button[style*="#ff7eb6"]::before{content:"✓ ";font-weight:900;color:#d02a6a}
+/* 「つぎへ」「かんせい」「とじる」：黄色で目立たせる */
+.mkbox button[style*="linear-gradient"],.mkbox button[style*="#ffe27a"]{background:#ffd64a!important;border:2px solid #ff8c42!important;box-shadow:0 2px 0 #e8711a!important;color:#2a1000!important}
+.mkbox button[style*="flex:1"]{padding:6px 8px!important;border-radius:12px!important}
+/* 押せない「もどる」：灰色のベタ塗り */
+.mkbox button:disabled{background:#e4dccb!important;color:#6a5a48!important;border:2px dashed #b8a88c!important;box-shadow:none!important}
+/* 色えらびのまる */
+.mkbox button>span[style*="border-radius:50%"]{display:inline-block!important}
+.mkbox div[style*="flex-wrap:wrap"]{gap:5px!important;margin:6px 0!important}
+.mkbox div[style*="display:flex;gap:8px"]{gap:6px!important;margin-top:6px!important}
+.mkbox input{font-size:15px!important;padding:6px 10px!important;margin:6px 0!important;background:#fff!important;color:#2a1000!important;border:2px solid #ff8fb5!important}
 </style>
 <style id="apscroll">#ap>div{max-height:88%;overflow-y:auto;-webkit-overflow-scrolling:touch}</style>
-<style id="mkbtncompact">
-/* 味方屋さん：ボタンをコンパクトに＆文字をくっきり（白いぼかしをやめて、濃い茶色の文字に） */
-.mkbox button{font-size:13px!important;line-height:1.2!important;letter-spacing:0!important;min-height:0!important;height:auto!important;padding:4px 10px!important;border-width:2px!important;border-radius:999px!important;box-shadow:0 2px 0 #e8711a!important;color:#4a1a00!important;text-shadow:none!important;animation:none!important;font-weight:bold!important;-webkit-font-smoothing:antialiased}
-.mkbox button[style*="#ffd6e8"]{background:#ffb3d1!important;border-color:#e0457f!important;color:#4a1a00!important;box-shadow:0 2px 0 #c23a75!important}
-.mkbox button[style*="flex:1"]{padding:5px 8px!important;font-size:13px!important;border-radius:12px!important}
-.mkbox button:disabled{background:#e2e2e2!important;color:#777!important;border:2px dashed #aaa!important;box-shadow:none!important}
-.mkbox button:active{transform:translateY(1px)}
-.mkbox div[style*="flex-wrap:wrap"]{gap:4px!important;margin:5px 0!important}
-.mkbox div[style*="display:flex;gap:8px"]{gap:6px!important;margin-top:5px!important}
-.mkbox input{font-size:15px!important;padding:5px 8px!important;margin:5px 0!important}
-</style>
 <style id="czbtnfix">
 /* カジノのボタン：黄色いボタンの文字（説明文も）を濃い茶色にして、くっきり読めるように */
 .czg button[style*="background"]{background:linear-gradient(180deg,#fff6b0 0%,#ffd64a 100%)!important;border:2px solid #ff8c42!important;outline:none!important;box-shadow:0 2px 0 #c45a10!important;color:#4a1a00!important;text-shadow:none!important;opacity:1!important}
@@ -10561,11 +10529,14 @@ loadAll();
 .czg button:disabled div{color:#555!important;text-shadow:none!important}
 .czg button::after{display:none!important}
 </style>
-<style id="bknavfix">
-/* キリン図鑑のボタン：ふちはピンク・背景はあわいキリン柄・文字は黒。中央ぞろえでコンパクト */
-#bookov button.bknav{background-color:#fffaf0!important;background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='44'%20height='44'%3E%3Crect%20width='44'%20height='44'%20fill='%23fffaf0'/%3E%3Cg%20fill='%23f3dcae'%20stroke='%23e6c48a'%20stroke-width='1'%3E%3Cpolygon%20points='4,6%2015,3%2019,12%2012,19%203,15'/%3E%3Cpolygon%20points='26,2%2038,6%2040,17%2030,21%2023,12'/%3E%3Cpolygon%20points='2,28%2012,24%2018,33%2011,41%201,38'/%3E%3Cpolygon%20points='25,30%2036,26%2043,35%2035,43%2026,41'/%3E%3C/g%3E%3C/svg%3E")!important;background-size:22px 22px!important;border:2px solid #ff8fb5!important;border-radius:999px!important;color:#000!important;text-shadow:none!important;font-family:"Mochiy Pop One","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif!important;font-size:12px!important;font-weight:bold!important;line-height:1!important;letter-spacing:0!important;min-height:0!important;padding:0 10px!important;box-shadow:0 2px 0 #ff8fb5!important;opacity:1!important;animation:none!important;outline:none!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;white-space:nowrap!important;cursor:pointer}
-#bookov button.bknav:disabled{background-image:none!important;background-color:#e4dccb!important;color:#555!important;border:2px solid #ff8fb5!important;box-shadow:none!important;opacity:1!important}
-#bookov button.bknav[style*="position:absolute"]{padding:0!important}
-#bookov button.bknav:active{transform:translateY(1px)}
+<style id="ui-town-cream">
+/* 街のボタン：ぜんぶ、すけないクリーム色（状態はふちの色で区別する） */
+.twc button:not(.czg *),.twc button:not(.czg *).sb.sb.sb,.twc button:not(.czg *).sb.sb.sb:not(.sb-card){background:#fff3d6!important;background-image:none!important;color:#2a1000!important;border:2px solid #ff8fb5!important;box-shadow:0 2px 0 #e58fb6!important;text-shadow:none!important;-webkit-text-stroke:0!important;opacity:1!important;animation:none!important;outline:none!important}
+.twc button:not(.czg *).sb.sb.sb:not(.sb-card){min-height:0!important;padding:4px 10px!important;font-size:13px!important;line-height:1.2!important;font-weight:bold!important}
+.twc button:not(.czg *).sb.sb.sb.sb-go:not(.sb-card){padding:5px 14px!important;font-size:14px!important;border:2px solid #ff8c42!important;box-shadow:0 2px 0 #e8711a!important}
+.twc button:not(.czg *).sb.sb.sb.sb-on,.twc button:not(.czg *).on{background:#fff3d6!important;border:3px solid #e0245e!important;box-shadow:0 0 0 2px #fff,0 2px 0 2px #e0245e!important}
+.twc button:not(.czg *).sb.sb.sb.sb-sub:not(.sb-card){font-size:12px!important;padding:3px 10px!important}
+.twc button:not(.czg *):disabled,.twc button:not(.czg *).sb.sb.sb:disabled{background:#fff3d6!important;color:#8a7a68!important;border:2px dashed #c9b79c!important;box-shadow:none!important;opacity:1!important}
+.twc button:not(.czg *).sb-card{background:#fff3d6!important;border:2px solid #ff8fb5!important;opacity:1!important}
 </style>
 </body></html>
