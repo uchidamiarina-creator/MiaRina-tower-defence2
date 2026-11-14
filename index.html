@@ -3601,7 +3601,7 @@ function nowMin(){var n=new Date();return n.getHours()*60+n.getMinutes()+n.getSe
 function cpuBoard(tab){
  var d=todayNum(),nm=nowMin(),a=[],k;
  if(tab==='day'){cpuSched(d).forEach(function(e){if(e.t<=nm)a.push(e)})}
- else{var d0=Math.floor(Date.UTC(2026,5,9)/86400000),best={};
+ else{var d0=Math.floor(Date.UTC(2026,10,11)/86400000),best={};
   for(k=Math.min(d0,d);k<=d;k++){cpuSched(k).forEach(function(e){if(k===d&&e.t>nm)return;var b=best[e.n];if(!b||e.s>b.s)best[e.n]=e})}
   Object.keys(best).forEach(function(n){a.push(best[n])})}
  a.sort(function(x,y){return y.s-x.s||x.d-y.d||x.t-y.t});return a}
